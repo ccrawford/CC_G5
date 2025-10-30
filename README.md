@@ -17,7 +17,7 @@
 
   <img src="CC_G5/Photos/Turning to intercept Localizer.jpg" width="400" alt="CC_G5 intercepting localizer">
   <br>
-  <strong>PFD (top) HSI (bottom) as the C172 intercepts the Localizer on an ILS approach</strong>
+  <strong>PFD (top) HSI (bottom) as the C172 intercepts the Localizer on an ILS approach. <BR> More photos and video below!</strong>
 
   ## Features
 
@@ -98,6 +98,13 @@
     <img src="CC_G5/Photos/HSI Menu.jpg" width="400" alt="PFD Display">
     <br>
     <em>HSI menu</em>
+  </p>
+<p align="center">
+    <a href="https://www.youtube.com/watch?v=kaV-mxJTDQc">
+      <img src="https://img.youtube.com/vi/kaV-mxJTDQc/0.jpg" width="400" alt="See it in action">
+    </a>
+    <br>
+    <em>Click to watch video</em>
   </p>
 
   ## Hardware Requirements
@@ -206,4 +213,5 @@
 
   - GitHub Repository: https://github.com/ccrawford/CC_G5
   - MobiFlight: https://www.mobiflight.com
+
 
