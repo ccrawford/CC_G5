@@ -15,7 +15,9 @@
   This project is pushing the bounds of the memory on the ESP32-S3. While the device has ample PSRAM, using it
   is much slower than main memory and the fps drops quickly. Currently we are out of room for new sprites. 
 
-  ![CC_G5 Display](CC_G5/Photos/Turning to intercept Localizer.jpg)
+  <img src="CC_G5/Photos/Turning to intercept Localizer.jpg" width="400" alt="CC_G5 intercepting localizer">
+  <br>
+  <strong>PFD (top) HSI (bottom) as the C172 intercepts the Localizer on an ILS approach</strong>
 
   ## Features
 
@@ -75,7 +77,29 @@
   - **Accurate colors**: Magenta for GPS, Green for VOR/ILS
   - **Multi-Layer Sprites**: Complex overlays for no-flicker refresh
   - **Smooth Animations**: Low-pass filtering for heading and deviation displays
-  
+
+## More Photos
+<p align="center">
+    <img src="CC_G5/Photos/Established on Localizer.jpg" width="400" alt="HSI Display">
+    <br>
+    <em>Established on the Localizer</em>
+  </p>
+  <p align="center">
+    <img src="CC_G5/Photos/RNAV approach.jpg" width="400" alt="PFD Display">
+    <br>
+    <em>RNAV approach</em>
+  </p>
+  <p align="center">
+    <img src="CC_G5/Photos/PFD Menu.jpg" width="400" alt="PFD Display">
+    <br>
+    <em>PFD Menu</em>
+  </p>
+    <p align="center">
+    <img src="CC_G5/Photos/HSI Menu.jpg" width="400" alt="PFD Display">
+    <br>
+    <em>HSI menu</em>
+  </p>
+
   ## Hardware Requirements
 
   ### Primary Components
@@ -182,3 +206,4 @@
 
   - GitHub Repository: https://github.com/ccrawford/CC_G5
   - MobiFlight: https://www.mobiflight.com
+
