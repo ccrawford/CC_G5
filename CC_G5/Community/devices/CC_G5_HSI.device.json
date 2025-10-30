@@ -1,0 +1,156 @@
+{
+  "$schema": "./mfdevice.schema.json",
+  "Info": {
+    "Label": "CCs CC_G5 HSI",
+    "Type": "CC_G5_HSI",
+    "Author": "CCrawford",
+    "URL": "https://github.com/ccrawford",
+    "Version": "2.5.1"
+  },
+  "Config": {
+    "Pins": ["DummyPin"],
+    "isI2C": false
+  },
+  "MessageTypes": [
+    {
+      "id": 0,
+      "label": "Heading (true)",
+      "description": "$ will display the heading (integer degrees) (A:GPS GROUND TRUE HEADING,Degrees)"
+    },
+    {
+      "id": 1,
+      "label": "Heading Bug",
+      "description": "$ will be displayed as Heading bug (A:AUTOPILOT HEADING LOCK DIR,Degrees)"
+    },
+    {
+      "id": 2,
+      "label": "CDI Direction",
+      "description": "$ will be displayed as the CDI Direction (A:HSI BEARING,Degrees)"
+    },
+    {
+      "id": 3,
+      "label": "CDI To/From",
+      "description": "$ To From: 0: off, 1: To, 2: From (A:NAV TOFROM:index,Enum)"
+    },
+    {
+      "id": 4,
+      "label": "CDI Lateral Deviation",
+      "description": "$ will be displayed as the CDI Deviation (A:HSI CDI NEEDLE,Number)"
+    },
+    {
+      "id": 5,
+      "label": "Glide slope deviation",
+      "description": "$ will be displayed as the Glide Slope Deviation diamond (A:HSI GSI NEEDLE:1)"
+    },
+    {
+      "id": 6,
+      "label": "GPS Ground Speed",
+      "description": "$ will be displayed as the ground speed in knots (A:GPS GROUND SPEED,knots)"
+    },
+    {
+      "id": 7,
+      "label": "GPS Ground True Track",
+      "description": "$ will be displayed as the GPS Track (A:GPS GROUND TRUE TRACK,Degrees)"
+    },
+    {
+      "id": 8,
+      "label": "GPS Target Distance",
+      "description": "$ will be displayed as DIST value (A:GPS WP DISTANCE,nmiles)"
+    },
+    {
+      "id": 9,
+      "label": "GPS Drives Nav",
+      "description": "$ Does GPS (true) or VOR (false) drive Nav? (A:GPS DRIVES NAV1,Bool)"
+    },
+    {
+      "id": 10,
+      "label": "CDI Scale Label (L:WTGarmin_LNavData_CDI_Scale_Label)",
+      "description": "$ Scale label enum. 0 DEPT 1 TERM 4 ENR, etc."
+    },
+    {
+      "id": 11,
+      "label": "Approach Type (A:GPS APPROACH APPROACH TYPE)",
+      "description": "$ is value from that simvar. 0 none, 1 gps, 2 vor, 3 ndb, 4 ils, 5, localizer, etc"
+    },
+    {
+      "id": 12,
+      "label": "NAV CDI Label",
+      "description": "$ is an index: 0-GPS, 1-LOC1, 2-VOR1, 3-DME1, 4-LOC2, 5-VOR2, 6-DME2, 7-NAV1 No station, 8-NAV2 no station, 9 - reserved, 10-Unknown"
+    },
+    {
+      "id": 13,
+      "label": "OBS Active",
+      "description": "$ 0: Off 1:On (A:GPS OBS ACTIVE:1)"
+    },
+    {
+      "id": 14,
+      "label": "OBS Heading",
+      "description": "$ is the OBS heading in degrees (A:GPS OBS VALUE:1, degrees)"
+    },
+    {
+      "id": 15,
+      "label": "GSI Needle Valid",
+      "description": "$ if the GSI Needle is valid/alive"
+    },
+    {
+      "id": 16,
+      "label": "CDI Needle Valid",
+      "description": "$ if the CDI Needle is valid/alive"
+    },
+    {
+      "id": 17,
+      "label": "Wind Direction",
+      "description": "$ Absolute wind direction in degrees"
+    },
+    {
+      "id": 18,
+      "label": "Wind Speed",
+      "description": "$ Wind speed in knots"
+    },
+    {
+      "id": 19,
+      "label": "Desired Track",
+      "description": "$ as desired track from GPS in deegrees (A:GPS WP DESIRED TRACK,Degrees)"
+    },
+    {
+      "id": 20,
+      "label": "Desired Track is Valid",
+      "description": "$ if the DTK is valid (GPS WP NEXT ID)"
+    },
+    {
+      "id": 21,
+      "label": "GPS Bearing",
+      "description": "$ is the GPS WP Bearing"
+    },
+    {
+      "id": 22,
+      "label": "VLOC1 Bearing",
+      "description": "$ is the Nav 1 Navaid Bearing"
+    },
+    {
+      "id": 23,
+      "label": "VLOC2 Bearing",
+      "description": "$ is the Nav 2 Navaid Bearing"
+    },
+    {
+      "id": 24,
+      "label": "Nav1 Type",
+      "description": "$ is the station type for Nav1 radio. Use: (A:NAV HAS NAV:1, Bool) if{ (A:NAV HAS LOCALIZER:1, Bool) if{ 1 } els{ (A:NAV TOFROM:1, Number) 0 != if{ 2 } els{ (A:NAV HAS DME:1, Bool) if{ 3 } els{ 10 }}}} els{ 7 }"
+    },
+    {
+      "id": 25,
+      "label": "Nav2 Type",
+      "description": "$ is the station type for Nav2 radio. Use: (A:NAV HAS NAV:2, Bool) if{ (A:NAV HAS LOCALIZER:2, Bool) if{ 1 } els{ (A:NAV TOFROM:2, Number) 0 != if{ 2 } els{ (A:NAV HAS DME:2, Bool) if{ 3 } els{ 10 }}}} els{ 7 }"
+    },
+    {
+      "id": 26,
+      "label": "ADF Radial Mag",
+      "description": "$ (A:ADF RADIAL MAG:1, Degrees)"
+    },
+    {
+      "id": 27,
+      "label": "ADF valid",
+      "description": "$ is (A:ADF SIGNAL:1) 0 > if{ 1 } els{ 0 }"
+    }
+  ]
+}

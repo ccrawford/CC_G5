@@ -1,0 +1,193 @@
+{
+  "$schema": "./mfdevice.schema.json",
+  "Info": {
+    "Label": "CCs CC_G5 PFD",
+    "Type": "CC_G5_PFD",
+    "Author": "CCrawford",
+    "URL": "https://github.com/ccrawford",
+    "Version": "2.5.1"
+  },
+  "Config": {
+    "Pins": [
+      "DummyPin"
+    ],
+    "isI2C": false
+  },
+  "MessageTypes": [
+    {
+      "id": 0,
+      "label": "Heading (true)",
+      "description": "$ will display the heading (integer degrees) (A:GPS GROUND TRUE HEADING,Degrees)"
+    },
+    {
+      "id": 1,
+      "label": "Heading Bug",
+      "description": "$ will be displayed as Heading bug (A:AUTOPILOT HEADING LOCK DIR,Degrees)"
+    },
+    {
+      "id": 2,
+      "label": "Airspeed",
+      "description": "$ will be displayed as the Airspeed"
+    },
+    {
+      "id": 3,
+      "label": "Altitude",
+      "description": "$ Current altitude in feet"
+    },
+    {
+      "id": 4,
+      "label": "CDI Lateral Deviation",
+      "description": "$ will be displayed as the CDI Deviation (A:HSI CDI NEEDLE,Number)"
+    },
+    {
+      "id": 5,
+      "label": "Pitch",
+      "description": "$ Current pitch in degrees (nearest 0.1)"
+    },
+    {
+      "id": 6,
+      "label": "GPS Ground Speed",
+      "description": "$ will be displayed as the ground speed in knots (A:GPS GROUND SPEED,knots)"
+    },
+    {
+      "id": 7,
+      "label": "GPS Ground True Track",
+      "description": "$ will be displayed as the GPS Track (A:GPS GROUND TRUE TRACK,Degrees)"
+    },
+    {
+      "id": 8,
+      "label": "Bank Angle",
+      "description": "$ Current bank angle in degrees"
+    },
+    {
+      "id": 9,
+      "label": "GPS Drives Nav",
+      "description": "$ Does GPS (true) or VOR (false) drive Nav? (A:GPS DRIVES NAV1,Bool)"
+    },
+    {
+      "id": 10,
+      "label": "Target Altitude",
+      "description": "$ AP Target altitude for bug and tape"
+    },
+    {
+      "id": 11,
+      "label": "Slip/Skid",
+      "description": "$ is slip/skid indicator (A:TURN COORDINATOR BALL,Position)"
+    },
+    {
+      "id": 12,
+      "label": "Current Baro",
+      "description": "$ is current baro setting (kohlsman) in inHg (A:KOHLSMAN SETTING HG:index, inHg)"
+    },
+    {
+      "id": 13,
+      "label": "Turn Rate",
+      "description": "$ Turn rate in degrees (A:DELTA HEADING RATE,Degrees per second)"
+    },
+    {
+      "id": 14,
+      "label": "Vertical Speed",
+      "description": "$ is Vertical speed in ft/min (A:VERTICAL SPEED,Feet per minute)"
+    },
+    {
+      "id": 15,
+      "label": "GSI Needle Valid",
+      "description": "$ if the GSI Needle is valid/alive"
+    },
+    {
+      "id": 16,
+      "label": "CDI Needle Valid",
+      "description": "$ if the CDI Needle is valid/alive"
+    },
+    {
+      "id": 17,
+      "label": "Nav Course to Steer",
+      "description": "$ Nav Course to Steer in Degrees"
+    },
+    {
+      "id": 18,
+      "label": "Glide Slope Deviation",
+      "description": "$ is (A:HSI GSI NEEDLE,Number)"
+    },
+    {
+      "id": 19,
+      "label": "Nav Source",
+      "description": "$ GPS=0 Nav1=1 Nav2=2"
+    },
+    {
+      "id": 20,
+      "label": "Flight Director Active",
+      "description": "$ is 1 for FD on, 0 for off (A:AUTOPILOT FLIGHT DIRECTOR ACTIVE,Bool)"
+    },
+    {
+      "id": 21,
+      "label": "Flight Director Pitch",
+      "description": "$ Flight Director Pitch in Degree (A:AUTOPILOT FLIGHT DIRECTOR PITCH,Degrees)"
+    },
+    {
+      "id": 22,
+      "label": "Flight Director Bank",
+      "description": "$ Flight Director Bank in degrees (A:AUTOPILOT FLIGHT DIRECTOR BANK,Degrees)"
+    },
+    {
+      "id": 23,
+      "label": "CDI To/From",
+      "description": "$ To From: 0: off, 1: To, 2: From (A:NAV TOFROM:index,Enum)"
+    },
+    {
+      "id": 24,
+      "label": "Approach Type (A:GPS APPROACH APPROACH TYPE)",
+      "description": "$ is value from that simvar. 0 none, 1 gps, 2 vor, 3 ndb, 4 ils, 5, localizer, etc"
+    },
+    {
+      "id": 25,
+      "label": "OBS (Course) Heading",
+      "description": "$ is the OBS heading in degrees (A:GPS OBS VALUE:1, degrees)"
+    },
+    {
+      "id": 26,
+      "label": "AP Active",
+      "description": "AP on"
+    },
+    {
+      "id": 27,
+      "label": "AP Lateral Active Mode",
+      "description": "Codes: 0=Off, 1=ROL, 2=HDG, 3=GPS, 4=VOR, 5=LOC"
+    },
+    {
+      "id": 28,
+      "label": "AP Lateral Armed Mode Bitflags",
+      "description": "Bitflags: 1=LOC, 2=VOR, 4=GPS"
+    },
+    {
+      "id": 29,
+      "label": "AP Vertical Active Mode",
+      "description": "0=Off, 1=ALT, 2=VS, 3=PIT, 4=IAS, 5=ALTS, 6=GS, 7=GP"
+    },
+    {
+      "id": 30,
+      "label": "AP Vertical Armed Mode Bitflags",
+      "description": "1=ALTS, 2=ALT, 4=GS, 8=GP"
+    },
+    {
+      "id": 31,
+      "label": "AP Target VS",
+      "description": "VS in feet/min  (A:AUTOPILOT VERTICAL HOLD VAR,Feet/minute)"
+    },
+    {
+      "id": 32,
+      "label": "AP target IAS in knots for FLC",
+      "description": "$ is target IAS for FLC"
+    },
+    {
+      "id": 33,
+      "label": "ALT Hold captured target in ft",
+      "description": "$ is: (A:AUTOPILOT ALTITUDE LOCK, Bool) (L:ALT_HOLD_PREV, Bool) != if{ (A:AUTOPILOT ALTITUDE LOCK, Bool) if{ (A:INDICATED ALTITUDE, feet) (>L:CAPTURED_ALT) } (A:AUTOPILOT ALTITUDE LOCK, Bool) (>L:ALT_HOLD_PREV) } (L:CAPTURED_ALT)"
+    },
+    {
+      "id": 34,
+      "label": "AP Yaw Damper On",
+      "description": "$ is if AP Yaw Damper is active"
+    }
+  ]
+}

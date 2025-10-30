@@ -1,0 +1,255 @@
+#include "G5_Menu.h"
+#include "4inchLCDConfig.h" // Add this line to include the full definition of LGFX
+#include "Images\PrimaSans32.h"
+#include "Images\PrimaSans16.h"
+#include "Sprites\backArrow.h"
+#include "esp_log.h"
+
+static const char* TAG_MENU = "G5_MENU";
+
+// Forward declarations and externs
+class CC_G5_HSI;
+extern CC_G5_HSI* g_cc_g5_instance;
+extern int getHeadingBugAngle();
+extern int getCdiDirection();
+
+extern LGFX lcd; 
+static LGFX_Sprite menuBox(&lcd);
+static LGFX_Sprite updateBox(&lcd);
+
+void G5_Menu::initializeMenu() {
+
+    // NEW interface-based menu items
+    newMenuItems.clear();
+    newMenuItems.push_back(std::make_unique<BackMenuItem>(this));
+    newMenuItems.push_back(std::make_unique<HeadingMenuItem>(g_cc_g5_instance, this));
+    newMenuItems.push_back(std::make_unique<CourseMenuItem>(g_cc_g5_instance, this));
+
+    // DON'T create menu sprites here - they'll be created when menu opens
+
+    currentHighlight = 0;
+    currentState = MenuState::BROWSING;
+    
+}
+
+void G5_Menu::drawMenu() {
+
+    if(!menuActive) return;
+    
+    // In adjustment mode, the popup is drawn by CC_G5's main update loop
+    if (currentState == MenuState::ADJUSTING) {
+        return;  // Don't draw menu items
+    }
+
+    int itemWidth = 105, itemHeight = 80, itemSpacing=9, outlineWidth=4;
+    int curX = itemSpacing;
+    menuBox.fillSprite(TFT_BLACK);
+    menuBox.fillRoundRect(0,0, menuBox.width(), menuBox.height(), outlineWidth, TFT_LIGHTGRAY);
+    menuBox.fillRoundRect(outlineWidth, outlineWidth, menuBox.width() - outlineWidth*2, menuBox.height()-outlineWidth*2, outlineWidth/2, TFT_BLACK);
+    
+    
+    int firstItem = 0;  // Need this if we implement menu scrolling in future.
+
+    for(int i=firstItem; i<firstItem + 4; i++) {
+        if(i >= newMenuItems.size()) continue;
+        
+        // Draw item rectangle
+        menuBox.fillRoundRect(curX, itemSpacing, itemWidth, itemHeight, outlineWidth, i==currentHighlight ? TFT_WHITE : TFT_DARKGRAY);
+        menuBox.fillRoundRect(curX+outlineWidth, itemSpacing+outlineWidth, itemWidth-outlineWidth*2, itemHeight-outlineWidth*2, outlineWidth/2, TFT_BLACK);
+        
+        // Draw item title
+        menuBox.setTextColor(TFT_WHITE, TFT_BLACK);
+        menuBox.setTextDatum(lgfx::v1::textdatum::textdatum_t::top_center);
+        menuBox.setTextSize(0.7);
+        menuBox.drawString(newMenuItems[i]->getTitle().c_str(), curX + ((itemSpacing + itemWidth - outlineWidth*2) / 2), 15);
+
+        // Draw item icon if it has one
+        const uint16_t* iconData = newMenuItems[i]->getIcon();
+        if (iconData != nullptr) {
+            int iconWidth = newMenuItems[i]->getIconWidth();
+            int iconHeight = newMenuItems[i]->getIconHeight();
+            int iconX = curX + ((itemWidth - iconWidth) / 2);
+            int iconY = itemSpacing + ((itemHeight - iconHeight) / 2) + 10;  // Offset down from title
+            menuBox.pushImage(iconX, iconY, iconWidth, iconHeight, iconData);
+        }
+
+        // Draw item display value if it has one
+        String displayValue = newMenuItems[i]->getDisplayValue();
+        if (displayValue.length() > 0) {
+            menuBox.setTextColor(newMenuItems[i]->getDisplayValueColor(), TFT_BLACK);
+            menuBox.setTextDatum(lgfx::v1::textdatum::textdatum_t::bottom_center);
+            menuBox.setTextSize(1.0);
+            menuBox.drawString(displayValue.c_str(), curX + ((itemSpacing + itemWidth - outlineWidth*2) / 2), itemHeight - 2);
+        }
+        
+        curX += (itemWidth  + itemSpacing);
+    }
+
+    menuBox.pushSprite(&lcd, 0, 380);
+
+    return;
+
+}
+
+void G5_Menu::drawAdjustmentPopup() {
+    if (!adjustingItem) return;
+    
+    // Clear the updateBox sprite
+    updateBox.fillSprite(TFT_BLACK);
+    
+    updateBox.fillGradientRect(2, 2, (int)(updateBox.width() - 4), 40, TFT_DARKGREY, TFT_BLACK, lgfx::v1::gradient_fill_styles::vertical_linear);
+    updateBox.drawRoundRect(0, 0, updateBox.width(), updateBox.height(), 3, TFT_WHITE);
+    updateBox.drawRoundRect(1, 1, updateBox.width()-2, updateBox.height()-2, 2, TFT_WHITE);
+
+    // Draw title
+    updateBox.setTextColor(TFT_WHITE);
+    updateBox.setTextDatum(TC_DATUM);
+    updateBox.setTextSize(0.7);
+    updateBox.drawString(adjustingItem->getTitle(), updateBox.width()/2, 10);
+    
+    // Draw current value with color
+    updateBox.setTextColor(adjustingItem->getDisplayValueColor());
+    updateBox.setTextSize(1.0);
+    updateBox.setTextDatum(MC_DATUM);
+    String valueStr = adjustingItem->getDisplayValue();
+    updateBox.drawString(valueStr, updateBox.width()/2, updateBox.height()/2 + 15);
+    
+    
+    // Push sprite to compass (centered) instead of directly to LCD
+    extern LGFX_Sprite compass; 
+    int centerX = (compass.width() - updateBox.width()) / 2;
+    int centerY = compass.height() - updateBox.height();
+    updateBox.pushSprite(&compass, centerX, centerY);
+}
+
+// G5_Menu input handling implementations
+void G5_Menu::handleEncoder(int delta) {
+    if (currentState == MenuState::BROWSING) {
+        scrollHighlight(delta);
+    } else if (currentState == MenuState::ADJUSTING) {
+        // Route encoder turns to the adjusting item
+        if (adjustingItem) {
+            adjustingItem->onEncoderTurn(delta);
+        }
+    }
+}
+
+void G5_Menu::handleEncoderButton(bool pressed) {
+    if (!pressed) return;  // Only act on button press
+    
+    if (currentState == MenuState::BROWSING) {
+        newMenuItems[currentHighlight]->onEncoderPress(); 
+    } else if (currentState == MenuState::ADJUSTING) { 
+        // Exit adjustment mode and close menu entirely
+        adjustingItem = nullptr;
+        currentState = MenuState::BROWSING;
+        
+        // Force screen redraw to clear popup remnants Don't like this here, but ok.
+        extern LGFX lcd;
+        lcd.fillScreen(GS_BACKGROUND_COLOR);  // Clear screen to trigger full redraw       
+        setActive(false);  // Close menu completely
+    }
+}
+
+void G5_Menu::scrollHighlight(int delta) {
+    currentHighlight += (delta > 0) ? 1 : -1;
+    
+    
+    // Wrap around logic.
+    int totalItems = newMenuItems.size();
+    // if (currentHighlight < 0) currentHighlight = totalItems - 1;
+    // if (currentHighlight >= totalItems) currentHighlight = 0;
+    
+    // Bumper logic.
+    if (currentHighlight < 0) currentHighlight = 0;
+    if (currentHighlight >= totalItems) currentHighlight = totalItems - 1;
+
+}
+
+
+// New setActive method that handles sprite management
+bool G5_Menu::setActive(bool isActive) {
+    if (isActive && !menuActive) {
+        openMenu();
+    } else if (!isActive && menuActive) {
+        closeMenu();
+    }
+    
+    menuActive = isActive;
+    if (!isActive) currentState = MenuState::BROWSING;
+    return menuActive;
+}
+
+
+void G5_Menu::openMenu() {
+    
+    // Create the small menu sprites
+    menuBox.setColorDepth(8);
+    void* menuBuffer = menuBox.createSprite(480, 100);
+    
+    if (menuBuffer != nullptr) {
+        menuBox.loadFont(PrimaSans32);
+        menuBox.setTextSize(0.7);
+    }
+    
+    updateBox.setColorDepth(8);
+    void* updateBuffer = updateBox.createSprite(160, 100);
+    
+    if (updateBuffer != nullptr) {
+        updateBox.loadFont(PrimaSans32);
+    }
+    
+}
+
+void G5_Menu::closeMenu() {
+    menuBox.deleteSprite();
+    updateBox.deleteSprite();   
+}
+
+void G5_Menu::enterAdjustmentMode(MenuItemBase* item) {
+    adjustingItem = item;
+    currentState = MenuState::ADJUSTING;
+    
+    // Force screen redraw to hide menu and show compass background
+    extern LGFX lcd;
+    lcd.fillScreen(GS_BACKGROUND_COLOR);  // Clear screen to trigger full redraw
+}
+
+// Implementation of menu item display value methods
+String HeadingMenuItem::getDisplayValue() {
+    char buffer[8];
+    sprintf(buffer, "%03d°", getHeadingBugAngle());
+    return String(buffer);
+}
+
+String CourseMenuItem::getDisplayValue() {
+    char buffer[8];
+    sprintf(buffer, "%03d°", getCdiDirection());
+    return String(buffer);
+}
+
+// Implementation of menu item onEncoderPress methods
+void HeadingMenuItem::onEncoderPress() {
+    if (menu) {
+        menu->enterAdjustmentMode(this);
+    }
+}
+
+void CourseMenuItem::onEncoderPress() {
+    if (menu) {
+        menu->enterAdjustmentMode(this);
+    }
+}
+
+// Implementation of BackMenuItem icon methods
+const uint16_t* BackMenuItem::getIcon() {
+    return BACKARROW_IMG_DATA;
+}
+
+int BackMenuItem::getIconWidth() {
+    return BACKARROW_IMG_WIDTH;
+}
+
+int BackMenuItem::getIconHeight() {
+    return BACKARROW_IMG_HEIGHT;
+}

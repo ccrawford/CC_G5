@@ -1,0 +1,198 @@
+48d4e15 - C Crawford, 59 seconds ago : Final commit before clean history - line ending normalization
+
+de41c4d - C Crawford, 2 hours ago : Added Photos and MF Content
+
+26b113a - C Crawford, 5 hours ago : Added hideable menu items.
+
+dd6f969 - C Crawford, 8 hours ago : Cleaned up the ADF bearing pointer feature.
+
+508027c - C Crawford, 25 hours ago : Added AP. Added ADF. Cleaned up
+
+308ff25 - C Crawford, 4 days ago : Smoothed heading tape. Fixed misc calculations. Completely refactored the rp2040 handling.
+
+27edd3d - C Crawford, 6 days ago : More smoothing. Fixed altitude tape once and for all.
+
+436552f - C Crawford, 7 days ago : Fixed altitudes below zero
+
+ec2b533 - C Crawford, 8 days ago : Removing old menu structure. Added icons to menu.
+
+67ffd93 - C Crawford, 8 days ago : Menu Fixes
+
+b798a88 - C Crawford, 2 weeks ago : Added Speed Trend to speed tape. Added drawing optimizations to HSI
+
+b43e2ea - C Crawford, 2 weeks ago : Small bug fixes: wind speed. bearing pointers.
+
+c24ecbe - C Crawford, 3 weeks ago : New images
+
+944f61a - C Crawford, 3 weeks ago : Fixed screen overwrite with menus, etc.
+
+88dd6e7 - C Crawford, 3 weeks ago : Added altitude alerter
+
+098c700 - C Crawford, 3 weeks ago : Bearing Menu Feature added
+
+128cb5d - C Crawford, 3 weeks ago : Added v speed settings menu
+
+354b724 - C Crawford, 3 weeks ago : Finished menu refactor. Started on prefs storage.
+
+5ab2bd6 - C Crawford, 3 weeks ago : Added bearing pointers to HSI
+
+0e907ce - C Crawford, 4 weeks ago : Fine tuning smoothing
+
+9c76994 - C Crawford, 4 weeks ago : Added V speeds to speed tape. Added smoothing end logic.
+
+8e82bc3 - C Crawford, 4 weeks ago : Added smoothing to PFD. Added deviation diamond on radio nav
+
+3b476ba - C Crawford, 4 weeks ago : Added more settings and making deviation scales actually work.
+
+b0bc112 - C Crawford, 4 weeks ago : Added wind arrow to HSI. Added FD
+
+3fe32ca - C Crawford, 4 weeks ago : Added PFD deviation indicators
+
+a655750 - C Crawford, 4 weeks ago : Heading indicator added to tape
+
+32f9d4b - C Crawford, 5 weeks ago : Menu refactor and PFD implementation complete.
+
+a25228f - C Crawford, 5 weeks ago : Updates for Guition Support. Working.
+
+ba3c2fb - C Crawford, 5 weeks ago : Merged MF changes.
+
+fbce607 - C Crawford, 6 weeks ago : Image saves.
+
+377ca2e - C Crawford, 6 weeks ago : Complete I2C encoder interface implementation
+Added full I2C communication between ESP32-S3 and RP2040 for rotary encoder input.
+Includes interrupt-driven data reading, 3-byte protocol, and encoder/button handling.
+Updates display rendering, navigation modes, and sprite graphics for enhanced functionality.
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>
+
+75612ae - Chris Crawford, 6 weeks ago : Getting ready to refactor Menu class.
+
+87f1a05 - Chris Crawford, 7 weeks ago : Heading tape complete. May move it to attitude sprite.
+
+13ff22d - Chris Crawford, 7 weeks ago : Added Nav course. Changed left column width.
+
+9811840 - Chris Crawford, 7 weeks ago : Heading tape scale added.
+
+18aaf5e - Chris Crawford, 7 weeks ago : Ball and turn bar done. Heading bar started.
+
+8b99546 - Chris Crawford, 7 weeks ago : Ball added (not calibrated). Boxes refactored.
+
+8d94599 - Chris Crawford, 7 weeks ago : Added bank scale and alt target marker.
+
+ae10c0d - Chris Crawford, 7 weeks ago : Added boxes and bug
+
+c1fca49 - Chris Crawford, 7 weeks ago : Core MFD working
+
+620f6dd - Chris Crawford, 2 months ago : Removed a ton of unused variables and methods in the menu classes.  Cleaned up commented out code in g5
+
+e765148 - Chris Crawford, 2 months ago : Minor updates before major cleanup.
+
+a8516de - Chris Crawford, 3 months ago : Menu working. Ready for production test.
+
+b09523c - Chris Crawford, 3 months ago : Looking good. Updating menu approach
+
+9c0dcf4 - Chris Crawford, 3 months ago : Added i2c support. Working.
+
+dc874f9 - Chris Crawford, 6 months ago : Before i2c Fork
+
+d0091d8 - Chris Crawford, 6 months ago : Getting ready to do some computer maintenance.
+
+2dea580 - Chris Crawford, 6 months ago : HSI Working well. Missing bearing pointers.
+
+d8eb394 - Chris Crawford, 6 months ago : Added Glideslope and type.  Added approach type and source. Fixed reboot on 32,0,-1;
+
+e77190e - Chris Crawford, 7 months ago : Added glide slope, but not connected. Reduced size of compass to 160
+
+3f4b71b - Chris Crawford, 7 months ago : HSI Working. Deviation Bar needs work.
+
+76b5f37 - Chris Crawford, 7 months ago : Working!
+
+0d89876 - Chris Crawford, 7 months ago : Getting ready for live testing
+
+f596d6b - Chris Crawford, 7 months ago : Looking good. Track and boxes implemented
+
+c39f734 - Chris Crawford, 7 months ago : Before messing with palettes
+
+105f1f5 - Chris Crawford, 7 months ago : Initial Commit. Visually working
+
+f184931 - elral, 1 year, 2 months ago : common libs for ESP32 in platformio.ini
+
+910652f - elral, 1 year, 2 months ago : read config string but check if length > 0
+
+244a113 - elral, 1 year, 2 months ago : standard w/o 2nd core, don't read configuration from config
+
+2dffb25 - elral, 1 year, 2 months ago : Merge branch 'main' into ESP32_support
+
+9d98024 - Tuomas Kuosmanen, 1 year, 2 months ago : fix link to CommunityTemplate (#10)
+
+2178d4f - elral, 1 year, 2 months ago : config can be read additionally from Flash (#8)
+
+58705a6 - elral, 1 year, 2 months ago : Additional boards added (#3)
+
+68c8b2a - elral, 1 year, 2 months ago : better naming for firmware bin file
+
+7338a8c - elral, 1 year, 2 months ago : Merge branch 'community_folder_name' into ESP32_support
+
+c91b68a - elral, 1 year, 2 months ago : check for platform and not file extension for creating uf2 file
+
+188f408 - elral, 1 year, 2 months ago : fixed wrong friendly name
+
+ec96c5e - elral, 1 year, 2 months ago : get copying community folder ot work
+
+14644c5 - elral, 1 year, 2 months ago : reformatting
+
+8199ba0 - elral, 1 year, 3 months ago : add custom device informations
+
+5d92358 - elral, 1 year, 3 months ago : merge branch additional boards
+
+57656cf - elral, 1 year, 3 months ago : Merge branch 'additional_boards' into ESP32_support
+
+536a599 - elral, 1 year, 3 months ago : Merge branch 'community_folder_name' into ESP32_support
+
+9e43056 - elral, 1 year, 3 months ago : cleanup custom.ini file
+
+92ad6c6 - elral, 1 year, 3 months ago : activate custom device on 2nd core for ESP32 S3
+
+ba3837a - elral, 1 year, 3 months ago : don't read config from EEPROM
+
+e91af07 - elral, 1 year, 3 months ago : debug print added
+
+07b5510 - elral, 1 year, 3 months ago : board.json added, type for ESP32 must match
+
+84edadd - elral, 1 year, 3 months ago : set fixed core FW version
+
+3bcb1fb - elral, 1 year, 3 months ago : copy fw files acc. latest PR from core FW
+
+ecc971e - elral, 1 year, 3 months ago : don't use platform packages
+
+efabf3a - elral, 1 year, 3 months ago : Merge branch 'config_from_flash' into test_2nd_core_ESP32
+
+cdace81 - elral, 1 year, 4 months ago : Merge branch 'main' into community_folder_name
+
+6deb467 - elral, 1 year, 4 months ago : Merge branch 'main' into additional_boards
+
+59d22e9 - elral, 1 year, 4 months ago : Merge branch 'main' into config_from_flash
+
+5a66103 - elral, 1 year, 5 months ago : better naming
+
+dd715e5 - elral, 1 year, 5 months ago : fixed missing CustomDeviceTypes and Community in json files
+
+e252289 - elral, 1 year, 5 months ago : fixed wrong FirmwareBaseName in json files
+
+55a5725 - elral, 1 year, 6 months ago : config can be read additionally from Flash
+
+8934e63 - elral, 1 year, 6 months ago : fixed last commit
+
+8994dc7 - elral, 1 year, 6 months ago : better naming
+
+6720ea9 - elral, 1 year, 6 months ago : clean up print out and structure
+
+d85770d - elral, 1 year, 6 months ago : fixed missing defintion of zip file in device.ini
+
+2aaa0a3 - elral, 1 year, 6 months ago : own define for folder name within zip file
+
+956a74f - elral, 1 year, 9 months ago : fixed wrong includes for additional boards
+
+7afc306 - elral, 1 year, 9 months ago : additional boards added

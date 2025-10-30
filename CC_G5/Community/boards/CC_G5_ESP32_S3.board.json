@@ -1,0 +1,265 @@
+{
+  "$schema": "./mfboard.schema.json",
+  "AvrDudeSettings": {
+    "Device": "ESP32-S3DevKitC1",
+    "BaudRate": "115200",
+    "Programmer": "arduino",
+    "Timeout": 15000
+  },
+  "Connection": {
+    "ConnectionDelay": 1250,
+    "DelayAfterFirmwareUpdate": 1250,
+    "DtrEnable": false,
+    "EEPROMSize": 1496,
+    "ExtraConnectionRetry": true,
+    "ForceResetOnFirmwareUpdate": true,
+    "MessageSize": 90
+  },
+  "HardwareIds": [
+    "^VID_303A&PID_1001",
+    "^VID_303A\\+PID_1001\\+.+",
+    "^VID_1A86&PID_7523",
+    "^VID_1A86\\+PID_7523\\+.+"
+  ],
+  "Info": {
+    "CanInstallFirmware": false,
+    "CanResetBoard": false,
+    "DelayAfterFirmwareUpdate": 0,
+    "FirmwareBaseName": "ccrawford_cc_g5_esp32s3",
+    "FirmwareExtension": "bin",
+    "FriendlyName": "CC_G5",
+    "LatestFirmwareVersion": "2.5.1",
+    "MobiFlightType": "CC_G5 ESP32",
+    "ResetFirmwareFile": "reset.esp32_s3_devkit_merged.bin",
+    "CustomDeviceTypes": [
+      "CC_G5_HSI",
+      "CC_G5_PFD"
+    ],
+    "Community": {
+      "Project": "CC G5",
+      "Website": "https://YourWebsite.com",
+      "Docs": "https://YourWebsite.com",
+      "Support": "https://YourWebsite.com"
+    }
+  },
+  "ModuleLimits": {
+    "MaxAnalogInputs": 18,
+    "MaxInputShifters": 0,
+    "MaxButtons": 27,
+    "MaxEncoders": 20,
+    "MaxLcdI2C": 0,
+    "MaxLedSegments": 0,
+    "MaxOutputs": 27,
+    "MaxServos": 0,
+    "MaxShifters": 0,
+    "MaxSteppers": 0,
+    "MaxInputMultiplexer": 0,
+    "MaxCustomDevices": 1
+  },
+  "Pins": [
+    {
+      "isAnalog": true,
+      "isI2C": false,
+      "isPWM": true,
+      "Name": "A0",
+      "Pin": 1
+    },
+    {
+      "isAnalog": true,
+      "isI2C": false,
+      "isPWM": true,
+      "Name": "A1",
+      "Pin": 2
+    },
+    {
+      "isAnalog": true,
+      "isI2C": false,
+      "isPWM": true,
+      "Name": "A2",
+      "Pin": 3
+    },
+    {
+      "isAnalog": true,
+      "isI2C": false,
+      "isPWM": true,
+      "Name": "A3",
+      "Pin": 4
+    },
+    {
+      "isAnalog": true,
+      "isI2C": false,
+      "isPWM": true,
+      "Name": "A4",
+      "Pin": 5
+    },
+    {
+      "isAnalog": true,
+      "isI2C": false,
+      "isPWM": true,
+      "Name": "A5",
+      "Pin": 6
+    },
+    {
+      "isAnalog": true,
+      "isI2C": false,
+      "isPWM": true,
+      "Name": "A6",
+      "Pin": 7
+    },
+    {
+      "isAnalog": true,
+      "isI2C": true,
+      "isPWM": true,
+      "Name": "A7",
+      "Pin": 8
+    },
+    {
+      "isAnalog": true,
+      "isI2C": true,
+      "isPWM": true,
+      "Name": "A8",
+      "Pin": 9
+    },
+    {
+      "isAnalog": true,
+      "isI2C": false,
+      "isPWM": true,
+      "Name": "A9",
+      "Pin": 10
+    },
+    {
+      "isAnalog": true,
+      "isI2C": false,
+      "isPWM": true,
+      "Name": "A10",
+      "Pin": 11
+    },
+    {
+      "isAnalog": true,
+      "isI2C": false,
+      "isPWM": true,
+      "Name": "A11",
+      "Pin": 12
+    },
+    {
+      "isAnalog": true,
+      "isI2C": false,
+      "isPWM": true,
+      "Name": "A12",
+      "Pin": 13
+    },
+    {
+      "isAnalog": true,
+      "isI2C": false,
+      "isPWM": true,
+      "Name": "A13",
+      "Pin": 14
+    },
+    {
+      "isAnalog": true,
+      "isI2C": false,
+      "isPWM": true,
+      "Name": "A14",
+      "Pin": 15
+    },
+    {
+      "isAnalog": true,
+      "isI2C": false,
+      "isPWM": true,
+      "Name": "A15",
+      "Pin": 16
+    },
+    {
+      "isAnalog": true,
+      "isI2C": false,
+      "isPWM": true,
+      "Name": "A16",
+      "Pin": 17
+    },
+    {
+      "isAnalog": true,
+      "isI2C": false,
+      "isPWM": true,
+      "Name": "A17",
+      "Pin": 18
+    },
+    {
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": true,
+      "Pin": 21
+    },
+    {
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": true,
+      "Pin": 22
+    },
+    {
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": true,
+      "Pin": 23
+    },
+    {
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": true,
+      "Pin": 24
+    },
+    {
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": true,
+      "Pin": 25
+    },
+    {
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": true,
+      "Pin": 35
+    },
+    {
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": true,
+      "Pin": 36
+    },
+    {
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": true,
+      "Pin": 37
+    },
+    {
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": true,
+      "Pin": 38
+    },
+    {
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": true,
+      "Pin": 39
+    },
+    {
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": true,
+      "Pin": 40
+    },
+    {
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": true,
+      "Pin": 41
+    },
+    {
+      "isAnalog": false,
+      "isI2C": false,
+      "isPWM": true,
+      "Pin": 42
+    }
+  ]
+}

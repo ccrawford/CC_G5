@@ -1,0 +1,58 @@
+{
+  "$schema": "./mfboard.schema.json",
+  "AvrDudeSettings": {
+    "Device": "ESP32-S3 DevKitC1",
+    "BaudRate": "115200",
+    "Programmer": "arduino",
+    "Timeout": 15000
+  },
+  "Connection": {
+    "ConnectionDelay": 1250,
+    "DelayAfterFirmwareUpdate": 1250,
+    "DtrEnable": true,
+    "EEPROMSize": 1496,
+    "ExtraConnectionRetry": false,
+    "ForceResetOnFirmwareUpdate": true,
+    "MessageSize": 90
+  },
+  "HardwareIds": [
+    "^VID_303A&PID_1001",
+    "^VID_303A\\+PID_1001\\+.+"
+  ],
+  "Info": {
+    "CanInstallFirmware": true,
+    "CanResetBoard": true,
+    "DelayAfterFirmwareUpdate": 0,
+    "FirmwareBaseName": "ccrawford_cc_g5_esp32s3",
+    "FirmwareExtension": "bin",
+    "FriendlyName": "CC_G5 Waveshare ESP32-S3",
+    "LatestFirmwareVersion": "2.5.1",
+    "MobiFlightType": "CCrawford CC_G5 ESP32-S3 DevKitC1",
+    "ResetFirmwareFile": "reset.raspberry_pico_flash_nuke.uf2",
+    "CustomDeviceTypes": [
+      "CC_G5"
+    ],
+    "Community": {
+      "Project": "CC G5",
+      "Website": "https://YourWebsite.com",
+      "Docs": "https://YourWebsite.com",
+      "Support": "https://YourWebsite.com"
+    }
+  },
+  "ModuleLimits": {
+    "MaxAnalogInputs": 0,
+    "MaxInputShifters": 0,
+    "MaxButtons": 0,
+    "MaxEncoders": 0,
+    "MaxLcdI2C": 0,
+    "MaxLedSegments": 0,
+    "MaxOutputs": 0,
+    "MaxServos": 0,
+    "MaxShifters": 0,
+    "MaxSteppers": 0,
+    "MaxInputMultiplexer": 0,
+    "MaxCustomDevices": 1
+  },
+  "Pins": [
+  ]
+}

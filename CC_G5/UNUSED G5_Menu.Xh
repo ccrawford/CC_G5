@@ -1,0 +1,142 @@
+#pragma once
+#include <Arduino.h>
+#include <map>
+#include <functional>
+#include <memory>
+#include <vector>
+
+#define GS_BACKGROUND_COLOR 0x0
+
+// Menu items for HSI:
+// Back (with icon)
+// Heading (with curHeading)
+// Altitude (with targetAlt)
+// Bearing Pointer (with on/off bar)
+// Course (if receiving a VOR) Can adjust with knob-popup
+// OBS (if activated on nav) Can adjust with knob-popup
+// PFD (with icon)
+// Setup (with icon)
+//  -- Bearing poinnter 1 (GPS, VLOC1/2)
+
+// Forward declare LGFX to skip includes.
+class LGFX;
+
+enum class MenuState {
+    BROWSING,   // Scrolling through menu items
+    ADJUSTING   // In popup adjustment mode
+};
+
+class MenuItemBase {
+public:
+    virtual ~MenuItemBase() = default;
+    virtual String getTitle() =0;
+    virtual String getDisplayValue() = 0;
+    virtual int getDisplayValueColor() = 0;
+    virtual void onEncoderTurn(int delta) = 0;
+    virtual void onEncoderPress() = 0;
+
+    // Icon support - return nullptr if no icon
+    virtual const uint16_t* getIcon() { return nullptr; }
+    virtual int getIconWidth() { return 0; }
+    virtual int getIconHeight() { return 0; }
+};
+
+
+class G5_MenuItem
+{
+    private:
+    std::function<void()> executeCallback;
+    std::function<void(int)> adjustCallback;
+    std::function<String()> getValueCallback;
+        
+    public:
+    G5_MenuItem() = default;
+    
+    void setExecuteCallback(std::function<void()> callback) { executeCallback = callback; }
+    void setAdjustCallback(std::function<void(int)> callback) { adjustCallback = callback; }
+    void setGetValueCallback(std::function<String()> callback) { getValueCallback = callback; }
+};
+
+class G5_Menu
+{
+    private:
+    std::vector<std::unique_ptr<MenuItemBase>> newMenuItems;  // NEW interface-based items
+    int currentHighlight = 0;
+    
+    // Adjustment popup state
+    MenuItemBase* adjustingItem = nullptr;  // Currently adjusting item
+    
+    public:
+    void initializeMenu();
+    bool setActive(bool isActive);
+    bool menuActive = false;
+    MenuState currentState = MenuState::BROWSING;  // Make public for CC_G5 access
+    void drawMenu();
+    void drawAdjustmentPopup();
+    
+    // Sprite management for memory optimization
+    void openMenu();
+    void closeMenu();
+    
+    // Input handling methods
+    void handleEncoder(int delta);
+    void handleEncoderButton(bool pressed);
+    void scrollHighlight(int delta);
+    void enterAdjustmentMode(MenuItemBase* item);
+
+};
+
+class BackMenuItem : public MenuItemBase {
+    G5_Menu* menu;
+public:
+    BackMenuItem(G5_Menu* m) : menu(m) {}
+    String getTitle() override { return "Back"; }
+    String getDisplayValue() override { return ""; }  // No value displayed
+    int getDisplayValueColor() override { return 0xFFFFFF; }  // TFT_WHITE
+    void onEncoderPress() override { menu->setActive(false); }
+    void onEncoderTurn(int delta) override { /* no-op */ }
+
+    // Icon support
+    const uint16_t* getIcon() override;
+    int getIconWidth() override;
+    int getIconHeight() override;
+};
+
+// Forward declare for menu items that need CC_G5 data
+class CC_G5_HSI;
+extern void sendEncoder(String name, int count, bool increase);
+extern bool isObsModeOn();
+extern bool isGPSModeOn();
+
+// Forward declare menu for adjustment state
+class G5_Menu;
+
+class HeadingMenuItem : public MenuItemBase {
+    CC_G5_HSI* device;
+    G5_Menu* menu;
+public:
+    HeadingMenuItem(CC_G5_HSI* d, G5_Menu* m) : device(d), menu(m) {}
+    String getTitle() override { return "Heading"; }
+    String getDisplayValue() override;  // Will show current heading bug value
+    int getDisplayValueColor() override { return 0x07FF; }  // TFT_CYAN
+    void onEncoderPress() override;  // Will enter adjustment mode
+    void onEncoderTurn(int delta) override { 
+        sendEncoder("encHeading", abs(delta), delta>0 ? 0 : 2);
+    }
+};
+
+class CourseMenuItem : public MenuItemBase {
+    CC_G5_HSI* device;
+    G5_Menu* menu;
+public:
+    CourseMenuItem(CC_G5_HSI* d, G5_Menu* m) : device(d), menu(m) {}
+    String getTitle() override { return isObsModeOn() ? "OBS" : "Course"; }
+    String getDisplayValue() override;  // Will show current CDI direction
+    int getDisplayValueColor() override { return isObsModeOn() || isGPSModeOn() ? 0xF81F : 0x07E0; }  // TFT_MAGENTA : TFT_GREEN
+    void onEncoderPress() override;  // Will enter adjustment mode
+    void onEncoderTurn(int delta) override {
+   //     Serial.printf("CourceMenuItem::onEncoderTurn called with delta=%d\n", delta);
+        sendEncoder("courseEnc", abs(delta), delta>0 ? 0 : 2);
+    }
+};
+
