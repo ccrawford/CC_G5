@@ -99,12 +99,15 @@
     <br>
     <em>HSI menu</em>
   </p>
-<p align="center">
+ <p align="center">
     <a href="https://www.youtube.com/watch?v=kaV-mxJTDQc">
-      <img src="https://img.youtube.com/vi/kaV-mxJTDQc/0.jpg" width="400" alt="See it in action">
+      <img src="https://img.shields.io/badge/▶-Watch%20Video-red?style=for-the-badge&logo=youtube" alt="Watch
+  Video">
     </a>
-    <br>
-    <em>Click to watch video</em>
+    <br><br>
+    <a href="https://www.youtube.com/watch?v=kaV-mxJTDQc">
+      <img src="https://img.youtube.com/vi/kaV-mxJTDQc/maxresdefault.jpg" width="400" alt="CC_G5 demonstration">
+    </a>
   </p>
 
   ## Hardware Requirements
@@ -213,5 +216,6 @@
 
   - GitHub Repository: https://github.com/ccrawford/CC_G5
   - MobiFlight: https://www.mobiflight.com
+
 
 
