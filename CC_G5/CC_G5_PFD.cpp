@@ -2,8 +2,8 @@
 #include "esp_log.h"
 
 #include <Wire.h>
-#include <esp_cache.h>
-#include <esp32s3/rom/cache.h>
+// #include <esp_cache.h>
+// #include <esp32s3/rom/cache.h>
 
 #include "allocateMem.h"
 #include "commandmessenger.h"
@@ -465,7 +465,7 @@ void CC_G5_PFD::set(int16_t messageID, char *setPoint)
         rawAltitude = data;
         break;
     case 4:
-        value     = atof(setPoint);
+        value        = atof(setPoint);
         rawCdiOffset = value;
         break;
     case 5:
@@ -581,14 +581,14 @@ void CC_G5_PFD::drawAttitude()
 
     // --- 1. Draw Sky and Ground (Reverted to the reliable drawFastVLine method) ---
 
-    // Calculate vertical offset of the horizon due to pitch.
-    // A negative pitchAngle (nose up) moves the horizon down (positive pixel offset).
-    float horizonPixelOffset = -pitchAngle * PITCH_SCALE;
+    // Determine if aircraft is inverted based on bank angle
+    // Inverted when bank is beyond ±90 degrees
+    bool inverted = (bankAngle > 90.0 || bankAngle < -90.0);
 
-    // Determine if aircraft is inverted
-    float normalizedBank = fmod(bankAngle, 360.0);
-    if (normalizedBank < 0) normalizedBank += 360.0;
-    bool inverted = (normalizedBank > 90.0 && normalizedBank < 270.0);
+    // Calculate vertical offset of the horizon due to pitch.
+    // When inverted, flip the pitch offset to match what pilot sees from inverted perspective
+    // A negative pitchAngle (nose up) moves the horizon down (positive pixel offset).
+    float horizonPixelOffset = inverted ? (pitchAngle * PITCH_SCALE) : (-pitchAngle * PITCH_SCALE);
 
     // Clear the sprite
     attitude.fillSprite(SKY_COLOR);
@@ -667,12 +667,66 @@ void CC_G5_PFD::drawAttitude()
             altScaleNumber.fillSprite(TFT_BLACK);
             altScaleNumber.drawString(pitchText, 9, 9);
             attitude.setPivot(textX1, textY1);
-            altScaleNumber.pushRotated(bankAngle, TFT_BLACK);
+            altScaleNumber.pushRotated(inverted ? bankAngle + 180.0 : bankAngle, TFT_BLACK);
             attitude.setPivot(textX2, textY2);
-            altScaleNumber.pushRotated(bankAngle, TFT_BLACK);
+            altScaleNumber.pushRotated(inverted ? bankAngle + 180.0 : bankAngle, TFT_BLACK);
 
             //      attitude.drawString(pitchText, textX1, textY1);
             //      attitude.drawString(pitchText, textX2, textY2);
+        }
+    };
+
+    auto drawChevron = [&](float pitchDegrees, int width, uint16_t color, int thickness) {
+        // Point of the V is at pitchDegrees
+        // Tails extend 10 degrees away from horizon (toward more extreme pitch)
+        float tailPitch = pitchDegrees + (pitchDegrees > 0 ? 10.0 : -10.0);
+
+        float halfWidth = width / 2.0;
+
+        // Calculate the tip position (center point of V, at the pitch line)
+        float tipVerticalOffset = (pitchDegrees - pitchAngle) * PITCH_SCALE;
+
+        // Calculate the tail positions (ends of V, 10 degrees further from horizon)
+        float tailVerticalOffset = (tailPitch - pitchAngle) * PITCH_SCALE;
+
+        // Define points before rotation
+        // Left tail
+        float leftTailX_unrot = -halfWidth;
+        float leftTailY_unrot = tailVerticalOffset;
+
+        // Tip (center)
+        float tipX_unrot = 0;
+        float tipY_unrot = tipVerticalOffset;
+
+        // Right tail
+        float rightTailX_unrot = halfWidth;
+        float rightTailY_unrot = tailVerticalOffset;
+
+        // Apply bank rotation to all three points
+        int16_t leftTailX = CENTER_X + leftTailX_unrot * cosBank - leftTailY_unrot * sinBank;
+        int16_t leftTailY = CENTER_Y + leftTailX_unrot * sinBank + leftTailY_unrot * cosBank;
+
+        int16_t tipX = CENTER_X + tipX_unrot * cosBank - tipY_unrot * sinBank;
+        int16_t tipY = CENTER_Y + tipX_unrot * sinBank + tipY_unrot * cosBank;
+
+        int16_t rightTailX = CENTER_X + rightTailX_unrot * cosBank - rightTailY_unrot * sinBank;
+        int16_t rightTailY = CENTER_Y + rightTailX_unrot * sinBank + rightTailY_unrot * cosBank;
+
+        // Draw the two lines that form the V with thickness
+        for (int t = 0; t < thickness; t++) {
+            // Draw left line (left tail to tip) - offset perpendicular to the line
+            float   angle1 = atan2(tipY - leftTailY, tipX - leftTailX);
+            int16_t dx1    = -sin(angle1) * t;
+            int16_t dy1    = cos(angle1) * t;
+            // attitude.drawLine(leftTailX + dx1, leftTailY + dy1, tipX + dx1, tipY + dy1, color);
+            attitude.drawWideLine(leftTailX + dx1, leftTailY + dy1, tipX + dx1, tipY + dy1, 6, color);
+
+            // Draw right line (tip to right tail) - offset perpendicular to the line
+            float   angle2 = atan2(rightTailY - tipY, rightTailX - tipX);
+            int16_t dx2    = -sin(angle2) * t;
+            int16_t dy2    = cos(angle2) * t;
+            // attitude.drawLine(tipX + dx2, tipY + dy2, rightTailX + dx2, rightTailY + dy2, color);
+            attitude.drawWideLine(tipX + dx2, tipY + dy2, rightTailX + dx2, rightTailY + dy2, 6, color);
         }
     };
 
@@ -682,7 +736,7 @@ void CC_G5_PFD::drawAttitude()
         int   width;
         bool  num;
     } pitch_lines[] = {
-        {30.0, 80, true}, {25.0, 60, false}, {20.0, 80, true}, {17.5, 40, false}, {15.0, 60, false}, {12.5, 40, false}, {10.0, 80, true}, {7.5, 40, false}, {5.0, 60, false}, {2.5, 40, false}, {-2.5, 40, false}, {-5.0, 60, false}, {-7.5, 40, false}, {-10.0, 80, true}, {-12.5, 40, false}, {-15.0, 60, false}, {-17.5, 40, false}, {-20.0, 80, true}, {-25.0, 60, false}, {-30.0, 80, true}};
+        {85.0, 60, false}, {80.0, 80, true}, {75.0, 60, false}, {70.0, 80, true}, {65.0, 60, false}, {60.0, 80, true}, {55.0, 60, false}, {50.0, 80, true}, {45.0, 60, false}, {40.0, 80, true}, {35.0, 60, false}, {30.0, 80, true}, {25.0, 60, false}, {20.0, 80, true}, {17.5, 40, false}, {15.0, 60, false}, {12.5, 40, false}, {10.0, 80, true}, {7.5, 40, false}, {5.0, 60, false}, {2.5, 40, false}, {-2.5, 40, false}, {-5.0, 60, false}, {-7.5, 40, false}, {-10.0, 80, true}, {-12.5, 40, false}, {-15.0, 60, false}, {-17.5, 40, false}, {-20.0, 80, true}, {-25.0, 60, false}, {-30.0, 80, true}, {-35.0, 60, false}, {-40.0, 80, true}, {-45.0, 60, false}, {-50.0, 80, true}, {-55.0, 60, false}, {-60.0, 80, true}, {-65.0, 60, false}, {-70.0, 80, true}, {-75.0, 60, false}, {-80.0, 80, true}, {-85.0, 60, false}};
 
     uint16_t color = TFT_RED;
     for (const auto &line : pitch_lines) {
@@ -699,6 +753,16 @@ void CC_G5_PFD::drawAttitude()
                 color = TFT_WHITE;
             //        Serial.printf("Line: d: %f, vPos: %d, col: %d\n", line.deg, verticalPos, color);
             drawPitchLine(line.deg, line.width, line.num, color);
+        }
+    }
+
+    // Draw extreme attitude chevrons at 60, 70, and 80 degree pitch lines
+    const float chevron_pitches[] = {40.0, 50.0, 60.0, 70.0, 80.0, -40.0, -50.0, -60.0, -70.0, -80.0};
+    for (const auto &chevronPitch : chevron_pitches) {
+        float verticalPos = abs(chevronPitch - pitchAngle) * PITCH_SCALE;
+        // Only draw chevrons that are close to being on screen
+        if (verticalPos < attitude.height() + 100) {
+            drawChevron(chevronPitch, 80, TFT_RED, 3);
         }
     }
 
@@ -1527,33 +1591,32 @@ void CC_G5_PFD::drawAp()
     apBox.setTextDatum(BL_DATUM);
     apBox.drawString(buf, 246, yBaseline);
 
-
     // If alt mode, print the captured altitude (nearst 10')
     strcpy(buf, "");
     char unitsBuf[5] = "";
 
-    if(apVMode == 1) {
-        sprintf(buf, "%d", apAltCaptured); 
+    if (apVMode == 1) {
+        sprintf(buf, "%d", apAltCaptured);
         strcpy(unitsBuf, "ft");
     }
-    // If vs mode, print the VS 
+    // If vs mode, print the VS
     if (apVMode == 2) {
         sprintf(buf, "%d", apTargetVS);
         strcpy(unitsBuf, "fpm");
     }
-    
+
     // If  IAS mode, print target speed
     if (apVMode == 4) {
         sprintf(buf, "%d", apTargetSpeed);
         strcpy(unitsBuf, "kts");
     }
-    
+
     apBox.setTextDatum(BR_DATUM);
     apBox.drawString(buf, 355, yBaseline);
     apBox.setTextDatum(BL_DATUM);
     apBox.setTextSize(0.4);
-    apBox.drawString(unitsBuf, 357, yBaseline-4);
-    
+    apBox.drawString(unitsBuf, 357, yBaseline - 4);
+
     apBox.setTextSize(0.8);
 
     // Draw Armed modes in white.
@@ -1634,8 +1697,6 @@ void CC_G5_PFD::drawAp()
     }
 
     apBox.pushSprite(5, 0);
-
-
 }
 
 void CC_G5_PFD::drawMessageIndicator()
@@ -1672,7 +1733,7 @@ void CC_G5_PFD::updateInputValues()
 
     ballPos       = smoothInput(rawBallPos, ballPos, 0.04f, 0.01f);
     cdiOffset     = smoothInput(rawCdiOffset, cdiOffset, 0.3f, 1.0f);
-    bankAngle     = smoothInput(rawBankAngle, bankAngle, 0.3f, 0.05f);
+    bankAngle     = smoothAngle(rawBankAngle, bankAngle, 0.3f, 0.05f);
     pitchAngle    = smoothInput(rawPitchAngle, pitchAngle, 0.3f, 0.05f);
     verticalSpeed = smoothInput(rawVerticalSpeed, verticalSpeed, 0.03, 1);
 }
@@ -1723,7 +1784,7 @@ void CC_G5_PFD::update()
     sprintf(buf, "%4.1f %lu/%lu", 1000.0 / (pushEnd - lastFrameUpdate), drawTime, pushEnd - pushStart);
     // lcd.fillRect(0, 0, SPEED_COL_WIDTH, 40, TFT_BLACK);
 
-//    lcd.drawString(buf, 0, 55);
+    //    lcd.drawString(buf, 0, 55);
 
     //    lcd.drawNumber(data_available, 400, 10);
     // sprintf(buf, "b:%3.0f p:%3.0f ias:%5.1f alt:%d", bankAngle, pitchAngle, airspeed, altitude);

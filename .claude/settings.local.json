@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep:*)",
+      "WebFetch(domain:files.waveshare.com)",
+      "Bash(find:*)"
+    ],
+    "deny": []
+  }
+}

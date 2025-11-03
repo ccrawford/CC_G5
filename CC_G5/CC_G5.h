@@ -73,7 +73,7 @@ class CC_G5_HSI
 
         public:
             CourseMenuItem(HSIMenu *m) : menu(m) {}
-            String getTitle() override { return "Course"; }
+            String getTitle() override { return "LOC Crse"; }
             String getDisplayValue() override
             {
                 char buffer[8];

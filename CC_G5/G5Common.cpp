@@ -108,6 +108,27 @@ float smoothDirection(float input, float current, float alpha, float threshold =
     return result;
 }
 
+float smoothAngle(float input, float current, float alpha, float threshold = 0.5f)
+{
+    // Handle angle wrapping for -180 to +180 range (for bank angle, etc.)
+    float diff = input - current;
+    if (diff > 180.0f) diff -= 360.0f;
+    if (diff < -180.0f) diff += 360.0f;
+
+    // Snap to target when close enough
+    if (abs(diff) < threshold) {
+        return input;
+    }
+
+    float result = current + alpha * diff;
+
+    // Normalize to -180 to +180
+    while (result > 180.0f) result -= 360.0f;
+    while (result < -180.0f) result += 360.0f;
+
+    return result;
+}
+
 CC_G5_Settings g5Settings;
 
 bool loadSettings()

@@ -59,9 +59,9 @@ class CC_G5_PFD
             void   onEncoderTurn(int delta) override {}
 
             // Icon support
-            const uint16_t* getIcon() override { return BACKARROW_IMG_DATA; }
-            int getIconWidth() override { return BACKARROW_IMG_WIDTH; }
-            int getIconHeight() override { return BACKARROW_IMG_HEIGHT; }
+            const uint16_t *getIcon() override { return BACKARROW_IMG_DATA; }
+            int             getIconWidth() override { return BACKARROW_IMG_WIDTH; }
+            int             getIconHeight() override { return BACKARROW_IMG_HEIGHT; }
         };
 
         class HeadingMenuItem : public MenuItemBase
@@ -98,9 +98,10 @@ class CC_G5_PFD
                 sprintf(buffer, "%03d°", (int)menu->parent->groundTrack);
                 return String(buffer);
             }
-            int  getDisplayValueColor() override { return 0xF81F; } // Magenta
+            int getDisplayValueColor() override { return 0xF81F; } // Magenta
             // Only show when we're in VOR or Localizer mode.
-            bool isVisible() const override {
+            bool isVisible() const override
+            {
                 return menu->parent->navSource != NAVSOURCE_GPS;
             }
             void onEncoderPress() override { menu->enterAdjustmentMode(this); }
@@ -125,7 +126,6 @@ class CC_G5_PFD
                 else
                     sprintf(buffer, "%s", "----");
                 return String(buffer);
-
             }
             int  getDisplayValueColor() override { return 0x07FF; } // Cyan
             void onEncoderPress() override { menu->enterAdjustmentMode(this); }
@@ -153,9 +153,9 @@ class CC_G5_PFD
             void onEncoderTurn(int delta) override {}
 
             // Icon support
-            const uint16_t* getIcon() override { return SETUPICON_IMG_DATA; }
-            int getIconWidth() override { return SETUPICON_IMG_WIDTH; }
-            int getIconHeight() override { return SETUPICON_IMG_HEIGHT; }
+            const uint16_t *getIcon() override { return SETUPICON_IMG_DATA; }
+            int             getIconWidth() override { return SETUPICON_IMG_WIDTH; }
+            int             getIconHeight() override { return SETUPICON_IMG_HEIGHT; }
         };
 
     private:
@@ -376,11 +376,11 @@ public:
     float headingAngle    = 0.0f;
     float rawHeadingAngle = 90.0f;
 
-    float bankAngle    = -8.0f;
+    float bankAngle    = -178.0f;
     float rawBankAngle = 10.0f;
 
     float pitchAngle    = 4.0f;
-    float rawPitchAngle = -4.0f;
+    float rawPitchAngle = 10.0f;
 
     float airspeed    = 5;
     float rawAirspeed = 60;
@@ -417,12 +417,11 @@ public:
     int gsiNeedleValid = 1;
     int gsiNeedle      = 10; // Vertical error. (A:NAV GSI:1,Number) +/-119
 
-    int   cdiNeedleValid = 1;
-    int   cdiToFrom      = 0;
-    
-    float cdiOffset      = 10.0; // The deviation scale offset.
-    float rawCdiOffset      = 10.0; // The deviation scale offset.
-    
+    int cdiNeedleValid = 1;
+    int cdiToFrom      = 0;
+
+    float cdiOffset    = 10.0; // The deviation scale offset.
+    float rawCdiOffset = 10.0; // The deviation scale offset.
 
     int   flightDirectorActive = 1;
     float flightDirectorPitch  = 5.0;
@@ -435,13 +434,13 @@ public:
     int cdiScaleLabel = 1;
 
     // Autopilot
-    int apActive     = 0;
-    int apVMode      = 0;
-    int apLMode      = 0;
-    int apVArmedMode = 0;
-    int apLArmedMode = 0;
-    int apYawDamper  = 0;
+    int apActive      = 0;
+    int apVMode       = 0;
+    int apLMode       = 0;
+    int apVArmedMode  = 0;
+    int apLArmedMode  = 0;
+    int apYawDamper   = 0;
     int apTargetSpeed = 0;
     int apAltCaptured = 0; // THIS IS NOT THE TARGET ALT. it's the displayed captured altitude (nearest 10')
-    int apTargetVS = 0;
+    int apTargetVS    = 0;
 };

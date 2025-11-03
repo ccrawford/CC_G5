@@ -173,6 +173,7 @@ extern G5_Hardware g5Hardware;
 void sendEncoder(String name, int count, bool increase);
 
 float smoothDirection(float inputDir, float currentDir, float alpha, float threashold);
+float smoothAngle(float input, float current, float alpha, float threshold);
 int   smoothInput(int input, int current, float alpha, int threashold);
 float smoothInput(float input, float current, float alpha, float snapThreashold);
 
