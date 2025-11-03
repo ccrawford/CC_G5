@@ -1,97 +1,221 @@
-> [!NOTE]  
-> This article is for developers who would like to create their own community device implementation. If you are interested in simply using community devices, check out [this page](https://github.com/MobiFlight/MobiFlight-Connector/wiki/Using-a-pre-build-custom-device)
+# CC_G5 - Glass Cockpit Display for Flight Simulation
 
-## Prerequisites
-* MobiFlight firmware development is done with [VSCode](https://code.visualstudio.com/) and the [PlatformIO](https://platformio.org) extension. 
-Make sure to install both.
-* **Create** a new reposority by using the [Community Template repository](https://github.com/MobiFlight/CommunityTemplate)*
+  A MobiFlight custom firmware device for ESP32 that implements a Garmin G5-style glass cockpit Primary Flight Display
+  (PFD) and Horizontal Situation Indicator (HSI) for MSFS 2020 or 2024. This device provides a high-fidelity,
+  physical glass cockpit display using an ESP32-S3 microcontroller with a 4-inch LCD display. Based on real
+  world G5 manual, this is a completely stand alone device that only requires MobiFlight to interface with
+  MSFS. The display and logic is completely contained on the ESP32.
 
-Follow the next steps carefully!
+  This code supports both HSI and PFD in a single code base. Use MF to select display configuration. Ability
+  to switch between displays at run-time (like the real device) is not implemented.
 
-## Preparing the firmware
-1. Rename the folder `/Template`, the name should reflect your device
-2. Do **not** rename `MFCustomDevice.cpp/.h` as these filenames are required from the existing code.
-4. Rename `MyCustomClass.cpp` and `MyCustomClass.h` to a name which fits to your community device.
-5. Rename `MyCustomDevice_platformio.ini` to a name which fits to your community device (see step 1) but keep `_platformio.ini`, e.g. `YourChangedName_platformio.ini`
-6. Rename the include path's from `MyCustomClass.cpp` and `MFCustomDevice.h` from `#include MyCustomClass.h` to `#include YourChangedName.h`
-7. Adapt the `YourChangedName_platformio.ini`:
-   1. Decide which board should be supported. The template is set up for the Mega and Pico. Is one of them is not needed, delete this part which is called in the following _environment_.
-   2. Rename `[env_template]` to your community device and change `-I./Template` to the path where your sources are located (see 1.).
-   3. Define which core firmware version should be used, e.g. `custom_core_firmware_version = 2.5.1` for the latest release as for now.
-   4. Rename `Template` from `custom_device_folder` to the folder of your sources (see 1.) It's required again for copying the firmware files and creating the ZIP file (see below).
-   5. Rename `Your_Project` from `custom_community_project`, this name will be the name of the generated ZIP file.
-   6. rename each required environment from `[env:mobiflight_template_xyz]` to your community device. It should be like `[env:YourCommunityDevice_board]`
-   7. Rename `-I./Template` under `build_flags` to your choosed folder name.
-   8. Rename `+<../Template>` under `build_src_filter` to your choosed folder name.
-   9. Rename `'-DMOBIFLIGHT_TYPE="Mobiflight Template Mega"'` to your needs. It should be like `'-DMOBIFLIGHT_TYPE="YourDevice_board Mega"'`. This is important and this must match with "MobiFlightType" within the .json files (see below).
-   10. Rename `'-DMOBIFLIGHT_NAME="Mobiflight Template Mega"'` to your needs. It should be like `'-DMOBIFLIGHT_TYPE="YourDevice_board Mega"'`. This name will show up as name for this board and can be changed within the connector.
-   11. If the Raspberry Pico should  be supported, follow the next steps. Otherwise delete the section `[env:mobiflight_template_raspberrypico]`
-   12. Rename `'-DMOBIFLIGHT_TYPE="Mobiflight Template RaspiPico"'` to your needs. It should be like `'-DMOBIFLIGHT_TYPE="YourDevice_board RaspiPico"'`. This is important and this must match with "MobiFlightType" within the .json files (see below)
-   13. Rename `'-DMOBIFLIGHT_NAME="Mobiflight Template RaspiPico"'` to your needs. It should be like `'-DMOBIFLIGHT_TYPE="YourDevice_board Mega"'`. This name will show up as name for this board and can be changed within the connector.
-   14. Rename all `env_template` in each environment to the name you have choosen under topic 7.II
-8. Nothing has to be changed within the `platformio.ini`:
+  Both displays get around 16fps. I initially thought this was unacceptably slow, but in reality it's fine.
+  Smoothing of input values and sub-pixel rendering allows smooth, realistic movement of dials and tapes. 
 
-If you are done, it should look like this:
+  This project is pushing the bounds of the memory on the ESP32-S3. While the device has ample PSRAM, using it
+  is much slower than main memory and the fps drops quickly. Currently we are out of room for new sprites. 
 
-![image](https://github.com/MobiFlight/MobiFlight-Connector/assets/3263285/58bf29c7-11df-47e9-a045-99ca731d917c)
+  <img src="CC_G5/Photos/Turning to intercept Localizer.jpg" width="400" alt="CC_G5 intercepting localizer">
+  <br>
+  <strong>PFD (top) HSI (bottom) as the C172 intercepts the Localizer on an ILS approach. <BR> More photos and video below!</strong>
 
-Now it's time to test all these settings. Open a teminal window in PlatformIO and type `pio run`. This will compile all environments defined in `platformio.ini` including your newly defined environments. If everything is setup correct, no failure should be reported.
-The FW files gets generated and will be copied to the `firmware` folder within `/Community`. Addiotionaly a folder `/zip` and a ZIP file gets generated which contains the complete `Community` folder
-If you want only to compile your new environment, type `pio run -e YourName_YourCustomDevice_board` (see 7.VI).
+  ## Features
 
-## Setting up the connector files
+  ### Primary Flight Display (PFD)
+  - **Attitude Indicator**: Real-time pitch and bank display with artificial horizon
+  - **Flight Director**: FD command bars showing autopilot guidance
+  - **Airspeed Indicator**: Tape-style airspeed display with V-speed markers (Vr, Vx, Vy, Vg, Vno, Vne)
+  - **Altitude Indicator**: Tape-style altitude display with autopilot target bug
+  - **Vertical Speed Indicator**: Real-time VSI 
+  - **Slip/Skid Indicator**: Turn coordination ball with turn rate indicator
+  - **CDI (Course Deviation Indicator)**: Horizontal and vertical deviation bars
+  - **Glide Slope Indicator**: ILS/GPS approach guidance
+  - **Autopilot Status**: Visual indication of active and armed autopilot modes and parameters
+  - **V-Speed Configuration**: Customizable V-speeds via on-screen settings menu
+  - **On Screen Message Indicator** Identifies if connection to MF is lost
+  - **Encoder click knob adjusts baro by default or click to enter menu and adjust other parameters
+  - **TO DO**
+    - Target AP VS bug on VS scale.
+    - Target AP speed for FLC on speed tape
+    - Improve blinking of AP and Altitude on status change
+    - Add battery status and logic
+    - Add startup/shutdown sequences
+    - Add "Out of range" chevrons that point to horizon in unusual attitudes
 
-### community.board.json files
+  ### Horizontal Situation Indicator (HSI)
+  - **Compass Rose**: 360° rotating compass with true heading display
+  - **Heading Bug**: User-adjustable heading target with indicator
+  - **Course Deviation Indicator**: Full CDI with to/from indicator
+  - **Glide Slope Display**: Vertical approach guidance
+  - **Bearing Pointers**: Dual bearing pointers supporting:
+    - GPS waypoint bearing
+    - VOR1/VOR2 radials
+    - ADF bearing
+    - Configurable via internal menu system
+  - **Navigation Source Display**: GPS/NAV1/NAV2 indicators with color coding
+  - **Ground Speed & Track**: Current groundspeed and GPS track
+  - **Distance to Waypoint**: Nautical miles to next GPS waypoint
+  - **Wind Display**: Wind speed and direction arrow
+  - **Approach Indicators**: ILS/LOC/GPS approach type display
+  - **OBS Mode**: Manual course selection support
+  - **TO DO**
+    - Add battery status/logic
+    - Add startup/shutdown sequences
 
-To get your new defined board recognized from the connector, for each supported board a board.json file has to be set up. Within the copied folder is a sub folder named `connector_files`. Rename both board.json files to your needs. It should be like `YourName_YourDevice_board.board.json`. Both files (or just one if only one board should be supported) must be modified:
-* Rename `"FirmwareBaseName": "mobiflight_template_raspberrypico"` to your defined environment, see point 6.
-* Rename `"FriendlyName": "Mobiflight Template Mega"` to your needs. This will show up as name of the board in the Mobiflight Modules. This can be get overwritten within this dialog.
-* Rename `"MobiFlightType": "Mobiflight Template Mega"` to the type you have defined in the `YourChangedName_platformio.ini` under 7.IX. and 7.XII. This **must** match the Type you have defined under 7.IX/7.XII. Otherwise the connector will not find your community board!
-* Rename `"CustomDeviceType": ["MOBIFLIGHT_TEMPLATE","MOBIFLIGHT_TEMPLATE"]` to your community device type(s). If only one type is supported, delete the second entry. These definitions are used to filter the list of community devices which are under `/devices` are available, so only community devices can be added which fit to the community firmware. This/these entry(ies) must match `"Type": "MOBIFLIGHT_TEMPLATE"` within the `.device.json` file.
-(* delete/adapt the list of pins if required. E.g. if you have setup an OLED with hardware SPI connection, the pins are predefined by the processor. So these pins would be deleted in this board.json file and would not be in the list of required pins in your device.json file (see below).) -> TBD
+  ### Menu System
+  - **On-Screen Interactive Menu**: Rotary encoder navigation
+  - **Adjustable Parameters**:
+    - Heading bug
+    - Course/OBS selector
+    - Bearing pointer 1 & 2 sources
+    - V-speed settings (Vs0, Vs1, Vr, Vx, Vy, Vg, Vfe, Vno, Vne)
+  - **Virtual MobiFlight Encoders and Buttons**
+    - Allows dynamic use of the rotary encoder without messy state management in MF
+  
+  ### Display Features
+  - **High-Performance Graphics**: LovyanGFX library, 480x480 display.
+  - **Accurate colors**: Magenta for GPS, Green for VOR/ILS
+  - **Multi-Layer Sprites**: Complex overlays for no-flicker refresh
+  - **Smooth Animations**: Low-pass filtering for heading and deviation displays
 
-### custom.device.json files
-The json files are in different folders under `/Community`. The boad.json files are under `boards` and the device.json files are under `devices`.
-For each community device which will be supported a device.json file has to be setup. For the first one rename `mobiflight.template.device.json` to e.g. `YourName.YourDevice.device.json` and rename the entries to your needs:
-1. `"Type": "MOBIFLIGHT_TEMPLATE"` must match one of the definitions from `"CustomDeviceType": ["MOBIFLIGHT_TEMPLATE","MOBIFLIGHT_TEMPLATE"]` (only two ore more entires if you support two or more community devices) within the board.json file you have set up. This information is part of of the complete definition of the community device which is strored in the EEPROM. Additionally check this in your code within `MFCustomDevice.cpp` to prevent that a wrong community device gets loaded which is not supported from your software. See the example in `MFCustomDevice.cpp` which got copied in the steps before.
-Within `MFCustomDevice.cpp` is an example, how to read this information from the EEPROM.
-2. Define all pins you require for your device. These pins with the hints will show up in the dialog from the UI if you add a community device to your configuration. Within `MFCustomDevice.cpp` the pins will be read from the EEPROM for your further use. There is an example in this file how to do this.
-3. Define all messages you need for your community device. These messages can be choosen within the output ConfigWizard under the display tab to choose which value will be sent to which message type. The description entry will also show up to give additional hints what the user should choose.
-4. Rename "Label": "Mobiflight's template", to your needs. This label will show up if you add a community device within the connector
+## More Photos
+<p align="center">
+    <img src="CC_G5/Photos/Established on Localizer.jpg" width="400" alt="HSI Display">
+    <br>
+    <em>Established on the Localizer</em>
+  </p>
+  <p align="center">
+    <img src="CC_G5/Photos/RNAV approach.jpg" width="400" alt="PFD Display">
+    <br>
+    <em>RNAV approach</em>
+  </p>
+  <p align="center">
+    <img src="CC_G5/Photos/PFD Menu.jpg" width="400" alt="PFD Display">
+    <br>
+    <em>PFD Menu</em>
+  </p>
+    <p align="center">
+    <img src="CC_G5/Photos/HSI Menu.jpg" width="400" alt="PFD Display">
+    <br>
+    <em>HSI menu</em>
+  </p>
+ <p align="center">
+    <a href="https://www.youtube.com/watch?v=kaV-mxJTDQc">
+      <img src="https://img.shields.io/badge/▶-Watch%20Video-red?style=for-the-badge&logo=youtube" alt="Watch
+  Video">
+    </a>
+    <br><br>
+    <a href="https://www.youtube.com/watch?v=kaV-mxJTDQc">
+      <img src="https://img.youtube.com/vi/kaV-mxJTDQc/maxresdefault.jpg" width="400" alt="CC_G5 demonstration">
+    </a>
+  </p>
 
-### All .json files
-Copy the complete `/Community` folder into the `/Community` folder which is in your Mobiflight installation folder.
+  ## Hardware Requirements
+
+  ### Primary Components
+  - **ESP32-S3 DevKitC-1** with PSRAM (4MB or 8MB recommended)
+  - **4-inch LCD Display** (480x480 or compatible resolution)
+    - Guition ESP32-S3 4827S043C (recommended--built in ESP32-S3 with clean wiring)
+    - Search AliExpress for "guition 480x480". Should be around $25 US.
+    - Alternative: Standard 4-inch SPI LCD with proper pin configuration
+  - **RP2040 Microcontroller** (Raspberry Pi Pico or similar) - for rotary encoder interface
+    - This can be skipped if you are using the Guition screen and don't need the power button
+    - LED and power button are operational, but startup/shutown logic and battery are not implemented  
+  - **Rotary Encoder** with push button. Whatever EC11 variant you have will work.
+  - **Ring-lit push button** I'm using a 9mm ring-lit white led momentary push button. 
+
+  ### Connections
+
+  #### ESP32-S3 to LCD
+  The LCD connection depends on your display module. For the Guition screen, SPI and control pins are
+  pre-configured in `4inchLCDConfig_Guition.h` and `4inchLCDConfig.h`
+
+  #### ESP32-S3 to RP2040 (I2C)
+  - **Guition Screen Configuration**:
+    - SDA: GPIO1
+    - SCL: GPIO2
+    - INT: GPIO40 (interrupt from RP2040)
+    - GND
+  - **Standard Configuration**:
+    - SDA: GPIO15
+    - SCL: GPIO7
+    - INT: GPIO16 (interrupt from RP2040)
+    - GND
+
+  #### RP2040 Setup
+  - RP2040 code is at CC_G5_Slave. I need to update its repo.
+  - Pins are in that code.
+  - Rotary encoder, and LED+Button connects to RP2040
+  - RP2040 acts as I2C slave at address `0x08`
+  - Sends 3-byte protocol: encoder delta, encoder button, extra button
+  - Receives LED status indication code.
+
+  ### Power Requirements
+  - 5V USB power sufficient for most configurations. USE A POWERED USB HUB.
+  - LCD backlight may require up to 300mA at full brightness
+
+  ## Software Requirements
+
+  ### Development Environment
+  - **VSCode** with PlatformIO extension
+  - **Git** (for cloning repository)
+  - **Python 3.x** (for build scripts)
+
+  ### MobiFlight Connector
+  - **MobiFlight Connector** v10.x or later
+  - Custom community device configuration (see Installation)
 
 
-### Testing
-Now it's a good point to test everything you have set up.
+  
+  ## Building the Firmware
 
-The existing firmware itself will do nothing, but you can check if your new community board will show up under the Mobiflight Modules dialog if flashing the firmware to your new board. Additionally you can check if your community device could be choosed and gets uploaded to your board.
-A new Mega w/o firmware is connected:
+  Display Configuration
 
-![image](https://github.com/MobiFlight/MobiFlight-Connector/assets/3263285/7167ecb9-c254-400c-88be-fc5ef5b103b3)
+  - CC_G5/4inchLCDConfig_Guition.h - Guition screen settings
+  - CC_G5/4inchLCDConfig.h - Standard LCD settings
+  - CC_G5/G5Common.h - Common definitions and settings structure
 
-In the list of firmwares there should be an entry which matches `'-DMOBIFLIGHT_TYPE="YourDevice_board"'` from `YourChangedName_platformio.ini`.
-Choose this entry and your firmware gets uploaded.
-After this step you should be able to add a community device.
+  Build Configuration
 
-![image](https://github.com/MobiFlight/MobiFlight-Connector/assets/3263285/59f292f7-cbb1-4570-b0be-c5a933958e9e)
+  - platformio.ini - Core MobiFlight configuration
+  - CC_G5/CC_G5_platformio.ini - CC_G5 specific environment
+  - get_version.py - Version management script
+  - copy_fw_files.py - Distribution package creation
 
-For each `YourName.YourDevice.device.json` a list item with `"Type": "YourName_YourDevice"` should show up. Choose one of them and check if all pins will show up. If you have more than one community device defined test this with all of them.
+  Helper Scripts (in Scripts directory)
+  - deploy.py to copy the board and device files to your MF Community directory
+  - various .png -> .h helper scripts to create sprite bitmap header files
 
-![image](https://github.com/MobiFlight/MobiFlight-Connector/assets/3263285/55d15e50-39ee-4474-a251-61da51754320)
+
+  Project Structure
+
+  CC_G5/
+  ├── CC_G5/                      # Main device code
+  │   ├── CC_G5.h/cpp            # HSI implementation
+  │   ├── CC_G5_PFD.h/cpp        # PFD implementation
+  │   ├── MFCustomDevice.h/cpp   # MobiFlight integration
+  │   ├── G5Common.h             # Shared definitions and menu system
+  │   ├── CCi2c.h/cpp            # I2C encoder interface
+  │   ├── Community/             # MobiFlight connector files
+  │   │   ├── boards/           # Board definitions
+  │   │   └── devices/          # Device message definitions
+  │   ├── Images/               # Font and bitmap resources
+  │   └── Sprites/              # 16-bit color sprite images
+  ├── platformio.ini            # Build configuration
+  └── _build/                   # Generated firmware and packages
+
+  Adding New Features
+
+  1. Modify device classes in CC_G5/CC_G5.cpp or CC_G5_PFD.cpp
+  2. Add message handlers in set() method
+  3. Update corresponding .device.json with new message definitions
+  4. Test with PlatformIO
+  5. Generate distribution package
+
+  Links
+
+  - GitHub Repository: https://github.com/ccrawford/CC_G5
+  - MobiFlight: https://www.mobiflight.com
 
 
-## Implement your community firmware
-See all hints in the files. It is also a good idea to check how the examples are set up. The basic GNC255 community device supports an 256x128 OLED, so just one community class is supported. The community device for the FCU and EFIS display from KAV simulation supports five different classes, so it's a good example how to set up two ore more supported devices.
-
-## Further information
-
-### Special message
-There are some special messages with their respective IDs defined:
-* Stop message (`-1`) - The device should turn off on receiving this message. The message is sent by the Connector any time the MobiFlight execution stops (Stop-button) or the application is shutdown.
-* PowerSavingMode message (`-2`) - The device should go into a power saving mode (value=1) or wake up from it again (value=0).
-
-### Overview how the json files are related
-![image](https://github.com/MobiFlight/MobiFlight-Connector/assets/3263285/0123829b-27c1-49ad-96d2-30a751da6e25)
 
