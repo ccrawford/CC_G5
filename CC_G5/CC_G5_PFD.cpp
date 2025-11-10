@@ -127,7 +127,7 @@ void CC_G5_PFD::begin()
 {
     loadSettings();
 
-    g5Hardware.setLedState(true);
+    // g5Hardware.setLedState(true);
 
     lcd.setColorDepth(8);
     lcd.init();
@@ -557,9 +557,54 @@ void CC_G5_PFD::set(int16_t messageID, char *setPoint)
     case 34:
         apYawDamper = (int)data;
         break;
+    case 35:
+        Serial.printf("Case 35: Setpoint: %s\n", setPoint);
+        setVSpeeds(setPoint);
+        break;
     default:
         break;
     }
+}
+
+void CC_G5_PFD::setVSpeeds(char *vSpeedString)
+{
+    if (!vSpeedString || strlen(vSpeedString) == 0) return;
+
+    // Array of pointers to the g5Settings members in order
+    uint16_t *vSpeedFields[] = {
+        &g5Settings.Vs0,
+        &g5Settings.Vs1,
+        &g5Settings.Vr,
+        &g5Settings.Vx,
+        &g5Settings.Vy,
+        &g5Settings.Vg,
+        &g5Settings.Va,
+        &g5Settings.Vfe,
+        &g5Settings.Vno,
+        &g5Settings.Vne};
+
+    int   fieldIndex = 0;
+    char *token      = strtok(vSpeedString, "|");
+
+    while (token != NULL && fieldIndex < 10) {
+        long value = 0;
+
+        // Check if token is not empty (handles || case)
+        if (strlen(token) > 0) {
+            value = atol(token); // Use atol for long int
+        }
+        // If token is empty, value stays 0
+
+        // Clamp to uint8_t range (0-255)
+        if (value < 0) value = 0;
+
+        *vSpeedFields[fieldIndex] = value;
+
+        token = strtok(NULL, "|");
+        fieldIndex++;
+    }
+
+    saveSettings(); // Save the updated settings to EEPROM
 }
 
 void CC_G5_PFD::drawAttitude()
@@ -1310,12 +1355,12 @@ void CC_G5_PFD::drawGroundSpeed()
 
 void CC_G5_PFD::drawBall()
 {
-    // Draw the ball and the turn rate. The ballPos goes from -1.0 to 1.0
+    // Draw the ball and the turn rate. The ballPos goes from -1.0 (far right) to 1.0 (far left)
     int turnBarCenter = CENTER_COL_CENTER;
     turnBar.fillSprite(GND_COLOR);
 
-    int ballXOffset = (int)(ballPos * BALL_IMG_WIDTH * 1.3f);
-    ballSprite.pushSprite(turnBarCenter - ballSprite.width() / 2 + ballXOffset, 0, 0xC2);
+    int ballXOffset = (int)(ballPos * BALL_IMG_WIDTH * 1.8f);                             // This 1.8 factor can vary by plane. The comanche is backwards!
+    ballSprite.pushSprite(turnBarCenter - ballSprite.width() / 2 + ballXOffset, 0, 0xC2); // The transparent color is an odd one here. 0xC2 works
 
     // Draw the ball cage
     turnBar.drawRect(turnBarCenter - 20 - 3, 0, 6, 32, TFT_BLACK);
@@ -1728,10 +1773,10 @@ void CC_G5_PFD::updateInputValues()
 
     headingAngle = smoothDirection(rawHeadingAngle, headingAngle, 0.15f, 0.02f);
     altitude     = smoothInput(rawAltitude, altitude, 0.1f, 1);
-    airspeed     = smoothInput(rawAirspeed, airspeed, 0.02f, 0.01f);
+    airspeed     = smoothInput(rawAirspeed, airspeed, 0.1f, 0.01f);
     speedTrend.update(rawAirspeed);
 
-    ballPos       = smoothInput(rawBallPos, ballPos, 0.04f, 0.01f);
+    ballPos       = smoothInput(rawBallPos, ballPos, 0.2f, 0.005f);
     cdiOffset     = smoothInput(rawCdiOffset, cdiOffset, 0.3f, 1.0f);
     bankAngle     = smoothAngle(rawBankAngle, bankAngle, 0.3f, 0.05f);
     pitchAngle    = smoothInput(rawPitchAngle, pitchAngle, 0.3f, 0.05f);

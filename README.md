@@ -40,7 +40,7 @@
     - Improve blinking of AP and Altitude on status change
     - Add battery status and logic
     - Add startup/shutdown sequences
-    - Add "Out of range" chevrons that point to horizon in unusual attitudes
+    - ~~Add "Out of range" chevrons that point to horizon in unusual attitudes~~ Done. Also fixed inverted flight displays
 
   ### Horizontal Situation Indicator (HSI)
   - **Compass Rose**: 360° rotating compass with true heading display

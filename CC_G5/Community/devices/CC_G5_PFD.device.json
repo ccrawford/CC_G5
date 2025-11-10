@@ -188,6 +188,16 @@
       "id": 34,
       "label": "AP Yaw Damper On",
       "description": "$ is if AP Yaw Damper is active"
+    },
+    {
+      "id": 35,
+      "label": "V Speed vector",
+      "description": "$ as vSpeeds separated by |. Vs0|Vs1|Vr|Vx|Vy|Vg|Va|Vfe|Vno|Vne  Assign 0 to skip display of marker"
+    },
+    {
+      "id": 36,
+      "label": "Outside Air Temp",
+      "description": "$ as OAT in desired scale"
     }
   ]
 }

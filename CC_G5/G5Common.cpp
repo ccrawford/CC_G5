@@ -134,7 +134,7 @@ CC_G5_Settings g5Settings;
 bool loadSettings()
 {
     if (MFeeprom.read_block(CC_G5_SETTINGS_OFFSET, g5Settings)) {
-        if (g5Settings.version != 1) {
+        if (g5Settings.version != 2) {
             g5Settings = CC_G5_Settings(); // Reset to defaults
         }
         return true;

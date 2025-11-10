@@ -28,23 +28,23 @@ struct CC_G5_Settings {
     int     version               = 1;
     uint8_t bearingPointer1Source = 0; // 0: Off, 1: GPS, 2: Nav1, 3: Nav2, 4: ADF
     uint8_t bearingPointer2Source = 0; // 0: Off, 1: GPS, 2: Nav1, 3: Nav2, 4: ADF
-    uint8_t Vr                    = 60;
-    uint8_t Vx                    = 75;
-    uint8_t Vy                    = 91;
-    uint8_t Va                    = 112;
-    uint8_t Vfe                   = 110;
-    uint8_t Vs0                   = 54;
-    uint8_t Vs1                   = 61;
-    uint8_t Vg                    = 80;
-    uint8_t Vno                   = 145;
-    uint8_t Vne                   = 182;
-    uint8_t Vflaplo               = 54;
-    uint8_t Vflaphi               = 100;
-    uint8_t Vgrnlo                = 61;
-    uint8_t Vgrnhi                = 145;
-    uint8_t Vyello                = 145;
-    uint8_t Vyelhi                = 182;
-    uint8_t Vredlo                = 182;
+    uint16_t Vr                    = 60;
+    uint16_t Vx                    = 75;
+    uint16_t Vy                    = 91;
+    uint16_t Va                    = 112;
+    uint16_t Vfe                   = 110;
+    uint16_t Vs0                   = 54;
+    uint16_t Vs1                   = 61;
+    uint16_t Vg                    = 80;
+    uint16_t Vno                   = 145;
+    uint16_t Vne                   = 182;
+    uint16_t Vflaplo               = 54;
+    uint16_t Vflaphi               = 100;
+    uint16_t Vgrnlo                = 61;
+    uint16_t Vgrnhi                = 145;
+    uint16_t Vyello                = 145;
+    uint16_t Vyelhi                = 182;
+    uint16_t Vredlo                = 182;
     uint8_t pitchScale            = 15;
     uint8_t speedScale            = 10;
     uint8_t baroUnit              = 0; // 0: inHg, 1: kPa, 3: mmHg
@@ -58,9 +58,9 @@ extern CC_G5_Settings g5Settings;
 // Settings definition struct
 struct SettingDef {
     const char *name;
-    uint8_t    *valuePtr;
-    uint8_t     minVal;
-    uint8_t     maxVal;
+    uint16_t    *valuePtr;
+    uint16_t     minVal;
+    uint16_t     maxVal;
 };
 
 // Settings menu class
@@ -77,14 +77,14 @@ public:
         settings = {
             {"Vs0", &g5Settings.Vs0, 0, 255}, // Bottom of white arc. Top of slow red arc.
             {"Vs1", &g5Settings.Vs1, 0, 255}, // Bottom of green arc
-            {"Vr", &g5Settings.Vr, 0, 255},   // Rotation speed. Tape marker.
-            {"Vx", &g5Settings.Vx, 0, 255},   // Max Climb. Tape marker.
-            {"Vy", &g5Settings.Vy, 0, 255},   // Best rate of climb. Tape marker.
-            {"Vg", &g5Settings.Vg, 0, 255},   // Glide speed. Tape marker.
-            {"Va", &g5Settings.Va, 0, 255},   // Maneuver speed. not shown.
-            {"Vfe", &g5Settings.Vfe, 0, 255}, // Max Flaps extended. top of white arc
-            {"Vno", &g5Settings.Vno, 0, 255}, // Max normal operating speed. Top of green, start of Yellow
-            {"Vne", &g5Settings.Vne, 0, 255}, // Never exceed. Top of yellow, start of barber pole. (We just use red)
+            {"Vr", &g5Settings.Vr, 0, 400},   // Rotation speed. Tape marker.
+            {"Vx", &g5Settings.Vx, 0, 700},   // Max Climb. Tape marker.
+            {"Vy", &g5Settings.Vy, 0, 700},   // Best rate of climb. Tape marker.
+            {"Vg", &g5Settings.Vg, 0, 700},   // Glide speed. Tape marker.
+            {"Va", &g5Settings.Va, 0, 700},   // Maneuver speed. not shown.
+            {"Vfe", &g5Settings.Vfe, 0, 250}, // Max Flaps extended. top of white arc
+            {"Vno", &g5Settings.Vno, 0, 700}, // Max normal operating speed. Top of green, start of Yellow
+            {"Vne", &g5Settings.Vne, 0, 700}, // Never exceed. Top of yellow, start of barber pole. (We just use red)
         };
     }
 

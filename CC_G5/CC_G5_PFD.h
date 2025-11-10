@@ -342,6 +342,8 @@ private:
 
     void updateInputValues();
 
+    void setVSpeeds(char*);
+
     void drawAttitude();
     void drawSpeedTape();
     void drawSpeedPointers();
