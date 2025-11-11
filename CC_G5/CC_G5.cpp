@@ -256,13 +256,13 @@ void CC_G5_HSI::setupSprites()
     plane.createSprite(PLANEICON_IMG_WIDTH, PLANEICON_IMG_HEIGHT);
     plane.setBuffer(const_cast<std::uint8_t *>(PLANEICON_IMG_DATA), PLANEICON_IMG_WIDTH, PLANEICON_IMG_HEIGHT);
 
-    // GS Is Ground speed, NOT glide slope.
-    gsBox.setColorDepth(8);
-    gsBox.createSprite(GSBOX_IMG_WIDTH, GSBOX_IMG_HEIGHT);
-    gsBox.pushImage(0, 0, GSBOX_IMG_WIDTH, GSBOX_IMG_HEIGHT, GSBOX_IMG_DATA);
-    gsBox.setTextColor(TFT_MAGENTA);
-    gsBox.setTextDatum(BR_DATUM);
-    gsBox.loadFont(PrimaSans32);
+    // // GS Is Ground speed, NOT glide slope.
+    // gsBox.setColorDepth(8);
+    // gsBox.createSprite(GSBOX_IMG_WIDTH, 60);
+    // // gsBox.pushImage(0, 0, GSBOX_IMG_WIDTH, GSBOX_IMG_HEIGHT, GSBOX_IMG_DATA);
+    // //gsBox.setTextColor(TFT_MAGENTA);
+    // //gsBox.setTextDatum(BR_DATUM);
+    // gsBox.loadFont(PrimaSans32);
 
     distBox.setColorDepth(8);
     distBox.createSprite(DISTBOX_IMG_WIDTH, DISTBOX_IMG_HEIGHT);

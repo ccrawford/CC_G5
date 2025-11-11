@@ -21,6 +21,7 @@ static const char *TAG_SPRITES = "CC_G5_SPRITES";
 #include "commandmessenger.h"
 #include <Wire.h>
 
+
 #define CC_G5_SETTINGS_OFFSET 2048     // Well past MF config end (59 + 1496 = 1555)
 #define TFT_MAIN_TRANSPARENT  TFT_PINK // Just pick a color not used in either display
 

@@ -251,14 +251,14 @@ void CC_G5_PFD::setupSprites()
 
     // GS Is Ground speed, NOT glide slope.
     gsBox.setColorDepth(8);
-    gsBox.createSprite(SPEED_COL_WIDTH, GSBOX_IMG_HEIGHT);
+    gsBox.createSprite(SPEED_COL_WIDTH, BOTTOM_BAR_HEIGHT);
     // gsBox.pushImage(0,0, SPEED_COL_WIDTH, GSBOX_IMG_HEIGHT, GSBOX_IMG_DATA);
-    gsBox.setTextColor(TFT_MAGENTA);
-    gsBox.setTextDatum(BR_DATUM);
+    // gsBox.setTextColor(TFT_MAGENTA);
+    // gsBox.setTextDatum(BR_DATUM);
     gsBox.loadFont(PrimaSans32);
 
     kohlsBox.setColorDepth(8);
-    kohlsBox.createSprite(130, 40);
+    kohlsBox.createSprite(ALTITUDE_COL_WIDTH, BOTTOM_BAR_HEIGHT);
     // if(kohlsBox.getBuffer() == nullptr) while(1);
     kohlsBox.setTextColor(TFT_CYAN);
     kohlsBox.setTextDatum(CC_DATUM);
@@ -278,17 +278,17 @@ void CC_G5_PFD::setupSprites()
     altBug.setPivot(HEADINGBOX_IMG_WIDTH / 2, HEADINGBUG_IMG_HEIGHT / 2);
 
     targetAltBox.setColorDepth(8);
-    targetAltBox.createSprite(130, 40);
+    targetAltBox.createSprite(130, TOP_BAR_HEIGHT);
     targetAltBox.setTextColor(TFT_CYAN);
     targetAltBox.loadFont(PrimaSans32);
     targetAltBox.setTextDatum(CR_DATUM);
     targetAltBox.fillSprite(TFT_BLACK);
     targetAltBox.pushImageRotateZoom(14, 4, 0, 0, 90, 0.6, 0.6, HEADINGBUG_IMG_WIDTH, HEADINGBUG_IMG_HEIGHT, HEADINGBUG_IMG_DATA, TFT_WHITE);
-    targetAltBox.drawRect(0, 0, 130, 40, TFT_DARKGREY);
-    targetAltBox.drawRect(1, 1, 128, 38, TFT_DARKGREY);
+    targetAltBox.drawRect(0, 0, ALTITUDE_COL_WIDTH, TOP_BAR_HEIGHT, TFT_DARKGREY);
+    targetAltBox.drawRect(1, 1, ALTITUDE_COL_WIDTH - 2, TOP_BAR_HEIGHT - 2, TFT_DARKGREY);
     targetAltBox.setTextSize(0.5);
-    targetAltBox.drawString("f", 120, 12);
-    targetAltBox.drawString("t", 120, 26);
+    targetAltBox.drawString("f", ALTITUDE_COL_WIDTH - 10, 12);
+    targetAltBox.drawString("t", ALTITUDE_COL_WIDTH - 10, 26);
     targetAltBox.setTextSize(0.9);
 
     altScaleNumber.setColorDepth(8);
@@ -372,7 +372,7 @@ void CC_G5_PFD::setupSprites()
     messageIndicator.drawString("!", 15, 15);
 
     apBox.setColorDepth(8);
-    apBox.createSprite(480, 30);
+    apBox.createSprite(ATTITUDE_WIDTH, min(30,TOP_BAR_HEIGHT));
     apBox.loadFont(PrimaSans32);
     apBox.setTextSize(0.8);
     apBox.setTextDatum(BC_DATUM);
@@ -558,8 +558,10 @@ void CC_G5_PFD::set(int16_t messageID, char *setPoint)
         apYawDamper = (int)data;
         break;
     case 35:
-        Serial.printf("Case 35: Setpoint: %s\n", setPoint);
         setVSpeeds(setPoint);
+        break;
+    case 36:
+        oat = (int)data;
         break;
     default:
         break;
@@ -845,7 +847,7 @@ void CC_G5_PFD::drawSpeedTape()
     // Short cirucuiting here doesn't seem to help much and is complex.
     float drawSpeed = airspeed;
 
-    if (airspeed < 10) drawSpeed = 0.0; // The airspeed isn't displayed at low speed.
+    if (airspeed < 20) drawSpeed = 0.0; // The airspeed isn't displayed at low speed.
 
     int intDigits[7];
 
@@ -978,17 +980,19 @@ void CC_G5_PFD::drawSpeedPointers()
         int  speed;
         int  order;
     } speed_pointers[] = {
-        {'R', g5Settings.Vr, 0}, {'X', g5Settings.Vx, 1}, {'Y', g5Settings.Vy, 2}, {'G', g5Settings.Vg, 3}};
+        {'R', g5Settings.Vr, 0}, {'X', g5Settings.Vx, 1}, {'Y', g5Settings.Vy, 2}, {'G', g5Settings.Vg, 3}, {'A', g5Settings.Va, 4}};
 
     for (const auto &pointer : speed_pointers) {
 
-        if (pointer.speed > airspeed + 30 && airspeed > (speed_pointers[0].speed) - 30) continue; // Short circuit if off screen.
+        if (pointer.speed == 0 || (pointer.speed > airspeed + 30 && airspeed > (speed_pointers[0].speed) - 30)) continue; // Short circuit if off screen.
 
         speedPointer.drawBitmap(0, 0, SPEEDPOINTER_IMG_DATA, SPEEDPOINTER_IMG_WIDTH, SPEEDPOINTER_IMG_HEIGHT, TFT_WHITE, TFT_BLACK);
         speedPointer.drawChar(pointer.label, 10, 2);
         // If the airspeed is below the first speed, then show them at the bottom.
+        // Update, actually only show them this way if airspeed not alive.
         int yPos = 0;
-        if (airspeed < (speed_pointers[0].speed - 30)) {
+//        if (airspeed < (speed_pointers[0].speed - 30)) {
+        if (airspeed < 20) {
             yPos = (ATTITUDE_HEIGHT - 30) - (pointer.order * 30);
             attitude.setTextColor(TFT_CYAN);
             attitude.setTextSize(0.6);
@@ -1005,18 +1009,13 @@ void CC_G5_PFD::drawSpeedPointers()
 int CC_G5_PFD::speedToY(float targetSpeed, float curSpeed)
 {
     // Our entire sprite is: 57kts tall and it's 400px tall. That's 400px/57kts = 7.02px per kt. 200 = scaled value.
-    int retVal = (int)(200.0 + (curSpeed - targetSpeed) * 7.02f);
-    // if (retVal > 400) retVal = 400;
-    // if (retVal < 0) retVal =0;
-    return retVal;
+    return (int)(200.0 + (curSpeed - targetSpeed) * 7.02f);
 }
 
 int CC_G5_PFD::altToY(int targetAlt, int curAlt)
 {
     // Our entire sprite is: 330' tall and it's 400px tall. That's 400px/330' = 1.2'/px 200 = center point.
     return (int)(248.0 + (curAlt - targetAlt) * 1.21f);
-    // if (retVal > 400) retVal = 400;
-    // if (retVal < 0) retVal =0;
 }
 
 inline int floorMod(int a, int b)
@@ -1165,7 +1164,7 @@ void CC_G5_PFD::drawAltTape()
     // Serial.printf("target: %d, alt: %d, bugpos: %d\n", targetAltitude, altitude, bugPos);
     int offset = 61;
     if (bugPos < HEADINGBUG_IMG_HEIGHT / 2) bugPos = HEADINGBUG_IMG_WIDTH / 2 + offset; // Yes, width. image is sideways.
-    if (bugPos > 400 - HEADINGBUG_IMG_WIDTH / 2) bugPos = ATTITUDE_HEIGHT - HEADINGBUG_IMG_HEIGHT / 2 + offset;
+    if (bugPos > ATTITUDE_HEIGHT - HEADINGBUG_IMG_WIDTH / 2) bugPos = ATTITUDE_HEIGHT - HEADINGBUG_IMG_HEIGHT / 2 + offset;
     // Serial.printf("target: %d, alt: %d, bugpos: %d\n", targetAltitude, altitude, bugPos);
 
     attitude.setPivot(xRight - 23, bugPos);
@@ -1327,18 +1326,19 @@ void CC_G5_PFD::drawGroundSpeed()
 
     static int lastGs = 399;
 
-    if (groundSpeed > 400) return;
+    if (groundSpeed > 500) return;
 
-    if (lastGs == groundSpeed) return;
+//    if (lastGs == groundSpeed) return;
 
     lastGs = groundSpeed;
 
-    char buf[5];
-    sprintf(buf, "%d", groundSpeed);
+    char buf[8];
 
     gsBox.fillSprite(TFT_BLACK);
-    gsBox.drawRect(0, 0, SPEED_COL_WIDTH, 40, TFT_DARKGREY);
-    gsBox.drawRect(1, 1, SPEED_COL_WIDTH - 2, 38, TFT_DARKGREY);
+    gsBox.drawRect(0, 0, SPEED_COL_WIDTH, gsBox.height(), TFT_LIGHTGREY);
+    gsBox.drawRect(1, 1, SPEED_COL_WIDTH - 2, gsBox.height() - 2, TFT_LIGHTGREY);
+
+    /*
     gsBox.setTextDatum(CR_DATUM);
     gsBox.setTextSize(0.5);
     gsBox.setTextColor(TFT_DARKGRAY);
@@ -1348,6 +1348,27 @@ void CC_G5_PFD::drawGroundSpeed()
     gsBox.drawString("t", 109, 26);
     gsBox.setTextSize(0.9);
     gsBox.drawString(buf, 90, 21);
+    gsBox.pushSprite(0, 440);
+    */
+
+    // Separator line
+    gsBox.drawFastHLine(2, gsBox.height() / 2, SPEED_COL_WIDTH - 4);
+    gsBox.drawFastHLine(2, gsBox.height() / 2 - 1, SPEED_COL_WIDTH - 4);
+
+    gsBox.setTextDatum(CL_DATUM);
+    gsBox.setTextSize(0.5);
+    gsBox.setTextColor(TFT_LIGHTGRAY);
+    gsBox.drawString("GS", 10, 12);
+    gsBox.drawString("OAT", 12, 32);
+    gsBox.setTextDatum(CR_DATUM);
+    sprintf(buf, "%d\xB0", oat);
+    gsBox.setTextSize(0.5);
+    gsBox.drawString(buf, 90, 32);
+    
+    sprintf(buf, "%d", groundSpeed);
+    gsBox.setTextColor(TFT_MAGENTA);
+    gsBox.drawString(buf, 80, 12);
+
     gsBox.pushSprite(0, 440);
 
     return;
@@ -1741,7 +1762,7 @@ void CC_G5_PFD::drawAp()
         apBox.drawString("YD", 220, yBaseline);
     }
 
-    apBox.pushSprite(5, 0);
+    apBox.pushSprite(0, 5);  // Center the Y 
 }
 
 void CC_G5_PFD::drawMessageIndicator()
@@ -1817,7 +1838,8 @@ void CC_G5_PFD::update()
     unsigned long pushStart = millis();
 
     processMenu();
-    attitude.pushSprite(0, 40, TFT_MAIN_TRANSPARENT);
+    attitude.pushSprite(0, TOP_BAR_HEIGHT, TFT_MAIN_TRANSPARENT);
+
     drawGroundSpeed();
     drawKohlsman();
     //    drawMessageIndicator();

@@ -22,8 +22,12 @@
 #define SCREEN_W 480
 #define SCREEN_H 480
 
-#define ATTITUDE_WIDTH      480
+#define AP_BAR_HEIGHT 40  
+#define TOP_BAR_HEIGHT 40   // This is part of the attitude sprite space.
+#define BOTTOM_BAR_HEIGHT 40 
 #define ATTITUDE_HEIGHT     400
+
+#define ATTITUDE_WIDTH      480
 #define ATTITUDE_COLOR_BITS 8
 
 #define SPEED_COL_WIDTH    100
@@ -432,6 +436,8 @@ public:
     bool terminalModeActive = true;
     int  navCDILabelIndex   = 0; // NavCDILabel. GPS:0, LOC1:1, VOR1:2, DME1:3, LOC2:4, VOR2:5, DME2:6, Blank:7
     int  gpsApproachType    = 0; // gps approach approach type values. 99: none active.
+
+    int oat = 30;
 
     int cdiScaleLabel = 1;
 
