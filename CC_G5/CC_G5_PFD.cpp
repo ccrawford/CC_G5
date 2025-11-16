@@ -514,6 +514,7 @@ void CC_G5_PFD::set(int16_t messageID, char *setPoint)
         break;
     case 20:
         flightDirectorActive = (int)data;
+        setFDBitmap();
         break;
     case 21:
         flightDirectorPitch = atof(setPoint);
@@ -532,6 +533,7 @@ void CC_G5_PFD::set(int16_t messageID, char *setPoint)
         break;
     case 26:
         apActive = (int)data;
+        setFDBitmap();
         break;
     case 27:
         apLMode = (int)data;
@@ -565,6 +567,22 @@ void CC_G5_PFD::set(int16_t messageID, char *setPoint)
         break;
     default:
         break;
+    }
+}
+
+void CC_G5_PFD::setFDBitmap()
+{
+    // Could probably put in some short circuits here, but MF is good about not sending extra updates.
+    if(!flightDirectorActive) return;
+
+    fdTriangle.fillSprite(TFT_WHITE);
+
+    if(!apActive) {
+        // Use the dark filled FD
+        fdTriangle.pushImage(0, 0, FDTRIANGLESNOAP_IMG_WIDTH, FDTRIANGLESNOAP_IMG_HEIGHT, FDTRIANGLESNOAP_IMG_DATA);
+    } else {
+        // Use the magenta filled FD
+        fdTriangle.pushImage(0, 0, FDTRIANGLES_IMG_WIDTH, FDTRIANGLES_IMG_HEIGHT, FDTRIANGLES_IMG_DATA);
     }
 }
 

@@ -27,13 +27,13 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      inkscape:zoom="8.5693947"
-     inkscape:cx="21.471762"
+     inkscape:cx="21.588456"
      inkscape:cy="62.314786"
-     inkscape:window-width="3840"
-     inkscape:window-height="2054"
-     inkscape:window-x="2869"
-     inkscape:window-y="-11"
-     inkscape:window-maximized="1"
+     inkscape:window-width="1723"
+     inkscape:window-height="1460"
+     inkscape:window-x="4912"
+     inkscape:window-y="306"
+     inkscape:window-maximized="0"
      inkscape:current-layer="layer1" />
   <defs
      id="defs1" />
@@ -64,21 +64,24 @@
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96" />
     <path
-       style="fill:#810081;fill-opacity:1;stroke:none;stroke-width:0.529167;stroke-linecap:round;stroke-miterlimit:3;stroke-dashoffset:1"
+       style="fill:#5d005d;fill-opacity:1;stroke:none;stroke-width:0.529167;stroke-linecap:round;stroke-miterlimit:3;stroke-dashoffset:1"
        d="m 62.371346,122.509 1.574644,0.0154 -1.559206,-1.5592 z"
        id="path3"
        sodipodi:nodetypes="cccc" />
     <path
-       style="fill:#810081;fill-opacity:1;stroke:none;stroke-width:0.529167;stroke-linecap:round;stroke-miterlimit:3;stroke-dashoffset:1"
+       style="fill:#5d005d;fill-opacity:1;stroke:none;stroke-width:0.529167;stroke-linecap:round;stroke-miterlimit:3;stroke-dashoffset:1"
        d="m 65.760688,122.15805 14.027183,-7.46661 -16.629203,5.06507 z"
-       id="path4" />
+       id="path4"
+       inkscape:export-filename="fdTrianglesNoAP.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
     <path
-       style="fill:#810081;fill-opacity:1;stroke:none;stroke-width:0.529167;stroke-linecap:round;stroke-miterlimit:3;stroke-dashoffset:1"
+       style="fill:#5d005d;fill-opacity:1;stroke:none;stroke-width:0.529167;stroke-linecap:round;stroke-miterlimit:3;stroke-dashoffset:1"
        d="m 108.16235,122.509 -1.57465,0.0154 1.55921,-1.5592 z"
        id="path5"
        sodipodi:nodetypes="cccc" />
     <path
-       style="fill:#810081;fill-opacity:1;stroke:none;stroke-width:0.529167;stroke-linecap:round;stroke-miterlimit:3;stroke-dashoffset:1"
+       style="fill:#5d005d;fill-opacity:1;stroke:none;stroke-width:0.529167;stroke-linecap:round;stroke-miterlimit:3;stroke-dashoffset:1"
        d="m 104.773,122.15805 -14.027178,-7.46661 16.629198,5.06507 z"
        id="path6" />
   </g>

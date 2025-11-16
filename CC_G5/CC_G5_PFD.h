@@ -366,6 +366,7 @@ private:
     void drawFlightDirector();
 
     void drawAp();
+    void setFDBitmap();
 
     void drawMessageIndicator();
 
