@@ -167,6 +167,11 @@ void CC_G5_HSI::begin()
 
     setupSprites();
 
+    if(restoreState()) {
+        setNavSource();
+        // Call any other "Set" functions.
+    }
+
     updateCommon();
 }
 
@@ -474,6 +479,105 @@ void CC_G5_HSI::detach()
     _initialised = false;
 }
 
+ void CC_G5_HSI::setCommon(int16_t messageID, char *setPoint)
+ {
+     switch (messageID) {
+         case 0:  // AP Heading Bug
+             headingBugAngle = atoi(setPoint);
+             break;
+         case 1:  // Approach Type
+             gpsApproachType = atoi(setPoint);
+             break;
+         case 2:  // CDI Lateral Deviation
+             rawCdiOffset = atof(setPoint);
+             break;
+         case 3:  // CDI Needle Valid
+             cdiNeedleValid = atoi(setPoint);
+             break;
+         case 4:  // CDI To/From Flag
+             cdiToFrom = atoi(setPoint);
+             break;
+         case 5:  // Glide Slope Deviation
+             rawGsiNeedle = atof(setPoint);
+             break;
+         case 6:  // Glide Slope Needle Valid
+             gsiNeedleValid = atoi(setPoint);
+             break;
+         case 7:  // Ground Speed
+             groundSpeed = atoi(setPoint);
+             break;
+         case 8:  // Ground Track (Magnetic)
+             groundTrack = atoi(setPoint);
+             break;
+         case 9:  // Heading (Magnetic)
+             rawHeadingAngle = atof(setPoint);
+             break;
+         case 10: // Nav Source
+             navSource = atoi(setPoint);
+             setNavSource();
+             break;
+     }
+ }
+
+ void CC_G5_HSI::setHSI(int16_t messageID, char *setPoint)
+ {
+     switch (messageID) {
+         case 30: // ADF Bearing
+             bearingAngleADF = atoi(setPoint);
+             break;
+         case 31: // ADF Valid
+             adfValid = atoi(setPoint);
+             break;
+         case 32: // CDI Bearing
+             cdiDirection = atoi(setPoint);
+             break;
+         case 33: // CDI Scale Label
+             cdiScaleLabel = atoi(setPoint);
+             break;
+         case 34: // Desired Track
+             desiredTrack = atoi(setPoint);
+             break;
+         case 35: // Desired Track Valid
+             desiredTrackValid = atoi(setPoint);
+             break;
+         case 36: // Distance to Next GPS Waypoint
+             distNextWaypoint = atof(setPoint);
+             break;
+         case 37: // GPS Bearing to Next Station
+             bearingAngleGPS = atoi(setPoint);
+             break;
+         case 38: // NAV CDI Label
+             navCDILabelIndex = atoi(setPoint);
+             break;
+         case 39: // Nav1 Bearing Angle
+             bearingAngleVLOC1 = atoi(setPoint);
+             break;
+         case 40: // Nav1 Bearing Source
+             vloc1Type = atoi(setPoint);
+             break;
+         case 41: // Nav2 Bearing Angle
+             bearingAngleVLOC2 = atoi(setPoint);
+             break;
+         case 42: // Nav2 Bearing Source
+             vloc2Type = atoi(setPoint);
+             break;
+         case 43: // OBS Active
+             obsModeOn = atoi(setPoint);
+             break;
+         case 44: // OBS Heading
+             obsAngle = atoi(setPoint);
+             break;
+         case 45: // Wind Direction (Magnetic)
+             rawWindDir = atoi(setPoint);
+             break;
+         case 46: // Wind Speed
+             rawWindSpeed = atoi(setPoint);
+             break;
+     }
+ }
+
+
+// OLD and UNUSED
 void CC_G5_HSI::set(int16_t messageID, char *setPoint)
 {
     /* **********************************************************************************
@@ -605,7 +709,7 @@ float CC_G5_HSI::getBearingPointerAngle(uint8_t source)
         return bearingAngleGPS;   
     case 2:                       // VLOC1
         return bearingAngleVLOC1; 
-    case 3:                       // VLOC2
+    case 3:                       // VLOC2dry
         return bearingAngleVLOC2; 
     case 4:                       // ADF
         return fmod((bearingAngleADF + headingAngle + 360), 360);   
@@ -1317,3 +1421,98 @@ void CC_G5_HSI::drawWind()
     }
     windBox.pushSprite(0, 0);
 }
+
+
+void CC_G5_HSI::saveState() {
+      Preferences prefs;
+      prefs.begin("g5state", false);
+
+      // Mark as mode switch restart
+      prefs.putBool("switching", true);
+      prefs.putInt("version", STATE_VERSION);
+
+      // Common variables (IDs 0-10) - same keys as PFD
+      prefs.putInt("hdgBug", headingBugAngle);
+      prefs.putInt("appType", gpsApproachType);
+      prefs.putFloat("cdiOff", rawCdiOffset);
+      prefs.putInt("cdiVal", cdiNeedleValid);
+      prefs.putInt("toFrom", cdiToFrom);
+      prefs.putFloat("gsiNdl", rawGsiNeedle);
+      prefs.putInt("gsiVal", gsiNeedleValid);
+      prefs.putInt("gndSpd", groundSpeed);
+      prefs.putInt("gndTrk", groundTrack);
+      prefs.putFloat("hdgAng", rawHeadingAngle);
+      prefs.putInt("navSrc", navSource);
+
+      // HSI-specific (IDs 30-46)
+      prefs.putFloat("adfBrg", bearingAngleADF);
+      prefs.putInt("adfVal", adfValid);
+      prefs.putInt("cdiDir", cdiDirection);
+      prefs.putInt("cdiLbl", cdiScaleLabel);
+      prefs.putFloat("desTrk", desiredTrack);
+      prefs.putInt("dtVal", desiredTrackValid);
+      prefs.putFloat("distWp", distNextWaypoint);
+      prefs.putFloat("gpsBrg", bearingAngleGPS);
+      prefs.putInt("navLbl", navCDILabelIndex);
+      prefs.putFloat("v1Brg", bearingAngleVLOC1);
+      prefs.putInt("v1Type", vloc1Type);
+      prefs.putFloat("v2Brg", bearingAngleVLOC2);
+      prefs.putInt("v2Type", vloc2Type);
+      prefs.putInt("obsOn", obsModeOn);
+      prefs.putFloat("obsAng", obsAngle);
+      prefs.putFloat("wndDir", rawWindDir);
+      prefs.putFloat("wndSpd", rawWindSpeed);
+
+      prefs.end();
+  }
+
+  bool CC_G5_HSI::restoreState() {
+      Preferences prefs;
+      prefs.begin("g5state", false);
+
+      bool wasSwitching = prefs.getBool("switching", false);
+      int version = prefs.getInt("version", 0);
+
+      // Clear flag immediately
+      prefs.putBool("switching", false);
+
+      if (!wasSwitching || version != STATE_VERSION) {
+          prefs.end();
+          return false;
+      }
+
+      // Common variables
+      headingBugAngle = prefs.getInt("hdgBug", 0);
+      gpsApproachType = prefs.getInt("appType", 0);
+      rawCdiOffset = prefs.getFloat("cdiOff", 0);
+      cdiNeedleValid = prefs.getInt("cdiVal", 1);
+      cdiToFrom = prefs.getInt("toFrom", 0);
+      rawGsiNeedle = prefs.getFloat("gsiNdl", 0);
+      gsiNeedleValid = prefs.getInt("gsiVal", 1);
+      groundSpeed = prefs.getInt("gndSpd", 0);
+      groundTrack = prefs.getInt("gndTrk", 0);
+      rawHeadingAngle = prefs.getFloat("hdgAng", 0);
+      navSource = prefs.getInt("navSrc", 1);
+
+      // HSI-specific
+      bearingAngleADF = prefs.getFloat("adfBrg", 0);
+      adfValid = prefs.getInt("adfVal", 0);
+      cdiDirection = prefs.getInt("cdiDir", 0);
+      cdiScaleLabel = prefs.getInt("cdiLbl", 0);
+      desiredTrack = prefs.getFloat("desTrk", 0);
+      desiredTrackValid = prefs.getInt("dtVal", 0);
+      distNextWaypoint = prefs.getFloat("distWp", 0);
+      bearingAngleGPS = prefs.getFloat("gpsBrg", 0);
+      navCDILabelIndex = prefs.getInt("navLbl", 0);
+      bearingAngleVLOC1 = prefs.getFloat("v1Brg", 0);
+      vloc1Type = prefs.getInt("v1Type", 0);
+      bearingAngleVLOC2 = prefs.getFloat("v2Brg", 0);
+      vloc2Type = prefs.getInt("v2Type", 0);
+      obsModeOn = prefs.getInt("obsOn", 0);
+      obsAngle = prefs.getFloat("obsAng", 0);
+      rawWindDir = prefs.getFloat("wndDir", 0);
+      rawWindSpeed = prefs.getFloat("wndSpd", 0);
+
+      prefs.end();
+      return true;
+  }

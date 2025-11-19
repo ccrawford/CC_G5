@@ -186,6 +186,8 @@ void CC_G5_PFD::begin()
 
     setupSprites();
 
+    restoreState();
+    
     //   // Get info about memory usage
     //   size_t internal_heap = heap_caps_get_free_size(MALLOC_CAP_INTERNAL);
     //   size_t psram_heap = heap_caps_get_free_size(MALLOC_CAP_SPIRAM);
@@ -372,7 +374,7 @@ void CC_G5_PFD::setupSprites()
     messageIndicator.drawString("!", 15, 15);
 
     apBox.setColorDepth(8);
-    apBox.createSprite(ATTITUDE_WIDTH, min(30,TOP_BAR_HEIGHT));
+    apBox.createSprite(ATTITUDE_WIDTH, min(30, TOP_BAR_HEIGHT));
     apBox.loadFont(PrimaSans32);
     apBox.setTextSize(0.8);
     apBox.setTextDatum(BC_DATUM);
@@ -422,6 +424,127 @@ void CC_G5_PFD::detach()
     _initialised = false;
 }
 
+void CC_G5_PFD::setCommon(int16_t messageID, char *setPoint)
+{
+    switch (messageID) {
+    case 0: // AP Heading Bug
+        headingBugAngle = atoi(setPoint);
+        break;
+    case 1: // Approach Type
+        gpsApproachType = atoi(setPoint);
+        break;
+    case 2: // CDI Lateral Deviation
+        rawCdiOffset = atof(setPoint);
+        break;
+    case 3: // CDI Needle Valid
+        cdiNeedleValid = atoi(setPoint);
+        break;
+    case 4: // CDI To/From Flag
+        cdiToFrom = atoi(setPoint);
+        break;
+    case 5: // Glide Slope Deviation
+        rawGsiNeedle = atof(setPoint);
+        break;
+    case 6: // Glide Slope Needle Valid
+        gsiNeedleValid = atoi(setPoint);
+        break;
+    case 7: // Ground Speed
+        groundSpeed = atoi(setPoint);
+        break;
+    case 8: // Ground Track (Magnetic)
+        groundTrack = atoi(setPoint);
+        break;
+    case 9: // Heading (Magnetic)
+        rawHeadingAngle = atof(setPoint);
+        break;
+    case 10: // Nav Source
+        navSource = atoi(setPoint);
+        break;
+    }
+}
+
+void CC_G5_PFD::setPFD(int16_t messageID, char *setPoint)
+{
+    switch (messageID) {
+    case 60: // Airspeed
+        rawAirspeed = atof(setPoint);
+        break;
+    case 61: // AP Active
+        apActive = atoi(setPoint);
+        break;
+    case 62: // AP Alt Captured
+        apAltCaptured = atoi(setPoint);
+        break;
+    case 63: // AP Altitude Bug
+        targetAltitude = atoi(setPoint);
+        break;
+    case 64: // AP Armed Lateral Mode
+        apLArmedMode = atoi(setPoint);
+        break;
+    case 65: // AP Armed Vertical Mode
+        apVArmedMode = atoi(setPoint);
+        break;
+    case 66: // AP Lateral Mode
+        apLMode = atoi(setPoint);
+        break;
+    case 67: // AP Speed Bug
+        apTargetSpeed = atoi(setPoint);
+        break;
+    case 68: // AP Vertical Mode
+        apVMode = atoi(setPoint);
+        break;
+    case 69: // AP Vertical Speed Bug
+        apTargetVS = atoi(setPoint);
+        break;
+    case 70: // AP Yaw Damper
+        apYawDamper = atoi(setPoint);
+        break;
+    case 71: // Ball (Slip/Skid) Position
+        rawBallPos = atof(setPoint);
+        break;
+    case 72: // Bank Angle
+        rawBankAngle = atof(setPoint);
+        break;
+    case 73: // FD Active
+        flightDirectorActive = atoi(setPoint);
+        break;
+    case 74: // FD Bank Angle
+        flightDirectorBank = atof(setPoint);
+        break;
+    case 75: // FD Pitch
+        flightDirectorPitch = atof(setPoint);
+        break;
+    case 76: // GPS Course to Steer
+        navCourseToSteer = atoi(setPoint);
+        break;
+    case 77: // Indicated Altitude
+        rawAltitude = atof(setPoint);
+        break;
+    case 78: // Kohlsman Value
+        kohlsman = atof(setPoint);
+        break;
+    case 79: // OAT
+        oat = atoi(setPoint);
+        break;
+    case 80: // Pitch Angle
+        rawPitchAngle = atof(setPoint);
+        break;
+    case 81: // Turn Rate
+        turnRate = atof(setPoint);
+        break;
+    case 82: // V-Speeds Array
+        setVSpeeds(setPoint);
+        break;
+    case 83: // Vertical Speed
+        rawVerticalSpeed = atof(setPoint);
+        break;
+    case 84: // OBS Course Setting
+        navCourse = atoi(setPoint);
+        break;
+    }
+}
+
+// OLD UNUSED.
 void CC_G5_PFD::set(int16_t messageID, char *setPoint)
 {
     /* **********************************************************************************
@@ -573,11 +696,11 @@ void CC_G5_PFD::set(int16_t messageID, char *setPoint)
 void CC_G5_PFD::setFDBitmap()
 {
     // Could probably put in some short circuits here, but MF is good about not sending extra updates.
-    if(!flightDirectorActive) return;
+    if (!flightDirectorActive) return;
 
     fdTriangle.fillSprite(TFT_WHITE);
 
-    if(!apActive) {
+    if (!apActive) {
         // Use the dark filled FD
         fdTriangle.pushImage(0, 0, FDTRIANGLESNOAP_IMG_WIDTH, FDTRIANGLESNOAP_IMG_HEIGHT, FDTRIANGLESNOAP_IMG_DATA);
     } else {
@@ -1009,7 +1132,7 @@ void CC_G5_PFD::drawSpeedPointers()
         // If the airspeed is below the first speed, then show them at the bottom.
         // Update, actually only show them this way if airspeed not alive.
         int yPos = 0;
-//        if (airspeed < (speed_pointers[0].speed - 30)) {
+        //        if (airspeed < (speed_pointers[0].speed - 30)) {
         if (airspeed < 20) {
             yPos = (ATTITUDE_HEIGHT - 30) - (pointer.order * 30);
             attitude.setTextColor(TFT_CYAN);
@@ -1346,7 +1469,7 @@ void CC_G5_PFD::drawGroundSpeed()
 
     if (groundSpeed > 500) return;
 
-//    if (lastGs == groundSpeed) return;
+    //    if (lastGs == groundSpeed) return;
 
     lastGs = groundSpeed;
 
@@ -1382,7 +1505,7 @@ void CC_G5_PFD::drawGroundSpeed()
     sprintf(buf, "%d\xB0", oat);
     gsBox.setTextSize(0.5);
     gsBox.drawString(buf, 90, 32);
-    
+
     sprintf(buf, "%d", groundSpeed);
     gsBox.setTextColor(TFT_MAGENTA);
     gsBox.drawString(buf, 80, 12);
@@ -1780,7 +1903,7 @@ void CC_G5_PFD::drawAp()
         apBox.drawString("YD", 220, yBaseline);
     }
 
-    apBox.pushSprite(0, 5);  // Center the Y 
+    apBox.pushSprite(0, 5); // Center the Y
 }
 
 void CC_G5_PFD::drawMessageIndicator()
@@ -1813,6 +1936,8 @@ void CC_G5_PFD::updateInputValues()
     headingAngle = smoothDirection(rawHeadingAngle, headingAngle, 0.15f, 0.02f);
     altitude     = smoothInput(rawAltitude, altitude, 0.1f, 1);
     airspeed     = smoothInput(rawAirspeed, airspeed, 0.1f, 0.01f);
+    gsiNeedle    = smoothInput(rawGsiNeedle, gsiNeedle, 0.15f, 1.0f);
+
     speedTrend.update(rawAirspeed);
 
     ballPos       = smoothInput(rawBallPos, ballPos, 0.2f, 0.005f);
@@ -1878,3 +2003,112 @@ void CC_G5_PFD::update()
 
     return;
 }
+
+
+void CC_G5_PFD::saveState() {
+      Preferences prefs;
+      prefs.begin("g5state", false);
+
+      // Mark as mode switch restart
+      prefs.putBool("switching", true);
+      prefs.putInt("version", STATE_VERSION);
+
+      // Common variables (IDs 0-10) - same keys as HSI
+      prefs.putInt("hdgBug", headingBugAngle);
+      prefs.putInt("appType", gpsApproachType);
+      prefs.putFloat("cdiOff", rawCdiOffset);
+      prefs.putInt("cdiVal", cdiNeedleValid);
+      prefs.putInt("toFrom", cdiToFrom);
+      prefs.putFloat("gsiNdl", rawGsiNeedle);
+      prefs.putInt("gsiVal", gsiNeedleValid);
+      prefs.putInt("gndSpd", groundSpeed);
+      prefs.putFloat("gndTrk", groundTrack);
+      prefs.putFloat("hdgAng", rawHeadingAngle);
+      prefs.putInt("navSrc", navSource);
+
+      // PFD-specific (IDs 60-84)
+      prefs.putFloat("airspd", rawAirspeed);
+      prefs.putInt("apAct", apActive);
+      prefs.putInt("apAltC", apAltCaptured);
+      prefs.putInt("tgtAlt", targetAltitude);
+      prefs.putInt("apLArm", apLArmedMode);
+      prefs.putInt("apVArm", apVArmedMode);
+      prefs.putInt("apLMd", apLMode);
+      prefs.putInt("apSpd", apTargetSpeed);
+      prefs.putInt("apVMd", apVMode);
+      prefs.putInt("apVS", apTargetVS);
+      prefs.putInt("apYaw", apYawDamper);
+      prefs.putFloat("ballP", rawBallPos);
+      prefs.putFloat("bankA", rawBankAngle);
+      prefs.putInt("fdAct", flightDirectorActive);
+      prefs.putFloat("fdBank", flightDirectorBank);
+      prefs.putFloat("fdPtch", flightDirectorPitch);
+      prefs.putInt("navCTS", navCourseToSteer);
+      prefs.putInt("alt", rawAltitude);
+      prefs.putFloat("kohl", kohlsman);
+      prefs.putInt("oat", oat);
+      prefs.putFloat("pitch", rawPitchAngle);
+      prefs.putFloat("trnRt", turnRate);
+      prefs.putInt("vSpd", rawVerticalSpeed);
+      prefs.putFloat("navCrs", navCourse);
+
+      prefs.end();
+  }
+
+  bool CC_G5_PFD::restoreState() {
+      Preferences prefs;
+      prefs.begin("g5state", false);
+
+      bool wasSwitching = prefs.getBool("switching", false);
+      int version = prefs.getInt("version", 0);
+
+      // Clear flag immediately
+      prefs.putBool("switching", false);
+
+      if (!wasSwitching || version != STATE_VERSION) {
+          prefs.end();
+          return false;
+      }
+
+      // Common variables
+      headingBugAngle = prefs.getInt("hdgBug", 0);
+      gpsApproachType = prefs.getInt("appType", 0);
+      rawCdiOffset = prefs.getFloat("cdiOff", 0);
+      cdiNeedleValid = prefs.getInt("cdiVal", 1);
+      cdiToFrom = prefs.getInt("toFrom", 0);
+      rawGsiNeedle = prefs.getFloat("gsiNdl", 0);
+      gsiNeedleValid = prefs.getInt("gsiVal", 1);
+      groundSpeed = prefs.getInt("gndSpd", 0);
+      groundTrack = prefs.getFloat("gndTrk", 0);
+      rawHeadingAngle = prefs.getFloat("hdgAng", 0);
+      navSource = prefs.getInt("navSrc", 1);
+
+      // PFD-specific
+      rawAirspeed = prefs.getFloat("airspd", 0);
+      apActive = prefs.getInt("apAct", 0);
+      apAltCaptured = prefs.getInt("apAltC", 0);
+      targetAltitude = prefs.getInt("tgtAlt", 0);
+      apLArmedMode = prefs.getInt("apLArm", 0);
+      apVArmedMode = prefs.getInt("apVArm", 0);
+      apLMode = prefs.getInt("apLMd", 0);
+      apTargetSpeed = prefs.getInt("apSpd", 0);
+      apVMode = prefs.getInt("apVMd", 0);
+      apTargetVS = prefs.getInt("apVS", 0);
+      apYawDamper = prefs.getInt("apYaw", 0);
+      rawBallPos = prefs.getFloat("ballP", 0);
+      rawBankAngle = prefs.getFloat("bankA", 0);
+      flightDirectorActive = prefs.getInt("fdAct", 0);
+      flightDirectorBank = prefs.getFloat("fdBank", 0);
+      flightDirectorPitch = prefs.getFloat("fdPtch", 0);
+      navCourseToSteer = prefs.getInt("navCTS", 0);
+      rawAltitude = prefs.getInt("alt", 0);
+      kohlsman = prefs.getFloat("kohl", 29.92);
+      oat = prefs.getInt("oat", 15);
+      rawPitchAngle = prefs.getFloat("pitch", 0);
+      turnRate = prefs.getFloat("trnRt", 0);
+      rawVerticalSpeed = prefs.getInt("vSpd", 0);
+      navCourse = prefs.getFloat("navCrs", 0);
+
+      prefs.end();
+      return true;
+  }

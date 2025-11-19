@@ -1,0 +1,77 @@
+  COMMON (0-19) - Used by both modes
+
+  0:  Heading (Magnetic) 
+  1:  AP Heading Bug 
+  2:  Ground Speed 
+  3:  Ground Track (Magnetic)
+  4:  CDI Lateral Deviation
+  5:  CDI Needle Valid
+  6:  Glide Slope Needle Valid
+  6:  Glide Slope Deviation
+  7:  Nav Source 
+  8:  CDI To/From Flag
+  9:  Type (Approach)
+  10: [reserved]
+  11: [reserved]
+  12: [reserved]
+  13: [reserved]
+  14: [reserved]
+  15: [reserved]
+  16: [reserved]
+  17: [reserved]
+  18: [reserved]
+  19: [reserved]
+
+  HSI-SPECIFIC (20-39)
+
+  20: ADF Bearing
+  21: ADF Valid
+  22: CDI Bearing
+  24: Desired Track
+  25: Distance to Next GPS Waypoint
+  26: Desired Track Valid
+  27: GPS Bearing to Next Station
+  28: NAV CDI Label
+  29: Nav1 Bearing Angle
+  30: Nav1 Bearing Source
+  31: Nav2 Bearing Angle
+  32: Nav2 Bearing Source 
+  33: OBS Active
+  34: OBS Heading
+  35: CDI Scale Label
+  36: Wind Direction (Magnetic)
+  37: Wind Speed
+  38: [reserved]
+  39: [reserved]
+
+  PFD-SPECIFIC (40-79)
+
+  40: AP Active
+  41: Airspeed 
+  42: AP Alt Captured 
+  43: Indicated Altitude
+  44: AP Altitude Bug
+  45: Ball (Slip/Skid) Position
+  46: Bank Angle
+  47: FD Bank Angle
+  48: GPS Course to Steer
+  50: Kohlsman Value
+  51: AP Armed Lateral Mode
+  52: AP Lateral Mode
+  53: OAT
+  54: Pitch Angle 
+  55: FD Pitch 
+  56: FD Active
+  57: AP Speed Bug
+  58: AP Vertical Speed Bug
+  59: Turn Rate
+  60: AP Armed Vertical Mode
+  61: AP Vertical Mode
+  62: Vertical Speed
+  63: V-Speeds Array
+  64: AP Yaw Damper
+  65: [reserved]
+  66: [reserved]
+  67: [reserved]
+  68: [reserved]
+  69: [reserved]

@@ -3,7 +3,9 @@
 #include <vector>
 #include <memory>
 #include <functional>
+#include <Preferences.h>
 #include "MFEEPROM.h"
+#include "MFCustomDeviceTypes.h"
 
 static const char *TAG_CC_G5   = "CC_G5_PFD";
 static const char *TAG_I2C     = "CC_G5_I2C";
@@ -23,10 +25,13 @@ static const char *TAG_SPRITES = "CC_G5_SPRITES";
 
 
 #define CC_G5_SETTINGS_OFFSET 2048     // Well past MF config end (59 + 1496 = 1555)
+#define SETTINGS_VERSION 2
+#define STATE_VERSION 1 // For the save state when switching between pfd and hsi
+
 #define TFT_MAIN_TRANSPARENT  TFT_PINK // Just pick a color not used in either display
 
 struct CC_G5_Settings {
-    int     version               = 1;
+    int     version               = SETTINGS_VERSION;
     uint8_t bearingPointer1Source = 0; // 0: Off, 1: GPS, 2: Nav1, 3: Nav2, 4: ADF
     uint8_t bearingPointer2Source = 0; // 0: Off, 1: GPS, 2: Nav1, 3: Nav2, 4: ADF
     uint16_t Vr                    = 60;
@@ -39,19 +44,13 @@ struct CC_G5_Settings {
     uint16_t Vg                    = 80;
     uint16_t Vno                   = 145;
     uint16_t Vne                   = 182;
-    uint16_t Vflaplo               = 54;
-    uint16_t Vflaphi               = 100;
-    uint16_t Vgrnlo                = 61;
-    uint16_t Vgrnhi                = 145;
-    uint16_t Vyello                = 145;
-    uint16_t Vyelhi                = 182;
-    uint16_t Vredlo                = 182;
     uint8_t pitchScale            = 15;
     uint8_t speedScale            = 10;
     uint8_t baroUnit              = 0; // 0: inHg, 1: kPa, 3: mmHg
     uint8_t speedUnits            = 0; // 0:knot 1:mph 2:kph
     uint8_t distanceUnits         = 0; // 0: nm, 1: miles, 2:km
     uint8_t tempUnits             = 0; // 0: F, 1: C
+    uint8_t deviceType = CUSTOM_HSI_DEVICE;
 };
 
 extern CC_G5_Settings g5Settings;

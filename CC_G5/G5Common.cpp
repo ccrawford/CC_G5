@@ -134,12 +134,15 @@ CC_G5_Settings g5Settings;
 bool loadSettings()
 {
     if (MFeeprom.read_block(CC_G5_SETTINGS_OFFSET, g5Settings)) {
-        if (g5Settings.version != 2) {
+        if (g5Settings.version != SETTINGS_VERSION) {
             g5Settings = CC_G5_Settings(); // Reset to defaults
+//            ESP_LOGE("PREF", "Settings Version mismatch\n");
         }
+        ESP_LOGV("PREF", "Settings back. Device: %d\n", g5Settings.deviceType);
         return true;
     } else {
         // EEPROM read failed, defaults already set
+    //    ESP_LOGE("PREF", "Load settings failed.\n");
         return false;
     }
 }
@@ -150,5 +153,7 @@ bool saveSettings()
 
     retval = MFeeprom.write_block(CC_G5_SETTINGS_OFFSET, g5Settings);
     if (retval) MFeeprom.commit();
+  //  ESP_LOGV("PREF", "Settings saved. retval: %d\n", retval);
     return retval;
 }
+

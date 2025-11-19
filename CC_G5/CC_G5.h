@@ -4,6 +4,7 @@
 // #include "G5_Menu.h"
 #include "G5Common.h"
 #include "Sprites\backArrow.h"
+#include "Sprites\pfdIcon.h"
 
 // Pin definitions for ESP32
 //  #define I2C_SDA_PIN 15      // SDA pin (GPIO15)
@@ -27,7 +28,7 @@ class CC_G5_HSI
     class HSIMenu : public G5MenuBase<CC_G5_HSI>
     {
     private:
-        // PFD menu items
+        // HSI menu items
         class BackMenuItem : public MenuItemBase
         {
             HSIMenu *menu;
@@ -187,6 +188,29 @@ class CC_G5_HSI
             }
         };
 
+        class DeviceMenuItem : public MenuItemBase
+        {
+            HSIMenu *menu;
+
+        public:
+            DeviceMenuItem(HSIMenu *m) : menu(m) {}
+            String getTitle() override { return "PFD"; }
+            String getDisplayValue() override { return ""; }
+            int    getDisplayValueColor() override { return 0xFFFFFF; }
+            void   onEncoderPress() override { 
+                menu->parent->saveState();
+                g5Settings.deviceType = CUSTOM_PFD_DEVICE; 
+                saveSettings();
+                ESP.restart();
+            }
+            void   onEncoderTurn(int delta) override {}
+
+            // Icon support
+            const uint16_t* getIcon() override { return PFDICON_IMG_DATA; }
+            int getIconWidth() override { return PFDICON_IMG_WIDTH; }
+            int getIconHeight() override { return PFDICON_IMG_HEIGHT; }
+        };
+
     public:
         HSIMenu(CC_G5_HSI *p) : G5MenuBase<CC_G5_HSI>(p) {}
 
@@ -198,6 +222,7 @@ class CC_G5_HSI
             menuItems.push_back(std::make_unique<OBSCourseMenuItem>(this));
             menuItems.push_back(std::make_unique<Bearing1MenuItem>(this));
             menuItems.push_back(std::make_unique<Bearing2MenuItem>(this));
+            menuItems.push_back(std::make_unique<DeviceMenuItem>(this));
         }
 
         LGFX_Sprite *getTargetSprite() override
@@ -213,6 +238,12 @@ public:
     void attach();
     void detach();
     void set(int16_t messageID, char *setPoint);
+    void setCommon(int16_t messageID, char *setPoint);
+    void saveState();
+    bool restoreState();
+
+    void setHSI(int16_t messageId, char* setPoint);
+
     void update();
     // G5_Menu menu;
     HSIMenu hsiMenu{this};
@@ -222,6 +253,7 @@ public:
 private:
     bool    _initialised;
     uint8_t _pin1, _pin2, _pin3;
+
 
     void updateCommon();
     void updateGps();

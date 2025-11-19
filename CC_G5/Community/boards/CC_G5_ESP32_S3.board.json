@@ -33,7 +33,8 @@
     "ResetFirmwareFile": "reset.esp32_s3_devkit_merged.bin",
     "CustomDeviceTypes": [
       "CC_G5_HSI",
-      "CC_G5_PFD"
+      "CC_G5_PFD",
+      "CC_G5"
     ],
     "Community": {
       "Project": "CC G5",

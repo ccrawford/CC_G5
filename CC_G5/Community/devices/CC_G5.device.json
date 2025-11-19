@@ -1,0 +1,281 @@
+{
+  "$schema": "./mfdevice.schema.json",
+  "Info": {
+    "Label": "CCs CC_G5",
+    "Type": "CC_G5",
+    "Author": "CCrawford",
+    "URL": "https://github.com/ccrawford",
+    "Version": "2.5.1"
+  },
+  "Config": {
+    "Pins": ["DummyPin"],
+    "isI2C": false
+  },
+  "MessageTypes":  [
+      {
+        "id": 0,
+        "Label": "AP Heading Bug",
+        "description": "Autopilot heading bug angle in degrees"
+      },
+      {
+        "id": 1,
+        "Label": "Approach Type",
+        "description": "GPS approach type identifier"
+      },
+      {
+        "id": 2,
+        "Label": "CDI Lateral Deviation",
+        "description": "Course deviation indicator lateral needle position"
+      },
+      {
+        "id": 3,
+        "Label": "CDI Needle Valid",
+        "description": "CDI needle has valid navigation data"
+      },
+      {
+        "id": 4,
+        "Label": "CDI To/From Flag",
+        "description": "Navigation to/from indicator (0=to, 1=from)"
+      },
+      {
+        "id": 5,
+        "Label": "Glide Slope Deviation",
+        "description": "Glide slope vertical deviation"
+      },
+      {
+        "id": 6,
+        "Label": "Glide Slope Needle Valid",
+        "description": "Glide slope needle has valid data"
+      },
+      {
+        "id": 7,
+        "Label": "Ground Speed",
+        "description": "GPS ground speed in knots"
+      },
+      {
+        "id": 8,
+        "Label": "Ground Track (Magnetic)",
+        "description": "GPS ground track in magnetic degrees"
+      },
+      {
+        "id": 9,
+        "Label": "Heading (Magnetic)",
+        "description": "Current magnetic heading in degrees"
+      },
+      {
+        "id": 10,
+        "Label": "Nav Source",
+        "description": "Navigation source (0=NAV, 1=GPS)"
+      },
+      {
+        "id": 30,
+        "Label": "ADF Bearing",
+        "description": "ADF station bearing in magnetic degrees"
+      },
+      {
+        "id": 31,
+        "Label": "ADF Valid",
+        "description": "ADF signal is valid"
+      },
+      {
+        "id": 32,
+        "Label": "CDI Bearing",
+        "description": "CDI bearing/course in degrees"
+      },
+      {
+        "id": 33,
+        "Label": "CDI Scale Label",
+        "description": "CDI scale type (ENR, TERM, LPV, etc.)"
+      },
+      {
+        "id": 34,
+        "Label": "Desired Track",
+        "description": "GPS desired track to waypoint in degrees"
+      },
+      {
+        "id": 35,
+        "Label": "Desired Track Valid",
+        "description": "Desired track data is valid"
+      },
+      {
+        "id": 36,
+        "Label": "Distance to Next GPS Waypoint",
+        "description": "Distance to next waypoint in nautical miles"
+      },
+      {
+        "id": 37,
+        "Label": "GPS Bearing to Next Station",
+        "description": "GPS bearing to next waypoint in degrees"
+      },
+        {
+    "id": 84,
+    "Label": "NAV OBS Course",
+    "description": "NAV OBS course setting in degrees"
+  },
+      {
+        "id": 38,
+        "Label": "NAV CDI Label",
+        "description": "Navigation CDI source label index"
+      },
+      {
+        "id": 39,
+        "Label": "Nav1 Bearing Angle",
+        "description": "Nav1 station bearing in degrees"
+      },
+      {
+        "id": 40,
+        "Label": "Nav1 Bearing Source",
+        "description": "Nav1 station type (VOR, ILS, etc.)"
+      },
+      {
+        "id": 41,
+        "Label": "Nav2 Bearing Angle",
+        "description": "Nav2 station bearing in degrees"
+      },
+      {
+        "id": 42,
+        "Label": "Nav2 Bearing Source",
+        "description": "Nav2 station type (VOR, ILS, etc.)"
+      },
+      {
+        "id": 43,
+        "Label": "OBS Active",
+        "description": "OBS mode is active"
+      },
+      {
+        "id": 44,
+        "Label": "OBS Heading",
+        "description": "OBS selected course in degrees"
+      },
+      {
+        "id": 45,
+        "Label": "Wind Direction (Magnetic)",
+        "description": "Wind direction in magnetic degrees"
+      },
+      {
+        "id": 46,
+        "Label": "Wind Speed",
+        "description": "Wind speed in knots"
+      },
+      {
+        "id": 60,
+        "Label": "Airspeed",
+        "description": "Indicated airspeed in knots"
+      },
+      {
+        "id": 61,
+        "Label": "AP Active",
+        "description": "Autopilot master is active"
+      },
+      {
+        "id": 62,
+        "Label": "AP Alt Captured",
+        "description": "Autopilot has captured target altitude"
+      },
+      {
+        "id": 63,
+        "Label": "AP Altitude Bug",
+        "description": "Autopilot target altitude in feet"
+      },
+      {
+        "id": 64,
+        "Label": "AP Armed Lateral Mode",
+        "description": "Autopilot armed lateral mode"
+      },
+      {
+        "id": 65,
+        "Label": "AP Armed Vertical Mode",
+        "description": "Autopilot armed vertical mode"
+      },
+      {
+        "id": 66,
+        "Label": "AP Lateral Mode",
+        "description": "Autopilot active lateral mode"
+      },
+      {
+        "id": 67,
+        "Label": "AP Speed Bug",
+        "description": "Autopilot target airspeed in knots"
+      },
+      {
+        "id": 68,
+        "Label": "AP Vertical Mode",
+        "description": "Autopilot active vertical mode"
+      },
+      {
+        "id": 69,
+        "Label": "AP Vertical Speed Bug",
+        "description": "Autopilot target vertical speed in fpm"
+      },
+      {
+        "id": 70,
+        "Label": "AP Yaw Damper",
+        "description": "Yaw damper is active"
+      },
+      {
+        "id": 71,
+        "Label": "Ball (Slip/Skid) Position",
+        "description": "Slip/skid ball position"
+      },
+      {
+        "id": 72,
+        "Label": "Bank Angle",
+        "description": "Aircraft bank angle in degrees"
+      },
+      {
+        "id": 73,
+        "Label": "FD Active",
+        "description": "Flight director is active"
+      },
+      {
+        "id": 74,
+        "Label": "FD Bank Angle",
+        "description": "Flight director commanded bank in degrees"
+      },
+      {
+        "id": 75,
+        "Label": "FD Pitch",
+        "description": "Flight director commanded pitch in degrees"
+      },
+      {
+        "id": 76,
+        "Label": "GPS Course to Steer",
+        "description": "GPS navigation course to steer in degrees"
+      },
+      {
+        "id": 77,
+        "Label": "Indicated Altitude",
+        "description": "Current indicated altitude in feet"
+      },
+      {
+        "id": 78,
+        "Label": "Kohlsman Value",
+        "description": "Altimeter barometric pressure setting"
+      },
+      {
+        "id": 79,
+        "Label": "OAT",
+        "description": "Outside air temperature"
+      },
+      {
+        "id": 80,
+        "Label": "Pitch Angle",
+        "description": "Aircraft pitch angle in degrees"
+      },
+      {
+        "id": 81,
+        "Label": "Turn Rate",
+        "description": "Turn rate indicator value"
+      },
+      {
+        "id": 82,
+        "Label": "V-Speeds Array",
+        "description": "V-speed reference markers (pipe-delimited)"
+      },
+      {
+        "id": 83,
+        "Label": "Vertical Speed",
+        "description": "Vertical speed in feet per minute"
+      }
+    ]
+}

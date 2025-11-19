@@ -5,6 +5,7 @@
 #include "SpeedTrend.hpp"
 #include "Sprites\backArrow.h"
 #include "Sprites\setupIcon.h"
+#include "Sprites\hsiIcon.h"
 
 // #include "4inchLCDConfig.h"
 
@@ -22,10 +23,10 @@
 #define SCREEN_W 480
 #define SCREEN_H 480
 
-#define AP_BAR_HEIGHT 40  
-#define TOP_BAR_HEIGHT 40   // This is part of the attitude sprite space.
-#define BOTTOM_BAR_HEIGHT 40 
-#define ATTITUDE_HEIGHT     400
+#define AP_BAR_HEIGHT     40
+#define TOP_BAR_HEIGHT    40 // This is part of the attitude sprite space.
+#define BOTTOM_BAR_HEIGHT 40
+#define ATTITUDE_HEIGHT   400
 
 #define ATTITUDE_WIDTH      480
 #define ATTITUDE_COLOR_BITS 8
@@ -246,6 +247,30 @@ class CC_G5_PFD
             }
         }
 
+        class DeviceMenuItem : public MenuItemBase
+        {
+            PFDMenu *menu;
+
+        public:
+            DeviceMenuItem(PFDMenu *m) : menu(m) {}
+            String getTitle() override { return "HSI"; }
+            String getDisplayValue() override { return ""; }
+            int    getDisplayValueColor() override { return 0xFFFFFF; }
+            void   onEncoderPress() override
+            {
+                menu->parent->saveState();
+                g5Settings.deviceType = CUSTOM_HSI_DEVICE;
+                saveSettings();
+                ESP.restart();
+            }
+            void onEncoderTurn(int delta) override {}
+
+            // Icon support
+            const uint16_t *getIcon() override { return HSIICON_IMG_DATA; }
+            int             getIconWidth() override { return HSIICON_IMG_WIDTH; }
+            int             getIconHeight() override { return HSIICON_IMG_HEIGHT; }
+        };
+
         void createMenuItems() override
         {
             menuItems.push_back(std::make_unique<BackMenuItem>(this));
@@ -253,6 +278,7 @@ class CC_G5_PFD
             menuItems.push_back(std::make_unique<TrackMenuItem>(this));
             menuItems.push_back(std::make_unique<AltitudeMenuItem>(this));
             menuItems.push_back(std::make_unique<SettingsMenuItem>(this));
+            menuItems.push_back(std::make_unique<DeviceMenuItem>(this));
         }
 
         LGFX_Sprite *getTargetSprite() override
@@ -328,6 +354,10 @@ public:
     void attach();
     void detach();
     void set(int16_t messageID, char *setPoint);
+    void setCommon(int16_t messageID, char *setPoint);
+    void setPFD(int16_t messageID, char *setPoint);
+    void saveState();
+    bool restoreState();
     void update();
     // G5_Menu menu;
     PFDMenu              pfdMenu{this};
@@ -346,7 +376,7 @@ private:
 
     void updateInputValues();
 
-    void setVSpeeds(char*);
+    void setVSpeeds(char *);
 
     void drawAttitude();
     void drawSpeedTape();
@@ -422,7 +452,8 @@ public:
     float navCourse = 256.0f;
 
     int gsiNeedleValid = 1;
-    int gsiNeedle      = 10; // Vertical error. (A:NAV GSI:1,Number) +/-119
+    float rawGsiNeedle   = 0.0;
+    float gsiNeedle      = 10.0; // Vertical error. (A:NAV GSI:1,Number) +/-119
 
     int cdiNeedleValid = 1;
     int cdiToFrom      = 0;

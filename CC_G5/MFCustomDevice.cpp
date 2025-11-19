@@ -2,6 +2,7 @@
 #include "commandmessenger.h"
 #include "allocateMem.h"
 #include "MFEEPROM.h"
+
 #ifdef HAS_CONFIG_IN_FLASH
 #include "MFCustomDevicesConfig.h"
 #else
@@ -31,17 +32,19 @@ extern MFEEPROM MFeeprom;
 // reads a string from EEPROM or Flash at given address which is '.' terminated and saves it to the buffer
 bool MFCustomDevice::getStringFromMem(uint16_t addrMem, char *buffer, bool configFromFlash)
 {
-    //Serial.printf("GetString\n");
+    // Serial.printf("GetString\n");
 
-    char     temp     = 0;
-    uint8_t  counter  = 0;
-    uint16_t length   = MFeeprom.get_length();
+    char     temp    = 0;
+    uint8_t  counter = 0;
+    uint16_t length  = MFeeprom.get_length();
     do {
         if (configFromFlash) {
+            Serial.println("config from flash.");
             temp = pgm_read_byte_near(CustomDeviceConfig + addrMem++);
             if (addrMem > sizeof(CustomDeviceConfig))
-                return false;
+            return false;
         } else {
+            Serial.println("config not from flash.");
             temp = MFeeprom.read_byte(addrMem++);
             if (addrMem > length)
                 return false;
@@ -53,7 +56,7 @@ bool MFCustomDevice::getStringFromMem(uint16_t addrMem, char *buffer, bool confi
     } while (temp != '.'); // reads until limiter '.' and locates the next free buffer position
     buffer[counter - 1] = 0x00; // replace '.' by NULL, terminates the string
 
-    //Serial.printf("GotString '%s'\n", buffer);
+    // Serial.printf("GotString '%s'\n", buffer);
 
     return true;
 }
@@ -80,20 +83,29 @@ void MFCustomDevice::attach(uint16_t adrPin, uint16_t adrType, uint16_t adrConfi
         Do something which is required to setup your custom device
     ********************************************************************************** */
 
-    char    parameter[MEMLEN_STRING_BUFFER];
+    // char parameter[MEMLEN_STRING_BUFFER];
 
     /* **********************************************************************************
         Read the Type from the EEPROM or Flash, copy it into a buffer and evaluate it
         The string get's NOT stored as this would need a lot of RAM, instead a variable
         is used to store the type
     ********************************************************************************** */
+
+    // Let's not figure out the type from config, but instead from the device.
+    loadSettings(); // From G5Common
+
+    _customType = g5Settings.deviceType;
+//    Serial.printf("****In custom device attach. _customType is %d, settings type: %d and the HSI type is: %d\n", _customType, g5Settings.deviceType, CUSTOM_HSI_DEVICE);
+
+    /*
     getStringFromMem(adrType, parameter, configFromFlash);
     if (strcmp(parameter, "CC_G5_HSI") == 0)
-        _customType = MY_CUSTOM_DEVICE_1;
+        _customType = CUSTOM_HSI_DEVICE;
     if (strcmp(parameter, "CC_G5_PFD") == 0)
-        _customType = MY_CUSTOM_DEVICE_2;
+        _customType = CUSTOM_PFD_DEVICE;
+        */
 
-    if (_customType == MY_CUSTOM_DEVICE_1) {
+    if (_customType == CUSTOM_HSI_DEVICE) {
         /* **********************************************************************************
             Check if the device fits into the device buffer
         ********************************************************************************** */
@@ -103,12 +115,14 @@ void MFCustomDevice::attach(uint16_t adrPin, uint16_t adrType, uint16_t adrConfi
             return;
         }
 
-        
-        _mydevice = new (allocateMemory(sizeof(CC_G5_HSI))) CC_G5_HSI();
-        _mydevice->attach();
-        _mydevice->begin();
+        _hsiDevice = new (allocateMemory(sizeof(CC_G5_HSI))) CC_G5_HSI();
+  //      Serial.printf("*****Attaching an HSI\n");
+        _hsiDevice->attach();
+        _hsiDevice->begin();
         _initialized = true;
-    } else if (_customType == MY_CUSTOM_DEVICE_2) {
+    } else if (_customType == CUSTOM_PFD_DEVICE) {
+
+        Serial.printf("*****Attaching a PFD\n");
         /* **********************************************************************************
             Check if the device fits into the device buffer
         ********************************************************************************** */
@@ -118,13 +132,12 @@ void MFCustomDevice::attach(uint16_t adrPin, uint16_t adrType, uint16_t adrConfi
             return;
         }
 
-        
-        _mydevice2 = new (allocateMemory(sizeof(CC_G5_PFD))) CC_G5_PFD();
-        _mydevice2->attach();
+        _pfdDevice = new (allocateMemory(sizeof(CC_G5_PFD))) CC_G5_PFD();
+        _pfdDevice->attach();
         // if your custom device does not need a separate begin() function, delete the following
         // or this function could be called from the custom constructor or attach() function
- //       Serial.printf("mydevice2 attached");
-        _mydevice2->begin();
+        //       Serial.printf("mydevice2 attached");
+        _pfdDevice->begin();
         _initialized = true;
     } else {
         cmdMessenger.sendCmd(kStatus, F("Custom Device is not supported by this firmware version"));
@@ -139,10 +152,10 @@ void MFCustomDevice::attach(uint16_t adrPin, uint16_t adrType, uint16_t adrConfi
 void MFCustomDevice::detach()
 {
     _initialized = false;
-    if (_customType == MY_CUSTOM_DEVICE_1) {
-        _mydevice->detach();
-    } else if (_customType == MY_CUSTOM_DEVICE_2) {
-        _mydevice2->detach();
+    if (_customType == CUSTOM_HSI_DEVICE) {
+        _hsiDevice->detach();
+    } else if (_customType == CUSTOM_PFD_DEVICE) {
+        _pfdDevice->detach();
     }
 }
 
@@ -161,10 +174,10 @@ void MFCustomDevice::update()
     /* **********************************************************************************
         Do something if required
     ********************************************************************************** */
-    if (_customType == MY_CUSTOM_DEVICE_1) {
-        _mydevice->update();
-    } else if (_customType == MY_CUSTOM_DEVICE_2) {
-        _mydevice2->update();
+    if (_customType == CUSTOM_HSI_DEVICE) {
+        _hsiDevice->update();
+    } else if (_customType == CUSTOM_PFD_DEVICE) {
+        _pfdDevice->update();
     }
 }
 
@@ -172,14 +185,30 @@ void MFCustomDevice::update()
     If an output for the custom device is defined in the connector,
     this function gets called when a new value is available.
     It gets called from CustomerDevice::OnSet()
+
+    CAC UPDATE:
+    We will use this as a router. Some messages go to both devcies, some to the specific one.
+    I have organized the IDs into bunches for easy routing.
 ********************************************************************************** */
 void MFCustomDevice::set(int16_t messageID, char *setPoint)
 {
     if (!_initialized) return;
 
-    if (_customType == MY_CUSTOM_DEVICE_1) {
-        _mydevice->set(messageID, setPoint);
-    } else if (_customType == MY_CUSTOM_DEVICE_2) {
-        _mydevice2->set(messageID, setPoint);
-    }
+     if (messageID < 30) {
+         // Common messages (0-29) - route to active device
+         if (_customType == CUSTOM_HSI_DEVICE)
+             _hsiDevice->setCommon(messageID, setPoint);
+         else if (_customType == CUSTOM_PFD_DEVICE)
+             _pfdDevice->setCommon(messageID, setPoint);
+     }
+     else if (messageID < 60) {
+         // HSI-specific (30-59) - only process in HSI mode
+         if (_customType == CUSTOM_HSI_DEVICE)
+             _hsiDevice->setHSI(messageID, setPoint);
+     }
+     else {
+         // PFD-specific (60-99) - only process in PFD mode
+         if (_customType == CUSTOM_PFD_DEVICE)
+             _pfdDevice->setPFD(messageID, setPoint);
+     }
 }
