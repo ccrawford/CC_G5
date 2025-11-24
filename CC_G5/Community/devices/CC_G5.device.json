@@ -103,6 +103,11 @@
         "description": "Distance to next waypoint in nautical miles"
       },
       {
+        "id": 47,
+        "Label": "ETE to Next GPS WP",
+        "description": "Time to next GPS waypoint in seconds"
+      },
+      {
         "id": 37,
         "Label": "GPS Bearing to Next Station",
         "description": "GPS bearing to next waypoint in degrees"
@@ -161,6 +166,11 @@
         "id": 60,
         "Label": "Airspeed",
         "description": "Indicated airspeed in knots"
+      },
+      {
+        "id": 86,
+        "Label": "True Airspeed",
+        "description": "True airspeed in knots"
       },
       {
         "id": 61,
@@ -248,6 +258,11 @@
         "description": "Current indicated altitude in feet"
       },
       {
+        "id": 85,
+        "Label": "Density Altitude",
+        "description": "Current Density altitude in feet"
+      },
+      {
         "id": 78,
         "Label": "Kohlsman Value",
         "description": "Altimeter barometric pressure setting"
@@ -270,7 +285,7 @@
       {
         "id": 82,
         "Label": "V-Speeds Array",
-        "description": "V-speed reference markers (pipe-delimited)"
+        "description": "V-speed reference markers ('Vs0|Vs1|Vr|Vx|Vy|Vg|Va|Vfe|Vno|Vne') Vr, x, y, g, a are displayed. Use 0 if you don't want to display a value. Example for C172: '41|52|55|62|73|68|99|111|129|163'"
       },
       {
         "id": 83,

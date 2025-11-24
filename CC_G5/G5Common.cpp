@@ -130,6 +130,7 @@ float smoothAngle(float input, float current, float alpha, float threshold = 0.5
 }
 
 CC_G5_Settings g5Settings;
+G5State g5State;
 
 bool loadSettings()
 {

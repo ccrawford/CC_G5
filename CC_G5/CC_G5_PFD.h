@@ -38,6 +38,8 @@
 
 #define TFT_BACKGROUND_COLOR TFT_BLACK
 
+#define SPEED_ALIVE_SPEED 20
+
 #define TEXT_BOX_HEIGHT 40
 #define NAVSOURCE_GPS   1
 #define NAVSOURCE_NAV   0
@@ -79,7 +81,7 @@ class CC_G5_PFD
             String getDisplayValue() override
             {
                 char buffer[8];
-                sprintf(buffer, "%03d°", menu->parent->headingBugAngle);
+                sprintf(buffer, "%03d°", g5State.headingBugAngle);
                 return String(buffer);
             }
             int  getDisplayValueColor() override { return 0x07FF; } // Cyan
@@ -100,14 +102,14 @@ class CC_G5_PFD
             String getDisplayValue() override
             {
                 char buffer[8];
-                sprintf(buffer, "%03d°", (int)menu->parent->groundTrack);
+                sprintf(buffer, "%03d°", (int)g5State.groundTrack);
                 return String(buffer);
             }
             int getDisplayValueColor() override { return 0xF81F; } // Magenta
             // Only show when we're in VOR or Localizer mode.
             bool isVisible() const override
             {
-                return menu->parent->navSource != NAVSOURCE_GPS;
+                return g5State.navSource != NAVSOURCE_GPS;
             }
             void onEncoderPress() override { menu->enterAdjustmentMode(this); }
             void onEncoderTurn(int delta) override
@@ -126,8 +128,8 @@ class CC_G5_PFD
             String getDisplayValue() override
             {
                 char buffer[8];
-                if (menu->parent->targetAltitude)
-                    sprintf(buffer, "%d", menu->parent->targetAltitude);
+                if (g5State.targetAltitude)
+                    sprintf(buffer, "%d", g5State.targetAltitude);
                 else
                     sprintf(buffer, "%s", "----");
                 return String(buffer);
@@ -383,12 +385,15 @@ private:
     void drawSpeedPointers();
     void drawSpeedTrend();
     void drawAltTape();
+    void drawDensityAlt();
     void drawHorizonMarker();
     void drawGroundSpeed();
     void drawKohlsman();
     void drawAltTarget();
     void drawBall();
     void drawHeadingTape();
+    void blinkAP();
+    unsigned long apBlinkEnd = 0;
 
     void drawCDIBar();
     void drawGlideSlope();
@@ -410,29 +415,7 @@ private:
 public:
     // Sprite management for menu system
 
-    float headingAngle    = 0.0f;
-    float rawHeadingAngle = 90.0f;
-
-    float bankAngle    = -178.0f;
-    float rawBankAngle = 10.0f;
-
-    float pitchAngle    = 4.0f;
-    float rawPitchAngle = 10.0f;
-
-    float airspeed    = 5;
-    float rawAirspeed = 60;
-
-    int altitude    = 300;
-    int rawAltitude = -100;
-
-    int   groundSpeed = 55;
-    float kohlsman    = 29.94;
-
-    int verticalSpeed    = -1000;
-    int rawVerticalSpeed = 500;
-
-    // Target alt and alerting state
-    int           targetAltitude     = 500;
+    // Alert state - PFD-specific display logic (keep as member)
     bool          alert1000Triggered = false;
     bool          alert200Triggered  = false;
     bool          altTargetReached   = false;
@@ -440,47 +423,53 @@ public:
     bool          altAlertActive     = false;
     uint16_t      alertColor         = TFT_WHITE;
 
-    float groundTrack      = headingAngle + 5;
-    int   navCourseToSteer = 21;
-    float turnRate         = -3.0;
-    int   headingBugAngle  = 0;
-
-    float ballPos    = 0.0;
-    float rawBallPos = 0.8;
-
-    int   navSource = 1;
-    float navCourse = 256.0f;
-
-    int gsiNeedleValid = 1;
-    float rawGsiNeedle   = 0.0;
-    float gsiNeedle      = 10.0; // Vertical error. (A:NAV GSI:1,Number) +/-119
-
-    int cdiNeedleValid = 1;
-    int cdiToFrom      = 0;
-
-    float cdiOffset    = 10.0; // The deviation scale offset.
-    float rawCdiOffset = 10.0; // The deviation scale offset.
-
-    int   flightDirectorActive = 1;
-    float flightDirectorPitch  = 5.0;
-    float flightDirectorBank   = -10.0;
-
-    bool terminalModeActive = true;
-    int  navCDILabelIndex   = 0; // NavCDILabel. GPS:0, LOC1:1, VOR1:2, DME1:3, LOC2:4, VOR2:5, DME2:6, Blank:7
-    int  gpsApproachType    = 0; // gps approach approach type values. 99: none active.
-
-    int oat = 30;
-
-    int cdiScaleLabel = 1;
-
-    // Autopilot
-    int apActive      = 0;
-    int apVMode       = 0;
-    int apLMode       = 0;
-    int apVArmedMode  = 0;
-    int apLArmedMode  = 0;
-    int apYawDamper   = 0;
-    int apTargetSpeed = 0;
-    int apAltCaptured = 0; // THIS IS NOT THE TARGET ALT. it's the displayed captured altitude (nearest 10')
-    int apTargetVS    = 0;
+    // OLD LOCAL VARIABLES - now in g5State (keeping for reference)
+    // float headingAngle    = 0.0f;
+    // float rawHeadingAngle = 90.0f;
+    // float bankAngle    = -178.0f;
+    // float rawBankAngle = 10.0f;
+    // float pitchAngle    = 4.0f;
+    // float rawPitchAngle = 10.0f;
+    // float airspeed    = 5;
+    // float rawAirspeed = 60;
+    // int altitude    = 300;
+    // int rawAltitude = -100;
+    // int   groundSpeed = 55;
+    // float kohlsman    = 29.94;
+    // int verticalSpeed    = -1000;
+    // int rawVerticalSpeed = 500;
+    // int           targetAltitude     = 500;
+    // float groundTrack      = headingAngle + 5;
+    // int   navCourseToSteer = 21;
+    // float turnRate         = -3.0;
+    // int   headingBugAngle  = 0;
+    // float ballPos    = 0.0;
+    // float rawBallPos = 0.8;
+    // int   navSource = 1;
+    // float navCourse = 256.0f;
+    // int gsiNeedleValid = 1;
+    // float rawGsiNeedle   = 0.0;
+    // float gsiNeedle      = 10.0; // Vertical error. (A:NAV GSI:1,Number) +/-119
+    // int cdiNeedleValid = 1;
+    // int cdiToFrom      = 0;
+    // float cdiOffset    = 10.0; // The deviation scale offset.
+    // float rawCdiOffset = 10.0; // The deviation scale offset.
+    // int   flightDirectorActive = 1;
+    // float flightDirectorPitch  = 5.0;
+    // float flightDirectorBank   = -10.0;
+    // bool terminalModeActive = true;
+    // int  navCDILabelIndex   = 0; // NavCDILabel. GPS:0, LOC1:1, VOR1:2, DME1:3, LOC2:4, VOR2:5, DME2:6, Blank:7
+    // int  gpsApproachType    = 0; // gps approach approach type values. 99: none active.
+    // int oat = 30;
+    // int cdiScaleLabel = 1;
+    // // Autopilot
+    // int apActive      = 0;
+    // int apVMode       = 0;
+    // int apLMode       = 0;
+    // int apVArmedMode  = 0;
+    // int apLArmedMode  = 0;
+    // int apYawDamper   = 0;
+    // int apTargetSpeed = 0;
+    // int apAltCaptured = 0; // THIS IS NOT THE TARGET ALT. it's the displayed captured altitude (nearest 10')
+    // int apTargetVS    = 0;
 };

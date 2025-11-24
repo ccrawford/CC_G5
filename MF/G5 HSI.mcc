@@ -1,6 +1,20 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <MobiflightConnector>
   <outputs>
+    <config guid="4ae17589-e502-4a97-9e8d-79e704f98d66">
+      <active>false</active>
+      <description>-------------- PFD ----------------</description>
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <source type="SimConnect" VarType="LVAR" Value="" />
+        <test type="Float" value="1" />
+        <modifiers>
+          <comparison active="True" value="" operand="=" ifValue="1" elseValue="0" />
+        </modifiers>
+        <display type="" serial="" trigger="change" pin="" pinBrightness="255" />
+        <preconditions />
+        <configrefs />
+      </settings>
+    </config>
     <config guid="5fa90404-4919-42a5-8949-40860ad217ca">
       <active>true</active>
       <description>Pitch</description>
@@ -10,7 +24,7 @@
         <modifiers>
           <transformation active="True" expression="Round($,2)" />
         </modifiers>
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="80" value="Round($,1)" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="80" value="Round($,1)" />
         <preconditions />
         <configrefs />
       </settings>
@@ -24,21 +38,7 @@
         <modifiers>
           <transformation active="True" expression="Round($,1)" />
         </modifiers>
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="72" value="$" />
-        <preconditions />
-        <configrefs />
-      </settings>
-    </config>
-    <config guid="7f9eb833-1179-442f-94fc-c59f021428a2">
-      <active>true</active>
-      <description>Airspeed</description>
-      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <source type="SimConnect" VarType="CODE" Value="(A:AIRSPEED INDICATED,Knots)" UUID="bbb26a5f-319a-49bf-b48a-1f4e0da43e32" />
-        <test type="Float" value="1" />
-        <modifiers>
-          <transformation active="True" expression="Round($,2)" />
-        </modifiers>
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="60" value="$" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="72" value="$" />
         <preconditions />
         <configrefs />
       </settings>
@@ -52,7 +52,7 @@
         <modifiers>
           <transformation active="True" expression="Round($,2)" />
         </modifiers>
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="81" value="$" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="81" value="$" />
         <preconditions />
         <configrefs />
       </settings>
@@ -66,101 +66,21 @@
         <modifiers>
           <transformation active="True" expression="Round($,2)" />
         </modifiers>
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="71" value="$" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="71" value="$" />
         <preconditions />
         <configrefs />
       </settings>
     </config>
-    <config guid="d5b7ed47-2370-4f4f-9a91-aa9a3c165c01">
+    <config guid="7f9eb833-1179-442f-94fc-c59f021428a2">
       <active>true</active>
-      <description>NavCourse</description>
+      <description>Airspeed</description>
       <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <source type="SimConnect" VarType="CODE" Value="(A:NAV OBS:1,Degrees)" UUID="6bbf319a-5031-477e-ba46-8a24936f7d25" />
+        <source type="SimConnect" VarType="CODE" Value="(A:AIRSPEED INDICATED,Knots)" UUID="bbb26a5f-319a-49bf-b48a-1f4e0da43e32" />
         <test type="Float" value="1" />
-        <modifiers />
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="84" value="$" />
-        <preconditions />
-        <configrefs />
-      </settings>
-    </config>
-    <config guid="40d6d08b-0268-4cb8-a538-2046d5497d5f">
-      <active>true</active>
-      <description>Altitude</description>
-      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <source type="SimConnect" VarType="CODE" Value="(A:INDICATED ALTITUDE,Feet)" UUID="3110ef7c-3b03-4d05-99d6-fb582d3ac3f8" />
-        <test type="Float" value="1" />
-        <modifiers>
-          <transformation active="True" expression="Round($,0)" />
-        </modifiers>
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="77" value="$" />
-        <preconditions />
-        <configrefs />
-      </settings>
-    </config>
-    <config guid="4053d35d-7660-4dbe-9be3-ef8bb6aa9584">
-      <active>true</active>
-      <description> Target Alt</description>
-      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <source type="SimConnect" VarType="CODE" Value="(A:AUTOPILOT ALTITUDE LOCK VAR:1,Feet)" UUID="7ac4737f-b97d-4bbb-af35-7067a5f1c1aa" />
-        <test type="Float" value="6000" />
-        <modifiers />
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="63" value="$" />
-        <preconditions />
-        <configrefs />
-      </settings>
-    </config>
-    <config guid="38f862bf-fa83-4866-886c-e43fe44de270">
-      <active>true</active>
-      <description>Kohlsman</description>
-      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <source type="SimConnect" VarType="CODE" Value="(A:KOHLSMAN SETTING HG:1, inHg)" UUID="2f595653-50dd-4394-8895-af62769febe5" />
-        <test type="Float" value="23.92334" />
         <modifiers>
           <transformation active="True" expression="Round($,2)" />
         </modifiers>
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="78" value="$" />
-        <preconditions />
-        <configrefs />
-      </settings>
-    </config>
-    <config guid="283a42bf-3827-40a2-a8fc-dbdd83f2679a">
-      <active>true</active>
-      <description>Heading Bug</description>
-      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <source type="SimConnect" VarType="CODE" Value="(A:AUTOPILOT HEADING LOCK DIR,Degrees)" UUID="e47210e8-7db4-4980-9f57-b3682fb3742d" />
-        <test type="Float" value="1" />
-        <modifiers>
-          <transformation active="True" expression="Round($,0)" />
-        </modifiers>
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="0" value="$" />
-        <preconditions />
-        <configrefs />
-      </settings>
-    </config>
-    <config guid="28f4cd8f-5f9c-4642-aade-0167642cdbd5">
-      <active>true</active>
-      <description>Vertical Speed</description>
-      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <source type="SimConnect" VarType="CODE" Value="(A:VERTICAL SPEED,Feet per minute)" UUID="d9f02170-cc32-474c-b680-8fa1d8891677" />
-        <test type="Float" value="1" />
-        <modifiers>
-          <transformation active="True" expression="Round($,0)" />
-        </modifiers>
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="83" value="$" />
-        <preconditions />
-        <configrefs />
-      </settings>
-    </config>
-    <config guid="f3c68c65-2ff4-4a09-8cd3-a627803f5661">
-      <active>true</active>
-      <description>Ground Track</description>
-      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <source type="SimConnect" VarType="CODE" Value="(A:GPS GROUND MAGNETIC TRACK, Degrees)" UUID="b598b56d-f20d-46aa-82ba-2306e18c76c3" />
-        <test type="Float" value="1" />
-        <modifiers>
-          <transformation active="True" expression="Round($,1)" />
-        </modifiers>
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="8" value="$" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="60" value="$" />
         <preconditions />
         <configrefs />
       </settings>
@@ -174,7 +94,89 @@
         <modifiers>
           <transformation active="True" expression="Round($,0)" />
         </modifiers>
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="7" value="$" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="7" value="$" />
+        <preconditions />
+        <configrefs />
+      </settings>
+    </config>
+    <config guid="34c466d6-9bd8-4ca9-8309-dc6244c9915a">
+      <active>true</active>
+      <description>vSpeedArray</description>
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <source type="SimConnect" VarType="LVAR" Value="" />
+        <test type="Float" value="1" />
+        <modifiers>
+          <transformation active="True" expression="'48|52|55|62|73|68|99|111|129|163'" />
+        </modifiers>
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="82" value="$" />
+        <preconditions />
+        <configrefs />
+      </settings>
+    </config>
+    <config guid="11437de2-373f-4a5c-acd2-0c2f59564ab4">
+      <active>true</active>
+      <description>Outside Air Temperature</description>
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <source type="SimConnect" VarType="CODE" Value="(A:AMBIENT TEMPERATURE,Celsius)" UUID="5d998d1b-32d7-4e17-aac1-3ee6601f136a" />
+        <test type="Float" value="1" />
+        <modifiers>
+          <transformation active="True" expression="Round($,0)" />
+        </modifiers>
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="79" value="$" />
+        <preconditions />
+        <configrefs />
+      </settings>
+    </config>
+    <config guid="40d6d08b-0268-4cb8-a538-2046d5497d5f">
+      <active>true</active>
+      <description>Altitude</description>
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <source type="SimConnect" VarType="CODE" Value="(A:INDICATED ALTITUDE,Feet)" UUID="3110ef7c-3b03-4d05-99d6-fb582d3ac3f8" />
+        <test type="Float" value="1" />
+        <modifiers>
+          <transformation active="True" expression="Round($,0)" />
+        </modifiers>
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="77" value="$" />
+        <preconditions />
+        <configrefs />
+      </settings>
+    </config>
+    <config guid="28f4cd8f-5f9c-4642-aade-0167642cdbd5">
+      <active>true</active>
+      <description>Vertical Speed</description>
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <source type="SimConnect" VarType="CODE" Value="(A:VERTICAL SPEED,Feet per minute)" UUID="d9f02170-cc32-474c-b680-8fa1d8891677" />
+        <test type="Float" value="1" />
+        <modifiers>
+          <transformation active="True" expression="Round($,0)" />
+        </modifiers>
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="83" value="$" />
+        <preconditions />
+        <configrefs />
+      </settings>
+    </config>
+    <config guid="4053d35d-7660-4dbe-9be3-ef8bb6aa9584">
+      <active>true</active>
+      <description>Target Alt</description>
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <source type="SimConnect" VarType="CODE" Value="(A:AUTOPILOT ALTITUDE LOCK VAR:1,Feet)" UUID="7ac4737f-b97d-4bbb-af35-7067a5f1c1aa" />
+        <test type="Float" value="6000" />
+        <modifiers />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="63" value="$" />
+        <preconditions />
+        <configrefs />
+      </settings>
+    </config>
+    <config guid="38f862bf-fa83-4866-886c-e43fe44de270">
+      <active>true</active>
+      <description>Kohlsman Pressure</description>
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <source type="SimConnect" VarType="CODE" Value="(A:KOHLSMAN SETTING HG:1, inHg)" UUID="2f595653-50dd-4394-8895-af62769febe5" />
+        <test type="Float" value="23.92334" />
+        <modifiers>
+          <transformation active="True" expression="Round($,2)" />
+        </modifiers>
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="78" value="$" />
         <preconditions />
         <configrefs />
       </settings>
@@ -188,49 +190,113 @@
         <modifiers>
           <transformation active="True" expression="Round($,1)" />
         </modifiers>
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="9" value="$" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="9" value="$" />
+        <preconditions />
+        <configrefs />
+      </settings>
+    </config>
+    <config guid="283a42bf-3827-40a2-a8fc-dbdd83f2679a">
+      <active>true</active>
+      <description>Heading Bug</description>
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <source type="SimConnect" VarType="CODE" Value="(A:AUTOPILOT HEADING LOCK DIR,Degrees)" UUID="e47210e8-7db4-4980-9f57-b3682fb3742d" />
+        <test type="Float" value="1" />
+        <modifiers>
+          <transformation active="True" expression="Round($,0)" />
+        </modifiers>
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="0" value="$" />
+        <preconditions />
+        <configrefs />
+      </settings>
+    </config>
+    <config guid="d5b7ed47-2370-4f4f-9a91-aa9a3c165c01">
+      <active>true</active>
+      <description>NavCourse (Top tape display)</description>
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <source type="SimConnect" VarType="CODE" Value="(A:NAV OBS:1,Degrees)" UUID="6bbf319a-5031-477e-ba46-8a24936f7d25" />
+        <test type="Float" value="1" />
+        <modifiers />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="84" value="$" />
+        <preconditions />
+        <configrefs />
+      </settings>
+    </config>
+    <config guid="f3c68c65-2ff4-4a09-8cd3-a627803f5661">
+      <active>true</active>
+      <description>Ground Track</description>
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <source type="SimConnect" VarType="CODE" Value="(A:GPS GROUND MAGNETIC TRACK, Degrees)" UUID="b598b56d-f20d-46aa-82ba-2306e18c76c3" />
+        <test type="Float" value="1" />
+        <modifiers>
+          <transformation active="True" expression="Round($,1)" />
+        </modifiers>
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="8" value="$" />
         <preconditions />
         <configrefs />
       </settings>
     </config>
     <config guid="8b9fbc55-4cf4-4e95-b4f6-d493a58eca3f">
       <active>true</active>
-      <description>PFD GSI Needle Valid</description>
+      <description>GSI Needle Valid</description>
       <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <source type="SimConnect" VarType="CODE" Value="(A:HSI GSI NEEDLE VALID,Bool)" UUID="bb774a66-c4bb-421f-8f98-64958519519e" />
+        <source type="SimConnect" VarType="CODE" Value="(A:HSI BEARING, degrees) 0 &gt; (A:HSI GSI NEEDLE VALID,Bool) OR" UUID="bb774a66-c4bb-421f-8f98-64958519519e" />
         <test type="Float" value="1" />
         <modifiers />
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="6" value="$" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="6" value="$" />
         <preconditions />
         <configrefs />
       </settings>
     </config>
     <config guid="b3a813a4-74eb-432a-9a5f-f5f2c78a59ae">
       <active>true</active>
-      <description>PFD Glide Slope Deviation</description>
+      <description>Glide Slope Deviation</description>
       <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <source type="SimConnect" VarType="CODE" Value="(A:HSI GSI NEEDLE,Number)" UUID="c96f63e9-dc77-467b-a038-a5a252439ca8" />
         <test type="Float" value="1" />
         <modifiers>
           <transformation active="True" expression="Round($,1)" />
         </modifiers>
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="5" value="Round($)" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="5" value="Round($)" />
         <preconditions />
         <configrefs />
       </settings>
     </config>
     <config guid="f5a922a5-4f31-41fa-967f-7de79df0ed28">
       <active>true</active>
-      <description>PFD NavCDISourceComputed</description>
+      <description>Nav CDI Source</description>
       <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <source type="SimConnect" VarType="CODE" Value="(A:GPS DRIVES NAV1,Bool)" UUID="f6960682-68a0-4ba7-a19c-969b46f9c43b" />
         <test type="Float" value="1" />
         <modifiers />
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="10" value="$" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="10" value="$" />
         <preconditions />
-        <configrefs>
-          <configref active="True" ref="5d0fc979-d6b3-4963-a7ee-7f5e09153f04" placeholder="#" testvalue="1" />
-        </configrefs>
+        <configrefs />
+      </settings>
+    </config>
+    <config guid="823fec11-06ec-4bc4-a33f-7f061a54ad37">
+      <active>true</active>
+      <description>CDI To/From</description>
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <source type="SimConnect" VarType="CODE" Value="(A:HSI TF FLAGS,Enum)" UUID="32157e49-4191-4e8a-a1c1-dac5e730a2cb" />
+        <test type="Float" value="1" />
+        <modifiers />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="4" value="$" />
+        <preconditions />
+        <configrefs />
+      </settings>
+    </config>
+    <config guid="4cb67497-713c-4afd-88c6-ca75b70be262">
+      <active>true</active>
+      <description>CDI Lateral Deviation</description>
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <source type="SimConnect" VarType="CODE" Value="(A:HSI CDI NEEDLE,Number)" UUID="9074481c-6109-40ee-a965-0f62bbff37fa" />
+        <test type="Float" value="1" />
+        <modifiers>
+          <transformation active="True" expression="Round($,1)" />
+        </modifiers>
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="2" value="$" />
+        <preconditions />
+        <configrefs />
       </settings>
     </config>
     <config guid="ee34a078-fd4e-4aae-b368-7a7ccb3764f3">
@@ -263,7 +329,7 @@
     </config>
     <config guid="84f06763-8eec-4ff9-830c-a1f688a71125">
       <active>false</active>
-      <description>-----------------------------</description>
+      <description>--------------- (Note: HSI uses some values from above.) ----------------</description>
       <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <source type="SimConnect" VarType="LVAR" Value="" />
         <test type="Float" value="1" />
@@ -277,7 +343,7 @@
     </config>
     <config guid="80ca070e-228c-4552-aadd-0448d9e40305">
       <active>true</active>
-      <description>CDI Direction (GPS)</description>
+      <description>CDI Direction (GPS Desired Track)</description>
       <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <source type="SimConnect" VarType="CODE" Value="(A:GPS WP DESIRED TRACK,Degrees)" UUID="ad63e1b1-e1b0-4e68-857b-c7265557a1a7" />
         <test type="Float" value="1" />
@@ -285,7 +351,7 @@
           <transformation active="True" expression="if(#=1,%,$)" />
           <transformation active="True" expression="Round($,1)" />
         </modifiers>
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="32" value="$" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="32" value="$" />
         <preconditions />
         <configrefs>
           <configref active="True" ref="507ef424-616d-40b7-85e7-904fdebf3ea6" placeholder="#" testvalue="1" />
@@ -302,33 +368,7 @@
         <modifiers>
           <transformation active="True" expression="Round($,1)" />
         </modifiers>
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="44" value="$" />
-        <preconditions />
-        <configrefs />
-      </settings>
-    </config>
-    <config guid="823fec11-06ec-4bc4-a33f-7f061a54ad37">
-      <active>true</active>
-      <description>CDI To/From</description>
-      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <source type="SimConnect" VarType="CODE" Value="(A:HSI TF FLAGS,Enum)" UUID="32157e49-4191-4e8a-a1c1-dac5e730a2cb" />
-        <test type="Float" value="1" />
-        <modifiers />
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="4" value="$" />
-        <preconditions />
-        <configrefs />
-      </settings>
-    </config>
-    <config guid="4cb67497-713c-4afd-88c6-ca75b70be262">
-      <active>true</active>
-      <description>CDI Lateral Deviation</description>
-      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <source type="SimConnect" VarType="CODE" Value="(A:HSI CDI NEEDLE,Number)" UUID="9074481c-6109-40ee-a965-0f62bbff37fa" />
-        <test type="Float" value="1" />
-        <modifiers>
-          <transformation active="True" expression="Round($,1)" />
-        </modifiers>
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="2" value="$" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="44" value="$" />
         <preconditions />
         <configrefs />
       </settings>
@@ -340,7 +380,7 @@
         <source type="SimConnect" VarType="CODE" Value="(L:WTGarmin_LNavData_CDI_Scale_Label)" UUID="0" />
         <test type="Float" value="1" />
         <modifiers />
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="33" value="$" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="33" value="$" />
         <preconditions />
         <configrefs />
       </settings>
@@ -349,10 +389,10 @@
       <active>true</active>
       <description>GPSApproach Approach Type</description>
       <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <source type="SimConnect" VarType="CODE" Value="(GPS IS APPROACH ACTIVE:1) &#xA;if{ (A:GPS APPROACH APPROACH TYPE,Enum) }&#xA;els{ 19 }" UUID="f84146ab-4a98-44e5-826f-edfc7e7164fb" />
+        <source type="SimConnect" VarType="CODE" Value="(A:GPS IS APPROACH ACTIVE:1, Bool) &#xA;if{ (A:GPS APPROACH APPROACH TYPE,Enum) }&#xA;els{ 19 }" UUID="f84146ab-4a98-44e5-826f-edfc7e7164fb" />
         <test type="Float" value="1" />
         <modifiers />
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="1" value="$" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="1" value="$" />
         <preconditions />
         <configrefs />
       </settings>
@@ -364,21 +404,49 @@
         <source type="SimConnect" VarType="CODE" Value="(A:GPS DRIVES NAV1, Bool)&#xA;if{&#xA;  0&#xA;}&#xA;els{&#xA;  (A:AUTOPILOT NAV SELECTED, Number) 1 ==&#xA;  if{&#xA;    (A:NAV HAS NAV:1, Bool)&#xA;    if{&#xA;      (A:NAV HAS LOCALIZER:1, Bool)&#xA;      if{ 1 }&#xA;      els{&#xA;        (A:NAV TOFROM:1, Number) 0 !=&#xA;        if{ 2 }&#xA;        els{&#xA;          (A:NAV HAS DME:1, Bool)&#xA;          if{ 3 } els{ 10 }&#xA;        }&#xA;      }&#xA;    }&#xA;    els{ 7 }  // NAV1 detuned&#xA;  }&#xA;  els{&#xA;    (A:NAV HAS NAV:2, Bool)&#xA;    if{&#xA;      (A:NAV HAS LOCALIZER:2, Bool)&#xA;      if{ 4 }&#xA;      els{&#xA;        (A:NAV TOFROM:2, Number) 0 !=&#xA;        if{ 5 }&#xA;        els{&#xA;          (A:NAV HAS DME:2, Bool)&#xA;          if{ 6 } els{ 10 }&#xA;        }&#xA;      }&#xA;    }&#xA;    els{ 8 }  // NAV2 detuned&#xA;  }&#xA;}&#xA;" UUID="0" />
         <test type="Float" value="1" />
         <modifiers />
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="38" value="$" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="38" value="$" />
         <preconditions />
         <configrefs />
       </settings>
     </config>
     <config guid="46800289-5d87-4467-b8e4-965bbdee0e20">
-      <active>true</active>
-      <description>GPS Distance Broken in terminal mode</description>
+      <active>false</active>
+      <description>GPS Distance -- Broken in terminal mode</description>
       <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <source type="SimConnect" VarType="CODE" Value="(A:GPS WP DISTANCE,nautical miles)" UUID="319453f7-a708-4b07-873b-455ce874634f" />
         <test type="Float" value="1" />
         <modifiers>
           <transformation active="True" expression="Round($,1)" />
         </modifiers>
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="36" value="$" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="36" value="$" />
+        <preconditions />
+        <configrefs />
+      </settings>
+    </config>
+    <config guid="64fe7153-34bb-40b8-897f-53c03305b49f">
+      <active>false</active>
+      <description>GPS Distance Conditional Based WP Lat Lon -- Broken in manual sequence</description>
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <source type="SimConnect" VarType="CODE" Value="(A:GPS WP DISTANCE,nautical miles) 0 != if{ (A:GPS WP DISTANCE,nautical miles) } els{ (A:PLANE LATITUDE, radians) (A:GPS WP NEXT LAT, radians) - 3437.75 * sp0&#xA;(A:PLANE LONGITUDE, radians) (A:GPS WP NEXT LON, radians) - 3437.75 *&#xA;(A:PLANE LATITUDE, radians) (A:GPS WP NEXT LAT, radians) + 2 / cos *&#xA;l0 r d * r d * + sqrt }" UUID="319453f7-a708-4b07-873b-455ce874634f" />
+        <test type="Float" value="1" />
+        <modifiers>
+          <transformation active="True" expression="Round($,1)" />
+        </modifiers>
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="36" value="$" />
+        <preconditions />
+        <configrefs />
+      </settings>
+    </config>
+    <config guid="784b2c4b-56e9-4031-af24-fce6f2a20368">
+      <active>true</active>
+      <description>GPS Distance Conditional Based on ETE</description>
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <source type="SimConnect" VarType="CODE" Value="(A:GPS WP DISTANCE, nautical miles) 0 != if{ &#xA;  (A:GPS WP DISTANCE, nautical miles) &#xA;} els{ &#xA;  (A:GPS GROUND SPEED, meters per second) (A:GPS WP ETE, seconds) * 1852 /&#xA;}" UUID="319453f7-a708-4b07-873b-455ce874634f" />
+        <test type="Float" value="1" />
+        <modifiers>
+          <transformation active="True" expression="Round($,1)" />
+        </modifiers>
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="36" value="$" />
         <preconditions />
         <configrefs />
       </settings>
@@ -442,7 +510,7 @@
         <source type="SimConnect" VarType="CODE" Value="(A:NAV HAS LOCALIZER:1,Bool)" UUID="9c1ccb5a-cbf8-4570-af72-15e66acc352e" />
         <test type="Float" value="1" />
         <modifiers />
-        <display type="-" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" pin="" pinBrightness="255" />
+        <display type="-" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" pin="" pinBrightness="255" />
         <preconditions />
         <configrefs />
       </settings>
@@ -454,7 +522,7 @@
         <source type="SimConnect" VarType="CODE" Value="(A:NAV HAS NAV:1,Bool)" UUID="14a9706d-54e0-42ea-abaa-cea7d030610c" />
         <test type="Float" value="1" />
         <modifiers />
-        <display type="-" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" pin="" pinBrightness="255" />
+        <display type="-" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" pin="" pinBrightness="255" />
         <preconditions />
         <configrefs />
       </settings>
@@ -466,7 +534,7 @@
         <source type="SimConnect" VarType="CODE" Value="(A:NAV HAS DME:1,Bool)" UUID="4b8fb048-1db7-44ad-8b5e-d1bdb95edccb" />
         <test type="Float" value="1" />
         <modifiers />
-        <display type="-" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" pin="" pinBrightness="255" />
+        <display type="-" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" pin="" pinBrightness="255" />
         <preconditions />
         <configrefs />
       </settings>
@@ -478,7 +546,7 @@
         <source type="SimConnect" VarType="CODE" Value="(A:AUTOPILOT NAV SELECTED,Number)" UUID="06f5b13f-25b7-4784-88b9-ca18ba0cfeb5" />
         <test type="Float" value="1" />
         <modifiers />
-        <display type="-" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" pin="" pinBrightness="255" />
+        <display type="-" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" pin="" pinBrightness="255" />
         <preconditions />
         <configrefs />
       </settings>
@@ -490,7 +558,7 @@
         <source type="SimConnect" VarType="CODE" Value="(A:NAV TOFROM:2, Number)" UUID="0" />
         <test type="Float" value="1" />
         <modifiers />
-        <display type="-" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" pin="" pinBrightness="255" />
+        <display type="-" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" pin="" pinBrightness="255" />
         <preconditions />
         <configrefs />
       </settings>
@@ -502,7 +570,7 @@
         <source type="SimConnect" VarType="CODE" Value="(A:CIRCUIT AVIONICS ON,Bool)" UUID="91f78aaf-2873-4e63-9b7e-17548e4d42f9" />
         <test type="Float" value="1" />
         <modifiers />
-        <display type="Output" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" pin="PowerSwitchLight" pinBrightness="255" />
+        <display type="Output" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" pin="PowerSwitchLight" pinBrightness="255" />
         <preconditions />
         <configrefs />
       </settings>
@@ -514,31 +582,19 @@
         <source type="SimConnect" VarType="CODE" Value="(L:Garmin_Need_OBS_Convert_DirectTo)" UUID="6bbf319a-5031-477e-ba46-8a24936f7d25" />
         <test type="Float" value="1" />
         <modifiers />
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="43" value="$" />
-        <preconditions />
-        <configrefs />
-      </settings>
-    </config>
-    <config guid="76896bdf-19cd-4219-9616-df8309cdcd37">
-      <active>true</active>
-      <description>GPSS is valid</description>
-      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <source type="SimConnect" VarType="CODE" Value="(L:WT_Garmin_External_GPS_Steer_Command_Is_Valid)" UUID="-" />
-        <test type="Float" value="1" />
-        <modifiers />
-        <display type="-" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" pin="" pinBrightness="255" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="43" value="$" />
         <preconditions />
         <configrefs />
       </settings>
     </config>
     <config guid="201f7b9d-83ee-49c7-ad9c-aa938c5df0c2">
       <active>true</active>
-      <description>HSI CDI Needle Valid</description>
+      <description>HSI CDI Needle Valid based on a lot of stuff</description>
       <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <source type="SimConnect" VarType="CODE" Value="(A:HSI CDI NEEDLE VALID,Bool)" UUID="06ad11ba-d18f-4bc7-a2a1-33baa28fef90" />
+        <source type="SimConnect" VarType="CODE" Value="(A:HSI BEARING, degrees) 0 &gt; (A:HSI CDI NEEDLE VALID, Bool) OR (A:GPS DRIVES NAV1, Bool) (A:GPS WP NEXT LAT, degrees) 0 != AND OR" UUID="06ad11ba-d18f-4bc7-a2a1-33baa28fef90" />
         <test type="Float" value="1" />
         <modifiers />
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="3" value="$" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="3" value="$" />
         <preconditions />
         <configrefs />
       </settings>
@@ -552,7 +608,7 @@
         <modifiers>
           <transformation active="True" expression="Round($,0)" />
         </modifiers>
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="45" value="$" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="45" value="$" />
         <preconditions />
         <configrefs />
       </settings>
@@ -566,7 +622,7 @@
         <modifiers>
           <transformation active="True" expression="if(#&lt;20, &quot;-1&quot;, Round($,0))" />
         </modifiers>
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="46" value="$" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="46" value="$" />
         <preconditions />
         <configrefs>
           <configref active="True" ref="7f9eb833-1179-442f-94fc-c59f021428a2" placeholder="#" testvalue="1" />
@@ -582,7 +638,7 @@
         <modifiers>
           <transformation active="True" expression="Round($,1)" />
         </modifiers>
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="34" value="$" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="34" value="$" />
         <preconditions />
         <configrefs />
       </settings>
@@ -596,7 +652,7 @@
         <modifiers>
           <transformation active="True" expression="if($=0,0,1)" />
         </modifiers>
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="35" value="$" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="35" value="$" />
         <preconditions />
         <configrefs />
       </settings>
@@ -610,7 +666,7 @@
         <modifiers>
           <transformation active="True" expression="Round($,1)" />
         </modifiers>
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="37" value="$" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="37" value="$" />
         <preconditions />
         <configrefs />
       </settings>
@@ -619,12 +675,12 @@
       <active>true</active>
       <description>Nav1 Bearing</description>
       <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <source type="SimConnect" VarType="CODE" Value="(A:NAV RELATIVE BEARING TO STATION:1,Degrees)" UUID="07c8780a-659d-4a48-9732-d9c7c5ceaf3e" />
+        <source type="SimConnect" VarType="CODE" Value="(A:NAV RADIAL:1,Degrees)" UUID="6b0d7ab5-c72b-447e-9ab6-18e9596c8437" />
         <test type="Float" value="1" />
         <modifiers>
           <transformation active="True" expression="Round($,1)" />
         </modifiers>
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="39" value="$" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="39" value="$" />
         <preconditions />
         <configrefs />
       </settings>
@@ -633,12 +689,12 @@
       <active>true</active>
       <description>Nav2 Bearing</description>
       <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <source type="SimConnect" VarType="CODE" Value="(A:NAV RELATIVE BEARING TO STATION:2,Degrees)" UUID="07c8780a-659d-4a48-9732-d9c7c5ceaf3e" />
+        <source type="SimConnect" VarType="CODE" Value="(A:NAV RADIAL:2,Degrees)" UUID="07c8780a-659d-4a48-9732-d9c7c5ceaf3e" />
         <test type="Float" value="1" />
         <modifiers>
           <transformation active="True" expression="Round($,1)" />
         </modifiers>
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="41" value="$" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="41" value="$" />
         <preconditions />
         <configrefs />
       </settings>
@@ -650,7 +706,7 @@
         <source type="SimConnect" VarType="CODE" Value="    (A:NAV HAS NAV:1, Bool)&#xA;    if{&#xA;      (A:NAV HAS LOCALIZER:1, Bool)&#xA;      if{ 1 }&#xA;      els{&#xA;        (A:NAV TOFROM:1, Number) 0 !=&#xA;        if{ 2 }&#xA;        els{&#xA;          (A:NAV HAS DME:1, Bool)&#xA;          if{ 3 } els{ 10 }&#xA;        }&#xA;      }&#xA;    }&#xA;    els{ 7 }  // NAV1 detuned" UUID="0" />
         <test type="Float" value="1" />
         <modifiers />
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="40" value="$" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="40" value="$" />
         <preconditions />
         <configrefs />
       </settings>
@@ -662,14 +718,40 @@
         <source type="SimConnect" VarType="CODE" Value="(A:NAV HAS NAV:2, Bool) if{ (A:NAV HAS LOCALIZER:2, Bool) if{ 1 } els{ (A:NAV TOFROM:2, Number) 0 != if{ 2 } els{ (A:NAV HAS DME:2, Bool) if{ 3 } els{ 10 }}}} els{ 7 }" UUID="0" />
         <test type="Float" value="1" />
         <modifiers />
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="42" value="$" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="42" value="$" />
+        <preconditions />
+        <configrefs />
+      </settings>
+    </config>
+    <config guid="d4303f19-b217-41a2-8f50-08d1f995168f">
+      <active>true</active>
+      <description>ADF Valid</description>
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <source type="SimConnect" VarType="CODE" Value="(A:ADF SIGNAL:1,Number) 0 &gt; if{ 1 } els{ 0 }" UUID="1ba7ebad-74ad-43d6-8b68-b35bf485f9f5" />
+        <test type="Float" value="1" />
+        <modifiers />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="31" value="$" />
+        <preconditions />
+        <configrefs />
+      </settings>
+    </config>
+    <config guid="8aec2ed4-bf1c-493f-9027-40e4ce20575c">
+      <active>true</active>
+      <description>ADF Radial</description>
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <source type="SimConnect" VarType="CODE" Value="(A:ADF RADIAL:1,Degrees)" UUID="b5ecf716-8e61-4886-9097-1bdb4ddc6436" />
+        <test type="Float" value="1" />
+        <modifiers>
+          <transformation active="True" expression="Round($,1)" />
+        </modifiers>
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="30" value="$" />
         <preconditions />
         <configrefs />
       </settings>
     </config>
     <config guid="d1d505b8-1238-431d-8aed-08ed744ae9b2">
       <active>false</active>
-      <description>---------AP STATUS----------</description>
+      <description>---------AP ----------</description>
       <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <source type="SimConnect" VarType="LVAR" Value="" />
         <test type="Float" value="1" />
@@ -688,7 +770,7 @@
         <source type="SimConnect" VarType="CODE" Value="(A:AUTOPILOT MASTER,Bool)" UUID="59411677-275b-4f69-82d2-eb93c20db76c" />
         <test type="Float" value="1" />
         <modifiers />
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="61" value="$" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="61" value="$" />
         <preconditions />
         <configrefs />
       </settings>
@@ -700,7 +782,7 @@
         <source type="SimConnect" VarType="CODE" Value="(A:AUTOPILOT FLIGHT DIRECTOR ACTIVE,Bool)" UUID="2ac729ee-dcb3-4103-b61b-da3913a471e2" />
         <test type="Float" value="1" />
         <modifiers />
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="73" value="$" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="73" value="$" />
         <preconditions />
         <configrefs />
       </settings>
@@ -714,7 +796,7 @@
         <modifiers>
           <transformation active="True" expression="if(#=1, Round($,1), 0)" />
         </modifiers>
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="74" value="$" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="74" value="$" />
         <preconditions />
         <configrefs>
           <configref active="True" ref="a1cddeb4-275d-4a75-b9dd-9cf3d9d0a074" placeholder="#" testvalue="1" />
@@ -730,7 +812,7 @@
         <modifiers>
           <transformation active="True" expression="if(#=1, Round($,1), 0)" />
         </modifiers>
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="75" value="$" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="75" value="$" />
         <preconditions />
         <configrefs>
           <configref active="True" ref="a1cddeb4-275d-4a75-b9dd-9cf3d9d0a074" placeholder="#" testvalue="1" />
@@ -744,7 +826,7 @@
         <source type="SimConnect" VarType="CODE" Value="  (A:AUTOPILOT BANK HOLD, Bool) if{ 1 } els{&#xA;    (A:AUTOPILOT HEADING LOCK, Bool) if{ 2 } els{&#xA;      (A:AUTOPILOT BACKCOURSE HOLD, Bool) if{ 6 } els{&#xA;        (A:AUTOPILOT NAV1 LOCK, Bool) if{&#xA;          (A:GPS DRIVES NAV1, Bool) if{ 3 } els{&#xA;            (A:NAV HAS LOCALIZER:1, Bool) if{ 5 } els{ 4 }&#xA;          }&#xA;        } els{&#xA;          (A:AUTOPILOT APPROACH HOLD, Bool) if{&#xA;            (A:GPS DRIVES NAV1, Bool) if{ 3 } els{ 5 }&#xA;          } els{ 1 }&#xA;        }&#xA;      }&#xA;    }&#xA;  }" UUID="0" />
         <test type="Float" value="1" />
         <modifiers />
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="66" value="$" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="66" value="$" />
         <preconditions />
         <configrefs />
       </settings>
@@ -758,7 +840,7 @@
         <modifiers>
           <transformation active="True" expression="if($=#, 0, $)" />
         </modifiers>
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="64" value="$" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="64" value="$" />
         <preconditions />
         <configrefs>
           <configref active="True" ref="3d8bf04e-0d0a-4ae3-8f81-843fad40aff7" placeholder="#" testvalue="1" />
@@ -772,7 +854,7 @@
         <source type="SimConnect" VarType="CODE" Value="  (A:AUTOPILOT GLIDESLOPE ACTIVE, Bool) if{&#xA;    (A:GPS DRIVES NAV1, Bool) if{ 7 } els{ 6 }&#xA;  } els{&#xA;    (A:AUTOPILOT ALTITUDE LOCK, Bool) if{ 1 } els{&#xA;      (A:AUTOPILOT VERTICAL HOLD, Bool) if{ 2 } els{&#xA;        (A:AUTOPILOT PITCH HOLD, Bool) if{ 3 } els{&#xA;          (A:AUTOPILOT FLIGHT LEVEL CHANGE, Bool) if{ 4 } els{ 0 }&#xA;        }&#xA;      }&#xA;    }&#xA;  }&#xA;" UUID="a00bbdba-ecad-4464-a410-cb85c260447b" />
         <test type="Float" value="1" />
         <modifiers />
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="68" value="$" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="68" value="$" />
         <preconditions />
         <configrefs />
       </settings>
@@ -784,7 +866,7 @@
         <source type="SimConnect" VarType="CODE" Value="(A:AUTOPILOT VERTICAL HOLD, Bool) &#xA;(A:AUTOPILOT FLIGHT LEVEL CHANGE, Bool) or&#xA;(A:AUTOPILOT PITCH HOLD, Bool) or&#xA;(A:AUTOPILOT ALTITUDE LOCK, Bool) ! and  # Not already captured&#xA;if{ 1 + }&#xA;(A:AUTOPILOT GLIDESLOPE ARM, Bool)&#xA;(A:GPS DRIVES NAV1, Bool) ! and&#xA;if{ 4 + }&#xA;(A:AUTOPILOT GLIDESLOPE ARM, Bool)&#xA;(A:GPS DRIVES NAV1, Bool) and&#xA;if{ 8 + }" UUID="7412995d-21d9-419e-b80d-2e6c56afdb06" />
         <test type="Float" value="1" />
         <modifiers />
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="65" value="$" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="65" value="$" />
         <preconditions />
         <configrefs />
       </settings>
@@ -796,7 +878,7 @@
         <source type="SimConnect" VarType="CODE" Value="(A:AUTOPILOT VERTICAL HOLD VAR,Feet/minute)" UUID="bc545a04-646d-41ce-a510-2c798f7dfe1d" />
         <test type="Float" value="1" />
         <modifiers />
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="69" value="$" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="69" value="$" />
         <preconditions />
         <configrefs />
       </settings>
@@ -808,7 +890,7 @@
         <source type="SimConnect" VarType="CODE" Value="(A:AUTOPILOT AIRSPEED HOLD VAR,Knots)" UUID="c6348d07-b8b3-4e31-a28d-8615cf8e837e" />
         <test type="Float" value="1" />
         <modifiers />
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="67" value="$" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="67" value="$" />
         <preconditions />
         <configrefs />
       </settings>
@@ -820,7 +902,7 @@
         <source type="SimConnect" VarType="CODE" Value="(A:AUTOPILOT YAW DAMPER,Bool)" UUID="01313b08-3560-48b5-9992-44eb1b4b87ae" />
         <test type="Float" value="1" />
         <modifiers />
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="70" value="$" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="70" value="$" />
         <preconditions />
         <configrefs />
       </settings>
@@ -829,38 +911,12 @@
       <active>true</active>
       <description>Alt Hold Target Alt</description>
       <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <source type="SimConnect" VarType="CODE" Value="(A:AUTOPILOT ALTITUDE LOCK, Bool) &#xA;(L:ALT_HOLD_PREV, Bool) != if{&#xA;    (A:AUTOPILOT ALTITUDE LOCK, Bool) if{&#xA;        (A:INDICATED ALTITUDE, feet) (&gt;L:CAPTURED_ALT)&#xA;    }&#xA;    (A:AUTOPILOT ALTITUDE LOCK, Bool) (&gt;L:ALT_HOLD_PREV)&#xA;}&#xA;&#xA;(L:CAPTURED_ALT)" UUID="0" />
+        <source type="SimConnect" VarType="CODE" Value="(A:AUTOPILOT ALTITUDE LOCK, Bool) &#xA;(L:ALT_HOLD_PREV, Bool) != if{&#xA;    (A:AUTOPILOT ALTITUDE LOCK, Bool) if{&#xA;        (A:INDICATED ALTITUDE, feet) (&gt;L:CAPTURED_ALT)&#xA;    }&#xA;    (A:AUTOPILOT ALTITUDE LOCK, Bool) (&gt;L:ALT_HOLD_PREV)&#xA;}&#xA;&#xA;(A:AUTOPILOT ALTITUDE LOCK VAR, feet) (L:CAPTURED_ALT) - abs 100 &lt; if{&#xA;    (A:AUTOPILOT ALTITUDE LOCK VAR, feet)&#xA;} els{&#xA;    (L:CAPTURED_ALT)&#xA;}" UUID="0" />
         <test type="Float" value="1" />
         <modifiers>
           <transformation active="True" expression="Round($ / 10, 0)*10" />
         </modifiers>
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="62" value="$" />
-        <preconditions />
-        <configrefs />
-      </settings>
-    </config>
-    <config guid="d4303f19-b217-41a2-8f50-08d1f995168f">
-      <active>true</active>
-      <description>ADF Valid</description>
-      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <source type="SimConnect" VarType="CODE" Value="(A:ADF SIGNAL:1,Number) 0 &gt; if{ 1 } els{ 0 }" UUID="1ba7ebad-74ad-43d6-8b68-b35bf485f9f5" />
-        <test type="Float" value="1" />
-        <modifiers />
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="31" value="$" />
-        <preconditions />
-        <configrefs />
-      </settings>
-    </config>
-    <config guid="8aec2ed4-bf1c-493f-9027-40e4ce20575c">
-      <active>true</active>
-      <description>ADF Radial</description>
-      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <source type="SimConnect" VarType="CODE" Value="(A:ADF RADIAL:1,Degrees)" UUID="b5ecf716-8e61-4886-9097-1bdb4ddc6436" />
-        <test type="Float" value="1" />
-        <modifiers>
-          <transformation active="True" expression="Round($,1)" />
-        </modifiers>
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="30" value="$" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="62" value="$" />
         <preconditions />
         <configrefs />
       </settings>
@@ -870,7 +926,7 @@
     <config guid="fd2ac9f7-35c2-49b9-8240-e9d2c4db7b22">
       <active>true</active>
       <description>Kohlsman</description>
-      <settings msdata:InstanceType="MobiFlight.InputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" serial="CC_G5 ESP32/ SN-98A316E591C4" name="kohlsEnc" type="Encoder" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+      <settings msdata:InstanceType="MobiFlight.InputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" serial="CC_G5 ESP32/ SN-28372F8A1B18" name="kohlsEnc" type="Encoder" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <encoder>
           <onLeft type="MSFS2020CustomInputAction" command="(&gt;K:KOHLSMAN_DEC)" presetId="d3828258-b00c-4dad-b59d-4fb0d4f18a2a" />
           <onLeftFast />
@@ -884,7 +940,7 @@
     <config guid="5de8fde3-5560-41ab-9736-80acf545ed7e">
       <active>true</active>
       <description>Heading</description>
-      <settings msdata:InstanceType="MobiFlight.InputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" serial="CC_G5 ESP32/ SN-98A316E591C4" name="encHeading" type="Encoder" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+      <settings msdata:InstanceType="MobiFlight.InputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" serial="CC_G5 ESP32/ SN-28372F8A1B18" name="encHeading" type="Encoder" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <encoder>
           <onLeft type="MSFS2020CustomInputAction" command="(&gt;K:HEADING_BUG_DEC)" presetId="cab52499-c789-4249-bc21-31f920d4e604" />
           <onLeftFast />
@@ -898,7 +954,7 @@
     <config guid="9a584df6-4b05-42a4-93ed-b6fe20c04336">
       <active>true</active>
       <description>TargetAlt</description>
-      <settings msdata:InstanceType="MobiFlight.InputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" serial="CC_G5 ESP32/ SN-98A316E591C4" name="encTargetAlt" type="Encoder" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+      <settings msdata:InstanceType="MobiFlight.InputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" serial="CC_G5 ESP32/ SN-28372F8A1B18" name="encTargetAlt" type="Encoder" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <encoder>
           <onLeft type="MSFS2020CustomInputAction" command=" (A:AUTOPILOT ALTITUDE LOCK VAR, feet) 100 - (&gt;K:AP_ALT_VAR_SET_ENGLISH) (&gt;H:AP_KNOB_Up)" presetId="d03873bb-2f72-4d88-ba00-d338c5627c89" />
           <onLeftFast />
@@ -920,7 +976,7 @@
     <config guid="411ce0d1-a5b3-4575-b05d-ef9b446de538">
       <active>false</active>
       <description>TestPower</description>
-      <settings msdata:InstanceType="MobiFlight.InputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" serial="CC_G5 ESP32/ SN-98A316E591C4" name="Button" type="Button" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+      <settings msdata:InstanceType="MobiFlight.InputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" serial="CC_G5 ESP32/ SN-28372F8A1B18" name="Button" type="Button" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <button>
           <onPress type="MSFS2020CustomInputAction" command="(A:GENERAL ENG FUEL PUMP SWITCH:1,Bool) ! if{ (&gt;K:TOGGLE_ELECT_FUEL_PUMP) }" presetId="1b01f4ac-65ce-4412-8765-072b405d8954" />
         </button>
@@ -931,7 +987,7 @@
     <config guid="8d95488d-7c7a-4851-8bde-fc1161eaf0be">
       <active>true</active>
       <description>HeadingEnc</description>
-      <settings msdata:InstanceType="MobiFlight.InputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" serial="CC_G5 ESP32/ SN-98A316E591C4" name="encHeading" type="Encoder" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+      <settings msdata:InstanceType="MobiFlight.InputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" serial="CC_G5 ESP32/ SN-28372F8A1B18" name="encHeading" type="Encoder" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <encoder>
           <onLeft type="MSFS2020CustomInputAction" command="(&gt;K:HEADING_BUG_DEC)" presetId="4bd8d51a-8bce-43e0-8de3-8510ef4af071" />
           <onLeftFast />
@@ -945,7 +1001,7 @@
     <config guid="84a04d52-9d17-4a47-b7ae-16c99c5f6ea9">
       <active>true</active>
       <description>CourseEnc</description>
-      <settings msdata:InstanceType="MobiFlight.InputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" serial="CC_G5 ESP32/ SN-98A316E591C4" name="encCourse" type="Encoder" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+      <settings msdata:InstanceType="MobiFlight.InputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" serial="CC_G5 ESP32/ SN-28372F8A1B18" name="encCourse" type="Encoder" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <encoder>
           <onLeft type="MSFS2020CustomInputAction" command="(&gt;K:VOR1_OBI_DEC)" presetId="4bd8d51a-8bce-43e0-8de3-8510ef4af071" />
           <onLeftFast />
@@ -959,7 +1015,7 @@
     <config guid="274eca54-09c6-467e-a86a-1301d2cf498e">
       <active>true</active>
       <description>ResetTargetAlt</description>
-      <settings msdata:InstanceType="MobiFlight.InputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" serial="CC_G5 ESP32/ SN-98A316E591C4" name="btnPfdEncoder" type="Button" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+      <settings msdata:InstanceType="MobiFlight.InputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" serial="CC_G5 ESP32/ SN-28372F8A1B18" name="btnPfdEncoder" type="Button" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <button>
           <onPress type="MSFS2020CustomInputAction" command="(A:INDICATED ALTITUDE, feet) 100 / near 100 * (&gt;K:AP_ALT_VAR_SET_ENGLISH)" presetId="-" />
         </button>
@@ -970,7 +1026,7 @@
     <config guid="c20acc5f-0026-4140-b73e-092b9d1a2aa5">
       <active>true</active>
       <description>Reset Heading Bug</description>
-      <settings msdata:InstanceType="MobiFlight.InputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" serial="CC_G5 ESP32/ SN-98A316E591C4" name="btnHsiEncoder" type="Button" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+      <settings msdata:InstanceType="MobiFlight.InputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" serial="CC_G5 ESP32/ SN-28372F8A1B18" name="btnHsiEncoder" type="Button" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <button>
           <onPress type="MSFS2020CustomInputAction" command="(A:PLANE HEADING DEGREES MAGNETIC, degrees) (&gt;K:HEADING_BUG_SET)" presetId="-" />
         </button>

@@ -55,6 +55,107 @@ struct CC_G5_Settings {
 
 extern CC_G5_Settings g5Settings;
 
+// Shared flight state - accessible by both HSI and PFD
+struct G5State {
+    // Heading and orientation
+    float rawHeadingAngle   = 0.0f;
+    float headingAngle      = 0.0f;
+    int   headingBugAngle   = 0;
+    float groundTrack       = 0.0f;
+
+    // Attitude (PFD)
+    float rawBankAngle      = 0.0f;
+    float bankAngle         = 0.0f;
+    float rawPitchAngle     = 0.0f;
+    float pitchAngle        = 0.0f;
+    float rawBallPos        = 0.0f;
+    float ballPos           = 0.0f;
+    float turnRate          = 0.0f;
+
+    // Speeds
+    float rawAirspeed       = 0.0f;
+    float airspeed          = 0.0f;
+    float trueAirspeed      = 0.0f;
+    int   groundSpeed       = 0;
+
+    // Altitude
+    int   rawAltitude       = 0;
+    int   altitude          = 0;
+    int   rawVerticalSpeed  = 0;
+    int   verticalSpeed     = 0;
+    int   targetAltitude    = 0;
+    int   densityAltitude   = 1200;
+    float kohlsman          = 29.92f;
+
+    // Navigation source and mode
+    int   navSource         = 1;      // 1=GPS, 0=NAV
+    int   gpsApproachType   = 0;      // Approach type enum
+    int   navCDILabelIndex  = 0;      // GPS:0, LOC1:1, VOR1:2, etc.
+    int   cdiScaleLabel     = 0;
+    bool  terminalModeActive = true;
+
+    // CDI (Course Deviation Indicator)
+    int   cdiDirection      = 0;      // HSI needle direction
+    float rawCdiOffset      = 0.0f;
+    float cdiOffset         = 0.0f;
+    int   cdiNeedleValid    = 1;
+    int   cdiToFrom         = 0;      // 0=off, 1=to, 2=from
+
+    // Glide slope
+    float rawGsiNeedle      = 0.0f;
+    float gsiNeedle         = 0.0f;
+    int   gsiNeedleValid    = 1;
+
+    // Desired track / Course to steer (shared between HSI and PFD)
+    float desiredTrack      = 0.0f;   // GPS course to steer / DTK (used by both HSI and PFD)
+    int   desiredTrackValid = 0;
+    float navCourse         = 0.0f;   // NAV OBS course
+
+    // OBS mode
+    int   obsModeOn         = 0;
+    float obsAngle          = 0.0f;
+
+    // Distance
+    float distNextWaypoint  = 0.0f;
+    int   gpsEteWp          = 0;
+
+    // Bearing pointers (HSI)
+    float bearingAngleGPS   = 0.0f;
+    float bearingAngleVLOC1 = 0.0f;
+    float bearingAngleVLOC2 = 0.0f;
+    float bearingAngleADF   = 0.0f;
+    int   vloc1Type         = 0;      // LOC:1, VOR:2, DME:3, ADF:4
+    int   vloc2Type         = 0;
+    bool  adfValid          = false;
+
+    // Wind (HSI)
+    float rawWindDir        = 0.0f;
+    float windDir           = 0.0f;
+    float rawWindSpeed      = 0.0f;
+    float windSpeed         = 0.0f;
+
+    // Flight director (PFD)
+    int   flightDirectorActive = 0;
+    float flightDirectorPitch  = 0.0f;
+    float flightDirectorBank   = 0.0f;
+
+    // Autopilot (PFD)
+    int   apActive          = 0;
+    int   apLMode           = 0;
+    int   apVMode           = 0;
+    int   apLArmedMode      = 0;
+    int   apVArmedMode      = 0;
+    int   apYawDamper       = 0;
+    int   apTargetSpeed     = 0;
+    int   apAltCaptured     = 0;
+    int   apTargetVS        = 0;
+
+    // Other
+    int   oat               = 15;     // Outside air temp
+};
+
+extern G5State g5State;
+
 // Settings definition struct
 struct SettingDef {
     const char *name;

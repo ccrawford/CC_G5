@@ -15,6 +15,7 @@
 
 #define TEXT_BOX_HEIGHT      40
 #define COMPASS_OUTER_RADIUS 160
+#define COMPASS_INNER_RADIUS 90
 #define CUR_HEADING_Y_OFFSET 26
 #define NAVSOURCE_GPS        1
 #define NAVSOURCE_NAV        0
@@ -57,7 +58,7 @@ class CC_G5_HSI
             String getDisplayValue() override
             {
                 char buffer[8];
-                sprintf(buffer, "%03d°", menu->parent->headingBugAngle);
+                sprintf(buffer, "%03d°", g5State.headingBugAngle);
                 return String(buffer);
             }
             int  getDisplayValueColor() override { return 0x07FF; } // Cyan
@@ -78,13 +79,13 @@ class CC_G5_HSI
             String getDisplayValue() override
             {
                 char buffer[8];
-                sprintf(buffer, "%03d°", (int)menu->parent->obsAngle);
+                sprintf(buffer, "%03d°", (int)g5State.obsAngle);
                 return String(buffer);
             }
             int  getDisplayValueColor() override { return TFT_GREEN; } 
             // Only show when we're in VOR or Localizer mode.
             bool isVisible() const override {
-                return menu->parent->navSource != NAVSOURCE_GPS;
+                return g5State.navSource != NAVSOURCE_GPS;
             }
             void onEncoderPress() override { menu->enterAdjustmentMode(this); }
             void onEncoderTurn(int delta) override
@@ -103,12 +104,12 @@ class CC_G5_HSI
             String getDisplayValue() override
             {
                 char buffer[8];
-                sprintf(buffer, "%03d°", menu->parent->cdiDirection);  // This may vary by aircraft?
+                sprintf(buffer, "%03d°", g5State.cdiDirection);  // This may vary by aircraft?
                 return String(buffer);
             }
             // Only show if we've got OBS active.
             bool isVisible() const override {
-                return menu->parent->obsModeOn && menu->parent->navSource == NAVSOURCE_GPS;
+                return g5State.obsModeOn && g5State.navSource == NAVSOURCE_GPS;
             }
             int  getDisplayValueColor() override { return TFT_MAGENTA; } 
             void onEncoderPress() override { menu->enterAdjustmentMode(this); }
@@ -268,6 +269,7 @@ private:
     void drawCurrentTrack();
     void drawCurrentHeading();
     void drawCDIBar();
+    void drawWPTAlert();
     void drawGlideSlope();
     void drawHeadingBug();
     void drawHeadingBugValue();
@@ -301,57 +303,50 @@ public:
     int compassCenterX;
     int compassCenterY;
 
-    float headingAngle    = 0.0f;
-    float rawHeadingAngle = 90.0f;
-
-    int cdiDirection   = 0;
-    int navSource      = 1; // 1-GPS, 0-VOR
-    int cdiNeedleValid = 1;
-
     char bearingPointer1Source[10];
 
-    float cdiOffset    = 100.0; // The deviation scale offset.
-    float rawCdiOffset = 0.0;   // The deviation scale offset.
-
-    int   cdiToFrom          = 2; // 0 off, 1 To, 2 From
-    int   headingBugAngle    = 0;
-    int   groundSpeed        = 0;
-    float distNextWaypoint   = 0.1;
-    int   groundTrack        = 330;
-    int   desiredTrackValid  = 1;
-    float desiredTrack       = 200.0f;
-    int   dtkIsValid         = 1;
-    bool  terminalModeActive = true;
-    int   navCDILabelIndex   = 0; // NavCDILabel. GPS:0, LOC1:1, VOR1:2, DME1:3, LOC2:4, VOR2:5, DME2:6, Blank:7
-    int   gpsApproachType    = 0; // gps approach approach type values. 19: none active.
-    // 0 = None 1 = GPS 2 = VOR 3 = NDB 4 = ILS 5 = Localizer 6 = SDF 7 = LDA 8 = VOR/ DME 9 = NDB/ DME 10 = RNAV 11 = Backcourse
-    int   obsModeOn = 0; // 1 on, 0 off
-    float obsAngle  = 0; // Obs direction.
-
-    int cdiScaleLabel = 1;
-
+    // Local calculated bearing pointer angles (computed from g5State sources)
     float getBearingPointerAngle(uint8_t source);
     float bearingPointer1Angle    = 10.0;
     float rawBearingPointer1Angle = 10.0;
-    float bearingAngleGPS         = 10.0f;
-    float bearingAngleVLOC1       = 20.0f;
-    int   vloc1Type               = 1; // Bearing label. LOC:1, VOR:2, DME:3, ADF:4, Detuned:7
-    float bearingAngleVLOC2       = 30.0f;
-    float bearingAngleADF         = 15.0f;
-
     float bearingPointer2Angle    = 200.0;
     float rawBearingPointer2Angle = 350.0;
-    int   vloc2Type               = 7; // Bearing label. LOC:1, VOR:2, DME:3, Detuned:7
 
-    bool adfValid = true;
-
-    int   gsiNeedleValid = 1;
-    float gsiNeedle      = -100.0; // Vertical error. (A:NAV GSI:1,Number) +/-119
-    float rawGsiNeedle   = 0.0;    // Vertical error. (A:NAV GSI:1,Number) +/-119
-
-    float windSpeed    = 5.0f;
-    float rawWindSpeed = 1.5;
-
-    float windDir    = 20.0;
-    float rawWindDir = 200;
+    // OLD LOCAL VARIABLES - now in g5State (keeping for reference)
+    // float headingAngle    = 0.0f;
+    // float rawHeadingAngle = 90.0f;
+    // int cdiDirection   = 0;
+    // int navSource      = 1; // 1-GPS, 0-VOR
+    // int cdiNeedleValid = 1;
+    // float cdiOffset    = 100.0; // The deviation scale offset.
+    // float rawCdiOffset = 0.0;   // The deviation scale offset.
+    // int   cdiToFrom          = 2; // 0 off, 1 To, 2 From
+    // int   headingBugAngle    = 0;
+    // int   groundSpeed        = 0;
+    // float distNextWaypoint   = 0.1;
+    // int   groundTrack        = 330;
+    // int   desiredTrackValid  = 1;
+    // float desiredTrack       = 200.0f;
+    // int   dtkIsValid         = 1;
+    // bool  terminalModeActive = true;
+    // int   navCDILabelIndex   = 0; // NavCDILabel. GPS:0, LOC1:1, VOR1:2, DME1:3, LOC2:4, VOR2:5, DME2:6, Blank:7
+    // int   gpsApproachType    = 0; // gps approach approach type values. 19: none active.
+    // 0 = None 1 = GPS 2 = VOR 3 = NDB 4 = ILS 5 = Localizer 6 = SDF 7 = LDA 8 = VOR/ DME 9 = NDB/ DME 10 = RNAV 11 = Backcourse
+    // int   obsModeOn = 0; // 1 on, 0 off
+    // float obsAngle  = 0; // Obs direction.
+    // int cdiScaleLabel = 1;
+    // float bearingAngleGPS         = 10.0f;
+    // float bearingAngleVLOC1       = 20.0f;
+    // int   vloc1Type               = 1; // Bearing label. LOC:1, VOR:2, DME:3, ADF:4, Detuned:7
+    // float bearingAngleVLOC2       = 30.0f;
+    // float bearingAngleADF         = 15.0f;
+    // int   vloc2Type               = 7; // Bearing label. LOC:1, VOR:2, DME:3, Detuned:7
+    // bool adfValid = true;
+    // int   gsiNeedleValid = 1;
+    // float gsiNeedle      = -100.0; // Vertical error. (A:NAV GSI:1,Number) +/-119
+    // float rawGsiNeedle   = 0.0;    // Vertical error. (A:NAV GSI:1,Number) +/-119
+    // float windSpeed    = 5.0f;
+    // float rawWindSpeed = 1.5;
+    // float windDir    = 20.0;
+    // float rawWindDir = 200;
 };

@@ -122,7 +122,7 @@ void MFCustomDevice::attach(uint16_t adrPin, uint16_t adrType, uint16_t adrConfi
         _initialized = true;
     } else if (_customType == CUSTOM_PFD_DEVICE) {
 
-        Serial.printf("*****Attaching a PFD\n");
+        // Serial.printf("*****Attaching a PFD\n");
         /* **********************************************************************************
             Check if the device fits into the device buffer
         ********************************************************************************** */
