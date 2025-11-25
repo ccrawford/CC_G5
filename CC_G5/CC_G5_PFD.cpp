@@ -178,10 +178,9 @@ void CC_G5_PFD::begin()
     lcd.setRotation(0); // Orients the Waveshare screen with FPCB connector at bottom.
 #endif
 
-    // lcd.setBrightness(255);  // This doesn't work :-( I'm not sure if we can turn off the backlight or control brightness.
-
     lcd.fillScreen(TFT_BLACK);
     lcd.setTextColor(TFT_WHITE, TFT_BLACK);
+    // lcd.setBrightness(255); // This doesn't work :-( I'm not sure if we can turn off the backlight or control brightness.
     lcd.loadFont(PrimaSans32);
 
     setupSprites();
@@ -462,6 +461,16 @@ void CC_G5_PFD::setCommon(int16_t messageID, char *setPoint)
     case 10: // Nav Source
         g5State.navSource = atoi(setPoint);
         break;
+    case 11: // DEVICE TYPE
+        if (atoi(setPoint) == 0) {
+            // Switch to HSI.
+            saveState();
+            g5Settings.deviceType = CUSTOM_HSI_DEVICE;
+            saveSettings();
+            lcd.fillScreen(TFT_BLACK); // reduce flashing
+            ESP.restart();
+        }
+        break;
     }
 }
 
@@ -540,7 +549,7 @@ void CC_G5_PFD::setPFD(int16_t messageID, char *setPoint)
         setVSpeeds(setPoint);
         break;
     case 83: // Vertical Speed
-        g5State.rawVerticalSpeed = atof(setPoint);
+        g5State.rawVerticalSpeed = atoi(setPoint);
         break;
     case 84: // OBS Course Setting
         g5State.navCourse = atoi(setPoint);
@@ -548,7 +557,7 @@ void CC_G5_PFD::setPFD(int16_t messageID, char *setPoint)
     case 85: // Density
         g5State.densityAltitude = atoi(setPoint);
         break;
-   case 86: // True Airspeed
+    case 86: // True Airspeed
         g5State.trueAirspeed = atof(setPoint);
         break;
     }
@@ -1123,6 +1132,21 @@ void CC_G5_PFD::drawSpeedTape()
     // Draw the boxes last.
     speedTens.pushSprite(SPEED_COL_WIDTH - 40 - speedTens.width(), 200 - speedTens.height() / 2); // Was 80
     speedUnit.pushSprite(SPEED_COL_WIDTH - 40, 200 - speedUnit.height() / 2);
+
+    // Draw the true airspeed box
+    attitude.fillRect(0, 0, SPEED_COL_WIDTH, 40, TFT_BLACK);
+    attitude.drawRect(0,0, SPEED_COL_WIDTH, 40, TFT_WHITE);
+    attitude.drawRect(1,1, SPEED_COL_WIDTH-2, 40-2, TFT_WHITE);
+    attitude.setTextColor(TFT_WHITE, TFT_BLACK);
+    attitude.setTextSize(0.5);
+    attitude.setTextDatum(CL_DATUM);
+    attitude.drawString("TAS", 5, 20);
+    attitude.setTextSize(0.8);
+    attitude.setTextDatum(CR_DATUM);
+    char buf[8];
+    sprintf(buf, "%.0f", g5State.trueAirspeed);
+    attitude.drawString(buf, SPEED_COL_WIDTH - 5, 20);
+
 }
 
 void CC_G5_PFD::drawSpeedPointers()
@@ -1931,32 +1955,29 @@ void CC_G5_PFD::drawAp()
 
     apBox.setTextDatum(BC_DATUM);
     apBox.setTextColor(TFT_GREEN);
-    
-    if(lastAPState == 1 && g5State.apActive == 0) {
-        // Blink it. 
+
+    if (lastAPState == 1 && g5State.apActive == 0) {
+        // Blink it.
         apBlinkEnd = millis() + 5000;
     }
 
     lastAPState = g5State.apActive;
-//    apBox.fillRoundRect(160, 2, 35, yBaseline + 2, 3, TFT_RED);
-    
-    if(millis() < apBlinkEnd && g5State.apActive == 0)
-    {
-        if(millis() % 1000 < 200) { // 800ms on, 200ms off.
+    //    apBox.fillRoundRect(160, 2, 35, yBaseline + 2, 3, TFT_RED);
+
+    if (millis() < apBlinkEnd && g5State.apActive == 0) {
+        if (millis() % 1000 < 200) { // 800ms on, 200ms off.
             // Off
-        }
-        else {
+        } else {
             apBox.setTextColor(TFT_BLACK, TFT_YELLOW);
-            apBox.fillRoundRect(158, 2, 42, yBaseline -2, 4, TFT_YELLOW);
+            apBox.fillRoundRect(158, 2, 42, yBaseline - 2, 4, TFT_YELLOW);
             apBox.drawString("AP", 178, yBaseline);
             apBox.setTextColor(TFT_GREEN);
         }
-    } 
-    else if (g5State.apActive) {
+    } else if (g5State.apActive) {
         // TODO add blink on change.
         apBox.drawString("AP", 178, yBaseline);
     }
-    
+
     if (g5State.apYawDamper) {
         apBox.drawString("YD", 220, yBaseline);
     }

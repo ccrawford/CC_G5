@@ -168,7 +168,7 @@ void CC_G5_HSI::begin()
 
     setupSprites();
 
-    if(restoreState()) {
+    if (restoreState()) {
         setNavSource();
         // Call any other "Set" functions.
     }
@@ -269,8 +269,6 @@ void CC_G5_HSI::setupSprites()
     // //gsBox.setTextColor(TFT_MAGENTA);
     // //gsBox.setTextDatum(BR_DATUM);
     gsBox.loadFont(PrimaSans32);
-
-
 
     distBox.setColorDepth(8);
     distBox.createSprite(DISTBOX_IMG_WIDTH, DISTBOX_IMG_HEIGHT);
@@ -483,106 +481,115 @@ void CC_G5_HSI::detach()
     _initialised = false;
 }
 
- void CC_G5_HSI::setCommon(int16_t messageID, char *setPoint)
- {
-     switch (messageID) {
-         case 0:  // AP Heading Bug
-             g5State.headingBugAngle = atoi(setPoint);
-             break;
-         case 1:  // Approach Type
-             g5State.gpsApproachType = atoi(setPoint);
-             break;
-         case 2:  // CDI Lateral Deviation
-             g5State.rawCdiOffset = atof(setPoint);
-             break;
-         case 3:  // CDI Needle Valid
-             g5State.cdiNeedleValid = atoi(setPoint);
-             break;
-         case 4:  // CDI To/From Flag
-             g5State.cdiToFrom = atoi(setPoint);
-             break;
-         case 5:  // Glide Slope Deviation
-             g5State.rawGsiNeedle = atof(setPoint);
-             break;
-         case 6:  // Glide Slope Needle Valid
-             g5State.gsiNeedleValid = atoi(setPoint);
-             break;
-         case 7:  // Ground Speed
-             g5State.groundSpeed = atoi(setPoint);
-             break;
-         case 8:  // Ground Track (Magnetic)
-             g5State.groundTrack = atoi(setPoint);
-             break;
-         case 9:  // Heading (Magnetic)
-             g5State.rawHeadingAngle = atof(setPoint);
-             break;
-         case 10: // Nav Source
-             g5State.navSource = atoi(setPoint);
-             setNavSource();
-             break;
-     }
- }
+void CC_G5_HSI::setCommon(int16_t messageID, char *setPoint)
+{
+    switch (messageID) {
+    case 0: // AP Heading Bug
+        g5State.headingBugAngle = atoi(setPoint);
+        break;
+    case 1: // Approach Type
+        g5State.gpsApproachType = atoi(setPoint);
+        break;
+    case 2: // CDI Lateral Deviation
+        g5State.rawCdiOffset = atof(setPoint);
+        break;
+    case 3: // CDI Needle Valid
+        g5State.cdiNeedleValid = atoi(setPoint);
+        break;
+    case 4: // CDI To/From Flag
+        g5State.cdiToFrom = atoi(setPoint);
+        break;
+    case 5: // Glide Slope Deviation
+        g5State.rawGsiNeedle = atof(setPoint);
+        break;
+    case 6: // Glide Slope Needle Valid
+        g5State.gsiNeedleValid = atoi(setPoint);
+        break;
+    case 7: // Ground Speed
+        g5State.groundSpeed = atoi(setPoint);
+        break;
+    case 8: // Ground Track (Magnetic)
+        g5State.groundTrack = atoi(setPoint);
+        break;
+    case 9: // Heading (Magnetic)
+        g5State.rawHeadingAngle = atof(setPoint);
+        break;
+    case 10: // Nav Source
+        g5State.navSource = atoi(setPoint);
+        setNavSource();
+        break;
+    case 11: // DEVICE TYPE
+        if (atoi(setPoint) == 1) {
+            // Switch to PFD.
+            saveState();
+            g5Settings.deviceType = CUSTOM_PFD_DEVICE;
+            saveSettings();
+            lcd.fillScreen(TFT_BLACK); // reduce flashing
+            ESP.restart();
+        }
+        break;
+    }
+}
 
- void CC_G5_HSI::setHSI(int16_t messageID, char *setPoint)
- {
-     switch (messageID) {
-         case 30: // ADF Bearing
-             g5State.bearingAngleADF = atoi(setPoint);
-             break;
-         case 31: // ADF Valid
-             g5State.adfValid = atoi(setPoint);
-             break;
-         case 32: // CDI Bearing
-             g5State.cdiDirection = atoi(setPoint);
-             break;
-         case 33: // CDI Scale Label
-             g5State.cdiScaleLabel = atoi(setPoint);
-             break;
-         case 34: // Desired Track
-             g5State.desiredTrack = atof(setPoint);
-             break;
-         case 35: // Desired Track Valid
-             g5State.desiredTrackValid = atoi(setPoint);
-             break;
-         case 36: // Distance to Next GPS Waypoint
-             g5State.distNextWaypoint = atof(setPoint);
-             break;
-         case 37: // GPS Bearing to Next Station
-             g5State.bearingAngleGPS = atoi(setPoint);
-             break;
-         case 38: // NAV CDI Label
-             g5State.navCDILabelIndex = atoi(setPoint);
-             break;
-         case 39: // Nav1 Bearing Angle
-             g5State.bearingAngleVLOC1 = atoi(setPoint);
-             break;
-         case 40: // Nav1 Bearing Source
-             g5State.vloc1Type = atoi(setPoint);
-             break;
-         case 41: // Nav2 Bearing Angle
-             g5State.bearingAngleVLOC2 = atoi(setPoint);
-             break;
-         case 42: // Nav2 Bearing Source
-             g5State.vloc2Type = atoi(setPoint);
-             break;
-         case 43: // OBS Active
-             g5State.obsModeOn = atoi(setPoint);
-             break;
-         case 44: // OBS Heading
-             g5State.obsAngle = atoi(setPoint);
-             break;
-         case 45: // Wind Direction (Magnetic)
-             g5State.rawWindDir = atoi(setPoint);
-             break;
-         case 46: // Wind Speed
-             g5State.rawWindSpeed = atoi(setPoint);
-             break;
-         case 47: // ETE
-             g5State.gpsEteWp = atoi(setPoint);
-             break;
-     }
- }
-
+void CC_G5_HSI::setHSI(int16_t messageID, char *setPoint)
+{
+    switch (messageID) {
+    case 30: // ADF Bearing
+        g5State.bearingAngleADF = atoi(setPoint);
+        break;
+    case 31: // ADF Valid
+        g5State.adfValid = atoi(setPoint);
+        break;
+    case 32: // CDI Bearing
+        g5State.cdiDirection = atoi(setPoint);
+        break;
+    case 33: // CDI Scale Label
+        g5State.cdiScaleLabel = atoi(setPoint);
+        break;
+    case 34: // Desired Track
+        g5State.desiredTrack = atof(setPoint);
+        break;
+    case 35: // Desired Track Valid
+        g5State.desiredTrackValid = atoi(setPoint);
+        break;
+    case 36: // Distance to Next GPS Waypoint
+        g5State.distNextWaypoint = atof(setPoint);
+        break;
+    case 37: // GPS Bearing to Next Station
+        g5State.bearingAngleGPS = atoi(setPoint);
+        break;
+    case 38: // NAV CDI Label
+        g5State.navCDILabelIndex = atoi(setPoint);
+        break;
+    case 39: // Nav1 Bearing Angle
+        g5State.bearingAngleVLOC1 = atoi(setPoint);
+        break;
+    case 40: // Nav1 Bearing Source
+        g5State.vloc1Type = atoi(setPoint);
+        break;
+    case 41: // Nav2 Bearing Angle
+        g5State.bearingAngleVLOC2 = atoi(setPoint);
+        break;
+    case 42: // Nav2 Bearing Source
+        g5State.vloc2Type = atoi(setPoint);
+        break;
+    case 43: // OBS Active
+        g5State.obsModeOn = atoi(setPoint);
+        break;
+    case 44: // OBS Heading
+        g5State.obsAngle = atoi(setPoint);
+        break;
+    case 45: // Wind Direction (Magnetic)
+        g5State.rawWindDir = atoi(setPoint);
+        break;
+    case 46: // Wind Speed
+        g5State.rawWindSpeed = atoi(setPoint);
+        break;
+    case 47: // ETE
+        g5State.gpsEteWp = atoi(setPoint);
+        break;
+    }
+}
 
 // OLD and UNUSED
 void CC_G5_HSI::set(int16_t messageID, char *setPoint)
@@ -611,15 +618,15 @@ void CC_G5_HSI::set(int16_t messageID, char *setPoint)
         g5State.rawHeadingAngle = atof(setPoint);
         break;
     case 1:
-        output          = (uint16_t)data;
+        output                  = (uint16_t)data;
         g5State.headingBugAngle = output;
         break;
     case 2:
-        output       = (uint16_t)data;
+        output               = (uint16_t)data;
         g5State.cdiDirection = output;
         break;
     case 3:
-        output    = (uint16_t)data;
+        output            = (uint16_t)data;
         g5State.cdiToFrom = output;
         break;
     case 4:
@@ -629,32 +636,32 @@ void CC_G5_HSI::set(int16_t messageID, char *setPoint)
         g5State.rawGsiNeedle = atof(setPoint);
         break;
     case 6:
-        output      = (uint16_t)data;
+        output              = (uint16_t)data;
         g5State.groundSpeed = output;
         break;
     case 7:
-        output      = (uint16_t)data;
+        output              = (uint16_t)data;
         g5State.groundTrack = output;
         break;
     case 8:
-        value            = atof(setPoint);
+        value                    = atof(setPoint);
         g5State.distNextWaypoint = value;
         break;
     case 9:
-        output    = (uint16_t)data;
+        output            = (uint16_t)data;
         g5State.navSource = output;
         setNavSource();
         break;
     case 10:
-        output        = (uint16_t)data;
+        output                = (uint16_t)data;
         g5State.cdiScaleLabel = output;
         break;
     case 11:
-        output          = (uint16_t)data;
+        output                  = (uint16_t)data;
         g5State.gpsApproachType = output;
         break;
     case 12:
-        output           = (uint16_t)data;
+        output                   = (uint16_t)data;
         g5State.navCDILabelIndex = output;
         break;
     case 13:
@@ -710,16 +717,16 @@ void CC_G5_HSI::set(int16_t messageID, char *setPoint)
 float CC_G5_HSI::getBearingPointerAngle(uint8_t source)
 {
     switch (source) {
-    case 0:                       // Off
-        return 0.0f;              
-    case 1:                       // GPS
-        return g5State.bearingAngleGPS;   
-    case 2:                       // VLOC1
-        return g5State.bearingAngleVLOC1; 
-    case 3:                       // VLOC2dry
-        return g5State.bearingAngleVLOC2; 
-    case 4:                       // ADF
-        return fmod((g5State.bearingAngleADF + g5State.headingAngle + 360), 360);   
+    case 0: // Off
+        return 0.0f;
+    case 1: // GPS
+        return g5State.bearingAngleGPS;
+    case 2: // VLOC1
+        return g5State.bearingAngleVLOC1;
+    case 3: // VLOC2dry
+        return g5State.bearingAngleVLOC2;
+    case 4: // ADF
+        return fmod((g5State.bearingAngleADF + g5State.headingAngle + 360), 360);
     default:
         return 0.0f;
     }
@@ -727,11 +734,11 @@ float CC_G5_HSI::getBearingPointerAngle(uint8_t source)
 
 void CC_G5_HSI::updateInputValues()
 {
-    g5State.headingAngle         = smoothDirection(g5State.rawHeadingAngle, g5State.headingAngle, 0.15f, 0.2f);
-    g5State.gsiNeedle            = smoothInput(g5State.rawGsiNeedle, g5State.gsiNeedle, 0.15f, 1.0f);
-    g5State.cdiOffset            = smoothInput(g5State.rawCdiOffset, g5State.cdiOffset, 0.15f, 1.0f);
-    g5State.windDir              = smoothInput(g5State.rawWindDir, g5State.windDir, 0.15f, 5.0f);
-    g5State.windSpeed            = smoothInput(g5State.rawWindSpeed, g5State.windSpeed, 0.15f, 0.2f);
+    g5State.headingAngle = smoothDirection(g5State.rawHeadingAngle, g5State.headingAngle, 0.15f, 0.2f);
+    g5State.gsiNeedle    = smoothInput(g5State.rawGsiNeedle, g5State.gsiNeedle, 0.15f, 1.0f);
+    g5State.cdiOffset    = smoothInput(g5State.rawCdiOffset, g5State.cdiOffset, 0.15f, 1.0f);
+    g5State.windDir      = smoothInput(g5State.rawWindDir, g5State.windDir, 0.15f, 5.0f);
+    g5State.windSpeed    = smoothInput(g5State.rawWindSpeed, g5State.windSpeed, 0.15f, 0.2f);
     bearingPointer1Angle = smoothDirection(getBearingPointerAngle(g5Settings.bearingPointer1Source), bearingPointer1Angle, 0.25f, 0.1f);
     bearingPointer2Angle = smoothDirection(getBearingPointerAngle(g5Settings.bearingPointer2Source), bearingPointer2Angle, 0.25f, 0.1f);
 }
@@ -755,7 +762,7 @@ void CC_G5_HSI::update()
 
     lcd.setTextSize(0.5);
     sprintf(buf, "HSI %4.1f f/s", 1000.0 / (now - lastFrameUpdate));
- //   lcd.drawString(buf, 360, 0);
+    //   lcd.drawString(buf, 360, 0);
     lastFrameUpdate = now;
 }
 
@@ -873,7 +880,7 @@ void CC_G5_HSI::drawRadioNavApproachType()
 
     compass.setTextDatum(BL_DATUM);
     // Clear the old text
-    compass.fillRect(compass.width() / 2 + 3, compass.height() /2 - 60, 50, 20, TFT_BLACK);
+    compass.fillRect(compass.width() / 2 + 3, compass.height() / 2 - 60, 50, 20, TFT_BLACK);
     compass.drawString(mode, compass.width() / 2 + 10, compass.height() / 2 - 40);
 }
 
@@ -919,7 +926,7 @@ void CC_G5_HSI::drawCDIScaleLabel()
     }
 
     compass.setTextDatum(BL_DATUM);
-    compass.fillRect(compass.width() / 2 + 10, compass.height() /2 - 60, 50, 20, TFT_BLACK);
+    compass.fillRect(compass.width() / 2 + 10, compass.height() / 2 - 60, 50, 20, TFT_BLACK);
     compass.drawString(mode, compass.width() / 2 + 10, compass.height() / 2 - 40);
 
     // if obs is on, put indicator up in lower right of inner circle.
@@ -947,8 +954,7 @@ void CC_G5_HSI::drawWPTAlert()
     static int lastETE = -999;
 
     // If the ete to next wp is less than 30 sec and getting lower, then show WPT reminder
-    if(g5State.gpsEteWp < 30 && g5State.gpsEteWp > 10 && g5State.gpsEteWp < lastETE && g5State.navSource == NAVSOURCE_GPS )
-    {
+    if (g5State.gpsEteWp < 30 && g5State.gpsEteWp > 10 && g5State.gpsEteWp < lastETE && g5State.navSource == NAVSOURCE_GPS) {
         compass.setTextColor(TFT_WHITE, TFT_BLACK);
         compass.setTextSize(0.5);
         compass.drawString("WPT", compass.width() / 2 + 17, compass.height() / 2 + 40);
@@ -957,7 +963,6 @@ void CC_G5_HSI::drawWPTAlert()
     }
 
     lastETE = g5State.gpsEteWp;
-
 }
 
 void CC_G5_HSI::drawCompass()
@@ -1064,11 +1069,11 @@ void CC_G5_HSI::drawBearingPointer1()
 {
     // draw the Bearing Pointer
     if (g5Settings.bearingPointer1Source == 0) return;
-    
+
     // draw the Bearing Pointer label
     // Skip this if there's a menu up. I just can't deal with it.
     if (hsiMenu.menuActive && hsiMenu.currentState == HSIMenu::MenuState::BROWSING) return;
-    
+
     int navType;
     if (g5Settings.bearingPointer1Source == 2)
         navType = g5State.vloc1Type;
@@ -1093,7 +1098,7 @@ void CC_G5_HSI::drawBearingPointer1()
         strcpy(buf, "???");
         break;
     }
-    
+
     // Only draw the bearing pointer if it's VOR or GPS: 1 (or ADF and the ADF is valid 4)
     if (navType == 2 || g5Settings.bearingPointer1Source == 1 || g5Settings.bearingPointer1Source == 4 && g5State.adfValid) {
         bearingPointer1.setBitmapColor(TFT_CYAN, TFT_BLACK);
@@ -1116,7 +1121,6 @@ void CC_G5_HSI::drawBearingPointer2()
 
     // Don't draw during menu to avoid collision.
     if (hsiMenu.menuActive && hsiMenu.currentState == HSIMenu::MenuState::BROWSING) return;
-    
 
     // Figure out correct labels.
 
@@ -1152,7 +1156,7 @@ void CC_G5_HSI::drawBearingPointer2()
     if (g5Settings.bearingPointer2Source == 4) strcpy(buf, "ADF");
 
     // draw the actual Bearing Pointer, but only if it's a type that draws and is valid.
-    if (navType == 2 || g5Settings.bearingPointer2Source == 1 || (g5Settings.bearingPointer2Source == 4 && g5State.adfValid)) { 
+    if (navType == 2 || g5Settings.bearingPointer2Source == 1 || (g5Settings.bearingPointer2Source == 4 && g5State.adfValid)) {
         bearingPointer2.setBitmapColor(TFT_CYAN, TFT_BLACK);
         compass.setPivot(compass.width() / 2, compass.height() / 2);
         bearingPointer2.pushRotated(bearingPointer2Angle - g5State.headingAngle, TFT_BLACK);
@@ -1452,97 +1456,98 @@ void CC_G5_HSI::drawWind()
     windBox.pushSprite(0, 0);
 }
 
+void CC_G5_HSI::saveState()
+{
+    Preferences prefs;
+    prefs.begin("g5state", false);
 
-void CC_G5_HSI::saveState() {
-      Preferences prefs;
-      prefs.begin("g5state", false);
+    // Mark as mode switch restart
+    prefs.putBool("switching", true);
+    prefs.putInt("version", STATE_VERSION);
 
-      // Mark as mode switch restart
-      prefs.putBool("switching", true);
-      prefs.putInt("version", STATE_VERSION);
+    // Common variables (IDs 0-10) - same keys as PFD
+    prefs.putInt("hdgBug", g5State.headingBugAngle);
+    prefs.putInt("appType", g5State.gpsApproachType);
+    prefs.putFloat("cdiOff", g5State.rawCdiOffset);
+    prefs.putInt("cdiVal", g5State.cdiNeedleValid);
+    prefs.putInt("toFrom", g5State.cdiToFrom);
+    prefs.putFloat("gsiNdl", g5State.rawGsiNeedle);
+    prefs.putInt("gsiVal", g5State.gsiNeedleValid);
+    prefs.putInt("gndSpd", g5State.groundSpeed);
+    prefs.putInt("gndTrk", g5State.groundTrack);
+    prefs.putFloat("hdgAng", g5State.rawHeadingAngle);
+    prefs.putInt("navSrc", g5State.navSource);
 
-      // Common variables (IDs 0-10) - same keys as PFD
-      prefs.putInt("hdgBug", g5State.headingBugAngle);
-      prefs.putInt("appType", g5State.gpsApproachType);
-      prefs.putFloat("cdiOff", g5State.rawCdiOffset);
-      prefs.putInt("cdiVal", g5State.cdiNeedleValid);
-      prefs.putInt("toFrom", g5State.cdiToFrom);
-      prefs.putFloat("gsiNdl", g5State.rawGsiNeedle);
-      prefs.putInt("gsiVal", g5State.gsiNeedleValid);
-      prefs.putInt("gndSpd", g5State.groundSpeed);
-      prefs.putInt("gndTrk", g5State.groundTrack);
-      prefs.putFloat("hdgAng", g5State.rawHeadingAngle);
-      prefs.putInt("navSrc", g5State.navSource);
+    // HSI-specific (IDs 30-46)
+    prefs.putFloat("adfBrg", g5State.bearingAngleADF);
+    prefs.putInt("adfVal", g5State.adfValid);
+    prefs.putInt("cdiDir", g5State.cdiDirection);
+    prefs.putInt("cdiLbl", g5State.cdiScaleLabel);
+    prefs.putFloat("desTrk", g5State.desiredTrack);
+    prefs.putInt("dtVal", g5State.desiredTrackValid);
+    prefs.putFloat("distWp", g5State.distNextWaypoint);
+    prefs.putFloat("gpsBrg", g5State.bearingAngleGPS);
+    prefs.putInt("navLbl", g5State.navCDILabelIndex);
+    prefs.putFloat("v1Brg", g5State.bearingAngleVLOC1);
+    prefs.putInt("v1Type", g5State.vloc1Type);
+    prefs.putFloat("v2Brg", g5State.bearingAngleVLOC2);
+    prefs.putInt("v2Type", g5State.vloc2Type);
+    prefs.putInt("obsOn", g5State.obsModeOn);
+    prefs.putFloat("obsAng", g5State.obsAngle);
+    prefs.putFloat("wndDir", g5State.rawWindDir);
+    prefs.putFloat("wndSpd", g5State.rawWindSpeed);
 
-      // HSI-specific (IDs 30-46)
-      prefs.putFloat("adfBrg", g5State.bearingAngleADF);
-      prefs.putInt("adfVal", g5State.adfValid);
-      prefs.putInt("cdiDir", g5State.cdiDirection);
-      prefs.putInt("cdiLbl", g5State.cdiScaleLabel);
-      prefs.putFloat("desTrk", g5State.desiredTrack);
-      prefs.putInt("dtVal", g5State.desiredTrackValid);
-      prefs.putFloat("distWp", g5State.distNextWaypoint);
-      prefs.putFloat("gpsBrg", g5State.bearingAngleGPS);
-      prefs.putInt("navLbl", g5State.navCDILabelIndex);
-      prefs.putFloat("v1Brg", g5State.bearingAngleVLOC1);
-      prefs.putInt("v1Type", g5State.vloc1Type);
-      prefs.putFloat("v2Brg", g5State.bearingAngleVLOC2);
-      prefs.putInt("v2Type", g5State.vloc2Type);
-      prefs.putInt("obsOn", g5State.obsModeOn);
-      prefs.putFloat("obsAng", g5State.obsAngle);
-      prefs.putFloat("wndDir", g5State.rawWindDir);
-      prefs.putFloat("wndSpd", g5State.rawWindSpeed);
+    prefs.end();
+}
 
-      prefs.end();
-  }
+bool CC_G5_HSI::restoreState()
+{
+    Preferences prefs;
+    prefs.begin("g5state", false);
 
-  bool CC_G5_HSI::restoreState() {
-      Preferences prefs;
-      prefs.begin("g5state", false);
+    bool wasSwitching = prefs.getBool("switching", false);
+    int  version      = prefs.getInt("version", 0);
 
-      bool wasSwitching = prefs.getBool("switching", false);
-      int version = prefs.getInt("version", 0);
+    // Clear flag immediately
+    prefs.putBool("switching", false);
 
-      // Clear flag immediately
-      prefs.putBool("switching", false);
+    if (!wasSwitching || version != STATE_VERSION) {
+        prefs.end();
+        return false;
+    }
 
-      if (!wasSwitching || version != STATE_VERSION) {
-          prefs.end();
-          return false;
-      }
+    // Common variables
+    g5State.headingBugAngle = prefs.getInt("hdgBug", 0);
+    g5State.gpsApproachType = prefs.getInt("appType", 0);
+    g5State.rawCdiOffset    = prefs.getFloat("cdiOff", 0);
+    g5State.cdiNeedleValid  = prefs.getInt("cdiVal", 1);
+    g5State.cdiToFrom       = prefs.getInt("toFrom", 0);
+    g5State.rawGsiNeedle    = prefs.getFloat("gsiNdl", 0);
+    g5State.gsiNeedleValid  = prefs.getInt("gsiVal", 1);
+    g5State.groundSpeed     = prefs.getInt("gndSpd", 0);
+    g5State.groundTrack     = prefs.getInt("gndTrk", 0);
+    g5State.rawHeadingAngle = prefs.getFloat("hdgAng", 0);
+    g5State.navSource       = prefs.getInt("navSrc", 1);
 
-      // Common variables
-      g5State.headingBugAngle = prefs.getInt("hdgBug", 0);
-      g5State.gpsApproachType = prefs.getInt("appType", 0);
-      g5State.rawCdiOffset = prefs.getFloat("cdiOff", 0);
-      g5State.cdiNeedleValid = prefs.getInt("cdiVal", 1);
-      g5State.cdiToFrom = prefs.getInt("toFrom", 0);
-      g5State.rawGsiNeedle = prefs.getFloat("gsiNdl", 0);
-      g5State.gsiNeedleValid = prefs.getInt("gsiVal", 1);
-      g5State.groundSpeed = prefs.getInt("gndSpd", 0);
-      g5State.groundTrack = prefs.getInt("gndTrk", 0);
-      g5State.rawHeadingAngle = prefs.getFloat("hdgAng", 0);
-      g5State.navSource = prefs.getInt("navSrc", 1);
+    // HSI-specific
+    g5State.bearingAngleADF   = prefs.getFloat("adfBrg", 0);
+    g5State.adfValid          = prefs.getInt("adfVal", 0);
+    g5State.cdiDirection      = prefs.getInt("cdiDir", 0);
+    g5State.cdiScaleLabel     = prefs.getInt("cdiLbl", 0);
+    g5State.desiredTrack      = prefs.getFloat("desTrk", 0);
+    g5State.desiredTrackValid = prefs.getInt("dtVal", 0);
+    g5State.distNextWaypoint  = prefs.getFloat("distWp", 0);
+    g5State.bearingAngleGPS   = prefs.getFloat("gpsBrg", 0);
+    g5State.navCDILabelIndex  = prefs.getInt("navLbl", 0);
+    g5State.bearingAngleVLOC1 = prefs.getFloat("v1Brg", 0);
+    g5State.vloc1Type         = prefs.getInt("v1Type", 0);
+    g5State.bearingAngleVLOC2 = prefs.getFloat("v2Brg", 0);
+    g5State.vloc2Type         = prefs.getInt("v2Type", 0);
+    g5State.obsModeOn         = prefs.getInt("obsOn", 0);
+    g5State.obsAngle          = prefs.getFloat("obsAng", 0);
+    g5State.rawWindDir        = prefs.getFloat("wndDir", 0);
+    g5State.rawWindSpeed      = prefs.getFloat("wndSpd", 0);
 
-      // HSI-specific
-      g5State.bearingAngleADF = prefs.getFloat("adfBrg", 0);
-      g5State.adfValid = prefs.getInt("adfVal", 0);
-      g5State.cdiDirection = prefs.getInt("cdiDir", 0);
-      g5State.cdiScaleLabel = prefs.getInt("cdiLbl", 0);
-      g5State.desiredTrack = prefs.getFloat("desTrk", 0);
-      g5State.desiredTrackValid = prefs.getInt("dtVal", 0);
-      g5State.distNextWaypoint = prefs.getFloat("distWp", 0);
-      g5State.bearingAngleGPS = prefs.getFloat("gpsBrg", 0);
-      g5State.navCDILabelIndex = prefs.getInt("navLbl", 0);
-      g5State.bearingAngleVLOC1 = prefs.getFloat("v1Brg", 0);
-      g5State.vloc1Type = prefs.getInt("v1Type", 0);
-      g5State.bearingAngleVLOC2 = prefs.getFloat("v2Brg", 0);
-      g5State.vloc2Type = prefs.getInt("v2Type", 0);
-      g5State.obsModeOn = prefs.getInt("obsOn", 0);
-      g5State.obsAngle = prefs.getFloat("obsAng", 0);
-      g5State.rawWindDir = prefs.getFloat("wndDir", 0);
-      g5State.rawWindSpeed = prefs.getFloat("wndSpd", 0);
-
-      prefs.end();
-      return true;
-  }
+    prefs.end();
+    return true;
+}

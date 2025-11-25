@@ -68,6 +68,11 @@
         "description": "Navigation source (0=NAV, 1=GPS)"
       },
       {
+        "id": 11,
+        "Label": "Device Type",
+        "description": "Manually set the device type (0=HSI, 1=PFD)"
+      },
+      {
         "id": 30,
         "Label": "ADF Bearing",
         "description": "ADF station bearing in magnetic degrees"

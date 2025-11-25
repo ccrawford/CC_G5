@@ -202,6 +202,7 @@ class CC_G5_HSI
                 menu->parent->saveState();
                 g5Settings.deviceType = CUSTOM_PFD_DEVICE; 
                 saveSettings();
+                lcd.fillScreen(TFT_BLACK);
                 ESP.restart();
             }
             void   onEncoderTurn(int delta) override {}
