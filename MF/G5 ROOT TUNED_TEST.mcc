@@ -15,30 +15,6 @@
         <configrefs />
       </settings>
     </config>
-    <config guid="3e54285f-a8e7-4148-bdae-e30f2364c11a">
-      <active>true</active>
-      <description>Device Type Upper Set</description>
-      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <source type="SimConnect" VarType="CODE" Value="0 (&gt;L:ccDeviceID)" UUID="0" />
-        <test type="Float" value="1" />
-        <modifiers />
-        <display type="-" serial="-" trigger="normal" pin="" pinBrightness="255" />
-        <preconditions />
-        <configrefs />
-      </settings>
-    </config>
-    <config guid="c6685ae0-a651-42ab-a572-23cca2564df2">
-      <active>true</active>
-      <description>Device Type Upper Get</description>
-      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <source type="SimConnect" VarType="CODE" Value="(L:ccDeviceID)" UUID="-" />
-        <test type="Float" value="1" />
-        <modifiers />
-        <display type="-" serial="-" trigger="normal" pin="" pinBrightness="255" />
-        <preconditions />
-        <configrefs />
-      </settings>
-    </config>
     <config guid="5fa90404-4919-42a5-8949-40860ad217ca">
       <active>true</active>
       <description>Pitch</description>
@@ -50,7 +26,7 @@
         </modifiers>
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="80" value="Round($,1)" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="0" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="1" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -66,7 +42,7 @@
         </modifiers>
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="72" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="0" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="1" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -82,7 +58,7 @@
         </modifiers>
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="81" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="0" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="1" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -98,7 +74,7 @@
         </modifiers>
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="71" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="0" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="1" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -114,7 +90,7 @@
         </modifiers>
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="60" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="0" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="1" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -130,7 +106,7 @@
         </modifiers>
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="86" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="0" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="1" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -160,7 +136,7 @@
         </modifiers>
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="82" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="0" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="1" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -176,7 +152,7 @@
         </modifiers>
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="79" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="0" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="1" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -192,7 +168,7 @@
         </modifiers>
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="77" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="0" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="1" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -208,7 +184,7 @@
         </modifiers>
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="85" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="0" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="1" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -224,7 +200,7 @@
         </modifiers>
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="83" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="0" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="1" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -238,7 +214,7 @@
         <modifiers />
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="63" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="0" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="1" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -254,7 +230,7 @@
         </modifiers>
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="78" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="0" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="1" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -296,7 +272,7 @@
         <modifiers />
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="84" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="0" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="1" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -433,7 +409,7 @@
         </modifiers>
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="32" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="1" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="0" logic="and" />
         </preconditions>
         <configrefs>
           <configref active="True" ref="507ef424-616d-40b7-85e7-904fdebf3ea6" placeholder="#" testvalue="1" />
@@ -452,7 +428,7 @@
         </modifiers>
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="44" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="1" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="0" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -466,7 +442,7 @@
         <modifiers />
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="33" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="1" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="0" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -480,7 +456,7 @@
         <modifiers />
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="1" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="1" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="0" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -494,7 +470,7 @@
         <modifiers />
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="38" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="1" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="0" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -510,7 +486,7 @@
         </modifiers>
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="36" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="1" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="0" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -526,7 +502,7 @@
         </modifiers>
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="36" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="1" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="0" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -542,7 +518,7 @@
         </modifiers>
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="36" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="1" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="0" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -558,7 +534,7 @@
         </modifiers>
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="47" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="1" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="0" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -696,7 +672,7 @@
         <modifiers />
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="43" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="1" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="0" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -705,7 +681,7 @@
       <active>true</active>
       <description>HSI CDI Needle Valid based on a lot of stuff</description>
       <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <source type="SimConnect" VarType="CODE" Value="(A:HSI BEARING, degrees) 0 &gt; (A:HSI CDI NEEDLE VALID, Bool) | (A:GPS DRIVES NAV1, Bool) (A:GPS WP NEXT LAT, degrees) 0 != &amp; |" UUID="06ad11ba-d18f-4bc7-a2a1-33baa28fef90" />
+        <source type="SimConnect" VarType="CODE" Value="(A:HSI BEARING, degrees) 0 &gt; (A:HSI CDI NEEDLE VALID, Bool) OR (A:GPS DRIVES NAV1, Bool) (A:GPS WP NEXT LAT, degrees) 0 != AND OR" UUID="06ad11ba-d18f-4bc7-a2a1-33baa28fef90" />
         <test type="Float" value="1" />
         <modifiers />
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="3" value="$" />
@@ -724,7 +700,7 @@
         </modifiers>
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="45" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="1" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="0" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -740,7 +716,7 @@
         </modifiers>
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="46" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="1" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="0" logic="and" />
         </preconditions>
         <configrefs>
           <configref active="True" ref="7f9eb833-1179-442f-94fc-c59f021428a2" placeholder="#" testvalue="1" />
@@ -758,7 +734,7 @@
         </modifiers>
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="34" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="1" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="0" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -774,7 +750,7 @@
         </modifiers>
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="35" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="1" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="0" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -790,7 +766,7 @@
         </modifiers>
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="37" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="1" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="0" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -806,7 +782,7 @@
         </modifiers>
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="39" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="1" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="0" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -822,7 +798,7 @@
         </modifiers>
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="41" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="1" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="0" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -836,7 +812,7 @@
         <modifiers />
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="40" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="1" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="0" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -850,7 +826,7 @@
         <modifiers />
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="42" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="1" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="0" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -864,7 +840,7 @@
         <modifiers />
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="31" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="1" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="0" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -880,7 +856,7 @@
         </modifiers>
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="30" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="1" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="0" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -908,7 +884,7 @@
         <modifiers />
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="61" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="0" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="1" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -922,7 +898,7 @@
         <modifiers />
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="73" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="0" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="1" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -938,7 +914,7 @@
         </modifiers>
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="74" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="0" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="1" logic="and" />
         </preconditions>
         <configrefs>
           <configref active="True" ref="a1cddeb4-275d-4a75-b9dd-9cf3d9d0a074" placeholder="#" testvalue="1" />
@@ -956,7 +932,7 @@
         </modifiers>
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="75" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="0" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="1" logic="and" />
         </preconditions>
         <configrefs>
           <configref active="True" ref="a1cddeb4-275d-4a75-b9dd-9cf3d9d0a074" placeholder="#" testvalue="1" />
@@ -972,7 +948,7 @@
         <modifiers />
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="66" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="0" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="1" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -988,7 +964,7 @@
         </modifiers>
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="64" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="0" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="1" logic="and" />
         </preconditions>
         <configrefs>
           <configref active="True" ref="3d8bf04e-0d0a-4ae3-8f81-843fad40aff7" placeholder="#" testvalue="1" />
@@ -1004,7 +980,7 @@
         <modifiers />
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="68" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="0" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="1" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -1018,7 +994,7 @@
         <modifiers />
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="65" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="0" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="1" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -1032,7 +1008,7 @@
         <modifiers />
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="69" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="0" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="1" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -1046,7 +1022,7 @@
         <modifiers />
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="67" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="0" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="1" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -1060,7 +1036,7 @@
         <modifiers />
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="70" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="0" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="1" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -1076,7 +1052,7 @@
         </modifiers>
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="62" value="$" />
         <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="0" logic="and" />
+          <precondition type="variable" active="true" ref="ccDeviceID" operand="=" value="1" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -1085,7 +1061,7 @@
   <inputs>
     <config guid="fd2ac9f7-35c2-49b9-8240-e9d2c4db7b22">
       <active>true</active>
-      <description>Kohlsman Knob</description>
+      <description>Kohlsman</description>
       <settings msdata:InstanceType="MobiFlight.InputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" serial="CC_G5 ESP32/ SN-98A316E591C4" name="kohlsEnc" type="Encoder" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <encoder>
           <onLeft type="MSFS2020CustomInputAction" command="(&gt;K:KOHLSMAN_DEC)" presetId="d3828258-b00c-4dad-b59d-4fb0d4f18a2a" />
@@ -1099,7 +1075,7 @@
     </config>
     <config guid="5de8fde3-5560-41ab-9736-80acf545ed7e">
       <active>true</active>
-      <description>Heading Knob</description>
+      <description>Heading</description>
       <settings msdata:InstanceType="MobiFlight.InputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" serial="CC_G5 ESP32/ SN-98A316E591C4" name="encHeading" type="Encoder" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <encoder>
           <onLeft type="MSFS2020CustomInputAction" command="(&gt;K:HEADING_BUG_DEC)" presetId="cab52499-c789-4249-bc21-31f920d4e604" />
@@ -1113,7 +1089,7 @@
     </config>
     <config guid="9a584df6-4b05-42a4-93ed-b6fe20c04336">
       <active>true</active>
-      <description>Target Altitude Knob</description>
+      <description>TargetAlt</description>
       <settings msdata:InstanceType="MobiFlight.InputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" serial="CC_G5 ESP32/ SN-98A316E591C4" name="encTargetAlt" type="Encoder" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <encoder>
           <onLeft type="MSFS2020CustomInputAction" command=" (A:AUTOPILOT ALTITUDE LOCK VAR, feet) 100 - (&gt;K:AP_ALT_VAR_SET_ENGLISH) (&gt;H:AP_KNOB_Up)" presetId="d03873bb-2f72-4d88-ba00-d338c5627c89" />
@@ -1127,15 +1103,37 @@
     </config>
     <config guid="e90d6cb4-3a8b-4d92-92e7-0fab4abfbc4a">
       <active>true</active>
-      <description>Track Knob</description>
+      <description>Track</description>
       <settings msdata:InstanceType="MobiFlight.InputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" serial="" name="" type="-" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <preconditions />
+        <configrefs />
+      </settings>
+    </config>
+    <config guid="411ce0d1-a5b3-4575-b05d-ef9b446de538">
+      <active>true</active>
+      <description>SetPFDDevice</description>
+      <settings msdata:InstanceType="MobiFlight.InputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" serial="CC_G5 ESP32/ SN-98A316E591C4" name="btnPfdPower" type="Button" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <button>
+          <onPress type="VariableInputAction" varType="number" varName="ccDeviceID" varExpression="1" />
+        </button>
+        <preconditions />
+        <configrefs />
+      </settings>
+    </config>
+    <config guid="b00d1362-00ec-487b-91c9-f621d9618474">
+      <active>true</active>
+      <description>SetHSIDevice</description>
+      <settings msdata:InstanceType="MobiFlight.InputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" serial="CC_G5 ESP32/ SN-98A316E591C4" name="btnHsiPower" type="Button" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <button>
+          <onPress type="VariableInputAction" varType="number" varName="ccDeviceID" varExpression="1" />
+        </button>
         <preconditions />
         <configrefs />
       </settings>
     </config>
     <config guid="8d95488d-7c7a-4851-8bde-fc1161eaf0be">
       <active>true</active>
-      <description>Heading Knob</description>
+      <description>HeadingEnc</description>
       <settings msdata:InstanceType="MobiFlight.InputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" serial="CC_G5 ESP32/ SN-98A316E591C4" name="encHeading" type="Encoder" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <encoder>
           <onLeft type="MSFS2020CustomInputAction" command="(&gt;K:HEADING_BUG_DEC)" presetId="4bd8d51a-8bce-43e0-8de3-8510ef4af071" />
@@ -1149,7 +1147,7 @@
     </config>
     <config guid="84a04d52-9d17-4a47-b7ae-16c99c5f6ea9">
       <active>true</active>
-      <description>Course Knob</description>
+      <description>CourseEnc</description>
       <settings msdata:InstanceType="MobiFlight.InputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" serial="CC_G5 ESP32/ SN-98A316E591C4" name="encCourse" type="Encoder" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <encoder>
           <onLeft type="MSFS2020CustomInputAction" command="(&gt;K:VOR1_OBI_DEC)" presetId="4bd8d51a-8bce-43e0-8de3-8510ef4af071" />
@@ -1179,6 +1177,14 @@
         <button>
           <onPress type="MSFS2020CustomInputAction" command="(A:PLANE HEADING DEGREES MAGNETIC, degrees) (&gt;K:HEADING_BUG_SET)" presetId="-" />
         </button>
+        <preconditions />
+        <configrefs />
+      </settings>
+    </config>
+    <config guid="e20f4e6b-127e-4f46-9be0-39034be5bfcb">
+      <active>true</active>
+      <description>Resend All</description>
+      <settings msdata:InstanceType="MobiFlight.InputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" serial="" name="" type="-" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <preconditions />
         <configrefs />
       </settings>

@@ -26,6 +26,10 @@ import uuid
 UPPER_SERIAL = "CC_G5 ESP32/ SN-98A316E591C4"  # PFD
 LOWER_SERIAL = "CC_G5 ESP32/ SN-28372F8A1B18"  # HSI
 
+# GUIDs for Device Type entries
+UPPER_SET_GUID = "3e54285f-a8e7-4148-bdae-e30f2364c11a"  # Device Type Upper Set
+UPPER_GET_GUID = "c6685ae0-a651-42ab-a572-23cca2564df2"  # Device Type Upper Get
+
 # File paths (relative to script location)
 SCRIPT_DIR = Path(__file__).parent
 MF_DIR = SCRIPT_DIR.parent.parent / "MF"
@@ -38,7 +42,7 @@ def generate_new_guid():
     return str(uuid.uuid4())
 
 
-def duplicate_config(config_elem, old_serial, new_serial):
+def duplicate_config(config_elem, old_serial, new_serial, device_index=1, lower_get_guid=None):
     """
     Duplicate a config element, replacing the serial number (keeping original GUID).
 
@@ -46,6 +50,8 @@ def duplicate_config(config_elem, old_serial, new_serial):
         config_elem: XML element representing a config entry
         old_serial: Original device serial number (e.g., "CC_G5 ESP32/ SN-98A316E591C4")
         new_serial: New device serial number (e.g., "CC_G5 ESP32/ SN-28372F8A1B18")
+        device_index: Device number (1 for first/UPPER, 2 for second/LOWER)
+        lower_get_guid: GUID for Device Type Lower Get (only needed for device_index=2)
 
     Returns:
         Duplicated config element with updated serial (GUID unchanged)
@@ -68,7 +74,77 @@ def duplicate_config(config_elem, old_serial, new_serial):
         if settings.get('serial') == old_serial:
             settings.set('serial', new_serial)
 
+        # If this is the second device, update references
+        if device_index == 2:
+            # For inputs: rename varName in onPress elements
+            for on_press in settings.findall('.//onPress[@varName="ccDeviceID"]'):
+                on_press.set('varName', 'ccDeviceID2')
+
+            # For outputs: replace UPPER_GET_GUID with LOWER_GET_GUID in preconditions
+            for precondition in settings.findall('.//precondition[@type="config"]'):
+                if precondition.get('ref') == UPPER_GET_GUID and lower_get_guid:
+                    precondition.set('ref', lower_get_guid)
+
     return new_config
+
+
+def create_device_type_entries(outputs_elem, upper_set_guid, upper_get_guid):
+    """
+    Create Device Type Lower Set and Get entries based on the Upper entries.
+
+    Args:
+        outputs_elem: The outputs XML element to read Upper entries from
+        upper_set_guid: GUID of the Device Type Upper Set entry
+        upper_get_guid: GUID of the Device Type Upper Get entry
+
+    Returns:
+        Tuple of (lower_set_config, lower_get_config, lower_set_guid, lower_get_guid)
+    """
+    # Find the Device Type Upper Set and Get entries
+    upper_set_config = None
+    upper_get_config = None
+
+    for config in outputs_elem.findall('config'):
+        guid = config.get('guid')
+        if guid == upper_set_guid:
+            upper_set_config = config
+        elif guid == upper_get_guid:
+            upper_get_config = config
+
+    if upper_set_config is None or upper_get_config is None:
+        raise ValueError("Could not find Device Type Upper Set/Get entries")
+
+    # Generate new GUIDs for Lower entries
+    lower_set_guid = generate_new_guid()
+    lower_get_guid = generate_new_guid()
+
+    # Create Device Type Lower Set entry (copy of Upper Set)
+    lower_set_config = ET.fromstring(ET.tostring(upper_set_config))
+    lower_set_config.set('guid', lower_set_guid)
+    desc = lower_set_config.find('description')
+    if desc is not None:
+        desc.text = "Device Type Lower Set"
+    settings = lower_set_config.find('settings')
+    if settings is not None:
+        source = settings.find('source')
+        if source is not None:
+            # Change from ccDeviceID to ccDeviceID2
+            source.set('Value', '0 (&gt;L:ccDeviceID2)')
+
+    # Create Device Type Lower Get entry (copy of Upper Get)
+    lower_get_config = ET.fromstring(ET.tostring(upper_get_config))
+    lower_get_config.set('guid', lower_get_guid)
+    desc = lower_get_config.find('description')
+    if desc is not None:
+        desc.text = "Device Type Lower Get"
+    settings = lower_get_config.find('settings')
+    if settings is not None:
+        source = settings.find('source')
+        if source is not None:
+            # Change from ccDeviceID to ccDeviceID2
+            source.set('Value', '(L:ccDeviceID2)')
+
+    return (lower_set_config, lower_get_config, lower_set_guid, lower_get_guid)
 
 
 def create_dual_g5_config():
@@ -113,6 +189,7 @@ def create_dual_g5_config():
 
     print(f"Original device serial: {original_serial}")
     print()
+
     print(f"Creating dual configuration:")
     print(f"  UPPER (PFD): {UPPER_SERIAL}")
     print(f"  LOWER (HSI): {LOWER_SERIAL}")
@@ -140,29 +217,55 @@ def create_dual_g5_config():
         root_root = root_tree.getroot()
         root_outputs = root_root.find('outputs')
 
+        # Create Device Type Lower Set/Get entries first
+        print("Creating Device Type Lower Set/Get entries...")
+        lower_set_config, lower_get_config, lower_set_guid, lower_get_guid = create_device_type_entries(root_outputs, UPPER_SET_GUID, UPPER_GET_GUID)
+        print(f"  Device Type Lower Set GUID: {lower_set_guid}")
+        print(f"  Device Type Lower Get GUID: {lower_get_guid}")
+        print()
+
         if root_outputs is not None:
             original_configs = list(root_outputs.findall('config'))
             stats['outputs_original'] = len(original_configs)
 
+            # First, add the Device Type entries for both UPPER and LOWER
+            # Find the Upper Get entry and add Lower entries after it
+            for i, config in enumerate(original_configs):
+                if config.get('guid') == UPPER_GET_GUID:
+                    # Insert Lower Set and Get right after Upper Get
+                    original_configs.insert(i + 1, lower_set_config)
+                    original_configs.insert(i + 2, lower_get_config)
+                    break
+
             for config in original_configs:
+                guid = config.get('guid')
                 settings = config.find('settings')
+
+                # Check if this is a separator entry
+                active = config.find('active')
+                if active is not None and active.text == 'false':
+                    stats['separators'] += 1
+                    continue
+
+                # Handle Device Type entries specially (add once, don't duplicate)
+                if guid in [UPPER_SET_GUID, UPPER_GET_GUID]:
+                    outputs.append(config)
+                    continue
+                elif guid == lower_set_guid or guid == lower_get_guid:
+                    outputs.append(config)
+                    continue
+
                 if settings is not None:
                     display = settings.find('display')
 
-                    # Check if this is a separator entry
-                    active = config.find('active')
-                    if active is not None and active.text == 'false':
-                        stats['separators'] += 1
-                        continue
-
                     # Duplicate for UPPER device
                     if display is not None and display.get('serial') == original_serial:
-                        upper_config = duplicate_config(config, original_serial, UPPER_SERIAL)
+                        upper_config = duplicate_config(config, original_serial, UPPER_SERIAL, device_index=1)
                         outputs.append(upper_config)
                         stats['outputs_upper'] += 1
 
                         # Duplicate for LOWER device
-                        lower_config = duplicate_config(config, original_serial, LOWER_SERIAL)
+                        lower_config = duplicate_config(config, original_serial, LOWER_SERIAL, device_index=2, lower_get_guid=lower_get_guid)
                         outputs.append(lower_config)
                         stats['outputs_lower'] += 1
 
@@ -190,17 +293,19 @@ def create_dual_g5_config():
 
                     # Duplicate for UPPER device
                     if settings.get('serial') == original_serial:
-                        upper_config = duplicate_config(config, original_serial, UPPER_SERIAL)
+                        upper_config = duplicate_config(config, original_serial, UPPER_SERIAL, device_index=1)
                         inputs.append(upper_config)
                         stats['inputs_upper'] += 1
 
                         # Duplicate for LOWER device
-                        lower_config = duplicate_config(config, original_serial, LOWER_SERIAL)
+                        lower_config = duplicate_config(config, original_serial, LOWER_SERIAL, device_index=2, lower_get_guid=lower_get_guid)
                         inputs.append(lower_config)
                         stats['inputs_lower'] += 1
 
     # Write the output file
     print(f"Writing combined configuration to: {OUTPUT_FILE}")
+    # Add indentation for better readability
+    ET.indent(tree, space="  ")
     tree.write(OUTPUT_FILE, encoding='UTF-8', xml_declaration=True)
 
     # Print statistics

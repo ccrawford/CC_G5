@@ -174,6 +174,11 @@ void CC_G5_HSI::begin()
     }
 
     updateCommon();
+
+    cmdMessenger.sendCmdStart(kButtonChange);
+    cmdMessenger.sendCmdArg("btnHsiDevice");
+    cmdMessenger.sendCmdArg(0);
+    cmdMessenger.sendCmdEnd();
 }
 
 void CC_G5_HSI::setupSprites()

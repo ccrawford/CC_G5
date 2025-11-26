@@ -192,6 +192,11 @@ void CC_G5_PFD::begin()
     //   size_t psram_heap = heap_caps_get_free_size(MALLOC_CAP_SPIRAM);
     //   Serial.printf("Internal free heap: %d bytes\n", internal_heap);
     //   Serial.printf("PSRAM free heap: %d bytes\n", psram_heap);
+
+    cmdMessenger.sendCmdStart(kButtonChange);
+    cmdMessenger.sendCmdArg("btnPfdDevice");
+    cmdMessenger.sendCmdArg(0);
+    cmdMessenger.sendCmdEnd();
 }
 
 void CC_G5_PFD::setupSprites()
@@ -1135,8 +1140,8 @@ void CC_G5_PFD::drawSpeedTape()
 
     // Draw the true airspeed box
     attitude.fillRect(0, 0, SPEED_COL_WIDTH, 40, TFT_BLACK);
-    attitude.drawRect(0,0, SPEED_COL_WIDTH, 40, TFT_WHITE);
-    attitude.drawRect(1,1, SPEED_COL_WIDTH-2, 40-2, TFT_WHITE);
+    attitude.drawRect(0, 0, SPEED_COL_WIDTH, 40, TFT_WHITE);
+    attitude.drawRect(1, 1, SPEED_COL_WIDTH - 2, 40 - 2, TFT_WHITE);
     attitude.setTextColor(TFT_WHITE, TFT_BLACK);
     attitude.setTextSize(0.5);
     attitude.setTextDatum(CL_DATUM);
@@ -1146,7 +1151,6 @@ void CC_G5_PFD::drawSpeedTape()
     char buf[8];
     sprintf(buf, "%.0f", g5State.trueAirspeed);
     attitude.drawString(buf, SPEED_COL_WIDTH - 5, 20);
-
 }
 
 void CC_G5_PFD::drawSpeedPointers()
@@ -1402,20 +1406,31 @@ void CC_G5_PFD::drawKohlsman()
     static float lastVal = 0.0;
     if (g5State.kohlsman == lastVal) return;
     lastVal = g5State.kohlsman;
-
     kohlsBox.fillSprite(TFT_BLACK);
     kohlsBox.drawRect(0, 0, ALTITUDE_COL_WIDTH, 40, TFT_CYAN);
     kohlsBox.drawRect(1, 1, ALTITUDE_COL_WIDTH - 2, 38, TFT_CYAN);
     kohlsBox.setTextDatum(CR_DATUM);
     kohlsBox.setTextSize(0.5);
     kohlsBox.setTextColor(TFT_CYAN);
-    kohlsBox.drawString("i", 119, 12);
-    kohlsBox.drawString("n", 122, 26);
 
-    char buf[8];
-    sprintf(buf, "%.2f", g5State.kohlsman);
-    kohlsBox.setTextSize(0.9);
-    kohlsBox.drawString(buf, 100, 21);
+    if (g5State.kohlsman > 100) {
+        // kohlsBox.drawString("m", 122, 12);
+        kohlsBox.drawString("hPa", 124, 25);
+
+        char buf[8];
+        sprintf(buf, "%.0f", g5State.kohlsman);
+        kohlsBox.setTextSize(0.9);
+        kohlsBox.drawString(buf, 90, 23);   // units in hPa
+    } else {
+
+        kohlsBox.drawString("i", 119, 13);
+        kohlsBox.drawString("n", 122, 25);
+
+        char buf[8];
+        sprintf(buf, "%.2f", g5State.kohlsman);
+        kohlsBox.setTextSize(0.9);
+        kohlsBox.drawString(buf, 100, 23);
+    }
     kohlsBox.pushSprite(ATTITUDE_WIDTH - ALTITUDE_COL_WIDTH, 440);
 
     // Serial.printf("Pushing kohlsBox to x:%d, y:%d\n",lcd.width()-kohlsBox.width(), lcd.height() - kohlsBox.height());
@@ -2071,8 +2086,8 @@ void CC_G5_PFD::update()
     drawAp();
 
     unsigned long pushEnd = millis();
-    lcd.setTextSize(0.5);
-    sprintf(buf, "%4.1f %lu/%lu", 1000.0 / (pushEnd - lastFrameUpdate), drawTime, pushEnd - pushStart);
+    // lcd.setTextSize(0.5);
+    // sprintf(buf, "%4.1f %lu/%lu", 1000.0 / (pushEnd - lastFrameUpdate), drawTime, pushEnd - pushStart);
     // lcd.fillRect(0, 0, SPEED_COL_WIDTH, 40, TFT_BLACK);
 
     //    lcd.drawString(buf, 0, 55);
@@ -2080,7 +2095,7 @@ void CC_G5_PFD::update()
     //    lcd.drawNumber(data_available, 400, 10);
     // sprintf(buf, "b:%3.0f p:%3.0f ias:%5.1f alt:%d", g5State.bankAngle, g5State.pitchAngle, g5State.airspeed, g5State.altitude);
     // lcd.drawString(buf, 0, 10);
-    lastFrameUpdate = millis();
+    // lastFrameUpdate = millis();
 
     return;
 }

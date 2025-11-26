@@ -23,7 +23,7 @@ def generate_new_guid():
     return str(uuid.uuid4())
 
 
-def duplicate_config(config_elem, old_serial, new_serial):
+def duplicate_config(config_elem, old_serial, new_serial, is_second_device=False):
     """
     Duplicate a config element, replacing the serial number and generating a new GUID.
 
@@ -31,6 +31,7 @@ def duplicate_config(config_elem, old_serial, new_serial):
         config_elem: XML element representing a config entry
         old_serial: Original device serial number
         new_serial: New device serial number
+        is_second_device: If True, rename ccDeviceID variable to ccDeviceID2
 
     Returns:
         Duplicated config element with updated serial and GUID
@@ -53,6 +54,16 @@ def duplicate_config(config_elem, old_serial, new_serial):
         # Replace serial attribute directly on settings (inputs)
         if settings.get('serial') == old_serial:
             settings.set('serial', new_serial)
+
+        # If this is the second device, rename ccDeviceID variable references
+        if is_second_device:
+            # For inputs: rename varName in onPress elements
+            for on_press in settings.findall('.//onPress[@varName="ccDeviceID"]'):
+                on_press.set('varName', 'ccDeviceID2')
+
+            # For outputs: rename ref in precondition elements
+            for precondition in settings.findall('.//precondition[@ref="ccDeviceID"]'):
+                precondition.set('ref', 'ccDeviceID2')
 
     return new_config
 
@@ -100,7 +111,7 @@ def duplicate_mf_config(input_file, device1_serial, device2_serial, output_file)
 
                 # Duplicate if it references the device
                 if display is not None and display.get('serial') == device1_serial:
-                    new_config = duplicate_config(config, device1_serial, device2_serial)
+                    new_config = duplicate_config(config, device1_serial, device2_serial, is_second_device=True)
                     outputs.append(new_config)
                     stats['outputs_duplicated'] += 1
 
@@ -121,7 +132,7 @@ def duplicate_mf_config(input_file, device1_serial, device2_serial, output_file)
 
                 # Duplicate if it references the device
                 if settings.get('serial') == device1_serial:
-                    new_config = duplicate_config(config, device1_serial, device2_serial)
+                    new_config = duplicate_config(config, device1_serial, device2_serial, is_second_device=True)
                     inputs.append(new_config)
                     stats['inputs_duplicated'] += 1
 
