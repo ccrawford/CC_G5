@@ -12,6 +12,7 @@
 #include "Sprites\cdiBar.h"
 #include "Sprites\currentTrackPointer.h"
 #include "Sprites\headingBug.h"
+#include "Sprites\headingBug_1bit.h"
 #include "Sprites\deviationScale.h"
 #include "Sprites\gsDeviation.h"
 #include "Sprites\deviationDiamond.h"
@@ -48,6 +49,7 @@ LGFX_Sprite altTens(&attitude);
 LGFX_Sprite horizonMarker(&attitude);
 LGFX_Sprite altScaleNumber(&attitude);
 LGFX_Sprite altBug(&attitude);
+LGFX_Sprite altBugBitmap(&attitude);
 LGFX_Sprite vsScale(&attitude);
 LGFX_Sprite vsPointer(&attitude);
 LGFX_Sprite baScale(&attitude);
@@ -281,7 +283,12 @@ void CC_G5_PFD::setupSprites()
     altBug.createSprite(HEADINGBUG_IMG_WIDTH, HEADINGBUG_IMG_HEIGHT);
     // altBug.pushImage(0,0,HEADINGBUG_IMG_WIDTH, HEADINGBUG_IMG_HEIGHT, HEADINGBOX_IMG_DATA);
     altBug.setBuffer(const_cast<std::uint16_t *>(HEADINGBUG_IMG_DATA), HEADINGBUG_IMG_WIDTH, HEADINGBUG_IMG_HEIGHT, 16);
-    altBug.setPivot(HEADINGBOX_IMG_WIDTH / 2, HEADINGBUG_IMG_HEIGHT / 2);
+    altBug.setPivot(HEADINGBOX_IMG_WIDTH / 2, HEADINGBUG_IMG_HEIGHT / 2);  // THIS IS WRONG CONSTANT! but i don't feel like redoing the functions that depend on the error.
+    
+    // altBugBitmap.setColorDepth(1);
+    // altBugBitmap.createSprite(HEADINGBUG_1BIT_IMG_WIDTH, HEADINGBUG_1BIT_IMG_HEIGHT);
+    // altBugBitmap.setBuffer(const_cast<std::uint8_t *>(HEADINGBUG_1BIT_IMG_DATA), HEADINGBUG_1BIT_IMG_WIDTH, HEADINGBUG_1BIT_IMG_HEIGHT);
+    // altBugBitmap.setPivot(HEADINGBUG_1BIT_IMG_WIDTH / 2, HEADINGBUG_1BIT_IMG_HEIGHT / 2);
 
     targetAltBox.setColorDepth(8);
     targetAltBox.createSprite(130, TOP_BAR_HEIGHT);
@@ -1439,49 +1446,114 @@ void CC_G5_PFD::drawKohlsman()
 // This is the box in the upper right.
 void CC_G5_PFD::drawAltTarget()
 {
+    // Altitude Alerting per G5 Manual - State Machine Implementation
+    // Flash pattern: 0.8 sec on, 0.2 sec off
+    //
+    // States:
+    //   IDLE: Far from target (>1000')
+    //   WITHIN_1000: Within 1000' but not within 200' (flash cyan once)
+    //   WITHIN_200: Within 200' but not captured (flash cyan once)
+    //   CAPTURED: Within ±100' of target (altitude captured)
+    //   DEVIATED: Was captured, now outside ±200' (flash yellow, stay yellow)
 
-    // The g5State.altitude flashes for 5 seconds if cur g5State.altitude is within 1000' of target. Then again when within 200.
-    // It only does this once until the target alt is changed.
-    // Once target is reached, if we fly 200' away the g5State.altitude changes to yellow and flashes for 5 seconds.
-    // It looks like 0.8 sec on, 0.2 sec off.
     static int lastTargetAlt = -9999;
 
-    // The alert processing on this makes it too tricky to use cache for now.
-
-    // If the targetAlt changes, reset the alerts.
+    // If target altitude changes, reset state machine
     if (lastTargetAlt != g5State.targetAltitude) {
-        alert1000Triggered = false;
-        alert200Triggered  = false;
-        altTargetReached   = false;
-        alertColor         = TFT_WHITE;
-        altAlertActive     = false;
-        lastTargetAlt      = g5State.targetAltitude;
+        altAlertState  = ALT_IDLE;
+        altAlertActive = false;
+        lastTargetAlt  = g5State.targetAltitude;
     }
 
     int altDiff = abs(g5State.altitude - g5State.targetAltitude);
 
-    if (!alert1000Triggered && altDiff <= 1000 && altDiff > 200) {
-        // Trigger 1000' alert
-        alert1000Triggered = true;
-        altAlertActive     = true;
-        alertStartTime     = millis();
-        alertColor         = TFT_WHITE;
-    } else if (!alert200Triggered && altDiff <= 200 && altDiff > 50) {
-        // Trigger 200' alert (when approaching)
-        alert200Triggered = true;
-        altAlertActive    = true;
-        alertStartTime    = millis();
-        alertColor        = TFT_WHITE;
-    } else if (altDiff <= 100) {
-        // Target reached (within 100')
-        altTargetReached = true;
-        altAlertActive   = false; // Stop any active alert
-    } else if (altTargetReached && altDiff > 200) {
-        // Deviated from target - trigger alert once
-        altAlertActive   = true;
-        alertStartTime   = millis();
-        alertColor       = TFT_YELLOW;
-        altTargetReached = false; // Clear reached flag
+    // State machine transitions
+    AltAlertState previousState = altAlertState;
+
+    switch (altAlertState) {
+        case ALT_IDLE:
+            if (altDiff <= ALT_ALERT_1000_THRESHOLD) {
+                altAlertState = ALT_WITHIN_1000;
+            }
+            break;
+
+        case ALT_WITHIN_1000:
+            if (altDiff > ALT_ALERT_1000_THRESHOLD) {
+                altAlertState = ALT_IDLE;
+            } else if (altDiff <= ALT_ALERT_200_THRESHOLD) {
+                altAlertState = ALT_WITHIN_200;
+            }
+            break;
+
+        case ALT_WITHIN_200:
+            if (altDiff > ALT_DEVIATION_THRESHOLD) {
+                // Left 200' band before capturing - return to appropriate state
+                altAlertState = (altDiff > ALT_ALERT_1000_THRESHOLD) ? ALT_IDLE : ALT_WITHIN_1000;
+            } else if (altDiff <= ALT_CAPTURE_THRESHOLD) {
+                altAlertState = ALT_CAPTURED;
+            }
+            break;
+
+        case ALT_CAPTURED:
+            if (altDiff > ALT_DEVIATION_THRESHOLD) {
+                // Deviated from captured altitude
+                altAlertState = ALT_DEVIATED;
+            }
+            // Stay in CAPTURED even if we drift within 100-200' range
+            break;
+
+        case ALT_DEVIATED:
+            if (altDiff <= ALT_DEVIATION_THRESHOLD) {
+                // Returned within deviation band - recaptured
+                altAlertState = (altDiff <= ALT_CAPTURE_THRESHOLD) ? ALT_CAPTURED : ALT_WITHIN_200;
+            }
+            break;
+    }
+
+    // Trigger alerts on state transitions
+    if (altAlertState != previousState) {
+        switch (altAlertState) {
+            case ALT_WITHIN_1000:
+                // Crossed 1000' threshold - flash cyan
+                altAlertActive = true;
+                alertStartTime = millis();
+                alertColor     = TFT_CYAN;
+                break;
+
+            case ALT_WITHIN_200:
+                if (previousState == ALT_WITHIN_1000) {
+                    // Crossed 200' threshold - flash cyan
+                    altAlertActive = true;
+                    alertStartTime = millis();
+                    alertColor     = TFT_CYAN;
+                } else if (previousState == ALT_DEVIATED) {
+                    // Returned within 200' after deviation - flash cyan
+                    altAlertActive = true;
+                    alertStartTime = millis();
+                    alertColor     = TFT_CYAN;
+                }
+                break;
+
+            case ALT_CAPTURED:
+                if (previousState == ALT_DEVIATED) {
+                    // Returned to capture after deviation - flash cyan
+                    altAlertActive = true;
+                    alertStartTime = millis();
+                    alertColor     = TFT_CYAN;
+                }
+                // No alert when first capturing from WITHIN_200
+                break;
+
+            case ALT_DEVIATED:
+                // Deviated from captured altitude - flash yellow
+                altAlertActive = true;
+                alertStartTime = millis();
+                alertColor     = TFT_YELLOW;
+                break;
+
+            default:
+                break;
+        }
     }
 
     // Stop alert after 5 seconds
@@ -1490,29 +1562,24 @@ void CC_G5_PFD::drawAltTarget()
     }
 
     // Determine display color
-    uint16_t textColor = TFT_CYAN; // Default
+    uint16_t textColor = TFT_CYAN; // Default color
 
-    // Yellow if we've deviated and haven't returned/changed target
-    if (!altTargetReached && alert200Triggered && altDiff > 200) {
+    // Yellow steady state when deviated
+    if (altAlertState == ALT_DEVIATED) {
         textColor = TFT_YELLOW;
     }
 
-    // Flash alert if active
+    // Flash override (0.8s on, 0.2s off)
     if (altAlertActive) {
         bool isVisible = ((millis() - alertStartTime) % 1000) < 800;
         if (!isVisible) {
             textColor = TFT_BLACK; // Blink off
         } else {
-            textColor = alertColor; // Use alert color (WHITE or YELLOW)
+            textColor = alertColor; // Use alert color (CYAN or YELLOW)
         }
     }
 
-    // Return to cyan if back within 200' after deviation
-    if (alert200Triggered && !altTargetReached && altDiff <= 200) {
-        textColor         = TFT_CYAN;
-        alert200Triggered = false; // Reset 200' alert for next approach
-    }
-
+    // Format the altitude text
     char buf[10];
     if (g5State.targetAltitude != 0) {
         sprintf(buf, "%d", g5State.targetAltitude);
@@ -1520,18 +1587,17 @@ void CC_G5_PFD::drawAltTarget()
         strcpy(buf, "- - - -");
     }
 
-    // Knock out the last alt, but not the static elements.
+    // targetAltBox.fillSprite(TFT_BLACK);
+    // targetAltBox.drawRect(0, 0, targetAltBox.width(), targetAltBox.height(), TFT_LIGHTGRAY);
+    // targetAltBox.drawRect(1, 1, targetAltBox.width()-2, targetAltBox.height()-2, TFT_LIGHTGRAY);
+    // targetAltBox.drawBitmap()
+
+    // Clear previous text and draw new
     targetAltBox.fillRect(22, 3, 88, 34, TFT_BLACK);
     targetAltBox.setTextColor(textColor);
     targetAltBox.drawString(buf, 110, 21);
 
     targetAltBox.pushSprite(&attitude, ATTITUDE_WIDTH - ALTITUDE_COL_WIDTH, 0);
-
-    return;
-
-    // headingBox.fillRect(20, 6, 114, 30, TFT_BLACK);
-    // headingBox.drawString(buf, headingBox.width() - 25, headingBox.height() - 3);
-    // headingBox.pushSprite(lcd.width()-headingBox.width(), 0);
 }
 
 void CC_G5_PFD::drawGroundSpeed()

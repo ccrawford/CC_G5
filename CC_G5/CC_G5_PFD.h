@@ -44,7 +44,6 @@
 #define NAVSOURCE_GPS   1
 #define NAVSOURCE_NAV   0
 #define PIf             3.141526f
-// Was 188
 
 class CC_G5_PFD
 {
@@ -381,19 +380,19 @@ private:
 
     void setVSpeeds(char *);
 
-    void drawAttitude();
-    void drawSpeedTape();
-    void drawSpeedPointers();
-    void drawSpeedTrend();
-    void drawAltTape();
-    void drawDensityAlt();
-    void drawHorizonMarker();
-    void drawGroundSpeed();
-    void drawKohlsman();
-    void drawAltTarget();
-    void drawBall();
-    void drawHeadingTape();
-    void blinkAP();
+    void          drawAttitude();
+    void          drawSpeedTape();
+    void          drawSpeedPointers();
+    void          drawSpeedTrend();
+    void          drawAltTape();
+    void          drawDensityAlt();
+    void          drawHorizonMarker();
+    void          drawGroundSpeed();
+    void          drawKohlsman();
+    void          drawAltTarget();
+    void          drawBall();
+    void          drawHeadingTape();
+    void          blinkAP();
     unsigned long apBlinkEnd = 0;
 
     void drawCDIBar();
@@ -416,13 +415,26 @@ private:
 public:
     // Sprite management for menu system
 
-    // Alert state - PFD-specific display logic (keep as member)
-    bool          alert1000Triggered = false;
-    bool          alert200Triggered  = false;
-    bool          altTargetReached   = false;
-    unsigned long alertStartTime     = 0;
-    bool          altAlertActive     = false;
-    uint16_t      alertColor         = TFT_WHITE;
+    // Altitude Alert State Machine
+    enum AltAlertState {
+        ALT_IDLE,        // Far from target (>1000')
+        ALT_WITHIN_1000, // Within 1000' but not within 200'
+        ALT_WITHIN_200,  // Within 200' but not captured
+        ALT_CAPTURED,    // Within capture threshold (±100')
+        ALT_DEVIATED     // Was captured, now outside ±200'
+    };
+
+    // Altitude alert constants
+    static constexpr int ALT_ALERT_1000_THRESHOLD = 1000;
+    static constexpr int ALT_ALERT_200_THRESHOLD  = 200;
+    static constexpr int ALT_DEVIATION_THRESHOLD  = 200; // ±200' deviation band
+    static constexpr int ALT_CAPTURE_THRESHOLD    = 100; // Must be within ±100' to initially capture
+
+    // Alert state tracking
+    AltAlertState altAlertState  = ALT_IDLE;
+    unsigned long alertStartTime = 0;
+    bool          altAlertActive = false;
+    uint16_t      alertColor     = TFT_CYAN;
 
     // OLD LOCAL VARIABLES - now in g5State (keeping for reference)
     // float headingAngle    = 0.0f;
