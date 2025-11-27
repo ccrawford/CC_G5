@@ -57,6 +57,9 @@ extern CC_G5_Settings g5Settings;
 
 // Shared flight state - accessible by both HSI and PFD
 struct G5State {
+
+    int   lcdBrightness     = 255;
+
     // Heading and orientation
     float rawHeadingAngle   = 0.0f;
     float headingAngle      = 0.0f;

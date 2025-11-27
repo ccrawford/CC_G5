@@ -133,6 +133,7 @@ void CC_G5_PFD::begin()
 
     lcd.setColorDepth(8);
     lcd.init();
+   // lcd.setBrightness(g5State.lcdBrightness);
     //    lcd.initDMA();
 
     //    Serial.printf("Chip revision %d\n", ESP.getChipRevision());
@@ -483,6 +484,9 @@ void CC_G5_PFD::setCommon(int16_t messageID, char *setPoint)
             ESP.restart();
         }
         break;
+    case 12: // Brightness
+        g5State.lcdBrightness = max(0, min(atoi(setPoint), 255));
+        lcd.setBrightness(g5State.lcdBrightness);
     }
 }
 

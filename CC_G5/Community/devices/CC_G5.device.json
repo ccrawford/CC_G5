@@ -296,6 +296,11 @@
         "id": 83,
         "Label": "Vertical Speed",
         "description": "Vertical speed in feet per minute"
+      },
+      {
+        "id": 12,
+        "Label": "Screen Brightness",
+        "description": "Screen brightness from 0 (off) to 255 (full on)"
       }
     ]
 }

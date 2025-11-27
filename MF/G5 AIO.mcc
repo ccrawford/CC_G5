@@ -1853,6 +1853,18 @@
         <configrefs />
       </settings>
     </config>
+    <config guid="bcea2ed9-d37c-4dcf-bade-d5fa68ae0572">
+      <active>true</active>
+      <description>Brightness</description>
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <source type="SimConnect" VarType="CODE" Value="(A:AUTOPILOT HEADING LOCK DIR,Degrees)" UUID="e47210e8-7db4-4980-9f57-b3682fb3742d" />
+        <test type="Float" value="129" />
+        <modifiers />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="12" value="$" />
+        <preconditions />
+        <configrefs />
+      </settings>
+    </config>
   </outputs>
   <inputs>
     <config guid="fd2ac9f7-35c2-49b9-8240-e9d2c4db7b22">
