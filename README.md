@@ -9,6 +9,14 @@
   This code supports both HSI and PFD in a single code base. Use MF to select display configuration. Ability
   to switch between displays at run-time (like the real device) is not implemented.
 
+  UPDATE Nov 2025: You may now select the device from the menu. There is only one custom device type (CCs CC_G5). It will
+  remember which device type it is when selected from the menu, or use the MF Message "Device Type" to control it from 
+  your MF config.
+  NOTE: The message IDs have now changed to support the single device/dual mode setup. Your old .mcc files will not 
+  work. There is a new Community file set in the Community folder and new sample MF .mcc files in the MF folder. 
+  Use G5 ROOT CONFIG.mcc for a single device or G5 AIO.mcc for duals. The create_dual_g5_config.bat can be used to 
+  duplicate the G5 ROOT CONFIG.mcc for dual device. However you will need to update with the SN of your devices. 
+
   Both displays get around 16fps. I initially thought this was unacceptably slow, but in reality it's fine.
   Smoothing of input values and sub-pixel rendering allows smooth, realistic movement of dials and tapes. 
 
@@ -216,6 +224,7 @@
 
   - GitHub Repository: https://github.com/ccrawford/CC_G5
   - MobiFlight: https://www.mobiflight.com
+
 
 
 
