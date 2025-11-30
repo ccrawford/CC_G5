@@ -9,6 +9,8 @@ LGFX lcd = LGFX();
 LGFX_Sprite headingBox(&lcd);
 LGFX_Sprite gsBox(&lcd);
 
+BrightnessMenu brightnessMenu;
+
 // Send a pseudo encoder event to MF.
 void sendEncoder(String name, int count, bool increase)
 {
@@ -19,6 +21,15 @@ void sendEncoder(String name, int count, bool increase)
         cmdMessenger.sendCmdArg(increase ? 0 : 2);
         cmdMessenger.sendCmdEnd();
     }
+}
+
+// Send a psedo button press event to MF.
+void sendButton(String name, int pressType=0)
+{
+    cmdMessenger.sendCmdStart(kButtonChange);
+    cmdMessenger.sendCmdArg(name);
+    cmdMessenger.sendCmdArg(pressType);
+    cmdMessenger.sendCmdEnd();
 }
 
 // G5_Hardware class implementation
@@ -158,3 +169,23 @@ bool saveSettings()
     return retval;
 }
 
+//   uint8_t brightnessGamma(int percent)
+//   {
+//       if (percent < 1) percent = 1;
+//       if (percent > 100) percent = 100;
+
+//       // Gamma 2.2 curve for perceptual linearity
+//       float normalized = percent / 100.0f;
+//       float corrected = pow(normalized, 2.2f);
+//       return (uint8_t)(corrected * 255.0f);
+//   }
+  uint8_t brightnessGamma(int percent)
+  {
+      if (percent < 1) percent = 1;
+      if (percent > 100) percent = 100;
+
+      float normalized = percent / 100.0f;
+      float corrected = normalized * normalized * 0.75f + normalized * 0.25f;
+
+      return (uint8_t)(40 + corrected * 215.0f);
+  }

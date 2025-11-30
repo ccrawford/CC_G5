@@ -97,24 +97,42 @@ void CC_G5_PFD::read_rp2040_data()
             if (pfdMenu.menuActive) {
                 // Route input to menu when active
                 pfdMenu.handleEncoderButton(true);
-            } else {
+            } else if(!brightnessMenu.active()) {
                 // Open menu when not active
                 pfdMenu.setActive(true);
             }
         }
 
-        if (enc_btn == ButtonEventType::BUTTON_LONG_PRESSED) {
-            //  Serial.println("Long press on PFD. Send button to MF");
-            pfdMenu.sendButton("btnPfdEncoder", 0);
-        }
+        // if (enc_btn == ButtonEventType::BUTTON_LONG_PRESSED) {
+        //     //  Serial.println("Long press on PFD. Send button to MF");
+        //     pfdMenu.sendButton("btnPfdEncoder", 0);
+        // }
 
+        // POWER BUTTON
         if (ext_btn == ButtonEventType::BUTTON_LONG_PRESSED) {
-            //  Serial.println("Long press on PFD. Send button to MF");
-            pfdMenu.sendButton("btnPfdPower", 0);
+            Serial.printf("Long power press\n");
+            //  Serial.println("Click PFD. Send button to MF");
+            // pfdMenu.currentState = PFDMenu::MenuState::BRIGHTNESS;
+            // pfdMenu.sendButton("btnPfdPower", 0);
+            // We would power down here. TODO Not implemented.
+        }
+        if (ext_btn == ButtonEventType::BUTTON_CLICKED) {
+            Serial.printf("Power click\n");
+            if (brightnessMenu.active()) {
+                g5Settings.lcdBrightness = g5State.lcdBrightness;
+                saveSettings();
+                brightnessMenu.hide();
+                // Save the brightness setting.
+
+            } else {
+                brightnessMenu.show();
+            }
         }
 
         if (delta) {
-            if (pfdMenu.menuActive) {
+            if (brightnessMenu.active()) {
+                brightnessMenu.adjustBrightness(delta);
+            } else if (pfdMenu.menuActive) {
                 // Route encoder turns to menu when active
                 pfdMenu.handleEncoder(delta);
             } else {
@@ -133,7 +151,9 @@ void CC_G5_PFD::begin()
 
     lcd.setColorDepth(8);
     lcd.init();
-   // lcd.setBrightness(g5State.lcdBrightness);
+    
+    lcd.setBrightness(brightnessGamma(g5Settings.lcdBrightness));
+    g5State.lcdBrightness = g5Settings.lcdBrightness;
     //    lcd.initDMA();
 
     //    Serial.printf("Chip revision %d\n", ESP.getChipRevision());
@@ -195,11 +215,6 @@ void CC_G5_PFD::begin()
     //   size_t psram_heap = heap_caps_get_free_size(MALLOC_CAP_SPIRAM);
     //   Serial.printf("Internal free heap: %d bytes\n", internal_heap);
     //   Serial.printf("PSRAM free heap: %d bytes\n", psram_heap);
-
-    cmdMessenger.sendCmdStart(kButtonChange);
-    cmdMessenger.sendCmdArg("btnPfdDevice");
-    cmdMessenger.sendCmdArg(0);
-    cmdMessenger.sendCmdEnd();
 }
 
 void CC_G5_PFD::setupSprites()
@@ -284,8 +299,8 @@ void CC_G5_PFD::setupSprites()
     altBug.createSprite(HEADINGBUG_IMG_WIDTH, HEADINGBUG_IMG_HEIGHT);
     // altBug.pushImage(0,0,HEADINGBUG_IMG_WIDTH, HEADINGBUG_IMG_HEIGHT, HEADINGBOX_IMG_DATA);
     altBug.setBuffer(const_cast<std::uint16_t *>(HEADINGBUG_IMG_DATA), HEADINGBUG_IMG_WIDTH, HEADINGBUG_IMG_HEIGHT, 16);
-    altBug.setPivot(HEADINGBOX_IMG_WIDTH / 2, HEADINGBUG_IMG_HEIGHT / 2);  // THIS IS WRONG CONSTANT! but i don't feel like redoing the functions that depend on the error.
-    
+    altBug.setPivot(HEADINGBOX_IMG_WIDTH / 2, HEADINGBUG_IMG_HEIGHT / 2); // THIS IS WRONG CONSTANT! but i don't feel like redoing the functions that depend on the error.
+
     // altBugBitmap.setColorDepth(1);
     // altBugBitmap.createSprite(HEADINGBUG_1BIT_IMG_WIDTH, HEADINGBUG_1BIT_IMG_HEIGHT);
     // altBugBitmap.setBuffer(const_cast<std::uint8_t *>(HEADINGBUG_1BIT_IMG_DATA), HEADINGBUG_1BIT_IMG_WIDTH, HEADINGBUG_1BIT_IMG_HEIGHT);
@@ -1431,7 +1446,7 @@ void CC_G5_PFD::drawKohlsman()
         char buf[8];
         sprintf(buf, "%.0f", g5State.kohlsman);
         kohlsBox.setTextSize(0.9);
-        kohlsBox.drawString(buf, 90, 23);   // units in hPa
+        kohlsBox.drawString(buf, 90, 23); // units in hPa
     } else {
 
         kohlsBox.drawString("i", 119, 13);
@@ -1475,88 +1490,88 @@ void CC_G5_PFD::drawAltTarget()
     AltAlertState previousState = altAlertState;
 
     switch (altAlertState) {
-        case ALT_IDLE:
-            if (altDiff <= ALT_ALERT_1000_THRESHOLD) {
-                altAlertState = ALT_WITHIN_1000;
-            }
-            break;
+    case ALT_IDLE:
+        if (altDiff <= ALT_ALERT_1000_THRESHOLD) {
+            altAlertState = ALT_WITHIN_1000;
+        }
+        break;
 
-        case ALT_WITHIN_1000:
-            if (altDiff > ALT_ALERT_1000_THRESHOLD) {
-                altAlertState = ALT_IDLE;
-            } else if (altDiff <= ALT_ALERT_200_THRESHOLD) {
-                altAlertState = ALT_WITHIN_200;
-            }
-            break;
+    case ALT_WITHIN_1000:
+        if (altDiff > ALT_ALERT_1000_THRESHOLD) {
+            altAlertState = ALT_IDLE;
+        } else if (altDiff <= ALT_ALERT_200_THRESHOLD) {
+            altAlertState = ALT_WITHIN_200;
+        }
+        break;
 
-        case ALT_WITHIN_200:
-            if (altDiff > ALT_DEVIATION_THRESHOLD) {
-                // Left 200' band before capturing - return to appropriate state
-                altAlertState = (altDiff > ALT_ALERT_1000_THRESHOLD) ? ALT_IDLE : ALT_WITHIN_1000;
-            } else if (altDiff <= ALT_CAPTURE_THRESHOLD) {
-                altAlertState = ALT_CAPTURED;
-            }
-            break;
+    case ALT_WITHIN_200:
+        if (altDiff > ALT_DEVIATION_THRESHOLD) {
+            // Left 200' band before capturing - return to appropriate state
+            altAlertState = (altDiff > ALT_ALERT_1000_THRESHOLD) ? ALT_IDLE : ALT_WITHIN_1000;
+        } else if (altDiff <= ALT_CAPTURE_THRESHOLD) {
+            altAlertState = ALT_CAPTURED;
+        }
+        break;
 
-        case ALT_CAPTURED:
-            if (altDiff > ALT_DEVIATION_THRESHOLD) {
-                // Deviated from captured altitude
-                altAlertState = ALT_DEVIATED;
-            }
-            // Stay in CAPTURED even if we drift within 100-200' range
-            break;
+    case ALT_CAPTURED:
+        if (altDiff > ALT_DEVIATION_THRESHOLD) {
+            // Deviated from captured altitude
+            altAlertState = ALT_DEVIATED;
+        }
+        // Stay in CAPTURED even if we drift within 100-200' range
+        break;
 
-        case ALT_DEVIATED:
-            if (altDiff <= ALT_DEVIATION_THRESHOLD) {
-                // Returned within deviation band - recaptured
-                altAlertState = (altDiff <= ALT_CAPTURE_THRESHOLD) ? ALT_CAPTURED : ALT_WITHIN_200;
-            }
-            break;
+    case ALT_DEVIATED:
+        if (altDiff <= ALT_DEVIATION_THRESHOLD) {
+            // Returned within deviation band - recaptured
+            altAlertState = (altDiff <= ALT_CAPTURE_THRESHOLD) ? ALT_CAPTURED : ALT_WITHIN_200;
+        }
+        break;
     }
 
     // Trigger alerts on state transitions
     if (altAlertState != previousState) {
         switch (altAlertState) {
-            case ALT_WITHIN_1000:
-                // Crossed 1000' threshold - flash cyan
+        case ALT_WITHIN_1000:
+            // Crossed 1000' threshold - flash cyan
+            altAlertActive = true;
+            alertStartTime = millis();
+            alertColor     = TFT_CYAN;
+            break;
+
+        case ALT_WITHIN_200:
+            if (previousState == ALT_WITHIN_1000) {
+                // Crossed 200' threshold - flash cyan
                 altAlertActive = true;
                 alertStartTime = millis();
                 alertColor     = TFT_CYAN;
-                break;
-
-            case ALT_WITHIN_200:
-                if (previousState == ALT_WITHIN_1000) {
-                    // Crossed 200' threshold - flash cyan
-                    altAlertActive = true;
-                    alertStartTime = millis();
-                    alertColor     = TFT_CYAN;
-                } else if (previousState == ALT_DEVIATED) {
-                    // Returned within 200' after deviation - flash cyan
-                    altAlertActive = true;
-                    alertStartTime = millis();
-                    alertColor     = TFT_CYAN;
-                }
-                break;
-
-            case ALT_CAPTURED:
-                if (previousState == ALT_DEVIATED) {
-                    // Returned to capture after deviation - flash cyan
-                    altAlertActive = true;
-                    alertStartTime = millis();
-                    alertColor     = TFT_CYAN;
-                }
-                // No alert when first capturing from WITHIN_200
-                break;
-
-            case ALT_DEVIATED:
-                // Deviated from captured altitude - flash yellow
+            } else if (previousState == ALT_DEVIATED) {
+                // Returned within 200' after deviation - flash cyan
                 altAlertActive = true;
                 alertStartTime = millis();
-                alertColor     = TFT_YELLOW;
-                break;
+                alertColor     = TFT_CYAN;
+            }
+            break;
 
-            default:
-                break;
+        case ALT_CAPTURED:
+            if (previousState == ALT_DEVIATED) {
+                // Returned to capture after deviation - flash cyan
+                altAlertActive = true;
+                alertStartTime = millis();
+                alertColor     = TFT_CYAN;
+            }
+            // No alert when first capturing from WITHIN_200
+            break;
+
+        case ALT_DEVIATED:
+            // Deviated from captured altitude - flash yellow
+            altAlertActive = true;
+            alertStartTime = millis();
+            alertColor     = TFT_YELLOW;
+            break;
+
+        default:
+            break;
         }
     }
 
@@ -2147,6 +2162,8 @@ void CC_G5_PFD::update()
     drawDensityAlt();
 
     processMenu();
+    brightnessMenu.draw(&attitude); // Draws on attitude sprite!
+
     attitude.pushSprite(0, TOP_BAR_HEIGHT, TFT_MAIN_TRANSPARENT);
 
     drawGroundSpeed();

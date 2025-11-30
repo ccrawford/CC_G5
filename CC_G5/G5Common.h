@@ -23,17 +23,16 @@ static const char *TAG_SPRITES = "CC_G5_SPRITES";
 #include "commandmessenger.h"
 #include <Wire.h>
 
+#define CC_G5_SETTINGS_OFFSET 2048 // Well past MF config end (59 + 1496 = 1555)
+#define SETTINGS_VERSION      3
+#define STATE_VERSION         1 // For the save state when switching between pfd and hsi
 
-#define CC_G5_SETTINGS_OFFSET 2048     // Well past MF config end (59 + 1496 = 1555)
-#define SETTINGS_VERSION 2
-#define STATE_VERSION 1 // For the save state when switching between pfd and hsi
-
-#define TFT_MAIN_TRANSPARENT  TFT_PINK // Just pick a color not used in either display
+#define TFT_MAIN_TRANSPARENT TFT_PINK // Just pick a color not used in either display
 
 struct CC_G5_Settings {
-    int     version               = SETTINGS_VERSION;
-    uint8_t bearingPointer1Source = 0; // 0: Off, 1: GPS, 2: Nav1, 3: Nav2, 4: ADF
-    uint8_t bearingPointer2Source = 0; // 0: Off, 1: GPS, 2: Nav1, 3: Nav2, 4: ADF
+    int      version               = SETTINGS_VERSION;
+    uint8_t  bearingPointer1Source = 0; // 0: Off, 1: GPS, 2: Nav1, 3: Nav2, 4: ADF
+    uint8_t  bearingPointer2Source = 0; // 0: Off, 1: GPS, 2: Nav1, 3: Nav2, 4: ADF
     uint16_t Vr                    = 60;
     uint16_t Vx                    = 75;
     uint16_t Vy                    = 91;
@@ -44,13 +43,14 @@ struct CC_G5_Settings {
     uint16_t Vg                    = 80;
     uint16_t Vno                   = 145;
     uint16_t Vne                   = 182;
-    uint8_t pitchScale            = 15;
-    uint8_t speedScale            = 10;
-    uint8_t baroUnit              = 0; // 0: inHg, 1: kPa, 3: mmHg
-    uint8_t speedUnits            = 0; // 0:knot 1:mph 2:kph
-    uint8_t distanceUnits         = 0; // 0: nm, 1: miles, 2:km
-    uint8_t tempUnits             = 0; // 0: F, 1: C
-    uint8_t deviceType = CUSTOM_HSI_DEVICE;
+    uint8_t  pitchScale            = 15;
+    uint8_t  speedScale            = 10;
+    uint8_t  baroUnit              = 0; // 0: inHg, 1: kPa, 3: mmHg
+    uint8_t  speedUnits            = 0; // 0:knot 1:mph 2:kph
+    uint8_t  distanceUnits         = 0; // 0: nm, 1: miles, 2:km
+    uint8_t  tempUnits             = 0; // 0: F, 1: C
+    uint8_t  deviceType            = CUSTOM_HSI_DEVICE;
+    uint8_t  lcdBrightness         = 100;
 };
 
 extern CC_G5_Settings g5Settings;
@@ -58,84 +58,84 @@ extern CC_G5_Settings g5Settings;
 // Shared flight state - accessible by both HSI and PFD
 struct G5State {
 
-    int   lcdBrightness     = 255;
+    int lcdBrightness = 100; // We will go 0-100 here.
 
     // Heading and orientation
-    float rawHeadingAngle   = 0.0f;
-    float headingAngle      = 0.0f;
-    int   headingBugAngle   = 0;
-    float groundTrack       = 0.0f;
+    float rawHeadingAngle = 0.0f;
+    float headingAngle    = 0.0f;
+    int   headingBugAngle = 0;
+    float groundTrack     = 0.0f;
 
     // Attitude (PFD)
-    float rawBankAngle      = 0.0f;
-    float bankAngle         = 0.0f;
-    float rawPitchAngle     = 0.0f;
-    float pitchAngle        = 0.0f;
-    float rawBallPos        = 0.0f;
-    float ballPos           = 0.0f;
-    float turnRate          = 0.0f;
+    float rawBankAngle  = 0.0f;
+    float bankAngle     = 0.0f;
+    float rawPitchAngle = 0.0f;
+    float pitchAngle    = 0.0f;
+    float rawBallPos    = 0.0f;
+    float ballPos       = 0.0f;
+    float turnRate      = 0.0f;
 
     // Speeds
-    float rawAirspeed       = 0.0f;
-    float airspeed          = 0.0f;
-    float trueAirspeed      = 0.0f;
-    int   groundSpeed       = 0;
+    float rawAirspeed  = 0.0f;
+    float airspeed     = 0.0f;
+    float trueAirspeed = 0.0f;
+    int   groundSpeed  = 0;
 
     // Altitude
-    int   rawAltitude       = 0;
-    int   altitude          = 0;
-    int   rawVerticalSpeed  = 0;
-    int   verticalSpeed     = 0;
-    int   targetAltitude    = 0;
-    int   densityAltitude   = 1200;
-    float kohlsman          = 29.92f;
+    int   rawAltitude      = 0;
+    int   altitude         = 0;
+    int   rawVerticalSpeed = 0;
+    int   verticalSpeed    = 0;
+    int   targetAltitude   = 0;
+    int   densityAltitude  = 1200;
+    float kohlsman         = 29.92f;
 
     // Navigation source and mode
-    int   navSource         = 1;      // 1=GPS, 0=NAV
-    int   gpsApproachType   = 0;      // Approach type enum
-    int   navCDILabelIndex  = 0;      // GPS:0, LOC1:1, VOR1:2, etc.
-    int   cdiScaleLabel     = 0;
-    bool  terminalModeActive = true;
+    int  navSource          = 1; // 1=GPS, 0=NAV
+    int  gpsApproachType    = 0; // Approach type enum
+    int  navCDILabelIndex   = 0; // GPS:0, LOC1:1, VOR1:2, etc.
+    int  cdiScaleLabel      = 0;
+    bool terminalModeActive = true;
 
     // CDI (Course Deviation Indicator)
-    int   cdiDirection      = 0;      // HSI needle direction
-    float rawCdiOffset      = 0.0f;
-    float cdiOffset         = 0.0f;
-    int   cdiNeedleValid    = 1;
-    int   cdiToFrom         = 0;      // 0=off, 1=to, 2=from
+    int   cdiDirection   = 0; // HSI needle direction
+    float rawCdiOffset   = 0.0f;
+    float cdiOffset      = 0.0f;
+    int   cdiNeedleValid = 1;
+    int   cdiToFrom      = 0; // 0=off, 1=to, 2=from
 
     // Glide slope
-    float rawGsiNeedle      = 0.0f;
-    float gsiNeedle         = 0.0f;
-    int   gsiNeedleValid    = 1;
+    float rawGsiNeedle   = 0.0f;
+    float gsiNeedle      = 0.0f;
+    int   gsiNeedleValid = 1;
 
     // Desired track / Course to steer (shared between HSI and PFD)
-    float desiredTrack      = 0.0f;   // GPS course to steer / DTK (used by both HSI and PFD)
+    float desiredTrack      = 0.0f; // GPS course to steer / DTK (used by both HSI and PFD)
     int   desiredTrackValid = 0;
-    float navCourse         = 0.0f;   // NAV OBS course
+    float navCourse         = 0.0f; // NAV OBS course
 
     // OBS mode
-    int   obsModeOn         = 0;
-    float obsAngle          = 0.0f;
+    int   obsModeOn = 0;
+    float obsAngle  = 0.0f;
 
     // Distance
-    float distNextWaypoint  = 0.0f;
-    int   gpsEteWp          = 0;
+    float distNextWaypoint = 0.0f;
+    int   gpsEteWp         = 0;
 
     // Bearing pointers (HSI)
     float bearingAngleGPS   = 0.0f;
     float bearingAngleVLOC1 = 0.0f;
     float bearingAngleVLOC2 = 0.0f;
     float bearingAngleADF   = 0.0f;
-    int   vloc1Type         = 0;      // LOC:1, VOR:2, DME:3, ADF:4
+    int   vloc1Type         = 0; // LOC:1, VOR:2, DME:3, ADF:4
     int   vloc2Type         = 0;
     bool  adfValid          = false;
 
     // Wind (HSI)
-    float rawWindDir        = 0.0f;
-    float windDir           = 0.0f;
-    float rawWindSpeed      = 0.0f;
-    float windSpeed         = 0.0f;
+    float rawWindDir   = 0.0f;
+    float windDir      = 0.0f;
+    float rawWindSpeed = 0.0f;
+    float windSpeed    = 0.0f;
 
     // Flight director (PFD)
     int   flightDirectorActive = 0;
@@ -143,18 +143,18 @@ struct G5State {
     float flightDirectorBank   = 0.0f;
 
     // Autopilot (PFD)
-    int   apActive          = 0;
-    int   apLMode           = 0;
-    int   apVMode           = 0;
-    int   apLArmedMode      = 0;
-    int   apVArmedMode      = 0;
-    int   apYawDamper       = 0;
-    int   apTargetSpeed     = 0;
-    int   apAltCaptured     = 0;
-    int   apTargetVS        = 0;
+    int apActive      = 0;
+    int apLMode       = 0;
+    int apVMode       = 0;
+    int apLArmedMode  = 0;
+    int apVArmedMode  = 0;
+    int apYawDamper   = 0;
+    int apTargetSpeed = 0;
+    int apAltCaptured = 0;
+    int apTargetVS    = 0;
 
     // Other
-    int   oat               = 15;     // Outside air temp
+    int oat = 15; // Outside air temp
 };
 
 extern G5State g5State;
@@ -162,9 +162,9 @@ extern G5State g5State;
 // Settings definition struct
 struct SettingDef {
     const char *name;
-    uint16_t    *valuePtr;
-    uint16_t     minVal;
-    uint16_t     maxVal;
+    uint16_t   *valuePtr;
+    uint16_t    minVal;
+    uint16_t    maxVal;
 };
 
 // Settings menu class
@@ -281,6 +281,8 @@ float smoothAngle(float input, float current, float alpha, float threshold);
 int   smoothInput(int input, int current, float alpha, int threashold);
 float smoothInput(float input, float current, float alpha, float snapThreashold);
 
+uint8_t brightnessGamma(int percent);
+
 extern MFEEPROM MFeeprom;
 bool            loadSettings();
 bool            saveSettings();
@@ -300,6 +302,63 @@ inline const char *getBearingSourceName(int source)
 }
 
 // MENU SYSTEM
+
+// Brightness menu manager - standalone, not part of main menu
+class BrightnessMenu
+{
+private:
+    bool isActive = false;
+
+public:
+    void show() { isActive = true; }
+    void hide() { isActive = false; }
+    bool active() const { return isActive; }
+
+    void adjustBrightness(int delta)
+    {
+        g5State.lcdBrightness += delta;
+        if (g5State.lcdBrightness < 1) g5State.lcdBrightness = 1;
+        if (g5State.lcdBrightness > 100) g5State.lcdBrightness = 100;
+        lcd.setBrightness(brightnessGamma(g5State.lcdBrightness));
+    }
+
+    void draw(LGFX_Sprite *targetSprite)
+    {
+        if (!isActive || !targetSprite) return;
+
+        int popupWidth = 200, popupHeight = 120;
+        int centerX = (targetSprite->width() - popupWidth) / 2; // Center X
+        int centerY = (targetSprite->height() - popupHeight);   // Bottom Y
+
+        // Draw popup
+        targetSprite->fillRoundRect(centerX, centerY, popupWidth, popupHeight, 4, 0x7BEF);
+        targetSprite->fillRoundRect(centerX + 3, centerY + 3, popupWidth - 6, popupHeight - 6, 3, TFT_BLACK);
+
+        // Title
+        targetSprite->setTextColor(TFT_WHITE);
+        targetSprite->setTextDatum(lgfx::v1::textdatum::textdatum_t::top_center);
+        targetSprite->setTextSize(0.7);
+        targetSprite->drawString("Backlight", centerX + popupWidth / 2, centerY + 10);
+
+        // Percentage
+        targetSprite->setTextColor(TFT_CYAN);
+        targetSprite->setTextSize(1.2);
+        targetSprite->setTextDatum(lgfx::v1::textdatum::textdatum_t::middle_center);
+        String valueStr = String(g5State.lcdBrightness) + "%";
+        targetSprite->drawString(valueStr, centerX + popupWidth / 2, centerY + popupHeight / 2 + 5);
+
+        // Bar
+        int barWidth  = popupWidth - 40;
+        int barHeight = 12;
+        int barX      = centerX + 20;
+        int barY      = centerY + popupHeight - 30;
+        targetSprite->drawRoundRect(barX, barY, barWidth, barHeight, 2, TFT_WHITE);
+        int fillWidth = (barWidth - 4) * g5State.lcdBrightness / 100;
+        targetSprite->fillRoundRect(barX + 2, barY + 2, fillWidth, barHeight - 4, 1, TFT_CYAN);
+    }
+};
+
+extern BrightnessMenu brightnessMenu;
 
 template <typename ParentDevice>
 class G5MenuBase
@@ -363,11 +422,11 @@ public:
         createMenuItems();
         currentState     = MenuState::BROWSING;
         currentHighlight = 0;
-        while (currentHighlight < menuItems.size() && 
-            !menuItems[currentHighlight]->isVisible()) {
-                currentHighlight++;
-            }
-            if (currentHighlight >= menuItems.size()) currentHighlight = 0;
+        while (currentHighlight < menuItems.size() &&
+               !menuItems[currentHighlight]->isVisible()) {
+            currentHighlight++;
+        }
+        if (currentHighlight >= menuItems.size()) currentHighlight = 0;
     }
 
     bool setActive(bool isActive)
@@ -398,7 +457,7 @@ public:
         if (currentState == MenuState::BROWSING) {
             // Make sure current item is visible
             if (currentHighlight >= menuItems.size() || !menuItems[currentHighlight]->isVisible()) {
-                return;   // Shouldn't happen...
+                return; // Shouldn't happen...
             }
             menuItems[currentHighlight]->onEncoderPress();
 
@@ -510,7 +569,7 @@ public:
         int menuSize = (targetSprite->width() - outlineWidth * 2 - itemSpacing * 3) / itemWidth;
 
         // Visible items
-        int visibleItemCount = getVisibleItemCount();
+        int visibleItemCount    = getVisibleItemCount();
         int currentVisibleIndex = getVisibleIndex(currentHighlight);
 
         // Draw menu background directly on target sprite
@@ -525,10 +584,10 @@ public:
         //      Serial.printf("cHi: %d, cSPo: %d\n", currentHighlight, currentStartPos);
 
         // Draw visible menu items (up to menuSize + 1)
-        int visibleDrawn = 0;
+        int visibleDrawn   = 0;
         int visibleSkipped = 0;
 
-        for (int i = 0; i <menuItems.size() && visibleDrawn < menuSize; i++) {
+        for (int i = 0; i < menuItems.size() && visibleDrawn < menuSize; i++) {
             if (!menuItems[i]->isVisible()) continue;
 
             // Skip items before scroll
@@ -694,6 +753,48 @@ public:
 
             yPos += itemHeight + spacing;
         }
+    }
+
+    void drawBrightnessPopup()
+    {
+        if (currentState != MenuState::BRIGHTNESS) return;
+
+        auto targetSprite = getTargetSprite();
+        if (!targetSprite) return;
+
+        int popupWidth = 200, popupHeight = 120;
+        int centerX = (targetSprite->width() - popupWidth) / 2;
+        int centerY = (targetSprite->height() - popupHeight) / 2;
+
+        // Draw popup background
+        targetSprite->fillRoundRect(centerX, centerY, popupWidth, popupHeight, 4, 0x7BEF);
+        targetSprite->fillRoundRect(centerX + 3, centerY + 3, popupWidth - 6, popupHeight - 6, 3, TFT_BLACK);
+
+        // Draw title
+        targetSprite->setTextColor(TFT_WHITE);
+        targetSprite->setTextDatum(lgfx::v1::textdatum::textdatum_t::top_center);
+        targetSprite->setTextSize(0.7);
+        targetSprite->drawString("Backlight", centerX + popupWidth / 2, centerY + 10);
+
+        // Draw percentage value
+        targetSprite->setTextColor(TFT_CYAN);
+        targetSprite->setTextSize(1.2);
+        targetSprite->setTextDatum(lgfx::v1::textdatum::textdatum_t::middle_center);
+        String valueStr = String(g5State.lcdBrightness) + "%";
+        targetSprite->drawString(valueStr, centerX + popupWidth / 2, centerY + popupHeight / 2 + 5);
+
+        // Draw brightness bar
+        int barWidth  = popupWidth - 40;
+        int barHeight = 12;
+        int barX      = centerX + 20;
+        int barY      = centerY + popupHeight - 30;
+
+        // Bar background
+        targetSprite->drawRoundRect(barX, barY, barWidth, barHeight, 2, TFT_WHITE);
+
+        // Filled portion
+        int fillWidth = (barWidth - 4) * g5State.lcdBrightness / 100;
+        targetSprite->fillRoundRect(barX + 2, barY + 2, fillWidth, barHeight - 4, 1, TFT_CYAN);
     }
 
     void sendEncoder(String name, int count, bool increase)

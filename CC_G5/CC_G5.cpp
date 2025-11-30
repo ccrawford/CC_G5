@@ -81,7 +81,7 @@ void CC_G5_HSI::read_rp2040_data()
             if (hsiMenu.menuActive) {
                 // Route input to menu when active
                 hsiMenu.handleEncoderButton(true);
-            } else {
+            } else if(!brightnessMenu.active()) {  // Don't open the setting menu when brightness menu open.
                 // Open menu when not active
                 hsiMenu.setActive(true);
             }
@@ -96,8 +96,26 @@ void CC_G5_HSI::read_rp2040_data()
             //  Serial.println("Long press on PFD. Send button to MF");
             hsiMenu.sendButton("btnHsiPower", 0);
         }
+
+        if (ext_btn == ButtonEventType::BUTTON_CLICKED) {
+            Serial.printf("Power click\n");
+            if (brightnessMenu.active()) {
+                g5Settings.lcdBrightness = g5State.lcdBrightness;
+                saveSettings();
+                brightnessMenu.hide();
+                lcd.clearDisplay();  // CAC CLEAR TEST
+                forceRedraw = true;
+                // Save the brightness setting.
+
+            } else {
+                brightnessMenu.show();
+            }
+        }
+
         if (delta) {
-            if (hsiMenu.menuActive) {
+             if (brightnessMenu.active()) {
+                brightnessMenu.adjustBrightness(delta);
+            } else if (hsiMenu.menuActive) {
                 // Route encoder turns to menu when active
                 hsiMenu.handleEncoder(delta);
             } else {
@@ -110,11 +128,16 @@ void CC_G5_HSI::read_rp2040_data()
 
 void CC_G5_HSI::begin()
 {
-    ESP_LOGI(TAG_CC_G5, "CC_G5 device starting up");
+    // ESP_LOGI(TAG_CC_G5, "CC_G5 device starting up");
 
     loadSettings();
 
     lcd.init();
+
+    lcd.setBrightness(brightnessGamma(g5Settings.lcdBrightness));
+    g5State.lcdBrightness = g5Settings.lcdBrightness;
+
+
 #ifdef USE_GUITION_SCREEN
     lcd.setRotation(3); // Puts the USB jack at the bottom on Guition screen.
 #else
@@ -175,10 +198,6 @@ void CC_G5_HSI::begin()
 
     updateCommon();
 
-    cmdMessenger.sendCmdStart(kButtonChange);
-    cmdMessenger.sendCmdArg("btnHsiDevice");
-    cmdMessenger.sendCmdArg(0);
-    cmdMessenger.sendCmdEnd();
 }
 
 void CC_G5_HSI::setupSprites()
@@ -361,6 +380,7 @@ void CC_G5_HSI::updateCommon()
 
     compass.fillCircle(compass.width() / 2, compass.height() / 2, COMPASS_OUTER_RADIUS + 16, TFT_BLACK);
     // curHdg.fillSprite(TFT_BLACK);
+
     drawCompass();
 
     if (g5State.navSource == NAVSOURCE_GPS)
@@ -428,6 +448,7 @@ void CC_G5_HSI::updateNav()
 
     drawCompassOuterMarkers();
     processMenu(); // writes to the compass sprite. Must do before pushing compass.
+    brightnessMenu.draw(&compass);
 
     compass.pushSprite(&lcd, (lcd.width() - compass.width()) / 2, curHdg.height(), TFT_MAIN_TRANSPARENT);
     // curHdg.pushSprite(&lcd, (480 / 2) - curHdg.width() / 2, CUR_HEADING_Y_OFFSET);
@@ -463,6 +484,7 @@ void CC_G5_HSI::updateGps()
 
     drawCompassOuterMarkers();
     processMenu();
+    brightnessMenu.draw(&compass);
 
     compass.pushSprite(&lcd, (lcd.width() - compass.width()) / 2, curHdg.height(), TFT_MAIN_TRANSPARENT);
     curHdg.pushSprite(&lcd, (480 / 2) - curHdg.width() / 2, CUR_HEADING_Y_OFFSET);

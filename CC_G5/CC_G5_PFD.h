@@ -279,8 +279,8 @@ class CC_G5_PFD
             menuItems.push_back(std::make_unique<HeadingMenuItem>(this));
             menuItems.push_back(std::make_unique<TrackMenuItem>(this));
             menuItems.push_back(std::make_unique<AltitudeMenuItem>(this));
-            menuItems.push_back(std::make_unique<SettingsMenuItem>(this));
             menuItems.push_back(std::make_unique<DeviceMenuItem>(this));
+            menuItems.push_back(std::make_unique<SettingsMenuItem>(this));
         }
 
         LGFX_Sprite *getTargetSprite() override
