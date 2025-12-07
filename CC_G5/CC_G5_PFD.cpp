@@ -32,6 +32,7 @@
 #include "Sprites\pointer.h"
 #include "Sprites\horizontalDeviationScale.h"
 #include "Sprites\speedPointer.h"
+#include "Sprites\stdBankIndicator.h"
 
 #include "Sprites\gsBox.h"
 #include "Sprites\distBox.h"
@@ -47,6 +48,8 @@ LGFX_Sprite speedTens(&attitude);
 LGFX_Sprite altUnit(&attitude);
 LGFX_Sprite altTens(&attitude);
 LGFX_Sprite horizonMarker(&attitude);
+LGFX_Sprite stdBankIndicator(&attitude);
+
 LGFX_Sprite altScaleNumber(&attitude);
 LGFX_Sprite altBug(&attitude);
 LGFX_Sprite altBugBitmap(&attitude);
@@ -97,7 +100,7 @@ void CC_G5_PFD::read_rp2040_data()
             if (pfdMenu.menuActive) {
                 // Route input to menu when active
                 pfdMenu.handleEncoderButton(true);
-            } else if(!brightnessMenu.active()) {
+            } else if (!brightnessMenu.active()) {
                 // Open menu when not active
                 pfdMenu.setActive(true);
             }
@@ -151,7 +154,7 @@ void CC_G5_PFD::begin()
 
     lcd.setColorDepth(8);
     lcd.init();
-    
+
     lcd.setBrightness(brightnessGamma(g5Settings.lcdBrightness));
     g5State.lcdBrightness = g5Settings.lcdBrightness;
     //    lcd.initDMA();
@@ -272,6 +275,11 @@ void CC_G5_PFD::setupSprites()
     horizonMarker.setColorDepth(8);
     horizonMarker.createSprite(HORIZONMARKER_IMG_WIDTH, HORIZONMARKER_IMG_HEIGHT);
     horizonMarker.pushImage(0, 0, HORIZONMARKER_IMG_WIDTH, HORIZONMARKER_IMG_HEIGHT, HORIZONMARKER_IMG_DATA);
+
+    stdBankIndicator.setColorDepth(8);
+    stdBankIndicator.createSprite(STDBANKINDICATOR_IMG_WIDTH, STDBANKINDICATOR_IMG_HEIGHT);
+    stdBankIndicator.pushImage(0, 0, STDBANKINDICATOR_IMG_WIDTH, STDBANKINDICATOR_IMG_HEIGHT, STDBANKINDICATOR_IMG_DATA);
+    stdBankIndicator.setPivot(STDBANKINDICATOR_IMG_WIDTH / 2, 143); // CAC NEEDS TUNING.
 
     // GS Is Ground speed, NOT glide slope.
     gsBox.setColorDepth(8);
@@ -1008,8 +1016,17 @@ void CC_G5_PFD::drawAttitude()
     // Draw the bank scale.
     attitude.setPivot(240, 200);
     baScale.pushRotated(g5State.bankAngle, TFT_BLACK);
+
     // Draw the static scale pointer at the top center. Use the center of the screen, but offset by the difference in column widths.
     attitude.drawBitmap(231, 79, BANKANGLEPOINTER_IMG_DATA, BANKANGLEPOINTER_IMG_WIDTH, BANKANGLEPOINTER_IMG_HEIGHT, TFT_WHITE); // 231 is 240 - half the sprite width.
+
+    // Draw the turn rate indicators if we're above some speed tbd.
+    if (g5State.trueAirspeed > 45) {
+        float stdBa = g5State.trueAirspeed / 10 + 7;
+        stdBankIndicator.pushRotated(g5State.bankAngle - stdBa, TFT_BLACK);
+        stdBankIndicator.pushRotated(g5State.bankAngle + stdBa, TFT_BLACK);
+    }
+
     // baScale.pushSprite(240, 100, TFT_BLACK);
 
     // --- 3. Draw Horizon Line ---
@@ -1176,7 +1193,7 @@ void CC_G5_PFD::drawSpeedTape()
     attitude.setTextDatum(CR_DATUM);
     char buf[8];
     sprintf(buf, "%.0f", g5State.trueAirspeed);
-    if(g5State.trueAirspeed > 10) attitude.drawString(buf, SPEED_COL_WIDTH - 5, 20);
+    if (g5State.trueAirspeed > 10) attitude.drawString(buf, SPEED_COL_WIDTH - 5, 20);
 }
 
 void CC_G5_PFD::drawSpeedPointers()

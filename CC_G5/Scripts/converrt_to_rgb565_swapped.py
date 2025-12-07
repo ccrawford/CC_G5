@@ -17,7 +17,7 @@ def convert_to_rgb565_swapped(image_path):
 
     output = []
     output.append(f"// Generated RGB565 C header file with byte-swapped values\n")
-    output.append(f"#pragma once")
+    output.append(f"#pragma once\n")
     output.append(f"#define {base_name}_IMG_WIDTH {width}\n")
     output.append(f"#define {base_name}_IMG_HEIGHT {height}\n")
     output.append(f"static constexpr uint16_t {base_name}_IMG_DATA[{width} * {height}] PROGMEM= {{\n")
