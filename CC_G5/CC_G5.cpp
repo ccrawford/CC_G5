@@ -984,7 +984,8 @@ void CC_G5_HSI::drawWPTAlert()
     if (g5State.gpsEteWp < 30 && g5State.gpsEteWp > 10 && g5State.gpsEteWp < lastETE && g5State.navSource == NAVSOURCE_GPS) {
         compass.setTextColor(TFT_WHITE, TFT_BLACK);
         compass.setTextSize(0.5);
-        compass.drawString("WPT", compass.width() / 2 + 17, compass.height() / 2 + 40);
+        compass.setTextDatum(BR_DATUM);
+        compass.drawString("WPT", compass.width() / 2 - 20, compass.height() / 2 + 40);
 
         // Turn on the WPT blinker.
     }

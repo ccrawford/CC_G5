@@ -137,7 +137,7 @@ void CC_G5_PFD::read_rp2040_data()
                 pfdMenu.handleEncoder(delta);
             } else {
                 // Normal heading adjustment when menu not active
-                pfdMenu.sendEncoder("kohlsEnc", abs(delta), delta > 0 ? 0 : 2);
+                pfdMenu.sendEncoder("encKohls", abs(delta), delta > 0 ? 0 : 2);
             }
         }
     }
@@ -1176,7 +1176,7 @@ void CC_G5_PFD::drawSpeedTape()
     attitude.setTextDatum(CR_DATUM);
     char buf[8];
     sprintf(buf, "%.0f", g5State.trueAirspeed);
-    attitude.drawString(buf, SPEED_COL_WIDTH - 5, 20);
+    if(g5State.trueAirspeed > 10) attitude.drawString(buf, SPEED_COL_WIDTH - 5, 20);
 }
 
 void CC_G5_PFD::drawSpeedPointers()

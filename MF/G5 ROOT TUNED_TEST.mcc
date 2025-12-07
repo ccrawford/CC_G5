@@ -1062,7 +1062,7 @@
     <config guid="fd2ac9f7-35c2-49b9-8240-e9d2c4db7b22">
       <active>true</active>
       <description>Kohlsman</description>
-      <settings msdata:InstanceType="MobiFlight.InputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" serial="CC_G5 ESP32/ SN-98A316E591C4" name="kohlsEnc" type="Encoder" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+      <settings msdata:InstanceType="MobiFlight.InputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" serial="CC_G5 ESP32/ SN-98A316E591C4" name="encKohls" type="Encoder" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <encoder>
           <onLeft type="MSFS2020CustomInputAction" command="(&gt;K:KOHLSMAN_DEC)" presetId="d3828258-b00c-4dad-b59d-4fb0d4f18a2a" />
           <onLeftFast />

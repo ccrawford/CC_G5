@@ -8,7 +8,7 @@
       <string>1</string>
     </ConfiguredPins>
   </CustomDevice>
-  <Encoder Name="kohlsEnc" PinLeft="2" PinRight="3" EncoderType="0" />
+  <Encoder Name="encKohls" PinLeft="2" PinRight="3" EncoderType="0" />
   <Encoder Name="encTargetAlt" PinLeft="4" PinRight="5" EncoderType="0" />
   <Encoder Name="encTrack" PinLeft="6" PinRight="7" EncoderType="0" />
   <Button Name="btnPfdEncoder" Pin="8" />
