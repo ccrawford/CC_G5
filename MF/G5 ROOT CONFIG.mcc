@@ -16,10 +16,10 @@
       </settings>
     </config>
     <config guid="3e54285f-a8e7-4148-bdae-e30f2364c11a">
-      <active>true</active>
+      <active>false</active>
       <description>Device Type Upper Set</description>
       <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <source type="SimConnect" VarType="CODE" Value="0 (&gt;L:ccDeviceID)" UUID="0" />
+        <source type="SimConnect" VarType="CODE" Value="1 (&gt;L:ccDeviceID) (L:ccDeviceID)" UUID="0" />
         <test type="Float" value="1" />
         <modifiers />
         <display type="-" serial="-" trigger="normal" pin="" pinBrightness="255" />
@@ -28,13 +28,13 @@
       </settings>
     </config>
     <config guid="c6685ae0-a651-42ab-a572-23cca2564df2">
-      <active>true</active>
+      <active>false</active>
       <description>Device Type Upper Get</description>
       <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <source type="SimConnect" VarType="CODE" Value="(L:ccDeviceID)" UUID="-" />
+        <source type="SimConnect" VarType="CODE" Value="(L:ccDeviceID)" UUID="0" />
         <test type="Float" value="1" />
         <modifiers />
-        <display type="-" serial="-" trigger="normal" pin="" pinBrightness="255" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="11" value="$" />
         <preconditions />
         <configrefs />
       </settings>
@@ -421,6 +421,22 @@
         <configrefs />
       </settings>
     </config>
+    <config guid="9136c0cd-2161-4a0e-b7dc-ef6b78ff52da">
+      <active>true</active>
+      <description>OBS Direction (VOR1)</description>
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <source type="SimConnect" VarType="CODE" Value="(A:NAV OBS:1,Degrees)" UUID="6bbf319a-5031-477e-ba46-8a24936f7d25" />
+        <test type="Float" value="1" />
+        <modifiers>
+          <transformation active="True" expression="Round($,1)" />
+        </modifiers>
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="44" value="$" />
+        <preconditions>
+          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="1" logic="and" />
+        </preconditions>
+        <configrefs />
+      </settings>
+    </config>
     <config guid="80ca070e-228c-4552-aadd-0448d9e40305">
       <active>true</active>
       <description>CDI Direction (GPS Desired Track)</description>
@@ -439,22 +455,6 @@
           <configref active="True" ref="507ef424-616d-40b7-85e7-904fdebf3ea6" placeholder="#" testvalue="1" />
           <configref active="True" ref="9136c0cd-2161-4a0e-b7dc-ef6b78ff52da" placeholder="%" testvalue="1" />
         </configrefs>
-      </settings>
-    </config>
-    <config guid="9136c0cd-2161-4a0e-b7dc-ef6b78ff52da">
-      <active>true</active>
-      <description>OBS Direction (VOR1)</description>
-      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <source type="SimConnect" VarType="CODE" Value="(A:NAV OBS:1,Degrees)" UUID="6bbf319a-5031-477e-ba46-8a24936f7d25" />
-        <test type="Float" value="1" />
-        <modifiers>
-          <transformation active="True" expression="Round($,1)" />
-        </modifiers>
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="44" value="$" />
-        <preconditions>
-          <precondition type="config" active="true" ref="c6685ae0-a651-42ab-a572-23cca2564df2" operand="!=" value="1" logic="and" />
-        </preconditions>
-        <configrefs />
       </settings>
     </config>
     <config guid="0d0cc74f-8574-4f41-8801-79aa2bbe4978">

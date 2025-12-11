@@ -37,7 +37,7 @@
 #include "Sprites\gsBox.h"
 #include "Sprites\distBox.h"
 #include "Sprites\headingBox.h"
-#include "Images\PrimaSans32.h"
+
 #include "Sprites\fdTriangles.h"
 #include "Sprites\fdTrianglesNoAP.h"
 // #include "Images\PrimaSans16.h"
@@ -89,14 +89,19 @@ void CC_G5_PFD::read_rp2040_data()
 
     int8_t delta, enc_btn, ext_btn;
 
+    // If there is any sort of interaction and we're in shutting down mode, put us in battery mode
+    if (g5State.powerState == PowerState::SHUTTING_DOWN) {
+        powerStateSet(PowerState::BATTERY_POWERED);
+        // read the data, but don't do anything with it to prevent normal action.
+        g5Hardware.readEncoderData(delta, enc_btn, ext_btn);
+        return;
+    }
+
     // Read data from hardware interface
     if (g5Hardware.readEncoderData(delta, enc_btn, ext_btn)) {
         // Serial.printf("Data back from RP2040. Enc delta: %d, enc_btn: %d, ext_btn: %d\n", delta, enc_btn, ext_btn);
 
-        //     Serial.printf("enc btn: %d", enc_btn);
-
         if (enc_btn == ButtonEventType::BUTTON_CLICKED) {
-            // Serial.println("encButton");
             if (pfdMenu.menuActive) {
                 // Route input to menu when active
                 pfdMenu.handleEncoderButton(true);
@@ -112,15 +117,16 @@ void CC_G5_PFD::read_rp2040_data()
         // }
 
         // POWER BUTTON
-        if (ext_btn == ButtonEventType::BUTTON_LONG_PRESSED) {
-            Serial.printf("Long power press\n");
-            //  Serial.println("Click PFD. Send button to MF");
-            // pfdMenu.currentState = PFDMenu::MenuState::BRIGHTNESS;
-            // pfdMenu.sendButton("btnPfdPower", 0);
-            // We would power down here. TODO Not implemented.
+        if (ext_btn && g5State.powerState == PowerState::POWER_OFF) {
+            powerStateSet(PowerState::POWER_ON);
+            return;
         }
+        if (ext_btn == ButtonEventType::BUTTON_LONG_PRESSED) {
+            // Shutdown.
+            powerStateSet(PowerState::SHUTTING_DOWN);
+        }
+
         if (ext_btn == ButtonEventType::BUTTON_CLICKED) {
-            Serial.printf("Power click\n");
             if (brightnessMenu.active()) {
                 g5Settings.lcdBrightness = g5State.lcdBrightness;
                 saveSettings();
@@ -159,27 +165,18 @@ void CC_G5_PFD::begin()
     g5State.lcdBrightness = g5Settings.lcdBrightness;
     //    lcd.initDMA();
 
-    //    Serial.printf("Chip revision %d\n", ESP.getChipRevision());
-
-    //    Serial.printf("LCD Initialized.\n");
-
     // Setup menu structure
 
     pfdMenu.initializeMenu();
 
     // Configure i2c pins
-    //    Serial.printf("Menu initialized.\n");
 
     pinMode(INT_PIN, INPUT_PULLUP);
-    //    Serial.printf("Input pin setup.\n");
-    //    Serial.flush();
 
     // Configure I2C master
     if (!Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN, 40000)) {
-        //        Serial.printf("Wire begin fail.\n");
         ESP_LOGE(TAG_I2C, "i2c setup failed");
     } else {
-        //        Serial.printf("Wire begin ok.\n");
         ESP_LOGI(TAG_I2C, "i2c setup successful");
     }
 
@@ -461,9 +458,28 @@ void CC_G5_PFD::detach()
 
 void CC_G5_PFD::setCommon(int16_t messageID, char *setPoint)
 {
+
+    // if (g5State.powerState == PowerState::POWER_OFF && messageID > 0) {
+    //     lcd.setBrightness(brightnessGamma(g5State.lcdBrightness));  // Wake up display.
+    //     g5State.powerState = PowerState::POWER_ON;
+    // }
+
+    if (messageID > 0) powerStateSet(PowerState::POWER_ON);
     lastMFUpdate = millis(); // Resets the message alert timeout.
 
     switch (messageID) {
+    case -2: // PowerSavingMode if 1, go into power saving or 0 to wake up
+        if (atoi(setPoint) == 1)
+            powerStateSet(PowerState::SHUTTING_DOWN);
+        else
+            powerStateSet(PowerState::POWER_ON);
+        cmdMessenger.sendCmd(kStatus, F("Shutdown message in."));
+        break;
+
+    case -1: // Stop message from MF. Device execution stops.
+        cmdMessenger.sendCmd(kStatus, F("Stop message in."));
+        powerStateSet(PowerState::SHUTTING_DOWN);
+        break;
     case 0: // AP Heading Bug
         g5State.headingBugAngle = atoi(setPoint);
         break;
@@ -489,7 +505,7 @@ void CC_G5_PFD::setCommon(int16_t messageID, char *setPoint)
         g5State.groundSpeed = atoi(setPoint);
         break;
     case 8: // Ground Track (Magnetic)
-        g5State.groundTrack = atoi(setPoint);
+        g5State.groundTrack = atof(setPoint);
         break;
     case 9: // Heading (Magnetic)
         g5State.rawHeadingAngle = atof(setPoint);
@@ -606,6 +622,19 @@ void CC_G5_PFD::setPFD(int16_t messageID, char *setPoint)
 
 void CC_G5_PFD::set(int16_t messageID, char *setPoint)
 {
+    // switch (messageID) {
+    //     case -2: // PowerSavingMode if 1, go into power saving or 0 to wake up
+    //         g5State.inShutdown = atoi(setPoint) == 1;
+    //         cmdMessenger.sendCmd(kStatus, F("Shutdown message in."));
+    //         break;
+
+    //     case -1: // Stop message from MF. Device execution stops.
+    //         cmdMessenger.sendCmd(kStatus, F("Stop message in."));
+    //         // g5State.inShutdown = true;
+    //         // Let's show some
+    //         break;
+    // }
+
     //     /* **********************************************************************************
     //         MessageID == -2 will be send from the board when PowerSavingMode is set
     //             Message will be "0" for leaving and "1" for entering PowerSavingMode
@@ -2099,6 +2128,8 @@ void CC_G5_PFD::drawAp()
         apBox.drawString("YD", 220, yBaseline);
     }
 
+    drawBattery(&apBox, 0, 0);
+
     apBox.pushSprite(0, 5); // Center the Y
 }
 
@@ -2180,6 +2211,8 @@ void CC_G5_PFD::update()
 
     processMenu();
     brightnessMenu.draw(&attitude); // Draws on attitude sprite!
+
+    drawShutdown(&attitude);
 
     attitude.pushSprite(0, TOP_BAR_HEIGHT, TFT_MAIN_TRANSPARENT);
 

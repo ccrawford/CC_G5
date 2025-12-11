@@ -1,3 +1,4 @@
+#pragma once
 #include <pgmspace.h>
 
 const uint8_t PrimaSans32[] PROGMEM = {

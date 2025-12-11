@@ -250,7 +250,7 @@ public:
     // G5_Menu menu;
     HSIMenu hsiMenu{this};
 
-    bool forceRedraw = false;
+
 
 private:
     bool    _initialised;

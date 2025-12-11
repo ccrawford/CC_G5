@@ -17,10 +17,10 @@
       <active>true</active>
       <description>Device Type Upper Get</description>
       <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <source type="SimConnect" VarType="CODE" Value="(L:ccDeviceID)" UUID="-" />
+        <source type="SimConnect" VarType="CODE" Value="(L:ccDeviceID)" UUID="0" />
         <test type="Float" value="1" />
         <modifiers />
-        <display type="-" serial="-" trigger="normal" pin="" pinBrightness="255" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="11" value="$" />
         <preconditions />
         <configrefs />
       </settings>
@@ -41,10 +41,10 @@
       <active>true</active>
       <description>Device Type Lower Get</description>
       <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <source type="SimConnect" VarType="CODE" Value="(L:ccDeviceID2)" UUID="-" />
+        <source type="SimConnect" VarType="CODE" Value="(L:ccDeviceID2)" UUID="0" />
         <test type="Float" value="1" />
         <modifiers />
-        <display type="-" serial="-" trigger="normal" pin="" pinBrightness="255" />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-28372F8A1B18" trigger="normal" customType="" customName="CCs CC_G5" messageType="11" value="$" />
         <preconditions />
         <configrefs />
       </settings>
@@ -1850,18 +1850,6 @@
         <preconditions>
           <precondition type="config" active="true" ref="126ed35f-2613-4c31-b021-6f3b477d9b3f" operand="!=" value="0" logic="and" />
         </preconditions>
-        <configrefs />
-      </settings>
-    </config>
-    <config guid="bcea2ed9-d37c-4dcf-bade-d5fa68ae0572">
-      <active>true</active>
-      <description>Brightness</description>
-      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <source type="SimConnect" VarType="CODE" Value="(A:AUTOPILOT HEADING LOCK DIR,Degrees)" UUID="e47210e8-7db4-4980-9f57-b3682fb3742d" />
-        <test type="Float" value="129" />
-        <modifiers />
-        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="12" value="$" />
-        <preconditions />
         <configrefs />
       </settings>
     </config>

@@ -34,7 +34,6 @@
 #include "Sprites\gsBox.h"
 #include "Sprites\distBox.h"
 #include "Sprites\headingBox.h"
-#include "Images\PrimaSans32.h"
 
 // Global sprites for display
 
@@ -57,6 +56,8 @@ LGFX_Sprite bearingPointer2(&compass);
 LGFX_Sprite bearingPointerBox(&lcd);
 LGFX_Sprite bearingPointerBox2(&lcd);
 
+LGFX_Sprite batteryHolderSprite(&lcd);
+
 LGFX_Sprite menuSprite(&lcd);
 
 static LGFX_Sprite windBox(&lcd);
@@ -75,45 +76,52 @@ void CC_G5_HSI::read_rp2040_data()
 
     int8_t delta, enc_btn, ext_btn;
 
+    // If there is any sort of interaction and we're in shutting down mode, put us in battery mode
+    if (g5State.powerState == PowerState::SHUTTING_DOWN) {
+        powerStateSet(PowerState::BATTERY_POWERED);
+        // read the data, but don't do anything with it to prevent normal action.
+        g5Hardware.readEncoderData(delta, enc_btn, ext_btn);
+        return;
+    }
+
     // Read data from hardware interface
     if (g5Hardware.readEncoderData(delta, enc_btn, ext_btn)) {
         if (enc_btn == ButtonEventType::BUTTON_CLICKED) {
             if (hsiMenu.menuActive) {
                 // Route input to menu when active
                 hsiMenu.handleEncoderButton(true);
-            } else if(!brightnessMenu.active()) {  // Don't open the setting menu when brightness menu open.
+            } else if (!brightnessMenu.active()) { // Don't open the setting menu when brightness menu open.
                 // Open menu when not active
                 hsiMenu.setActive(true);
             }
         }
 
-        if (enc_btn == ButtonEventType::BUTTON_LONG_PRESSED) {
-            //  Serial.println("Long press on PFD. Send button to MF");
-            hsiMenu.sendButton("btnHsiEncoder", 0);
+        // POWER BUTTON
+        if (ext_btn && g5State.powerState == PowerState::POWER_OFF) {
+            powerStateSet(PowerState::POWER_ON);
+            return;
         }
 
         if (ext_btn == ButtonEventType::BUTTON_LONG_PRESSED) {
-            //  Serial.println("Long press on PFD. Send button to MF");
-            hsiMenu.sendButton("btnHsiPower", 0);
+            // Shutdown.
+            powerStateSet(PowerState::SHUTTING_DOWN);
         }
 
         if (ext_btn == ButtonEventType::BUTTON_CLICKED) {
-            Serial.printf("Power click\n");
             if (brightnessMenu.active()) {
                 g5Settings.lcdBrightness = g5State.lcdBrightness;
                 saveSettings();
                 brightnessMenu.hide();
-                lcd.clearDisplay();  // CAC CLEAR TEST
-                forceRedraw = true;
+                lcd.clearDisplay(); // CAC CLEAR TEST
+                g5State.forceRedraw = true;
                 // Save the brightness setting.
-
             } else {
                 brightnessMenu.show();
             }
         }
 
         if (delta) {
-             if (brightnessMenu.active()) {
+            if (brightnessMenu.active()) {
                 brightnessMenu.adjustBrightness(delta);
             } else if (hsiMenu.menuActive) {
                 // Route encoder turns to menu when active
@@ -136,7 +144,6 @@ void CC_G5_HSI::begin()
 
     lcd.setBrightness(brightnessGamma(g5Settings.lcdBrightness));
     g5State.lcdBrightness = g5Settings.lcdBrightness;
-
 
 #ifdef USE_GUITION_SCREEN
     lcd.setRotation(3); // Puts the USB jack at the bottom on Guition screen.
@@ -181,7 +188,7 @@ void CC_G5_HSI::begin()
     attachInterrupt(digitalPinToInterrupt(INT_PIN), []() { g5Hardware.setDataAvailable(); }, FALLING);
 
     lcd.fillScreen(TFT_BACKGROUND_COLOR);
-    forceRedraw = true;
+    g5State.forceRedraw = true;
 
     // lcd.setBrightness(255);  // Works with Guition.  not sure about Waveshare.
 
@@ -197,7 +204,6 @@ void CC_G5_HSI::begin()
     }
 
     updateCommon();
-
 }
 
 void CC_G5_HSI::setupSprites()
@@ -308,6 +314,9 @@ void CC_G5_HSI::setupSprites()
     headingBox.setTextDatum(BR_DATUM);
     headingBox.loadFont(PrimaSans32);
 
+    batteryHolderSprite.setColorDepth(8);
+    batteryHolderSprite.createSprite(100,40);
+
     windBox.setColorDepth(8);
     windBox.setBitmapColor(TFT_WHITE, TFT_BLACK);
     windBox.createSprite(GSBOX_IMG_WIDTH, GSBOX_IMG_HEIGHT); // Make the same width and height as the gsBox.
@@ -376,6 +385,7 @@ void CC_G5_HSI::updateCommon()
 {
 
     // Clear the compass sprite. Use RED as the transparent color. It's not used in the display.
+    // compass.fillSprite(TFT_BLACK);
     compass.fillSprite(TFT_MAIN_TRANSPARENT);
 
     compass.fillCircle(compass.width() / 2, compass.height() / 2, COMPASS_OUTER_RADIUS + 16, TFT_BLACK);
@@ -383,10 +393,56 @@ void CC_G5_HSI::updateCommon()
 
     drawCompass();
 
-    if (g5State.navSource == NAVSOURCE_GPS)
-        updateGps();
-    else
-        updateNav();
+    // if (g5State.navSource == NAVSOURCE_GPS)
+    //     updateGps();
+    // else
+    //     updateNav();
+
+    if (g5State.navSource == NAVSOURCE_GPS) {
+        drawCDIScaleLabel();
+        drawCDISource();
+        drawWPTAlert();
+    } else {
+        drawCDIScaleLabel();
+        drawRadioNavApproachType();
+        drawNavCDILabel();
+    }
+
+    drawDeviationScale();
+    drawCurrentTrack();
+    drawCDIPointer();
+    drawCDIBar();
+    drawPlaneIcon();
+
+    drawCurrentHeading();
+    drawHeadingBug();
+    drawBearingPointer1();
+    drawBearingPointer2();
+
+    // Draw adjustment popup onto compass before pushing to LCD
+    // if (menu.currentState == MenuState::ADJUSTING) {
+    //     drawAdjustmentPopup();
+    // }
+
+    drawCompassOuterMarkers();
+    processMenu();
+    brightnessMenu.draw(&compass);
+
+    drawShutdown(&compass);
+
+    compass.pushSprite(&lcd, (lcd.width() - compass.width()) / 2, curHdg.height(), TFT_MAIN_TRANSPARENT);
+    curHdg.pushSprite(&lcd, (480 / 2) - curHdg.width() / 2, CUR_HEADING_Y_OFFSET);
+
+    drawGlideSlope();
+
+    drawDistNextWaypoint();
+    drawHeadingBugValue();
+    drawDesiredTrack();
+
+    drawWind();
+    drawBattery(&batteryHolderSprite,0,0);
+    batteryHolderSprite.pushSprite(0, windBox.height());
+
 }
 
 void CC_G5_HSI::processMenu()
@@ -419,7 +475,7 @@ void CC_G5_HSI::processMenu()
         lastMenuState = HSIMenu::MenuState::BROWSING;
         // compass.fillRect(hsiMenu.menuXpos, hsiMenu.menuYpos, hsiMenu.menuWidth, hsiMenu.menuHeight, TFT_BLACK);
         lcd.clearDisplay(TFT_BLACK);
-        forceRedraw = true;
+        g5State.forceRedraw = true;
     }
 }
 
@@ -428,6 +484,7 @@ void CC_G5_HSI::updateNav()
     drawCDIScaleLabel();
     drawRadioNavApproachType();
     drawNavCDILabel();
+
     drawDeviationScale();
     drawCDIPointer();
     drawCDIBar();
@@ -449,6 +506,7 @@ void CC_G5_HSI::updateNav()
     drawCompassOuterMarkers();
     processMenu(); // writes to the compass sprite. Must do before pushing compass.
     brightnessMenu.draw(&compass);
+    drawShutdown(&compass);
 
     compass.pushSprite(&lcd, (lcd.width() - compass.width()) / 2, curHdg.height(), TFT_MAIN_TRANSPARENT);
     // curHdg.pushSprite(&lcd, (480 / 2) - curHdg.width() / 2, CUR_HEADING_Y_OFFSET);
@@ -466,6 +524,7 @@ void CC_G5_HSI::updateGps()
     drawCDIScaleLabel();
     drawCDISource();
     drawWPTAlert();
+
     drawDeviationScale();
     drawCurrentTrack();
     drawCDIPointer();
@@ -485,6 +544,8 @@ void CC_G5_HSI::updateGps()
     drawCompassOuterMarkers();
     processMenu();
     brightnessMenu.draw(&compass);
+
+    drawShutdown(&compass);
 
     compass.pushSprite(&lcd, (lcd.width() - compass.width()) / 2, curHdg.height(), TFT_MAIN_TRANSPARENT);
     curHdg.pushSprite(&lcd, (480 / 2) - curHdg.width() / 2, CUR_HEADING_Y_OFFSET);
@@ -510,7 +571,31 @@ void CC_G5_HSI::detach()
 
 void CC_G5_HSI::setCommon(int16_t messageID, char *setPoint)
 {
+
+    // if ((g5State.powerState == PowerState::POWER_OFF || g5State.powerState == PowerState::SHUTTING_DOWN) && messageID > 0) {
+    //     lcd.setBrightness(brightnessGamma(g5State.lcdBrightness)); // Wake up display.
+    //     g5State.powerState = PowerState::POWER_ON;
+    //     // Need a redraw here. ugh.
+    // }
+
+    if (messageID > 0) powerStateSet(PowerState::POWER_ON);
+
     switch (messageID) {
+
+    case -2: // PowerSavingMode if 1, go into power saving or 0 to wake up
+        if (atoi(setPoint) == 1)
+            powerStateSet(PowerState::SHUTTING_DOWN);
+        else
+            powerStateSet(PowerState::POWER_ON);
+        cmdMessenger.sendCmd(kStatus, F("PowerSave message in.\n"));
+        break;
+
+    case -1: // Stop message from MF. Device execution stops.
+        cmdMessenger.sendCmd(kStatus, F("Stop message in.\n"));
+        Serial.printf("Got a stop message\n");
+        powerStateSet(PowerState::SHUTTING_DOWN);
+        break;
+
     case 0: // AP Heading Bug
         g5State.headingBugAngle = atoi(setPoint);
         break;
@@ -536,7 +621,7 @@ void CC_G5_HSI::setCommon(int16_t messageID, char *setPoint)
         g5State.groundSpeed = atoi(setPoint);
         break;
     case 8: // Ground Track (Magnetic)
-        g5State.groundTrack = atoi(setPoint);
+        g5State.groundTrack = atof(setPoint);
         break;
     case 9: // Heading (Magnetic)
         g5State.rawHeadingAngle = atof(setPoint);
@@ -785,7 +870,7 @@ void CC_G5_HSI::update()
 
     updateCommon();
 
-    forceRedraw = false;
+    g5State.forceRedraw = false;
 
     lcd.setTextSize(0.5);
     sprintf(buf, "HSI %4.1f f/s", 1000.0 / (now - lastFrameUpdate));
@@ -801,7 +886,7 @@ void CC_G5_HSI::setNavSource()
     // Green if NAV, Magenta if GPS.
     // Fill the screen with black because we will redraw all the boxes.
     lcd.fillScreen(TFT_BACKGROUND_COLOR);
-    forceRedraw = true;
+    g5State.forceRedraw = true;
 
     if (g5State.navSource == NAVSOURCE_GPS) {
         cdiPtr.setBuffer(const_cast<std::uint16_t *>(CDIPOINTER_IMG_DATA), CDIPOINTER_IMG_WIDTH, CDIPOINTER_IMG_HEIGHT, 16);
@@ -1321,7 +1406,7 @@ void CC_G5_HSI::drawCurrentTrack()
 {
     // Draw the magenta triangle at the end of the dashed line
     // I think this is valid as long as our airspeed is decent.
-    if (g5State.groundSpeed < 30) return;
+    if (g5State.groundSpeed < 20) return;
     compass.setPivot(compass.width() / 2, compass.height() / 2);
     currentTrackPtr.pushRotated(&compass, g5State.groundTrack - g5State.headingAngle, TFT_BLACK);
 }
@@ -1369,7 +1454,7 @@ void CC_G5_HSI::drawHeadingBug()
 void CC_G5_HSI::drawHeadingBugValue()
 {
     static int lastHeadingbug = -999;
-    if (lastHeadingbug == g5State.headingBugAngle && !forceRedraw) return;
+    if (lastHeadingbug == g5State.headingBugAngle && !g5State.forceRedraw) return;
     lastHeadingbug = g5State.headingBugAngle;
 
     char buf[5];
@@ -1395,11 +1480,14 @@ void CC_G5_HSI::drawHeadingBugValue()
 
 void CC_G5_HSI::drawDesiredTrack()
 {
+
+    if (g5State.navSource != NAVSOURCE_GPS) return;
+
     // Magenta in box in lower left.
     static float lastDesiredTrack = -1;
     static int   lastValid        = -1;
 
-    if (g5State.desiredTrackValid == lastValid && lastDesiredTrack == g5State.desiredTrack && !forceRedraw) {
+    if (g5State.desiredTrackValid == lastValid && lastDesiredTrack == g5State.desiredTrack && !g5State.forceRedraw) {
         return;
     }
 
@@ -1429,12 +1517,13 @@ void CC_G5_HSI::drawDesiredTrack()
 
 void CC_G5_HSI::drawDistNextWaypoint()
 {
+    if (g5State.navSource != NAVSOURCE_GPS) return;
     // Magenta in box in upper left.
     // Let's put it in the upper right to make room for wind direction.
     static float lastDist  = -1.0f;
     static int   lastValid = -1;
 
-    if (lastDist == g5State.distNextWaypoint && lastValid == g5State.cdiNeedleValid && !forceRedraw) return; // it's on LCD so no need to redraw.
+    if (lastDist == g5State.distNextWaypoint && lastValid == g5State.cdiNeedleValid && !g5State.forceRedraw) return; // it's on LCD so no need to redraw.
 
     lastDist  = g5State.distNextWaypoint;
     lastValid = g5State.cdiNeedleValid;
@@ -1461,7 +1550,7 @@ void CC_G5_HSI::drawWind()
     static float lastSpeed = -20.0f;
 
     // Ignore small changes. The MSFS values are always changing.
-    if (fabs(lastDir - g5State.windDir) < 4.0f && fabs(lastSpeed - g5State.windSpeed) < 1.0f && !forceRedraw) return;
+    if (fabs(lastDir - g5State.windDir) < 4.0f && fabs(lastSpeed - g5State.windSpeed) < 1.0f && !g5State.forceRedraw) return;
     lastDir   = g5State.windDir;
     lastSpeed = g5State.windSpeed;
 

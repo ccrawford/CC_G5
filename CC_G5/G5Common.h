@@ -6,6 +6,8 @@
 #include <Preferences.h>
 #include "MFEEPROM.h"
 #include "MFCustomDeviceTypes.h"
+#include "Sprites\battery.h"
+#include "Images\PrimaSans32.h"
 
 static const char *TAG_CC_G5   = "CC_G5_PFD";
 static const char *TAG_I2C     = "CC_G5_I2C";
@@ -28,6 +30,13 @@ static const char *TAG_SPRITES = "CC_G5_SPRITES";
 #define STATE_VERSION         1 // For the save state when switching between pfd and hsi
 
 #define TFT_MAIN_TRANSPARENT TFT_PINK // Just pick a color not used in either display
+
+enum class PowerState { INVALID,
+                        POWER_OFF,
+                        POWER_ON,
+                        SHUTTING_DOWN,
+                        BATTERY_POWERED,
+                        HARD_POWER_OFF };
 
 struct CC_G5_Settings {
     int      version               = SETTINGS_VERSION;
@@ -58,7 +67,11 @@ extern CC_G5_Settings g5Settings;
 // Shared flight state - accessible by both HSI and PFD
 struct G5State {
 
-    int lcdBrightness = 100; // We will go 0-100 here.
+    int           lcdBrightness   = 100; // We will go 0-100 here.
+    PowerState    powerState      = PowerState::SHUTTING_DOWN;
+    bool          forceRedraw     = false;
+    unsigned long shutdownStartMs = 0;
+    unsigned long batteryStartMs  = 0;
 
     // Heading and orientation
     float rawHeadingAngle = 0.0f;
@@ -280,6 +293,10 @@ float smoothDirection(float inputDir, float currentDir, float alpha, float threa
 float smoothAngle(float input, float current, float alpha, float threshold);
 int   smoothInput(int input, int current, float alpha, int threashold);
 float smoothInput(float input, float current, float alpha, float snapThreashold);
+void  drawShutdown(LGFX_Sprite *targetSprite);
+void  drawBattery(LGFX_Sprite *targetSprite, int x, int y);
+
+bool powerStateSet(PowerState ps);
 
 uint8_t brightnessGamma(int percent);
 

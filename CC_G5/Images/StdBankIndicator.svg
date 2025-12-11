@@ -2,15 +2,15 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="18.170761"
-   height="17.036362"
-   viewBox="0 0 4.8076805 4.5075372"
+   width="11.976107"
+   height="10.714319"
+   viewBox="0 0 3.1686782 2.8348302"
    version="1.1"
    id="svg1"
    xml:space="preserve"
    inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
    sodipodi:docname="StdBankIndicator.svg"
-   inkscape:export-filename="bankAnglePointer.png"
+   inkscape:export-filename="stdBankIndicator.png"
    inkscape:export-xdpi="96"
    inkscape:export-ydpi="96"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
@@ -28,20 +28,21 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="px"
      inkscape:zoom="6.471156"
-     inkscape:cx="93.491797"
-     inkscape:cy="49.450206"
+     inkscape:cx="93.646328"
+     inkscape:cy="44.350654"
      inkscape:window-width="3840"
      inkscape:window-height="2054"
      inkscape:window-x="2869"
      inkscape:window-y="-11"
      inkscape:window-maximized="1"
      inkscape:current-layer="layer1"
-     inkscape:export-bgcolor="#000000ff" /><defs
+     inkscape:export-bgcolor="#000000ff"
+     showguides="false" /><defs
      id="defs1" /><g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-62.937593,-23.992575)"><image
+     transform="translate(-62.892873,-25.348028)"><image
        width="127"
        height="96.066093"
        preserveAspectRatio="none"
@@ -50,11 +51,11 @@
        x="-1e-06"
        y="6.1038728"
        style="display:none;stroke-width:1.70208" /><path
-       style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:0.529167;stroke-linejoin:miter;stroke-dasharray:none;stroke-dashoffset:1"
-       d="m 65.379788,24.109278 -2.018915,4.107876 2.158756,0.0163 z"
+       style="fill:#66ff00;fill-opacity:1;stroke:#66ff00;stroke-width:0.529167;stroke-linejoin:miter;stroke-dasharray:none;stroke-dashoffset:1"
+       d="m 64.499741,28.067314 -1.185878,-2.442901 1.268018,-0.0097 z"
        id="path7"
        sodipodi:nodetypes="cccc" /><path
-       style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:0.529167;stroke-linejoin:miter;stroke-dasharray:none;stroke-dashoffset:1"
-       d="m 65.303078,24.109278 2.018915,4.107876 -2.158756,0.0163 z"
+       style="fill:#66ff00;fill-opacity:1;stroke:#66ff00;stroke-width:0.529167;stroke-linejoin:miter;stroke-dasharray:none;stroke-dashoffset:1"
+       d="m 64.454682,28.067314 1.185879,-2.442901 -1.268019,-0.0097 z"
        id="path13"
        sodipodi:nodetypes="cccc" /></g></svg>

@@ -32,15 +32,13 @@
     "MobiFlightType": "CC_G5 ESP32",
     "ResetFirmwareFile": "reset.esp32_s3_devkit_merged.bin",
     "CustomDeviceTypes": [
-      "CC_G5_HSI",
-      "CC_G5_PFD",
       "CC_G5"
     ],
     "Community": {
       "Project": "CC G5",
-      "Website": "https://YourWebsite.com",
-      "Docs": "https://YourWebsite.com",
-      "Support": "https://YourWebsite.com"
+      "Website": "https://github.com/ccrawford/CC_G5",
+      "Docs": "https://github.com/ccrawford/CC_G5/blob/main/README.md",
+      "Support": "https://github.com/ccrawford/CC_G5/issues"
     }
   },
   "ModuleLimits": {
