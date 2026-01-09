@@ -45,10 +45,11 @@
   - **TO DO**
     - Target AP VS bug on VS scale.
     - Target AP speed for FLC on speed tape
-    - Improve blinking of AP and Altitude on status change
-    - Add battery status and logic
-    - Add startup/shutdown sequences
+    - ~~Improve blinking of AP and Altitude on status change~~ Done.
+    - ~~Add battery status and logic~~Done.
+    - ~~Add startup/shutdown sequences~~Done.
     - ~~Add "Out of range" chevrons that point to horizon in unusual attitudes~~ Done. Also fixed inverted flight displays
+    - ~~Swap between HSI and PFD at runtime~~Done.
 
   ### Horizontal Situation Indicator (HSI)
   - **Compass Rose**: 360° rotating compass with true heading display
@@ -77,6 +78,7 @@
     - Course/OBS selector
     - Bearing pointer 1 & 2 sources
     - V-speed settings (Vs0, Vs1, Vr, Vx, Vy, Vg, Vfe, Vno, Vne)
+    - HSI or MFD display
   - **Virtual MobiFlight Encoders and Buttons**
     - Allows dynamic use of the rotary encoder without messy state management in MF
   
@@ -127,8 +129,9 @@
     - Search AliExpress for "guition 480x480". Should be around $25 US.
     - Alternative: Standard 4-inch SPI LCD with proper pin configuration
   - **RP2040 Microcontroller** (Raspberry Pi Pico or similar) - for rotary encoder interface
+    - See this repository for more information https://github.com/ccrawford/CC_G5_Slave
     - This can be skipped if you are using the Guition screen and don't need the power button
-    - LED and power button are operational, but startup/shutown logic and battery are not implemented  
+    - LED and power button are operational ~~but startup/shutown logic and battery are not implemented~~  
   - **Rotary Encoder** with push button. Whatever EC11 variant you have will work.
   - **Ring-lit push button** I'm using a 9mm ring-lit white led momentary push button. 
 
@@ -139,10 +142,10 @@
   pre-configured in `4inchLCDConfig_Guition.h` and `4inchLCDConfig.h`
 
   #### ESP32-S3 to RP2040 (I2C)
-  - **Guition Screen Configuration**:
+  - **Guition Screen Configuration** This is more fully described in the https://github.com/ccrawford/CC_G5_Slave repo
     - SDA: GPIO1
     - SCL: GPIO2
-    - INT: GPIO40 (interrupt from RP2040)
+    - INT: GPIO40 (interrupt from RP2040) 
     - GND
   - **Standard Configuration**:
     - SDA: GPIO15
@@ -151,7 +154,7 @@
     - GND
 
   #### RP2040 Setup
-  - RP2040 code is at CC_G5_Slave. I need to update its repo.
+  - RP2040 code is at https://github.com/ccrawford/CC_G5_Slave
   - Pins are in that code.
   - Rotary encoder, and LED+Button connects to RP2040
   - RP2040 acts as I2C slave at address `0x08`
@@ -224,6 +227,7 @@
 
   - GitHub Repository: https://github.com/ccrawford/CC_G5
   - MobiFlight: https://www.mobiflight.com
+
 
 
 
