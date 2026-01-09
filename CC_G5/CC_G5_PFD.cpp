@@ -464,7 +464,7 @@ void CC_G5_PFD::setCommon(int16_t messageID, char *setPoint)
     //     g5State.powerState = PowerState::POWER_ON;
     // }
 
-    if (messageID > 0) powerStateSet(PowerState::POWER_ON);
+    if (messageID > 0 && g5State.powerControl == PowerControl::DEVICE_MANAGED) powerStateSet(PowerState::POWER_ON);
     lastMFUpdate = millis(); // Resets the message alert timeout.
 
     switch (messageID) {
@@ -526,6 +526,27 @@ void CC_G5_PFD::setCommon(int16_t messageID, char *setPoint)
     case 12: // Brightness
         g5State.lcdBrightness = max(0, min(atoi(setPoint), 255));
         lcd.setBrightness(g5State.lcdBrightness);
+    case 13: // POWER STATE 0 off 1 on
+        switch (atoi(setPoint)) {
+        case 0: // Off
+            powerStateSet(PowerState::SHUTTING_DOWN);
+            break;
+        case 1: // On
+            powerStateSet(PowerState::POWER_ON);
+            break;
+        }
+    case 14: // POWER CONTROL  Does the user want to control from MF or let us do it
+        switch (atoi(setPoint)) {
+        case 0: // Manual
+            g5State.powerControl = PowerControl::MANUAL;
+            break;
+        case 1: // On
+            g5State.powerControl = PowerControl::DEVICE_MANAGED;
+            break;
+        case 2: // AlwaysOn
+            g5State.powerControl = PowerControl::ALWAYS_ON;
+            break;
+        }
     }
 }
 
@@ -1217,7 +1238,7 @@ void CC_G5_PFD::drawSpeedTape()
     attitude.setTextColor(TFT_WHITE, TFT_BLACK);
     attitude.setTextSize(0.5);
     attitude.setTextDatum(CL_DATUM);
-    attitude.drawString("TAS", 5, 20);
+    attitude.drawString("TAS", 5, 19);
     attitude.setTextSize(0.8);
     attitude.setTextDatum(CR_DATUM);
     char buf[8];
@@ -1475,9 +1496,9 @@ void CC_G5_PFD::drawKohlsman()
     // Cyan box in lower right
     // Should move some of this to setup, but the value doesn't change often.
 
-    static float lastVal = 0.0;
-    if (g5State.kohlsman == lastVal) return;
-    lastVal = g5State.kohlsman;
+    // static float lastVal = 0.0;
+    // if (g5State.kohlsman == lastVal || g5State.forceRedraw) return;
+    // lastVal = g5State.kohlsman;
     kohlsBox.fillSprite(TFT_BLACK);
     kohlsBox.drawRect(0, 0, ALTITUDE_COL_WIDTH, 40, TFT_CYAN);
     kohlsBox.drawRect(1, 1, ALTITUDE_COL_WIDTH - 2, 38, TFT_CYAN);
@@ -1501,7 +1522,7 @@ void CC_G5_PFD::drawKohlsman()
         char buf[8];
         sprintf(buf, "%.2f", g5State.kohlsman);
         kohlsBox.setTextSize(0.9);
-        kohlsBox.drawString(buf, 100, 23);
+        kohlsBox.drawString(buf, 100, 20);
     }
     kohlsBox.pushSprite(ATTITUDE_WIDTH - ALTITUDE_COL_WIDTH, 440);
 
@@ -1520,6 +1541,8 @@ void CC_G5_PFD::drawAltTarget()
     //   WITHIN_200: Within 200' but not captured (flash cyan once)
     //   CAPTURED: Within ±100' of target (altitude captured)
     //   DEVIATED: Was captured, now outside ±200' (flash yellow, stay yellow)
+
+    // We should be able to short cirucuit this one, but the changing altitude makes it more of a challenge.
 
     static int lastTargetAlt = -9999;
 
@@ -1660,7 +1683,7 @@ void CC_G5_PFD::drawAltTarget()
     // Clear previous text and draw new
     targetAltBox.fillRect(22, 3, 88, 34, TFT_BLACK);
     targetAltBox.setTextColor(textColor);
-    targetAltBox.drawString(buf, 110, 21);
+    targetAltBox.drawString(buf, 110, 18);
 
     targetAltBox.pushSprite(&attitude, ATTITUDE_WIDTH - ALTITUDE_COL_WIDTH, 0);
 }
@@ -1703,16 +1726,16 @@ void CC_G5_PFD::drawGroundSpeed()
     gsBox.setTextDatum(CL_DATUM);
     gsBox.setTextSize(0.5);
     gsBox.setTextColor(TFT_LIGHTGRAY);
-    gsBox.drawString("GS", 10, 12);
-    gsBox.drawString("OAT", 12, 32);
+    gsBox.drawString("GS", 10, 10);
+    gsBox.drawString("OAT", 12, 30);
     gsBox.setTextDatum(CR_DATUM);
     sprintf(buf, "%d\xB0", g5State.oat);
     gsBox.setTextSize(0.5);
-    gsBox.drawString(buf, 90, 32);
+    gsBox.drawString(buf, 90, 30);
 
     sprintf(buf, "%d", g5State.groundSpeed);
     gsBox.setTextColor(TFT_MAGENTA);
-    gsBox.drawString(buf, 80, 12);
+    gsBox.drawString(buf, 80, 10);
 
     gsBox.pushSprite(0, 440);
 
@@ -1830,7 +1853,7 @@ void CC_G5_PFD::drawHeadingTape()
     headingTape.fillRect(tapeCenter - 23, 1, 46, 25, TFT_BLACK);
     sprintf(buf, "%03d", (int)roundf(g5State.headingAngle));
     headingTape.setTextSize(0.7);
-    headingTape.drawString(buf, tapeCenter, 15);
+    headingTape.drawString(buf, tapeCenter, 14);
     headingTape.pushSprite(&attitude, SPEED_COL_WIDTH, 0);
 }
 
@@ -1942,7 +1965,7 @@ void CC_G5_PFD::drawAp()
     //     return;
     // }
 
-    int yBaseline = 32;
+    int yBaseline = 29;
 
     // Draw the Green things.
     char buf[10] = "";
@@ -2028,10 +2051,10 @@ void CC_G5_PFD::drawAp()
     apBox.setTextDatum(BR_DATUM);
     apBox.drawString(buf, 355, yBaseline);
     apBox.setTextDatum(BL_DATUM);
-    apBox.setTextSize(0.4);
+    apBox.setTextSize(0.3);
     apBox.drawString(unitsBuf, 357, yBaseline - 4);
 
-    apBox.setTextSize(0.8);
+    apBox.setTextSize(0.7);
 
     // Draw Armed modes in white.
     switch (g5State.apLArmedMode) {
@@ -2221,6 +2244,8 @@ void CC_G5_PFD::update()
     //    drawMessageIndicator();
     drawBall();
     drawAp();
+
+    g5State.forceRedraw = false;
 
     unsigned long pushEnd = millis();
     // lcd.setTextSize(0.5);

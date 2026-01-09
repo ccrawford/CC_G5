@@ -16,7 +16,7 @@
       </settings>
     </config>
     <config guid="3e54285f-a8e7-4148-bdae-e30f2364c11a">
-      <active>false</active>
+      <active>true</active>
       <description>Device Type Upper Set</description>
       <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <source type="SimConnect" VarType="CODE" Value="1 (&gt;L:ccDeviceID) (L:ccDeviceID)" UUID="0" />
@@ -28,13 +28,25 @@
       </settings>
     </config>
     <config guid="c6685ae0-a651-42ab-a572-23cca2564df2">
-      <active>false</active>
+      <active>true</active>
       <description>Device Type Upper Get</description>
       <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <source type="SimConnect" VarType="CODE" Value="(L:ccDeviceID)" UUID="0" />
         <test type="Float" value="1" />
         <modifiers />
         <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="11" value="$" />
+        <preconditions />
+        <configrefs />
+      </settings>
+    </config>
+    <config guid="9a45f70e-4db0-46f8-8d88-af63808f9833">
+      <active>true</active>
+      <description>Force Always On</description>
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <source type="SimConnect" VarType="CODE" Value="2" UUID="0" />
+        <test type="Float" value="3" />
+        <modifiers />
+        <display type="CustomDevice" serial="CC_G5 ESP32/ SN-98A316E591C4" trigger="normal" customType="" customName="CCs CC_G5" messageType="12" value="2" />
         <preconditions />
         <configrefs />
       </settings>
@@ -767,7 +779,7 @@
       <active>true</active>
       <description>DesiredTrack Valid</description>
       <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <source type="SimConnect" VarType="CODE" Value="(A:GPS WP NEXT LAT,Degrees)" UUID="a9ef0279-3639-425a-a5d4-699f04ed0799" />
+        <source type="SimConnect" VarType="CODE" Value="(A:GPS WP DISTANCE, Meters)" UUID="a9ef0279-3639-425a-a5d4-699f04ed0799" />
         <test type="Float" value="1" />
         <modifiers>
           <transformation active="True" expression="if($=0,0,1)" />
@@ -1069,7 +1081,7 @@
       <active>true</active>
       <description>Alt Hold Target Alt</description>
       <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <source type="SimConnect" VarType="CODE" Value="(A:AUTOPILOT ALTITUDE LOCK, Bool) &#xA;(L:ALT_HOLD_PREV, Bool) != if{&#xA;    (A:AUTOPILOT ALTITUDE LOCK, Bool) if{&#xA;        (A:INDICATED ALTITUDE, feet) (&gt;L:CAPTURED_ALT)&#xA;    }&#xA;    (A:AUTOPILOT ALTITUDE LOCK, Bool) (&gt;L:ALT_HOLD_PREV)&#xA;}&#xA;&#xA;(A:AUTOPILOT ALTITUDE LOCK VAR, feet) (L:CAPTURED_ALT) - abs 100 &lt; if{&#xA;    (A:AUTOPILOT ALTITUDE LOCK VAR, feet)&#xA;} els{&#xA;    (L:CAPTURED_ALT)&#xA;}" UUID="0" />
+        <source type="SimConnect" VarType="CODE" Value="(L:last_lock) (A:AUTOPILOT ALTITUDE LOCK, bool) != if{ (A:AUTOPILOT ALTITUDE LOCK, bool) d (&gt;L:last_lock) if{ (A:AUTOPILOT ALTITUDE LOCK VAR,feet) (A:INDICATED ALTITUDE, feet) - abs (A:VERTICAL SPEED, feet/minute) 0.20 * abs &lt; if{ (A:AUTOPILOT ALTITUDE LOCK VAR, feet) } els{ (A:INDICATED ALTITUDE, feet) } } d (&gt;L:cap_alt) } (L:cap_alt)" UUID="0" />
         <test type="Float" value="1" />
         <modifiers>
           <transformation active="True" expression="Round($ / 10, 0)*10" />

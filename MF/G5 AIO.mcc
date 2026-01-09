@@ -1822,7 +1822,7 @@
       </settings>
     </config>
     <config guid="54759ec1-0684-48c2-b29c-81b0f9ecb2ef">
-      <active>true</active>
+      <active>false</active>
       <description>Alt Hold Target Alt</description>
       <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <source type="SimConnect" VarType="CODE" Value="(A:AUTOPILOT ALTITUDE LOCK, Bool) &#xA;(L:ALT_HOLD_PREV, Bool) != if{&#xA;    (A:AUTOPILOT ALTITUDE LOCK, Bool) if{&#xA;        (A:INDICATED ALTITUDE, feet) (&gt;L:CAPTURED_ALT)&#xA;    }&#xA;    (A:AUTOPILOT ALTITUDE LOCK, Bool) (&gt;L:ALT_HOLD_PREV)&#xA;}&#xA;&#xA;(A:AUTOPILOT ALTITUDE LOCK VAR, feet) (L:CAPTURED_ALT) - abs 100 &lt; if{&#xA;    (A:AUTOPILOT ALTITUDE LOCK VAR, feet)&#xA;} els{&#xA;    (L:CAPTURED_ALT)&#xA;}" UUID="0" />
@@ -1838,7 +1838,7 @@
       </settings>
     </config>
     <config guid="54759ec1-0684-48c2-b29c-81b0f9ecb2ef">
-      <active>true</active>
+      <active>false</active>
       <description>Alt Hold Target Alt</description>
       <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <source type="SimConnect" VarType="CODE" Value="(A:AUTOPILOT ALTITUDE LOCK, Bool) &#xA;(L:ALT_HOLD_PREV, Bool) != if{&#xA;    (A:AUTOPILOT ALTITUDE LOCK, Bool) if{&#xA;        (A:INDICATED ALTITUDE, feet) (&gt;L:CAPTURED_ALT)&#xA;    }&#xA;    (A:AUTOPILOT ALTITUDE LOCK, Bool) (&gt;L:ALT_HOLD_PREV)&#xA;}&#xA;&#xA;(A:AUTOPILOT ALTITUDE LOCK VAR, feet) (L:CAPTURED_ALT) - abs 100 &lt; if{&#xA;    (A:AUTOPILOT ALTITUDE LOCK VAR, feet)&#xA;} els{&#xA;    (L:CAPTURED_ALT)&#xA;}" UUID="0" />
@@ -1850,6 +1850,104 @@
         <preconditions>
           <precondition type="config" active="true" ref="126ed35f-2613-4c31-b021-6f3b477d9b3f" operand="!=" value="0" logic="and" />
         </preconditions>
+        <configrefs />
+      </settings>
+    </config>
+    <config guid="af218037-cc92-4bbf-bce9-d9fd771e1c6c">
+      <active>false</active>
+      <description>New Alt Hold Target Alt</description>
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <source type="SimConnect" VarType="CODE" Value="(A:VERTICAL SPEED, feet per minute) (&gt;L:LAST_VS)&#xA;(A:AUTOPILOT ALTITUDE LOCK, Bool) (L:ALT_HOLD_PREV, Bool) != &#xA;(A:AUTOPILOT ALTITUDE LOCK, Bool) and if{&#xA;    (L:LAST_VS) abs 0.3 * 50 max (&gt;L:CAPTURE_THRESHOLD)&#xA;    (A:INDICATED ALTITUDE, feet) (A:AUTOPILOT ALTITUDE LOCK VAR, feet) - abs (L:CAPTURE_THRESHOLD) &lt; if{&#xA;        (A:AUTOPILOT ALTITUDE LOCK VAR, feet) (&gt;L:CAPTURED_ALT)&#xA;    } els{&#xA;        (A:INDICATED ALTITUDE, feet) (&gt;L:CAPTURED_ALT)&#xA;    }&#xA;}&#xA;(A:AUTOPILOT ALTITUDE LOCK, Bool) (&gt;L:ALT_HOLD_PREV)&#xA;(L:CAPTURED_ALT)" UUID="0" />
+        <test type="Float" value="1" />
+        <modifiers>
+          <transformation active="True" expression="Round($ / 10, 0)*10" />
+        </modifiers>
+        <display type="-" serial="-" trigger="normal" pin="" pinBrightness="255" />
+        <preconditions />
+        <configrefs />
+      </settings>
+    </config>
+    <config guid="cb48153d-90d1-42f9-93fd-8b290fc34bc5">
+      <active>true</active>
+      <description>CT TEst</description>
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <source type="SimConnect" VarType="CODE" Value="(A:VERTICAL SPEED, feet per minute) (&gt;L:LAST_VS)&#xA;(L:XYZZY_PREV) 0 == (A:AUTOPILOT ALTITUDE LOCK, Bool) 1 == and if{&#xA;    (L:LAST_VS) abs (&gt;L:CAPTURE_THRESHOLD)&#xA;}&#xA;(A:AUTOPILOT ALTITUDE LOCK, Bool) (&gt;L:XYZZY_PREV)&#xA;(L:CAPTURE_THRESHOLD)" UUID="0" />
+        <test type="Float" value="1" />
+        <modifiers />
+        <display type="-" serial="-" trigger="normal" pin="" pinBrightness="255" />
+        <preconditions />
+        <configrefs />
+      </settings>
+    </config>
+    <config guid="b4ad8eab-ebe5-46dd-a20c-eca0c62130a8">
+      <active>true</active>
+      <description>LAST_VS</description>
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <source type="SimConnect" VarType="CODE" Value="(L:LAST_VS)" UUID="0" />
+        <test type="Float" value="1" />
+        <modifiers />
+        <display type="-" serial="-" trigger="normal" pin="" pinBrightness="255" />
+        <preconditions />
+        <configrefs />
+      </settings>
+    </config>
+    <config guid="2038e9b8-0b9b-4538-a14f-aab5b70898e9">
+      <active>true</active>
+      <description>CAPTURE_THREASHOLD</description>
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <source type="SimConnect" VarType="CODE" Value="(L:CAPTURE_THRESHOLD)" UUID="0" />
+        <test type="Float" value="1" />
+        <modifiers />
+        <display type="-" serial="-" trigger="normal" pin="" pinBrightness="255" />
+        <preconditions />
+        <configrefs />
+      </settings>
+    </config>
+    <config guid="635d5d59-e5f6-4dce-b711-3b7088b2c1e2">
+      <active>true</active>
+      <description>ALT_HOLD_PREV</description>
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <source type="SimConnect" VarType="CODE" Value="(L:ALT_HOLD_PREV)" UUID="-" />
+        <test type="Float" value="1" />
+        <modifiers />
+        <display type="-" serial="-" trigger="normal" pin="" pinBrightness="255" />
+        <preconditions />
+        <configrefs />
+      </settings>
+    </config>
+    <config guid="91a2545b-d480-48bc-9c86-803655223b23">
+      <active>true</active>
+      <description>debug_neq</description>
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <source type="SimConnect" VarType="CODE" Value="(L:DEBUG_NEQ)" UUID="-" />
+        <test type="Float" value="1" />
+        <modifiers />
+        <display type="-" serial="-" trigger="normal" pin="" pinBrightness="255" />
+        <preconditions />
+        <configrefs />
+      </settings>
+    </config>
+    <config guid="eb6738d4-f432-483c-9fe2-66ffb9a14b7c">
+      <active>true</active>
+      <description>debug_lock</description>
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <source type="SimConnect" VarType="CODE" Value="(L:DEBUG_LOCK)" UUID="-" />
+        <test type="Float" value="1" />
+        <modifiers />
+        <display type="-" serial="-" trigger="normal" pin="" pinBrightness="255" />
+        <preconditions />
+        <configrefs />
+      </settings>
+    </config>
+    <config guid="49eed3db-bdab-43fc-ace1-7674c6a204ec">
+      <active>true</active>
+      <description>debug_cond</description>
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.5.3.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <source type="SimConnect" VarType="CODE" Value="(L:DEBUG_COND)" UUID="-" />
+        <test type="Float" value="1" />
+        <modifiers />
+        <display type="-" serial="-" trigger="normal" pin="" pinBrightness="255" />
+        <preconditions />
         <configrefs />
       </settings>
     </config>

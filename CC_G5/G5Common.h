@@ -7,7 +7,8 @@
 #include "MFEEPROM.h"
 #include "MFCustomDeviceTypes.h"
 #include "Sprites\battery.h"
-#include "Images\PrimaSans32.h"
+// #include "Images\PrimaSans32.h" // ORIGINAL
+#include "Images\PrimaSansMid32.h" // Medium weight
 
 static const char *TAG_CC_G5   = "CC_G5_PFD";
 static const char *TAG_I2C     = "CC_G5_I2C";
@@ -26,7 +27,7 @@ static const char *TAG_SPRITES = "CC_G5_SPRITES";
 #include <Wire.h>
 
 #define CC_G5_SETTINGS_OFFSET 2048 // Well past MF config end (59 + 1496 = 1555)
-#define SETTINGS_VERSION      3
+#define SETTINGS_VERSION      4
 #define STATE_VERSION         1 // For the save state when switching between pfd and hsi
 
 #define TFT_MAIN_TRANSPARENT TFT_PINK // Just pick a color not used in either display
@@ -37,6 +38,7 @@ enum class PowerState { INVALID,
                         SHUTTING_DOWN,
                         BATTERY_POWERED,
                         HARD_POWER_OFF };
+enum class PowerControl { MANUAL=0, DEVICE_MANAGED=1, ALWAYS_ON=2 };
 
 struct CC_G5_Settings {
     int      version               = SETTINGS_VERSION;
@@ -60,6 +62,8 @@ struct CC_G5_Settings {
     uint8_t  tempUnits             = 0; // 0: F, 1: C
     uint8_t  deviceType            = CUSTOM_HSI_DEVICE;
     uint8_t  lcdBrightness         = 100;
+    uint8_t  targetAltitude        = 0;
+
 };
 
 extern CC_G5_Settings g5Settings;
@@ -69,6 +73,7 @@ struct G5State {
 
     int           lcdBrightness   = 100; // We will go 0-100 here.
     PowerState    powerState      = PowerState::SHUTTING_DOWN;
+    PowerControl  powerControl    = PowerControl::DEVICE_MANAGED; // 0-Manual, 1-Device, 2-Always On
     bool          forceRedraw     = false;
     unsigned long shutdownStartMs = 0;
     unsigned long batteryStartMs  = 0;
@@ -112,6 +117,7 @@ struct G5State {
 
     // CDI (Course Deviation Indicator)
     int   cdiDirection   = 0; // HSI needle direction
+    int   rawCdiDirection = 0;
     float rawCdiOffset   = 0.0f;
     float cdiOffset      = 0.0f;
     int   cdiNeedleValid = 1;

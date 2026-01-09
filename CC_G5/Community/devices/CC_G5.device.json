@@ -71,6 +71,16 @@
         "id": 11,
         "Label": "Device Type",
         "description": "Manually set the device type (0=HSI, 1=PFD)"
+      },      
+      {
+        "id": 13,
+        "Label": "Power On/Off",
+        "description": "Power off/on (0=Off, 1=On)"
+      },
+      {
+        "id": 14,
+        "Label": "Power Control",
+        "description": "Manually control from MF: 0, Automatic device control: 1, Always on: 2"
       },
       {
         "id": 30,

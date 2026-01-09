@@ -36,19 +36,25 @@ void sendButton(String name, int pressType = 0)
 
 bool powerStateSet(PowerState ps)
 {
-
     static PowerState lastPs = PowerState::INVALID;
+
+    // Serial.printf("Set state: %d Control state: %d lastPs %d\n", (int)ps, (int)g5State.powerControl, lastPs);
 
     // No change? Short circuit.
     if (ps == lastPs) return false;
 
-    // if the lastPs was shutting down, we need to redraw the HSI.
-    if(lastPs == PowerState::SHUTTING_DOWN) {
-        lcd.fillScreen(TFT_BLACK);
-        g5State.forceRedraw = true;
+    if (g5State.powerControl == PowerControl::ALWAYS_ON) {
+        ps = PowerState::POWER_ON;
     }
 
-    if (ps == PowerState::POWER_OFF) {
+    // // if the lastPs was shutting down, we need to redraw the HSI.
+    // if (lastPs == PowerState::SHUTTING_DOWN) {
+    //     Serial.printf("refresh screen\n");
+    //     lcd.fillScreen(TFT_BLACK);
+    //     g5State.forceRedraw = true;
+    // }
+
+    if (ps == PowerState::POWER_OFF && g5State.powerControl != PowerControl::ALWAYS_ON) {
         // turn off the display.
         lcd.setBrightness(0);
     }
@@ -56,6 +62,10 @@ bool powerStateSet(PowerState ps)
     if (ps == PowerState::POWER_ON) {
         // turn the display back on
         lcd.setBrightness(brightnessGamma(g5State.lcdBrightness));
+
+//        Serial.printf("refresh screen 2\n");
+        lcd.fillScreen(TFT_BLACK);
+        g5State.forceRedraw = true;
     }
 
     // Start the shutdown timer if we're starting a shtudown.
@@ -191,7 +201,12 @@ LGFX_Sprite batterySprite;
 void drawBattery(LGFX_Sprite *targetSprite, int x, int y)
 {
 
-    if (g5State.powerState != PowerState::BATTERY_POWERED) return;
+    if (g5State.powerState != PowerState::BATTERY_POWERED ) return;
+    // const long int batLifeSec = 3 * 60 * 60;  // 3 hours
+    const long int batLifeSec = 3 * 60 * 60; // 3 hours
+    long int       secOnBat   = (int)(millis() - g5State.batteryStartMs) / 1000;
+
+    long int batPct = (int)(100 * (batLifeSec - secOnBat)) / batLifeSec;
 
     if (batterySprite.bufferLength() == 0) {
         batterySprite.setColorDepth(8);
@@ -203,44 +218,40 @@ void drawBattery(LGFX_Sprite *targetSprite, int x, int y)
     }
 
     batterySprite.fillSprite(TFT_BLACK);
+
+    if (batPct <= 0) return;
+
     batterySprite.drawRect(0, 0, batterySprite.width(), batterySprite.height(), TFT_LIGHTGRAY);
     batterySprite.drawRect(1, 1, batterySprite.width() - 2, batterySprite.height() - 2, TFT_LIGHTGRAY);
-    
-    // const long int batLifeSec = 3 * 60 * 60;  // 3 hours
-    const long int batLifeSec = 120; // 3 hours
-    long int       secOnBat   = (int)(millis() - g5State.batteryStartMs) / 1000;
-    
-    long int batPct = (int)(100 * (batLifeSec - secOnBat)) / batLifeSec;
-    
+
+
     char buf[7];
     sprintf(buf, "%d%%", batPct);
     batterySprite.drawString(buf, 5, 20);
-    
+
     int bX = 55, bY = 10;
     batterySprite.drawBitmap(bX, bY, BATTERY_IMG_DATA, BATTERY_IMG_WIDTH, BATTERY_IMG_HEIGHT, TFT_LIGHTGRAY);
 
-    
-    
     if (batPct > 85) {
-        batterySprite.fillRect(bX+3, bY+3, 6, 10, TFT_GREEN);
-        batterySprite.fillRect(bX+10, bY+3, 6, 10, TFT_GREEN);
-        batterySprite.fillRect(bX+18, bY+3, 6, 10, TFT_GREEN);
-        batterySprite.fillRect(bX+26, bY+3, 6, 10, TFT_GREEN);
+        batterySprite.fillRect(bX + 3, bY + 3, 6, 10, TFT_GREEN);
+        batterySprite.fillRect(bX + 10, bY + 3, 6, 10, TFT_GREEN);
+        batterySprite.fillRect(bX + 18, bY + 3, 6, 10, TFT_GREEN);
+        batterySprite.fillRect(bX + 26, bY + 3, 6, 10, TFT_GREEN);
     } else if (batPct > 70) {
-        batterySprite.fillRect(bX+3, bY+3, 6, 10, TFT_GREEN);
-        batterySprite.fillRect(bX+10, bY+3, 6, 10, TFT_GREEN);
-        batterySprite.fillRect(bX+18, bY+3, 6, 10, TFT_GREEN);
+        batterySprite.fillRect(bX + 3, bY + 3, 6, 10, TFT_GREEN);
+        batterySprite.fillRect(bX + 10, bY + 3, 6, 10, TFT_GREEN);
+        batterySprite.fillRect(bX + 18, bY + 3, 6, 10, TFT_GREEN);
     } else if (batPct > 45) {
-        batterySprite.fillRect(bX+3, bY+3, 6, 10, TFT_GREEN);
-        batterySprite.fillRect(bX+10, bY+3, 6, 10, TFT_GREEN);
+        batterySprite.fillRect(bX + 3, bY + 3, 6, 10, TFT_GREEN);
+        batterySprite.fillRect(bX + 10, bY + 3, 6, 10, TFT_GREEN);
     } else if (batPct > 25) {
-        batterySprite.fillRect(bX+3, bY+3, 6, 10, TFT_YELLOW);
-        batterySprite.fillRect(bX+10, bY+3, 6, 10, TFT_YELLOW);
+        batterySprite.fillRect(bX + 3, bY + 3, 6, 10, TFT_YELLOW);
+        batterySprite.fillRect(bX + 10, bY + 3, 6, 10, TFT_YELLOW);
     } else {
-        
-        batterySprite.fillRect(bX+3, bY+3, 6, 10, TFT_RED);
+
+        batterySprite.fillRect(bX + 3, bY + 3, 6, 10, TFT_RED);
     }
-    
+
     batterySprite.pushSprite(targetSprite, x, y);
     if (batPct <= 0) powerStateSet(PowerState::POWER_OFF);
 }
