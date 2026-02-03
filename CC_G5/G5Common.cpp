@@ -38,12 +38,12 @@ bool powerStateSet(PowerState ps)
 {
     static PowerState lastPs = PowerState::INVALID;
 
-    // Serial.printf("Set state: %d Control state: %d lastPs %d\n", (int)ps, (int)g5State.powerControl, lastPs);
+    // Serial.printf("Set state: %d Control state: %d lastPs %d\n", (int)ps, (int)g5Settings.powerControl, lastPs);
 
     // No change? Short circuit.
     if (ps == lastPs) return false;
 
-    if (g5State.powerControl == PowerControl::ALWAYS_ON) {
+    if (g5Settings.powerControl == PowerControl::ALWAYS_ON) {
         ps = PowerState::POWER_ON;
     }
 
@@ -54,7 +54,7 @@ bool powerStateSet(PowerState ps)
     //     g5State.forceRedraw = true;
     // }
 
-    if (ps == PowerState::POWER_OFF && g5State.powerControl != PowerControl::ALWAYS_ON) {
+    if (ps == PowerState::POWER_OFF && g5Settings.powerControl != PowerControl::ALWAYS_ON) {
         // turn off the display.
         lcd.setBrightness(0);
     }
@@ -259,7 +259,7 @@ void drawBattery(LGFX_Sprite *targetSprite, int x, int y)
 void drawShutdown(LGFX_Sprite *targetSprite)
 {
     // This code only fires when we are in the process of shutting down.
-    if (g5State.powerState != PowerState::SHUTTING_DOWN) return;
+    if (g5State.powerState != PowerState::SHUTTING_DOWN || g5Settings.powerControl == PowerControl::ALWAYS_ON) return;
 
     const int timeOut   = 45;
     int       secRemain = (int)(timeOut - (millis() - g5State.shutdownStartMs) / 1000);
@@ -304,6 +304,7 @@ bool loadSettings()
         if (g5Settings.version != SETTINGS_VERSION) {
             g5Settings = CC_G5_Settings(); // Reset to defaults
                                            //            ESP_LOGE("PREF", "Settings Version mismatch\n");
+            saveSettings();
         }
         ESP_LOGV("PREF", "Settings back. Device: %d\n", g5Settings.deviceType);
         return true;

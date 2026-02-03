@@ -581,12 +581,12 @@ void CC_G5_HSI::setCommon(int16_t messageID, char *setPoint)
             powerStateSet(PowerState::SHUTTING_DOWN);
         else
             powerStateSet(PowerState::POWER_ON);
-        cmdMessenger.sendCmd(kStatus, F("PowerSave message in.\n"));
+//        cmdMessenger.sendCmd(kStatus, F("PowerSave message in.\n"));
         break;
 
     case -1: // Stop message from MF. Device execution stops.
-        cmdMessenger.sendCmd(kStatus, F("Stop message in.\n"));
-        Serial.printf("Got a stop message\n");
+//        cmdMessenger.sendCmd(kStatus, F("Stop message in.\n"));
+        //Serial.printf("Got a stop message\n");
         powerStateSet(PowerState::SHUTTING_DOWN);
         break;
 
@@ -649,15 +649,20 @@ void CC_G5_HSI::setCommon(int16_t messageID, char *setPoint)
     case 14: // POWER CONTROL  Does the user want to control from MF or let us do it
         switch (atoi(setPoint)) {
         case 0: // Manual
-            g5State.powerControl = PowerControl::MANUAL;
+//            g5State.powerControl = PowerControl::MANUAL;
+            g5Settings.powerControl = PowerControl::MANUAL;
             break;
         case 1: // On
-            g5State.powerControl = PowerControl::DEVICE_MANAGED;
+//            g5State.powerControl = PowerControl::DEVICE_MANAGED;
+            g5Settings.powerControl = PowerControl::DEVICE_MANAGED;
             break;
         case 2: // AlwaysOn
-            g5State.powerControl = PowerControl::ALWAYS_ON;
+ //           g5State.powerControl = PowerControl::ALWAYS_ON;
+            g5Settings.powerControl = PowerControl::ALWAYS_ON;
             break;
         }
+        saveState();
+        saveSettings();
     }
 }
 

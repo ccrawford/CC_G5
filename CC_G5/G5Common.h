@@ -27,7 +27,7 @@ static const char *TAG_SPRITES = "CC_G5_SPRITES";
 #include <Wire.h>
 
 #define CC_G5_SETTINGS_OFFSET 2048 // Well past MF config end (59 + 1496 = 1555)
-#define SETTINGS_VERSION      4
+#define SETTINGS_VERSION      5
 #define STATE_VERSION         1 // For the save state when switching between pfd and hsi
 
 #define TFT_MAIN_TRANSPARENT TFT_PINK // Just pick a color not used in either display
@@ -63,6 +63,7 @@ struct CC_G5_Settings {
     uint8_t  deviceType            = CUSTOM_HSI_DEVICE;
     uint8_t  lcdBrightness         = 100;
     uint8_t  targetAltitude        = 0;
+    PowerControl  powerControl     = PowerControl::ALWAYS_ON;
 
 };
 
@@ -73,7 +74,7 @@ struct G5State {
 
     int           lcdBrightness   = 100; // We will go 0-100 here.
     PowerState    powerState      = PowerState::SHUTTING_DOWN;
-    PowerControl  powerControl    = PowerControl::DEVICE_MANAGED; // 0-Manual, 1-Device, 2-Always On
+    //PowerControl  powerControl    = PowerControl::DEVICE_MANAGED; // 0-Manual, 1-Device, 2-Always On
     bool          forceRedraw     = false;
     unsigned long shutdownStartMs = 0;
     unsigned long batteryStartMs  = 0;

@@ -157,6 +157,7 @@ void CC_G5_PFD::begin()
     loadSettings();
 
     // g5Hardware.setLedState(true);
+    // Serial.printf("PowerSetting: %d\n", g5Settings.powerControl);
 
     lcd.setColorDepth(8);
     lcd.init();
@@ -464,7 +465,9 @@ void CC_G5_PFD::setCommon(int16_t messageID, char *setPoint)
     //     g5State.powerState = PowerState::POWER_ON;
     // }
 
-    if (messageID > 0 && g5State.powerControl == PowerControl::DEVICE_MANAGED) powerStateSet(PowerState::POWER_ON);
+    // Serial.printf("setCommon: %d %s.\n",messageID, setPoint);
+
+    if (messageID > 0 && g5Settings.powerControl == PowerControl::DEVICE_MANAGED) powerStateSet(PowerState::POWER_ON);
     lastMFUpdate = millis(); // Resets the message alert timeout.
 
     switch (messageID) {
@@ -473,11 +476,11 @@ void CC_G5_PFD::setCommon(int16_t messageID, char *setPoint)
             powerStateSet(PowerState::SHUTTING_DOWN);
         else
             powerStateSet(PowerState::POWER_ON);
-        cmdMessenger.sendCmd(kStatus, F("Shutdown message in."));
+   //     cmdMessenger.sendCmd(kStatus, F("Shutdown message in."));
         break;
 
     case -1: // Stop message from MF. Device execution stops.
-        cmdMessenger.sendCmd(kStatus, F("Stop message in."));
+//        cmdMessenger.sendCmd(kStatus, F("Stop message in."));
         powerStateSet(PowerState::SHUTTING_DOWN);
         break;
     case 0: // AP Heading Bug
@@ -538,13 +541,13 @@ void CC_G5_PFD::setCommon(int16_t messageID, char *setPoint)
     case 14: // POWER CONTROL  Does the user want to control from MF or let us do it
         switch (atoi(setPoint)) {
         case 0: // Manual
-            g5State.powerControl = PowerControl::MANUAL;
+            g5Settings.powerControl = PowerControl::MANUAL;
             break;
         case 1: // On
-            g5State.powerControl = PowerControl::DEVICE_MANAGED;
+            g5Settings.powerControl = PowerControl::DEVICE_MANAGED;
             break;
         case 2: // AlwaysOn
-            g5State.powerControl = PowerControl::ALWAYS_ON;
+            g5Settings.powerControl = PowerControl::ALWAYS_ON;
             break;
         }
     }
