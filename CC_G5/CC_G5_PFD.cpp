@@ -225,7 +225,7 @@ void CC_G5_PFD::setupSprites()
 
     if (attBuffer == nullptr) {
         Serial.println("Failed to allocate DMA-capable internal SRAM buffer!");
-        while (1)
+        while (1)   // Intentional hang for critical stop.
             ;
     }
 
@@ -363,7 +363,7 @@ void CC_G5_PFD::setupSprites()
 
     if (headingTape.getBuffer() == nullptr) {
         while (1)
-            Serial.printf("No room!\n");
+            Serial.printf("No room!\n");    // Intentional hang for non-recoverable error.
     }
 
     hScale.setColorDepth(1);
@@ -529,6 +529,7 @@ void CC_G5_PFD::setCommon(int16_t messageID, char *setPoint)
     case 12: // Brightness
         g5State.lcdBrightness = max(0, min(atoi(setPoint), 255));
         lcd.setBrightness(g5State.lcdBrightness);
+        break;
     case 13: // POWER STATE 0 off 1 on
         switch (atoi(setPoint)) {
         case 0: // Off
@@ -538,6 +539,7 @@ void CC_G5_PFD::setCommon(int16_t messageID, char *setPoint)
             powerStateSet(PowerState::POWER_ON);
             break;
         }
+        break;
     case 14: // POWER CONTROL  Does the user want to control from MF or let us do it
         switch (atoi(setPoint)) {
         case 0: // Manual
@@ -550,6 +552,7 @@ void CC_G5_PFD::setCommon(int16_t messageID, char *setPoint)
             g5Settings.powerControl = PowerControl::ALWAYS_ON;
             break;
         }
+        break;
     }
 }
 
@@ -1936,7 +1939,7 @@ void CC_G5_PFD::drawCDIBar()
             horizontalDeviationScale.pushSprite(&attitude, CENTER_COL_CENTER, 360);
         } else {
             // Triangle with to/from
-            if (g5State.cdiToFrom = 1) {
+            if (g5State.cdiToFrom == 1) {
                 // To
                 horizontalDeviationScale.drawBitmap(markerCenterPosition, 2, BANKANGLEPOINTER_IMG_DATA, BANKANGLEPOINTER_IMG_WIDTH, BANKANGLEPOINTER_IMG_HEIGHT, TFT_GREEN);
                 horizontalDeviationScale.pushSprite(&attitude, CENTER_COL_CENTER, 360);

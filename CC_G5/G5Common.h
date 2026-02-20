@@ -26,6 +26,8 @@ static const char *TAG_SPRITES = "CC_G5_SPRITES";
 #include "commandmessenger.h"
 #include <Wire.h>
 
+#define PIf                  3.14159f
+
 #define CC_G5_SETTINGS_OFFSET 2048 // Well past MF config end (59 + 1496 = 1555)
 #define SETTINGS_VERSION      5
 #define STATE_VERSION         1 // For the save state when switching between pfd and hsi
@@ -59,7 +61,7 @@ struct CC_G5_Settings {
     uint8_t  baroUnit              = 0; // 0: inHg, 1: kPa, 3: mmHg
     uint8_t  speedUnits            = 0; // 0:knot 1:mph 2:kph
     uint8_t  distanceUnits         = 0; // 0: nm, 1: miles, 2:km
-    uint8_t  tempUnits             = 0; // 0: F, 1: C
+    uint8_t  tempUnits             = 0; // 0: F, 1: 
     uint8_t  deviceType            = CUSTOM_HSI_DEVICE;
     uint8_t  lcdBrightness         = 100;
     uint8_t  targetAltitude        = 0;
@@ -296,10 +298,10 @@ extern G5_Hardware g5Hardware;
 // I2C utility function
 void sendEncoder(String name, int count, bool increase);
 
-float smoothDirection(float inputDir, float currentDir, float alpha, float threashold);
+float smoothDirection(float inputDir, float currentDir, float alpha, float threshold);
 float smoothAngle(float input, float current, float alpha, float threshold);
-int   smoothInput(int input, int current, float alpha, int threashold);
-float smoothInput(float input, float current, float alpha, float snapThreashold);
+int   smoothInput(int input, int current, float alpha, int threshold);
+float smoothInput(float input, float current, float alpha, float snapThreshold);
 void  drawShutdown(LGFX_Sprite *targetSprite);
 void  drawBattery(LGFX_Sprite *targetSprite, int x, int y);
 

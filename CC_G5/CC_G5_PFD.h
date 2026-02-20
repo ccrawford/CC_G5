@@ -43,7 +43,7 @@
 #define TEXT_BOX_HEIGHT 40
 #define NAVSOURCE_GPS   1
 #define NAVSOURCE_NAV   0
-#define PIf             3.141526f
+
 
 class CC_G5_PFD
 {

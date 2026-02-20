@@ -124,14 +124,14 @@ void G5_Hardware::setLedState(bool state)
 // 0.5 s (analog needle)	0.3	smooth, analog feel
 // 1.0 s (heavy needle)	0.15	sluggish but realistic
 // 2.0 s (slow gauge)	0.075	big thermal or pressure gauge feel
-// The snapThreashold is the same unit/magnitude as the input. At a minimum it should be the smallest changable value.
-int smoothInput(int input, int current, float alpha, int threashold = 1)
+// The snapThreshold is the same unit/magnitude as the input. At a minimum it should be the smallest changable value.
+int smoothInput(int input, int current, float alpha, int threshold = 1)
 {
     int diff = input - current;
-    if (abs(diff) <= threashold) return input;
+    if (abs(diff) <= threshold) return input;
 
     int update = (int)(alpha * diff);
-    if (update == 0 && abs(diff) > threashold) update = (diff > 0) ? 1 : -1;
+    if (update == 0 && abs(diff) > threshold) update = (diff > 0) ? 1 : -1;
     return current + update;
 }
 

@@ -19,7 +19,7 @@
 #define CUR_HEADING_Y_OFFSET 26
 #define NAVSOURCE_GPS        1
 #define NAVSOURCE_NAV        0
-#define PIf                  3.141526f
+
 // Was 188
 
 class CC_G5_HSI
