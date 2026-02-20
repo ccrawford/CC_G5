@@ -70,7 +70,7 @@
       {
         "id": 11,
         "Label": "Device Type",
-        "description": "Manually set the device type (0=HSI, 1=PFD)"
+        "description": "Manually set the device type (0=HSI, 1=PFD, 2=ISIS)"
       },      
       {
         "id": 13,

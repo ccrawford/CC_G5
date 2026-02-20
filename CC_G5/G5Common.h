@@ -1,18 +1,17 @@
 #pragma once
 #include <Arduino.h>
+#include <Wire.h>
 #include <vector>
 #include <memory>
 #include <functional>
 #include <Preferences.h>
 #include "MFEEPROM.h"
 #include "MFCustomDeviceTypes.h"
+#include "commandmessenger.h"
+
 #include "Sprites\battery.h"
 // #include "Images\PrimaSans32.h" // ORIGINAL
 #include "Images\PrimaSansMid32.h" // Medium weight
-
-static const char *TAG_CC_G5   = "CC_G5_PFD";
-static const char *TAG_I2C     = "CC_G5_I2C";
-static const char *TAG_SPRITES = "CC_G5_SPRITES";
 
 #define USE_GUITION_SCREEN
 
@@ -22,9 +21,6 @@ static const char *TAG_SPRITES = "CC_G5_SPRITES";
 #else
 #include "4inchLCDConfig.h"
 #endif
-// #include "G5_Menu.h"
-#include "commandmessenger.h"
-#include <Wire.h>
 
 #define PIf                  3.14159f
 
@@ -62,7 +58,7 @@ struct CC_G5_Settings {
     uint8_t  speedUnits            = 0; // 0:knot 1:mph 2:kph
     uint8_t  distanceUnits         = 0; // 0: nm, 1: miles, 2:km
     uint8_t  tempUnits             = 0; // 0: F, 1: 
-    uint8_t  deviceType            = CUSTOM_HSI_DEVICE;
+    uint8_t  deviceType            = CUSTOM_ISIS_DEVICE;
     uint8_t  lcdBrightness         = 100;
     uint8_t  targetAltitude        = 0;
     PowerControl  powerControl     = PowerControl::ALWAYS_ON;
@@ -89,9 +85,9 @@ struct G5State {
 
     // Attitude (PFD)
     float rawBankAngle  = 0.0f;
-    float bankAngle     = 0.0f;
+    float bankAngle     = 30.0f;
     float rawPitchAngle = 0.0f;
-    float pitchAngle    = 0.0f;
+    float pitchAngle    = 8.0f;
     float rawBallPos    = 0.0f;
     float ballPos       = 0.0f;
     float turnRate      = 0.0f;

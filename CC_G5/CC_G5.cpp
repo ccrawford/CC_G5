@@ -1,12 +1,8 @@
 #include "CC_G5.h"
-#include "G5Common.h"
 #include "esp_log.h"
 
 #include <Wire.h>
 
-// static const char* TAG_CC_G5 = "CC_G5";
-// static const char* TAG_I2C = "CC_G5_I2C";
-// static const char* TAG_SPRITES = "CC_G5_SPRITES";
 
 #include "allocateMem.h"
 #include "commandmessenger.h"
@@ -136,7 +132,6 @@ void CC_G5_HSI::read_rp2040_data()
 
 void CC_G5_HSI::begin()
 {
-    // ESP_LOGI(TAG_CC_G5, "CC_G5 device starting up");
 
     loadSettings();
 
@@ -151,13 +146,6 @@ void CC_G5_HSI::begin()
     lcd.setRotation(0); // Orients the Waveshare screen with FPCB connector at bottom.
 #endif
 
-    // Configure ESP_LOG levels - can be set to ESP_LOG_NONE to disable all logging for MobiFlight compatibility
-    esp_log_level_set("*", ESP_LOG_DEBUG);         // Default level for all components
-    esp_log_level_set(TAG_CC_G5, ESP_LOG_DEBUG);   // Enable debug for main CC_G5 component
-    esp_log_level_set(TAG_I2C, ESP_LOG_DEBUG);     // Enable debug for I2C operations
-    esp_log_level_set(TAG_SPRITES, ESP_LOG_DEBUG); // Enable debug for sprite operations
-    esp_log_level_set("G5_MENU", ESP_LOG_DEBUG);   // Enable debug for menu operations
-
     // Setup menu structure
 
     hsiMenu.initializeMenu();
@@ -168,9 +156,9 @@ void CC_G5_HSI::begin()
 
     // Configure I2C master
     if (!Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN)) {
-        ESP_LOGE(TAG_I2C, "i2c setup failed");
+       // ESP_LOGE(TAG_I2C, "i2c setup failed");
     } else {
-        ESP_LOGI(TAG_I2C, "i2c setup successful");
+       // ESP_LOGI(TAG_I2C, "i2c setup successful");
     }
 
     // Test the bus.
@@ -351,7 +339,7 @@ void CC_G5_HSI::setupCompassSprites()
         // Compass center coordinates are calculated in setupSprites() after curHdg is created
 
     } else {
-        ESP_LOGE(TAG_SPRITES, "ERROR: Compass sprite creation FAILED!");
+//        ESP_LOGE(TAG_SPRITES, "ERROR: Compass sprite creation FAILED!");
     }
 
     // Add missing sprite setup that was in original

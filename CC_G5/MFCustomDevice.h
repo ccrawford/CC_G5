@@ -3,6 +3,7 @@
 #include <Arduino.h>
 #include "CC_G5.h"
 #include "CC_G5_PFD.h"
+#include "CC_ISIS.h"
 #include "MFCustomDeviceTypes.h"
 
 class MFCustomDevice
@@ -19,5 +20,6 @@ private:
     bool       _initialized = false;
     CC_G5_HSI *_hsiDevice;
     CC_G5_PFD *_pfdDevice;
+    CC_ISIS *_isisDevice;
     uint8_t    _customType = CUSTOM_HSI_DEVICE;
 };

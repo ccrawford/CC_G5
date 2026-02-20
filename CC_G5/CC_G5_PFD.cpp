@@ -176,9 +176,9 @@ void CC_G5_PFD::begin()
 
     // Configure I2C master
     if (!Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN, 40000)) {
-        ESP_LOGE(TAG_I2C, "i2c setup failed");
+    //    ESP_LOGE(TAG_I2C, "i2c setup failed");
     } else {
-        ESP_LOGI(TAG_I2C, "i2c setup successful");
+    //    ESP_LOGI(TAG_I2C, "i2c setup successful");
     }
 
     //    Serial.printf("Attaching interrupts.\n");
@@ -518,9 +518,8 @@ void CC_G5_PFD::setCommon(int16_t messageID, char *setPoint)
         break;
     case 11: // DEVICE TYPE
         if (atoi(setPoint) == 0) {
-            // Switch to HSI.
             saveState();
-            g5Settings.deviceType = CUSTOM_HSI_DEVICE;
+            g5Settings.deviceType = atoi(setPoint);
             saveSettings();
             lcd.fillScreen(TFT_BLACK); // reduce flashing
             ESP.restart();
@@ -974,8 +973,6 @@ void CC_G5_PFD::drawAttitude()
             attitude.setPivot(textX2, textY2);
             altScaleNumber.pushRotated(inverted ? g5State.bankAngle + 180.0 : g5State.bankAngle, TFT_BLACK);
 
-            //      attitude.drawString(pitchText, textX1, textY1);
-            //      attitude.drawString(pitchText, textX2, textY2);
         }
     };
 
