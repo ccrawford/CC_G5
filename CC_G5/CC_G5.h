@@ -22,7 +22,7 @@
 
 // Was 188
 
-class CC_G5_HSI
+class CC_G5_HSI : public CC_G5_Base
 {
 
     // NESTED MENU CLASS
@@ -240,8 +240,7 @@ public:
     void attach();
     void detach();
     void set(int16_t messageID, char *setPoint);
-    void setCommon(int16_t messageID, char *setPoint);
-    void saveState();
+    void saveState() override;   // calls CC_G5_Base::saveState() then saves HSI-specific fields
     bool restoreState();
 
     void setHSI(int16_t messageId, char* setPoint);

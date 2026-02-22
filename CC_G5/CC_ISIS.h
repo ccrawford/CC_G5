@@ -5,7 +5,7 @@
 
 #define PRESS_COLOR TFT_BLUE
 
-class CC_ISIS
+class CC_ISIS : public CC_G5_Base
 {
 public:
     CC_ISIS();

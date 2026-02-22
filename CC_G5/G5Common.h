@@ -94,18 +94,19 @@ struct G5State {
 
     // Speeds
     float rawAirspeed  = 0.0f;
-    float airspeed     = 0.0f;
+    float airspeed     = 262.0f;
     float trueAirspeed = 0.0f;
     int   groundSpeed  = 0;
 
     // Altitude
     int   rawAltitude      = 0;
-    int   altitude         = 0;
+    int   altitude         = 5245;
     int   rawVerticalSpeed = 0;
     int   verticalSpeed    = 0;
     int   targetAltitude   = 0;
     int   densityAltitude  = 1200;
     float kohlsman         = 29.92f;
+    int   mbPressure       = 1013;
 
     // Navigation source and mode
     int  navSource          = 1; // 1=GPS, 0=NAV
@@ -173,6 +174,8 @@ struct G5State {
 
     // Other
     int oat = 15; // Outside air temp
+
+    
 };
 
 extern G5State g5State;
@@ -291,8 +294,7 @@ private:
 // Global hardware interface instance
 extern G5_Hardware g5Hardware;
 
-// I2C utility function
-void sendEncoder(String name, int count, bool increase);
+// I2C utility function (see G5_Hardware)
 
 float smoothDirection(float inputDir, float currentDir, float alpha, float threshold);
 float smoothAngle(float input, float current, float alpha, float threshold);
@@ -322,6 +324,22 @@ inline const char *getBearingSourceName(int source)
     if (source >= 0 && source < 5) return names[source];
     return "???";
 }
+
+// BASE DEVICE CLASS
+
+// Shared base class for all G5 device types (HSI, PFD, ISIS).
+// Provides setCommon() for message IDs -2 through 14, and saveState() for the
+// common g5State fields written during a device-type switch.
+// Subclasses override saveState() to call this base version first, then write
+// their own device-specific fields.
+class CC_G5_Base {
+public:
+    void setCommon(int16_t messageID, char *setPoint);
+    virtual void saveState();    // saves common g5State fields to NVS; subclasses override to add device-specific fields
+    bool restoreState();         // reads common g5State fields from NVS; returns false if no saved state
+    void sendEncoder(String name, int count, bool increase);
+    void sendButton(String name, int pushType = 0);
+};
 
 // MENU SYSTEM
 
@@ -777,64 +795,13 @@ public:
         }
     }
 
-    void drawBrightnessPopup()
-    {
-        if (currentState != MenuState::BRIGHTNESS) return;
-
-        auto targetSprite = getTargetSprite();
-        if (!targetSprite) return;
-
-        int popupWidth = 200, popupHeight = 120;
-        int centerX = (targetSprite->width() - popupWidth) / 2;
-        int centerY = (targetSprite->height() - popupHeight) / 2;
-
-        // Draw popup background
-        targetSprite->fillRoundRect(centerX, centerY, popupWidth, popupHeight, 4, 0x7BEF);
-        targetSprite->fillRoundRect(centerX + 3, centerY + 3, popupWidth - 6, popupHeight - 6, 3, TFT_BLACK);
-
-        // Draw title
-        targetSprite->setTextColor(TFT_WHITE);
-        targetSprite->setTextDatum(lgfx::v1::textdatum::textdatum_t::top_center);
-        targetSprite->setTextSize(0.7);
-        targetSprite->drawString("Backlight", centerX + popupWidth / 2, centerY + 10);
-
-        // Draw percentage value
-        targetSprite->setTextColor(TFT_CYAN);
-        targetSprite->setTextSize(1.2);
-        targetSprite->setTextDatum(lgfx::v1::textdatum::textdatum_t::middle_center);
-        String valueStr = String(g5State.lcdBrightness) + "%";
-        targetSprite->drawString(valueStr, centerX + popupWidth / 2, centerY + popupHeight / 2 + 5);
-
-        // Draw brightness bar
-        int barWidth  = popupWidth - 40;
-        int barHeight = 12;
-        int barX      = centerX + 20;
-        int barY      = centerY + popupHeight - 30;
-
-        // Bar background
-        targetSprite->drawRoundRect(barX, barY, barWidth, barHeight, 2, TFT_WHITE);
-
-        // Filled portion
-        int fillWidth = (barWidth - 4) * g5State.lcdBrightness / 100;
-        targetSprite->fillRoundRect(barX + 2, barY + 2, fillWidth, barHeight - 4, 1, TFT_CYAN);
-    }
-
     void sendEncoder(String name, int count, bool increase)
     {
-        // cmdMessenger.sendCmdStart(kButtonChange);
-        for (int i = 0; i < count; i++) {
-            cmdMessenger.sendCmdStart(kEncoderChange);
-            cmdMessenger.sendCmdArg(name);
-            cmdMessenger.sendCmdArg(increase ? 0 : 2);
-            cmdMessenger.sendCmdEnd();
-        }
+        parent->sendEncoder(name, count, increase);
     }
 
-    void sendButton(String name, int pushType)
+    void sendButton(String name, int pushType = 0)
     {
-        cmdMessenger.sendCmdStart(kButtonChange);
-        cmdMessenger.sendCmdArg(name);
-        cmdMessenger.sendCmdArg(pushType);
-        cmdMessenger.sendCmdEnd();
+        parent->sendButton(name, pushType);
     }
 };

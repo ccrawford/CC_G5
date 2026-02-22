@@ -371,6 +371,9 @@ void CC_G5_HSI::setupCompassSprites()
 
 void CC_G5_HSI::updateCommon()
 {
+    // Swap sprite buffers between magenta (GPS) and green (NAV) when navSource changes.
+    // setNavSource() has an internal guard so it's a no-op when the source hasn't changed.
+    setNavSource();
 
     // Clear the compass sprite. Use RED as the transparent color. It's not used in the display.
     // compass.fillSprite(TFT_BLACK);
@@ -549,109 +552,6 @@ void CC_G5_HSI::detach()
     if (!_initialised)
         return;
     _initialised = false;
-}
-
-void CC_G5_HSI::setCommon(int16_t messageID, char *setPoint)
-{
-
-    // if ((g5State.powerState == PowerState::POWER_OFF || g5State.powerState == PowerState::SHUTTING_DOWN) && messageID > 0) {
-    //     lcd.setBrightness(brightnessGamma(g5State.lcdBrightness)); // Wake up display.
-    //     g5State.powerState = PowerState::POWER_ON;
-    //     // Need a redraw here. ugh.
-    // }
-
-    if (messageID > 0) powerStateSet(PowerState::POWER_ON);
-
-    switch (messageID) {
-
-    case -2: // PowerSavingMode if 1, go into power saving or 0 to wake up
-        if (atoi(setPoint) == 1)
-            powerStateSet(PowerState::SHUTTING_DOWN);
-        else
-            powerStateSet(PowerState::POWER_ON);
-//        cmdMessenger.sendCmd(kStatus, F("PowerSave message in.\n"));
-        break;
-
-    case -1: // Stop message from MF. Device execution stops.
-//        cmdMessenger.sendCmd(kStatus, F("Stop message in.\n"));
-        //Serial.printf("Got a stop message\n");
-        powerStateSet(PowerState::SHUTTING_DOWN);
-        break;
-
-    case 0: // AP Heading Bug
-        g5State.headingBugAngle = atoi(setPoint);
-        break;
-    case 1: // Approach Type
-        g5State.gpsApproachType = atoi(setPoint);
-        break;
-    case 2: // CDI Lateral Deviation
-        g5State.rawCdiOffset = atof(setPoint);
-        break;
-    case 3: // CDI Needle Valid
-        g5State.cdiNeedleValid = atoi(setPoint);
-        break;
-    case 4: // CDI To/From Flag
-        g5State.cdiToFrom = atoi(setPoint);
-        break;
-    case 5: // Glide Slope Deviation
-        g5State.rawGsiNeedle = atof(setPoint);
-        break;
-    case 6: // Glide Slope Needle Valid
-        g5State.gsiNeedleValid = atoi(setPoint);
-        break;
-    case 7: // Ground Speed
-        g5State.groundSpeed = atoi(setPoint);
-        break;
-    case 8: // Ground Track (Magnetic)
-        g5State.groundTrack = atof(setPoint);
-        break;
-    case 9: // Heading (Magnetic)
-        g5State.rawHeadingAngle = atof(setPoint);
-        break;
-    case 10: // Nav Source
-        g5State.navSource = atoi(setPoint);
-        setNavSource();
-        break;
-    case 11: // DEVICE TYPE
-        if (atoi(setPoint) == 1) {
-            // Switch to PFD.
-            saveState();
-            g5Settings.deviceType = CUSTOM_PFD_DEVICE;
-            saveSettings();
-            lcd.fillScreen(TFT_BLACK); // reduce flashing
-            ESP.restart();
-        }
-        break;
-    case 12: // Brightness
-        g5State.lcdBrightness = max(0, min(atoi(setPoint), 255));
-        lcd.setBrightness(g5State.lcdBrightness);
-    case 13: // POWER STATE 0 off 1 on
-        switch (atoi(setPoint)) {
-        case 0: // Off
-            powerStateSet(PowerState::SHUTTING_DOWN);
-            break;
-        case 1: // On
-            powerStateSet(PowerState::POWER_ON);
-            break;
-        }
-    case 14: // POWER CONTROL  Does the user want to control from MF or let us do it
-        switch (atoi(setPoint)) {
-        case 0: // Manual
-//            g5State.powerControl = PowerControl::MANUAL;
-            g5Settings.powerControl = PowerControl::MANUAL;
-            break;
-        case 1: // On
-//            g5State.powerControl = PowerControl::DEVICE_MANAGED;
-            g5Settings.powerControl = PowerControl::DEVICE_MANAGED;
-            break;
-        case 2: // AlwaysOn
- //           g5State.powerControl = PowerControl::ALWAYS_ON;
-            g5Settings.powerControl = PowerControl::ALWAYS_ON;
-            break;
-        }
-        saveState();
-        saveSettings();
-    }
 }
 
 void CC_G5_HSI::setHSI(int16_t messageID, char *setPoint)
@@ -1594,27 +1494,11 @@ void CC_G5_HSI::drawWind()
 
 void CC_G5_HSI::saveState()
 {
+    CC_G5_Base::saveState();  // saves common g5State fields (switching flag, IDs 0-10)
+
+    // HSI-specific fields (IDs 30-46)
     Preferences prefs;
     prefs.begin("g5state", false);
-
-    // Mark as mode switch restart
-    prefs.putBool("switching", true);
-    prefs.putInt("version", STATE_VERSION);
-
-    // Common variables (IDs 0-10) - same keys as PFD
-    prefs.putInt("hdgBug", g5State.headingBugAngle);
-    prefs.putInt("appType", g5State.gpsApproachType);
-    prefs.putFloat("cdiOff", g5State.rawCdiOffset);
-    prefs.putInt("cdiVal", g5State.cdiNeedleValid);
-    prefs.putInt("toFrom", g5State.cdiToFrom);
-    prefs.putFloat("gsiNdl", g5State.rawGsiNeedle);
-    prefs.putInt("gsiVal", g5State.gsiNeedleValid);
-    prefs.putInt("gndSpd", g5State.groundSpeed);
-    prefs.putInt("gndTrk", g5State.groundTrack);
-    prefs.putFloat("hdgAng", g5State.rawHeadingAngle);
-    prefs.putInt("navSrc", g5State.navSource);
-
-    // HSI-specific (IDs 30-46)
     prefs.putFloat("adfBrg", g5State.bearingAngleADF);
     prefs.putInt("adfVal", g5State.adfValid);
     prefs.putInt("cdiDir", g5State.cdiDirection);
@@ -1638,34 +1522,12 @@ void CC_G5_HSI::saveState()
 
 bool CC_G5_HSI::restoreState()
 {
+    if (!CC_G5_Base::restoreState())
+        return false;
+
+    // HSI-specific fields
     Preferences prefs;
     prefs.begin("g5state", false);
-
-    bool wasSwitching = prefs.getBool("switching", false);
-    int  version      = prefs.getInt("version", 0);
-
-    // Clear flag immediately
-    prefs.putBool("switching", false);
-
-    if (!wasSwitching || version != STATE_VERSION) {
-        prefs.end();
-        return false;
-    }
-
-    // Common variables
-    g5State.headingBugAngle = prefs.getInt("hdgBug", 0);
-    g5State.gpsApproachType = prefs.getInt("appType", 0);
-    g5State.rawCdiOffset    = prefs.getFloat("cdiOff", 0);
-    g5State.cdiNeedleValid  = prefs.getInt("cdiVal", 1);
-    g5State.cdiToFrom       = prefs.getInt("toFrom", 0);
-    g5State.rawGsiNeedle    = prefs.getFloat("gsiNdl", 0);
-    g5State.gsiNeedleValid  = prefs.getInt("gsiVal", 1);
-    g5State.groundSpeed     = prefs.getInt("gndSpd", 0);
-    g5State.groundTrack     = prefs.getInt("gndTrk", 0);
-    g5State.rawHeadingAngle = prefs.getFloat("hdgAng", 0);
-    g5State.navSource       = prefs.getInt("navSrc", 1);
-
-    // HSI-specific
     g5State.bearingAngleADF   = prefs.getFloat("adfBrg", 0);
     g5State.adfValid          = prefs.getInt("adfVal", 0);
     g5State.cdiDirection      = prefs.getInt("cdiDir", 0);
@@ -1683,7 +1545,6 @@ bool CC_G5_HSI::restoreState()
     g5State.obsAngle          = prefs.getFloat("obsAng", 0);
     g5State.rawWindDir        = prefs.getFloat("wndDir", 0);
     g5State.rawWindSpeed      = prefs.getFloat("wndSpd", 0);
-
     prefs.end();
     return true;
 }

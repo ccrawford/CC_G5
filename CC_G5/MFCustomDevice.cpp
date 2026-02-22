@@ -216,23 +216,25 @@ void MFCustomDevice::update()
 void MFCustomDevice::set(int16_t messageID, char *setPoint)
 {
     if (!_initialized) return;
+    
+    _isisDevice->set(messageID, setPoint);
 
-     if (messageID < 30) {
-         // Common messages (0-29) - route to active device
+     if (messageID < MSG_HSI_MIN) {
+         // Common messages - route to active device
          if (_customType == CUSTOM_HSI_DEVICE)
              _hsiDevice->setCommon(messageID, setPoint);
          else if (_customType == CUSTOM_PFD_DEVICE)
              _pfdDevice->setCommon(messageID, setPoint);
          else if (_customType == CUSTOM_ISIS_DEVICE)
-             _isisDevice->set(messageID, setPoint);
+             _isisDevice->setCommon(messageID, setPoint);
      }
-     else if (messageID < 60) {
-         // HSI-specific (30-59) - only process in HSI mode
+     else if (messageID < MSG_PFD_MIN) {
+         // HSI-specific - only process in HSI mode
          if (_customType == CUSTOM_HSI_DEVICE)
              _hsiDevice->setHSI(messageID, setPoint);
      }
-     else if (messageID < 99) {
-         // PFD-specific (60-99) - only process in PFD mode
+     else if (messageID < MSG_ISIS_MIN) {
+         // PFD-specific - only process in PFD mode
          if (_customType == CUSTOM_PFD_DEVICE)
              _pfdDevice->setPFD(messageID, setPoint);
      }

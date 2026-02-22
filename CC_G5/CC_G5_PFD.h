@@ -45,7 +45,7 @@
 #define NAVSOURCE_NAV   0
 
 
-class CC_G5_PFD
+class CC_G5_PFD : public CC_G5_Base
 {
     //// NESTED CLASS
     class PFDMenu : public G5MenuBase<CC_G5_PFD>
@@ -356,9 +356,8 @@ public:
     void attach();
     void detach();
     void set(int16_t messageID, char *setPoint);
-    void setCommon(int16_t messageID, char *setPoint);
     void setPFD(int16_t messageID, char *setPoint);
-    void saveState();
+    void saveState() override;   // calls CC_G5_Base::saveState() then saves PFD-specific fields
     bool restoreState();
     void update();
     // G5_Menu menu;

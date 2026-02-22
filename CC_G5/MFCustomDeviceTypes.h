@@ -1,7 +1,17 @@
 #pragma once
+
 // Device type enumeration
-  enum {
-      CUSTOM_PFD_DEVICE = 0,
-      CUSTOM_HSI_DEVICE = 1,
-      CUSTOM_ISIS_DEVICE = 2
-  };
+enum {
+    CUSTOM_PFD_DEVICE  = 0,
+    CUSTOM_HSI_DEVICE  = 1,
+    CUSTOM_ISIS_DEVICE = 2
+};
+
+// Message ID routing boundaries.
+// IDs below MSG_HSI_MIN are common (routed to setCommon on the active device).
+// IDs in [MSG_HSI_MIN, MSG_PFD_MIN)  are HSI-specific  (routed to setHSI).
+// IDs in [MSG_PFD_MIN, MSG_ISIS_MIN) are PFD-specific  (routed to setPFD).
+// IDs >= MSG_ISIS_MIN                are ISIS-specific  (routed to CC_ISIS::set).
+#define MSG_HSI_MIN  30
+#define MSG_PFD_MIN  60
+#define MSG_ISIS_MIN 99

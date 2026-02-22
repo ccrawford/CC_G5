@@ -11,26 +11,6 @@ LGFX_Sprite gsBox(&lcd);
 
 BrightnessMenu brightnessMenu;
 
-// Send a pseudo encoder event to MF.
-void sendEncoder(String name, int count, bool increase)
-{
-    // cmdMessenger.sendCmdStart(kButtonChange);
-    for (int i = 0; i < count; i++) {
-        cmdMessenger.sendCmdStart(kEncoderChange);
-        cmdMessenger.sendCmdArg(name);
-        cmdMessenger.sendCmdArg(increase ? 0 : 2);
-        cmdMessenger.sendCmdEnd();
-    }
-}
-
-// Send a psedo button press event to MF.
-void sendButton(String name, int pressType = 0)
-{
-    cmdMessenger.sendCmdStart(kButtonChange);
-    cmdMessenger.sendCmdArg(name);
-    cmdMessenger.sendCmdArg(pressType);
-    cmdMessenger.sendCmdEnd();
-}
 
 // Set a new global power state. Returns false if it was already set, true if there was a change.
 
@@ -344,4 +324,179 @@ uint8_t brightnessGamma(int percent)
     float corrected  = normalized * normalized * 0.75f + normalized * 0.25f;
 
     return (uint8_t)(40 + corrected * 215.0f);
+}
+
+// Saves the common g5State fields to NVS in preparation for a device-type switch.
+// Subclasses override this to call CC_G5_Base::saveState() first, then write
+// their own device-specific fields in a second Preferences session.
+void CC_G5_Base::saveState()
+{
+    Preferences prefs;
+    prefs.begin("g5state", false);
+    prefs.putBool("switching", true);
+    prefs.putInt("version", STATE_VERSION);
+    // Common fields (message IDs 0-10)
+    prefs.putInt("hdgBug", g5State.headingBugAngle);
+    prefs.putInt("appType", g5State.gpsApproachType);
+    prefs.putFloat("cdiOff", g5State.rawCdiOffset);
+    prefs.putInt("cdiVal", g5State.cdiNeedleValid);
+    prefs.putInt("toFrom", g5State.cdiToFrom);
+    prefs.putFloat("gsiNdl", g5State.rawGsiNeedle);
+    prefs.putInt("gsiVal", g5State.gsiNeedleValid);
+    prefs.putInt("gndSpd", g5State.groundSpeed);
+    prefs.putFloat("gndTrk", g5State.groundTrack);  // float (was putInt in HSI — bug fixed)
+    prefs.putFloat("hdgAng", g5State.rawHeadingAngle);
+    prefs.putInt("navSrc", g5State.navSource);
+    prefs.end();
+}
+
+// Reads common g5State fields from NVS after a device-type switch.
+// Subclasses call this first; if it returns true, they open a second session
+// to restore their own device-specific fields.
+bool CC_G5_Base::restoreState()
+{
+    Preferences prefs;
+    prefs.begin("g5state", false);
+
+    bool wasSwitching = prefs.getBool("switching", false);
+    int  version      = prefs.getInt("version", 0);
+
+    // Clear the flag immediately so a crash mid-restore doesn't loop.
+    prefs.putBool("switching", false);
+
+    if (!wasSwitching || version != STATE_VERSION) {
+        prefs.end();
+        return false;
+    }
+
+    // Common fields (message IDs 0-10)
+    g5State.headingBugAngle = prefs.getInt("hdgBug", 0);
+    g5State.gpsApproachType = prefs.getInt("appType", 0);
+    g5State.rawCdiOffset    = prefs.getFloat("cdiOff", 0);
+    g5State.cdiNeedleValid  = prefs.getInt("cdiVal", 1);
+    g5State.cdiToFrom       = prefs.getInt("toFrom", 0);
+    g5State.rawGsiNeedle    = prefs.getFloat("gsiNdl", 0);
+    g5State.gsiNeedleValid  = prefs.getInt("gsiVal", 1);
+    g5State.groundSpeed     = prefs.getInt("gndSpd", 0);
+    g5State.groundTrack     = prefs.getFloat("gndTrk", 0);
+    g5State.rawHeadingAngle = prefs.getFloat("hdgAng", 0);
+    g5State.navSource       = prefs.getInt("navSrc", 1);
+
+    prefs.end();
+    return true;
+}
+
+void CC_G5_Base::sendEncoder(String name, int count, bool increase)
+{
+    for (int i = 0; i < count; i++) {
+        cmdMessenger.sendCmdStart(kEncoderChange);
+        cmdMessenger.sendCmdArg(name);
+        cmdMessenger.sendCmdArg(increase ? 0 : 2);
+        cmdMessenger.sendCmdEnd();
+    }
+}
+
+void CC_G5_Base::sendButton(String name, int pushType)
+{
+    cmdMessenger.sendCmdStart(kButtonChange);
+    cmdMessenger.sendCmdArg(name);
+    cmdMessenger.sendCmdArg(pushType);
+    cmdMessenger.sendCmdEnd();
+}
+
+// CC_G5_Base::setCommon() handles the message IDs shared by all device types (HSI, PFD, ISIS).
+void CC_G5_Base::setCommon(int16_t messageID, char *setPoint)
+{
+    // Wake the display when data arrives, but only if MF is managing power.
+    // (PowerControl::ALWAYS_ON is handled inside powerStateSet itself.)
+    if (messageID > 0 && g5Settings.powerControl == PowerControl::DEVICE_MANAGED)
+        powerStateSet(PowerState::POWER_ON);
+
+    switch (messageID) {
+
+    case -2: // PowerSavingMode: 1 = enter power saving, 0 = wake up
+        if (atoi(setPoint) == 1)
+            powerStateSet(PowerState::SHUTTING_DOWN);
+        else
+            powerStateSet(PowerState::POWER_ON);
+        break;
+
+    case -1: // Stop message from MF — device execution stops
+        powerStateSet(PowerState::SHUTTING_DOWN);
+        break;
+
+    case 0: // AP Heading Bug
+        g5State.headingBugAngle = atoi(setPoint);
+        break;
+    case 1: // Approach Type
+        g5State.gpsApproachType = atoi(setPoint);
+        break;
+    case 2: // CDI Lateral Deviation
+        g5State.rawCdiOffset = atof(setPoint);
+        break;
+    case 3: // CDI Needle Valid
+        g5State.cdiNeedleValid = atoi(setPoint);
+        break;
+    case 4: // CDI To/From Flag
+        g5State.cdiToFrom = atoi(setPoint);
+        break;
+    case 5: // Glide Slope Deviation
+        g5State.rawGsiNeedle = atof(setPoint);
+        break;
+    case 6: // Glide Slope Needle Valid
+        g5State.gsiNeedleValid = atoi(setPoint);
+        break;
+    case 7: // Ground Speed
+        g5State.groundSpeed = atoi(setPoint);
+        break;
+    case 8: // Ground Track (Magnetic)
+        g5State.groundTrack = atof(setPoint);
+        break;
+    case 9: // Heading (Magnetic)
+        g5State.rawHeadingAngle = atof(setPoint);
+        break;
+    case 10: // Nav Source (1=GPS, 0=NAV)
+        // Note: HSI also calls setNavSource() from updateCommon() to swap its sprite buffers.
+        g5State.navSource = atoi(setPoint);
+        break;
+    case 11: { // Device type switch — value is the target device type (0=HSI, 1=PFD, 2=ISIS)
+        uint8_t targetType = (uint8_t)atoi(setPoint);
+        if (targetType != g5Settings.deviceType) {
+            saveState();                         // virtual: saves common + device-specific fields
+            g5Settings.deviceType = targetType;
+            saveSettings();
+            lcd.fillScreen(TFT_BLACK);           // reduce flashing before restart
+            ESP.restart();
+        }
+        break;
+    }
+    case 12: // Brightness (0-255)
+        g5State.lcdBrightness = max(0, min(atoi(setPoint), 255));
+        lcd.setBrightness(g5State.lcdBrightness);
+        break;
+    case 13: // Power State: 0=off, 1=on
+        switch (atoi(setPoint)) {
+        case 0:
+            powerStateSet(PowerState::SHUTTING_DOWN);
+            break;
+        case 1:
+            powerStateSet(PowerState::POWER_ON);
+            break;
+        }
+        break;
+    case 14: // Power Control mode: 0=Manual, 1=DeviceManaged, 2=AlwaysOn
+        switch (atoi(setPoint)) {
+        case 0:
+            g5Settings.powerControl = PowerControl::MANUAL;
+            break;
+        case 1:
+            g5Settings.powerControl = PowerControl::DEVICE_MANAGED;
+            break;
+        case 2:
+            g5Settings.powerControl = PowerControl::ALWAYS_ON;
+            break;
+        }
+        saveSettings();
+        break;
+    }
 }
