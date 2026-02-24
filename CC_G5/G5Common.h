@@ -25,7 +25,7 @@
 #define PIf                  3.14159f
 
 #define CC_G5_SETTINGS_OFFSET 2048 // Well past MF config end (59 + 1496 = 1555)
-#define SETTINGS_VERSION      5
+#define SETTINGS_VERSION      6
 #define STATE_VERSION         1 // For the save state when switching between pfd and hsi
 
 #define TFT_MAIN_TRANSPARENT TFT_PINK // Just pick a color not used in either display
@@ -94,19 +94,21 @@ struct G5State {
 
     // Speeds
     float rawAirspeed  = 0.0f;
-    float airspeed     = 262.0f;
+    float airspeed     = 0.0f;
     float trueAirspeed = 0.0f;
     int   groundSpeed  = 0;
+    float machSpeed     = 0.0f;
 
     // Altitude
-    int   rawAltitude      = 0;
-    int   altitude         = 5245;
+    float rawAltitude      = 0.0f;
+    float altitude         = 100.0f;
     int   rawVerticalSpeed = 0;
     int   verticalSpeed    = 0;
     int   targetAltitude   = 0;
     int   densityAltitude  = 1200;
     float kohlsman         = 29.92f;
     int   mbPressure       = 1013;
+    int   isStdPressure       = 0;  // 1: Is std pressure set.
 
     // Navigation source and mode
     int  navSource          = 1; // 1=GPS, 0=NAV

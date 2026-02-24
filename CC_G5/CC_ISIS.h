@@ -20,11 +20,13 @@ private:
     bool _initialized;
 
     void setupSprites();
+    void updateInputValues();
     void drawBackground();
     void drawPressure();
     void drawSpeedTape();
     void drawAltTape();
     void drawAttitude();
+    void drawMach();
     void drawLS();
 
     void draw();

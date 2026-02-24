@@ -84,5 +84,12 @@
        id="path2"
        style="fill:none;fill-opacity:1;stroke:#ffd42a;stroke-width:0.79375;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:8;stroke-dasharray:none;stroke-opacity:1"
        d="m 99.61563,154.64897 h 6.88192 v 2.64584 h 14.91417" />
+    <rect
+       style="fill:#000000;stroke-width:0.79375;stroke-linecap:square;stroke-miterlimit:8;stroke-dasharray:none"
+       id="rect2"
+       width="7.6199951"
+       height="10.277359"
+       x="99.245216"
+       y="143.94827" />
   </g>
 </svg>

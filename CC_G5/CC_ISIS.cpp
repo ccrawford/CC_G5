@@ -4,6 +4,9 @@
 #include "Sprites/attBackground.h"
 #include "Sprites/blackoutArc.h"
 #include "Sprites/altBg.h"
+#include "Sprites/rollArc.h"
+#include "Sprites/rollPointer.h"
+#include "Sprites/rollSlip.h"
 
 #include <cmath>
 
@@ -18,19 +21,20 @@
 #define ATT_WIDTH     320
 #define ATT_HEIGHT    350
 
-LGFX_Sprite attSprite(&lcd);
-// LGFX_Sprite bgSprite(&lcd);       // Used for the static elements of the attitude display. Is this necessary? Probably.
+LGFX_Sprite attSprite(&lcd);   // Main attitude display
+
+LGFX_Sprite slipSprite(&attSprite);  // Roll pointer and slip skid indicator
+
 LGFX_Sprite ladderValSprite(&attSprite); // Used to hold the scale numbers on the pitch ladder
-LGFX_Sprite blackoutArcSprite(&attSprite);
+LGFX_Sprite blackoutArcSprite(&attSprite);  // Arc to punch-out the top and bottom of the attSprite
 LGFX_Sprite speedSprite(&lcd); // Holds the speed tape
 
 LGFX_Sprite altSprite(&lcd);         // Holds the alt tape
-LGFX_Sprite altBgSprite(&altSprite); // Holds the alt tape
-LGFX_Sprite alt100Sprite(&altSprite);
-
-LGFX_Sprite flSprite(&attSprite);
+LGFX_Sprite alt100Sprite(&altSprite);   
 
 LGFX_Sprite kohlsSprite(&lcd);
+
+
 
 CC_ISIS::CC_ISIS()
 {
@@ -44,6 +48,16 @@ void CC_ISIS::setupSprites()
 
     attSprite.setColorDepth(8);
     attSprite.createSprite(320, 350);
+    attSprite.loadFont(A320ISIS24);
+    attSprite.setTextColor(TFT_WHITE);
+    attSprite.setTextSize(1.0f);
+    attSprite.setTextDatum(CC_DATUM);
+
+    slipSprite.setColorDepth(8);
+    slipSprite.createSprite(ROLLSLIP_IMG_WIDTH*2+ROLLPOINTER_IMG_WIDTH, ROLLSLIP_IMG_HEIGHT + ROLLPOINTER_IMG_HEIGHT);
+    slipSprite.fillSprite(TFT_MAGENTA);
+    slipSprite.pushImage(slipSprite.width()/2 - ROLLPOINTER_IMG_WIDTH/2, 0, ROLLPOINTER_IMG_WIDTH, ROLLPOINTER_IMG_HEIGHT, ROLLPOINTER_IMG_DATA, 8184);
+    slipSprite.setPivot(ROLLSLIP_IMG_WIDTH, 159);  // 159 from ref image. dist from tip to center.
 
     ladderValSprite.setColorDepth(8);
     ladderValSprite.createSprite(45, 28); // Hold two digits. Digits are 24 high
@@ -72,17 +86,6 @@ void CC_ISIS::setupSprites()
     altSprite.setTextColor(TFT_LIGHTGRAY, TFT_BLACK);
     altSprite.setTextDatum(CL_DATUM);
 
-    altBgSprite.setColorDepth(8);
-    altBgSprite.createSprite(ALTBG_IMG_WIDTH + 2, ALTBG_IMG_HEIGHT); // make it a little wider to fix any rotation integer math
-    altBgSprite.fillSprite(TFT_BLACK);
-    altBgSprite.pushImage(0, 0, ALTBG_IMG_WIDTH, ALTBG_IMG_HEIGHT, ALTBG_IMG_DATA);
-    altBgSprite.setPivot(ALTBG_IMG_WIDTH / 2, ALTBG_IMG_HEIGHT / 2);
-
-    flSprite.setColorDepth(8);
-    flSprite.createSprite(60, 33);
-    flSprite.loadFont(A320ISIS24);
-    flSprite.setTextColor(TFT_GREEN, TFT_BLACK);
-    flSprite.setTextDatum(CR_DATUM);
 
     alt100Sprite.setColorDepth(8);
     alt100Sprite.createSprite(ALTBG_IMG_WIDTH, ALTBG_IMG_HEIGHT);
@@ -139,19 +142,29 @@ void CC_ISIS::set(int16_t messageID, char *setPoint)
     // ISIS-specific messages (IDs >= MSG_ISIS_MIN) go here when implemented.
     switch (messageID) {
     case 80: // Pitch
-        g5State.pitchAngle = atof(setPoint);
+        g5State.rawPitchAngle = atof(setPoint);
         break;
     case 72: // Bank
-        g5State.bankAngle = atof(setPoint);
+        g5State.rawBankAngle = atof(setPoint);
         break;
     case 60: // Airspeed
-        g5State.airspeed = atof(setPoint);
+        g5State.rawAirspeed = atof(setPoint);
+        break;
+    case 71: // Ball slip/skid
+        g5State.ballPos = atof(setPoint);
         break;
     case 77: // Indicated Altitude
-        g5State.altitude = atof(setPoint);
+        g5State.rawAltitude = atof(setPoint);
         break;
     case 100: // Pressure in mb
         g5State.mbPressure = atoi(setPoint);
+        break;
+    case 101: // are we in std pressure mode
+        g5State.isStdPressure = atoi(setPoint);
+        break;
+    case 102:  // Mach number
+        g5State.machSpeed = atof(setPoint);
+        break;
     }
 }
 
@@ -159,7 +172,7 @@ void CC_ISIS::drawAttitude()
 {
 
     const int16_t CENTER_X = attSprite.width() / 2;
-    const int16_t CENTER_Y = ATT_HORIZON;
+    const int16_t CENTER_Y = ATT_HORIZON-2;
 
     const uint16_t HORIZON_COLOR = 0xFFFF;
     const uint16_t SKY_COLOR     = TFT_BLUE;
@@ -291,14 +304,25 @@ void CC_ISIS::drawAttitude()
 
     uint16_t color = TFT_RED;
     for (const auto &line : pitch_lines) {
-        // Simple culling: only draw lines that are somewhat close to the screen
-        float verticalPos = abs(line.deg - g5State.pitchAngle) * PITCH_SCALE;
+        if (line.deg > g5State.pitchAngle + 15.0f) continue;
+        if (line.deg < g5State.pitchAngle - 17.5f) continue;
+        float degFromCenter = fabsf(line.deg - g5State.pitchAngle);
+
+        float verticalPos = degFromCenter * PITCH_SCALE;
         color             = TFT_WHITE;
         if (verticalPos > 0 && verticalPos < attSprite.height()) {
-            //        Serial.printf("Line: d: %f, vPos: %d, col: %d\n", line.deg, verticalPos, color);
             drawPitchLine(line.deg, line.width, line.num, color);
         }
     }
+
+    // -- Draw slip/skid and poitner. 
+    slipSprite.fillSprite(TFT_MAGENTA);
+    slipSprite.pushImage(slipSprite.width()/2 - ROLLPOINTER_IMG_WIDTH/2, 0, ROLLPOINTER_IMG_WIDTH, ROLLPOINTER_IMG_HEIGHT, ROLLPOINTER_IMG_DATA, 8184);
+    slipSprite.pushImage(min((int)(slipSprite.width() - ROLLSLIP_IMG_WIDTH),  max(0, (int)(slipSprite.width()/2 - ROLLSLIP_IMG_WIDTH/2 + (0.7 * g5State.ballPos)*ROLLSLIP_IMG_WIDTH))), ROLLPOINTER_IMG_HEIGHT, ROLLSLIP_IMG_WIDTH, ROLLSLIP_IMG_HEIGHT, ROLLSLIP_IMG_DATA, 8184);
+    attSprite.setPivot(attSprite.width()/2 - 12, ATT_HORIZON);
+    slipSprite.pushRotated(g5State.bankAngle, TFT_MAGENTA);
+
+
 
     // --- 3. Draw Horizon Line ---
     // The horizon is just a pitch line at 0 degrees.
@@ -373,95 +397,135 @@ void CC_ISIS::drawAltTape()
     //
     // Hash marks every 100' on the tape. Labels every 500' Values as three digits with leading 0s
 
-    float curAlt = g5State.altitude;
-    int   fl     = (int)(curAlt / 100);   // hundreds and above (e.g. 1234ft → fl=12)
+    bool  isNeg  = (g5State.altitude < 0.0f);
+    float curAlt = fabsf(g5State.altitude); // always non-negative; display NEG indicator for sub-sea-level
+    int   fl     = (int)(curAlt / 100);     // hundreds and above (e.g. 1234ft → fl=12)
 
     char buf[8];
 
     // Clear Sprites
     altSprite.fillSprite(TFT_BLACK);
+    alt100Sprite.fillSprite(TFT_BLACK);
     alt100Sprite.pushImage(0, 0, ALTBG_IMG_WIDTH, ALTBG_IMG_HEIGHT, ALTBG_IMG_DATA, 8184); // MagentaRGB
-    flSprite.fillSprite(TFT_BLACK);
 
     // Compute the scroll state once; everything below uses these values.
     // dispUnit: the current 20-ft band label (changes only at band boundaries).
     // sub20:    position within that band (0..20, continuous — never jumps).
-    int   dispUnit      = (int)(curAlt / 20) * 20;
-    float sub20         = fmodf(curAlt, 20.0f);
+    int   dispUnit = (int)(curAlt / 20) * 20;
+    float sub20    = fmodf(curAlt, 20.0f);
 
     // nearRoll: true during the last 20-ft band of each 100-ft block (the 80-99 range).
     // rollFraction: 0.0→1.0 progress through that roll-over window.
-    bool  nearRoll      = (dispUnit % 100 >= 80);
-    float rollFraction  = nearRoll ? (sub20 / 20.0f) : 0.0f;
+    bool  nearRoll     = (dispUnit % 100 >= 80);
+    float rollFraction = nearRoll ? (sub20 / 20.0f) : 0.0f;
 
-    // --- Thousands-and-above digits (flSprite) ---
-    // Rolls only when the hundreds digit is also about to turn over (fl%10 == 9).
+    // --- Thousands-and-above digits (drawn directly on attSprite with clip rect) ---
+    // Mirrors old flSprite: clip area (260, 178, 60, 33) in attSprite coords.
+    // Each digit column animates independently — ten-thousands only rolls when
+    // thousands is 9→0, fixing the "1 scrolls unnecessarily" bug.
+    // offset spans the full clip height so digits fully exit before rollFraction=1.
     {
-        bool      nearRollK = nearRoll && ((fl % 10) == 9);
-        const int centY     = flSprite.height() / 2;          // 16
-        int       offset    = nearRollK ? (int)(rollFraction * centY) : 0;
-        flSprite.setTextSize(1.2f);
-        if (nearRollK) {
-            // Next thousands value rises from below
-            flSprite.drawNumber(fl / 10 + 1, flSprite.width() - 2, centY - offset + centY);
+        const int clipX = attSprite.width() - 60; // 260
+        const int clipY = ATT_HORIZON - 20;       // 178
+        const int clipW = 60;
+        const int clipH = 37;
+        const int centY = clipY + clipH / 2 + 2; // 194 = ATT_HORIZON
+
+        bool nearRollK  = nearRoll && ((fl % 10) == 9);
+        bool nearRollTK = nearRollK && ((fl / 10) % 10 == 9);
+
+        int offsetK  = nearRollK ? (int)(rollFraction * clipH) : 0 + 2;
+        int offsetTK = nearRollTK ? (int)(rollFraction * clipH) : 0 + 2;
+
+        attSprite.fillRect(clipX, clipY, clipW, clipH, TFT_BLACK);
+        attSprite.setClipRect(clipX, clipY, clipW, clipH);
+        attSprite.setTextSize(1.2f);
+        attSprite.setTextColor(TFT_GREEN);
+        attSprite.setTextDatum(CR_DATUM);
+
+        // Ten-thousands digit (left column, ~x=300). Only shown at >= 10,000 ft.
+        if (nearRollTK) {
+            attSprite.drawNumber(fl / 100 + 1, clipX + 28, centY + offsetTK - clipH);
         }
-        flSprite.drawNumber(fl / 10, flSprite.width() - 2, centY - offset);
+        if (fl / 100 > 0) {
+            attSprite.drawNumber(fl / 100, clipX + 28, centY + offsetTK);
+        }
+
+        // Thousands digit (right column, x=318). Only shown at >= 1,000 ft.
+        if (nearRollK) {
+            attSprite.drawNumber(((fl / 10) % 10 + 1) % 10, clipX + clipW - 2, centY + offsetK - clipH);
+        }
+        if (fl / 10 > 0) {
+            attSprite.drawNumber((fl / 10) % 10, clipX + clipW - 2, centY + offsetK);
+        }
+
+        attSprite.clearClipRect();
+        attSprite.setTextSize(1.0f);
+        attSprite.setTextColor(TFT_WHITE);
+        attSprite.setTextDatum(CC_DATUM);
     }
 
     // --- Hundreds digit (alt100Sprite, left column at x=24) ---
     // Rolls during the last 20-ft band of each 100-ft block.
+    // As altitude increases: current digit descends (exits bottom), next enters from top.
     {
-        const int centY   = alt100Sprite.height() / 2 + 2;    // 34
-        int       offset  = (int)(rollFraction * centY);
+        const int centY  = alt100Sprite.height() / 2 + 3; // 34
+        int       offset = (int)(rollFraction * centY);
         alt100Sprite.setTextSize(1.2f);
+        alt100Sprite.setClipRect(0, 13, ALTBG_IMG_WIDTH, 38);
         if (nearRoll) {
-            // Next hundreds digit rises from below
-            alt100Sprite.drawNumber((fl % 10 + 1) % 10, 24, centY - offset + centY);
+            // Next hundreds digit descends from above
+            alt100Sprite.drawNumber((fl % 10 + 1) % 10, 24, offset);
         }
-        alt100Sprite.drawNumber(fl % 10, 24, centY - offset);
+        alt100Sprite.drawNumber(fl % 10, 24, centY + offset);
+        alt100Sprite.clearClipRect();
     }
 
     // --- 20-ft scroll (alt100Sprite, right column at x=70) ---
-    // curY: Y centre of the current label; starts at sprite centre (32) and ascends
-    // (decreases) as altitude increases, so higher values enter from below.
-    const float pxPerFt = 60.0f / 20.0f;                      // 3 px per foot
-    int curY = (int)(32 - sub20 * pxPerFt);                   // 32..-25 as sub20 goes 0→19
+    // curY: Y centre of the current label; starts at sprite centre (32) and descends
+    // (increases) as altitude increases, so higher values enter from above.
+    const float pxPerFt = 50.0f / 20.0f;               // 3 px per foot
+    int         curY    = (int)(34 + sub20 * pxPerFt); // 32..92 as sub20 goes 0→19
 
     alt100Sprite.setTextSize(1.0f);
-    sprintf(buf, "%02d", dispUnit % 100);                      // current label, ascends off top
+    sprintf(buf, "%02d", dispUnit % 100); // current label, descends off bottom
     alt100Sprite.drawString(buf, 70, curY);
-    sprintf(buf, "%02d", (dispUnit + 20) % 100);               // next-higher, enters from below
-    alt100Sprite.drawString(buf, 70, curY + 60);
+    sprintf(buf, "%02d", (dispUnit + 20) % 100); // next-higher, enters from above
+    alt100Sprite.drawString(buf, 70, curY - (pxPerFt * 20.0f));
 
-    flSprite.pushSprite(attSprite.width() - flSprite.width(), ATT_HORIZON - flSprite.height() / 2);
-
-    // Draw the tape
-
-    const float pixPerFt = 0.245f;
-    const int   yOffset  = (int)(pixPerFt * fmodf(curAlt, 20.0f)) - 35;
-    const int   first500 = (int)(curAlt / 500.0f) * 500;
-
-    const int markerWidth = 15;
-    altSprite.setTextDatum(CL_DATUM);
-
-    curY = yOffset;
-
-    //  Serial.printf("curY:%d yOffset: %d first500:%d\n", curY, yOffset, first500);
-
-    for (int i = first500 + 1000; i > first500 - 1000; i -= 100) {
-
-        altSprite.drawWideLine(2, curY, 2 + markerWidth, curY, 1, TFT_WHITE);
-        if (i % 500 == 0) {
-            sprintf(buf, "%03d", i / 100);
-            altSprite.drawString(buf, 10, curY);
-        }
-
-        curY += (int)(pixPerFt * 100);
+    // Show the NEG indicator on the screen if altitude < 0
+    if (isNeg) {
+        attSprite.drawString("N", 269, 208 - 56);
+        attSprite.drawString("G", 269, 292 - 56);
+        // "E" sits where the old flSprite was: CR_DATUM at (278, ATT_HORIZON)
+        attSprite.setTextDatum(CR_DATUM);
+        attSprite.drawString("E", 278, ATT_HORIZON);
+        attSprite.setTextDatum(CC_DATUM);
     }
 
-    //    Serial.printf("curY:%d yOffset: %d first500:%d\n", curY, yOffset, first500);
+    // Draw the tape.
+    // Each tick's y is computed directly from its altitude relative to curAlt,
+    // so scrolling is pixel-smooth with no fmodf rollover artifacts.
+    //   y = referenceY + (curAlt - tickAlt) * pixPerFt
+    // Higher altitudes (tickAlt > curAlt) produce smaller y (higher on screen). ✓
+    const float pixPerFt    = 0.245f;
+    const float referenceY  = 179.0f; // y in altSprite where the current-alt tick sits. Found with trial and error
+    const int   markerWidth = 15;
+    altSprite.setTextDatum(CL_DATUM);
 
-    alt100Sprite.pushSprite(0, ATT_HORIZON - alt100Sprite.height() / 2 - 3);
+    int baseTick = (int)floorf(curAlt / 100.0f) * 100; // nearest 100-ft band below curAlt
+    for (int alt = baseTick + 900; alt >= baseTick - 900; alt -= 100) {
+        curY = (int)(referenceY + (curAlt - alt) * pixPerFt);
+        if (curY < 0 || curY >= altSprite.height()) continue;
+
+        altSprite.drawWideLine(2, curY, 2 + markerWidth, curY, 1, TFT_WHITE);
+        if (alt % 500 == 0) {
+            sprintf(buf, "%03d", abs(alt) / 100); // absolute value — NEG indicator handles sign
+            altSprite.drawString(buf, 10, curY + 2);
+        }
+    }
+
+    alt100Sprite.pushSprite(0, ATT_HORIZON - alt100Sprite.height() / 2 - 1);
     altSprite.pushSprite(ALT_LEFT_EDGE - 2, ATT_TOP_EDGE);
 
     return;
@@ -472,7 +536,8 @@ void CC_ISIS::drawBackground()
     // Draw the yellow background markers.
     // bgSprite.pushSprite(0, ATT_TOP_EDGE + ATT_HORIZON + 33, TFT_MAGENTA);  // 33 is tip of pointer from top of bgSprite
 
-    attSprite.pushImage(0, ATT_HORIZON - 25, ATTBACKGROUND_IMG_WIDTH, ATTBACKGROUND_IMG_HEIGHT, ATTBACKGROUND_IMG_DATA, 8184);
+    attSprite.pushImage(2, ATT_HORIZON - 23, ATTBACKGROUND_IMG_WIDTH, ATTBACKGROUND_IMG_HEIGHT, ATTBACKGROUND_IMG_DATA, 8184);
+    attSprite.pushImage(6, 4, ROLLARC_IMG_WIDTH, ROLLARC_IMG_HEIGHT, ROLLARC_IMG_DATA, 8184);
 
     // Draw the curves top and bottom of the gauge.
     blackoutArcSprite.pushSprite(0, 0, TFT_MAGENTA);
@@ -483,38 +548,80 @@ void CC_ISIS::drawBackground()
 void CC_ISIS::drawPressure()
 {
     kohlsSprite.fillSprite(TFT_BLACK);
-    kohlsSprite.drawNumber(g5State.mbPressure, 1, 1);
+    kohlsSprite.setTextColor(TFT_BLUE);
+    if (g5State.isStdPressure) {
+        kohlsSprite.setTextSize(1.2);
+        kohlsSprite.drawString("STD", 1, 1);
+    } else {
+        kohlsSprite.setTextSize(1.0);
+        kohlsSprite.drawNumber(g5State.mbPressure, 1, 1);
+    }
     kohlsSprite.pushSprite(140, 420);
 }
 
+void CC_ISIS::drawMach() {
+    if(g5State.machSpeed < 0.45) return;
+
+    char buf[5];
+
+    kohlsSprite.fillSprite(TFT_BLACK);
+    kohlsSprite.setTextColor(TFT_GREEN);
+    kohlsSprite.setTextSize(1.0);
+    sprintf(buf, "%.2f", g5State.machSpeed);
+    char *s = buf;
+    // 2. Remove leading 0 if present (handles 0.49 -> .49)
+    if (s[0] == '0' && s[1] == '.') {
+        s++;
+    }
+    kohlsSprite.drawString(s, 1, 1);
+    kohlsSprite.pushSprite(20, 420); 
+}
 void CC_ISIS::draw()
 {
     drawAttitude();
     drawBackground();
     drawSpeedTape();
-    drawAltTape();
+    drawAltTape(); // NOTE: Alt tape writes on the attSprite.
     attSprite.pushSprite(ATT_LEFT_EDGE, ATT_TOP_EDGE);
     drawPressure();
+    drawMach();
+}
+
+void CC_ISIS::updateInputValues()
+{
+    // Smooth raw input values toward current display values each frame,
+    // giving fluid motion instead of stepping directly to the new value.
+    // Alpha controls smoothing speed (higher = faster); threshold snaps to
+    // the target once the gap is small enough to avoid endless micro-steps.
+    g5State.pitchAngle = smoothInput(g5State.rawPitchAngle, g5State.pitchAngle, 0.3f, 0.05f);
+    g5State.bankAngle  = smoothAngle(g5State.rawBankAngle, g5State.bankAngle, 0.3f, 0.05f);
+    g5State.airspeed   = smoothInput(g5State.rawAirspeed, g5State.airspeed, 0.1f, 0.005f);
+    g5State.altitude   = smoothInput(g5State.rawAltitude, g5State.altitude, 0.1f, 0.05f);
 }
 
 void CC_ISIS::update()
 {
-    static unsigned long lastDelta = 0;
+    // static unsigned long lastDelta = 0;
+
+    updateInputValues();
     draw();
+
+    /*
     char buf[80];
-    sprintf(buf, "p:%.1f b:%.1f a:%.1f a:%d", g5State.pitchAngle, g5State.bankAngle, g5State.airspeed, g5State.altitude);
+    lcd.fillRect(20, 0, 480, 25);
+    sprintf(buf, "p:%.1f b:%.1f a:%.1f a:%.0f", g5State.pitchAngle, g5State.bankAngle, g5State.airspeed, g5State.altitude);
     lcd.setTextSize(2.0f);
-    lcd.fillRect(0, 0, 480, 25);
     lcd.drawString(buf, 20, 20);
     if (millis() > lastDelta + 500) {
-        g5State.bankAngle += 0.5;
-        if (g5State.bankAngle > 30) g5State.bankAngle = -30.0f;
+        g5State.rawBankAngle += 0.5;
+        if (g5State.rawBankAngle > 30) g5State.rawBankAngle = -30.0f;
         lastDelta = millis();
 
-        g5State.airspeed += 1.0f;
-        if (g5State.airspeed > 500.0f) g5State.airspeed = 0.0f;
+        g5State.rawAirspeed += 1.0f;
+        if (g5State.rawAirspeed > 500.0f) g5State.rawAirspeed = 0.0f;
 
-        g5State.altitude += 10;
-        if (g5State.altitude > 15000) g5State.altitude = 0;
+        //        g5State.rawAltitude += 10.0f;
+        if (g5State.rawAltitude > 15000.0f) g5State.rawAltitude = 0.0f;
     }
+        */
 }

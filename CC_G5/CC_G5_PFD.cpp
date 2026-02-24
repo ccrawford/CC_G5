@@ -1271,11 +1271,11 @@ void CC_G5_PFD::drawAltTape()
     // int roundUpToNext20(int n) { return ( (n + 19) / 20 ) * 20; }
 
     // int dispUnit = (intDigits[2] + (intDigits[2] % 2)) * 10; // make an even number.
-    int dispUnit = (g5State.altitude / 20) * 20; // round to 20
+    int dispUnit = ((int)g5State.altitude / 20) * 20; // round down to 20-ft band
 
     //    yBaseline = yBaseline - ((intDigits[2] % 2) * digitHeight / 2);
     // each digit height is 20'... so each foot it 36/20 = 1.8f. Offset by 1/2 the height: 54
-    int  yBaseline = (int)(54 + ((g5State.altitude % 20) * 1.8f));
+    int  yBaseline = (int)(54 + (fmodf(g5State.altitude, 20.0f) * 1.8f));
     char buf[8];
     sprintf(buf, "%02d", abs((dispUnit + 20) % 100));
     // sprintf(buf, "%02d", floorMod(dispUnit + 20, 100));
@@ -1300,7 +1300,7 @@ void CC_G5_PFD::drawAltTape()
     if (g5State.altitude >= 80 || g5State.altitude < -90) { // Don't draw a leading 0
                                                             //  if ((g5State.altitude>0 && intDigits[2] >= 8) || (g5State.altitude<0 && intDigits[2] <= 1)) {
         if (abs(intDigits[2]) >= 8) {
-            yOffset = yOffset - (20 - (g5State.altitude % 20)) * (1.8f); // 1.8f is height/2
+            yOffset = yOffset - (int)((20.0f - fmodf(g5State.altitude, 20.0f)) * 1.8f); // 1.8f is height/2
             altTens.drawNumber(intDigits[3] + 1, xOffset, yOffset);
             if (g5State.altitude > 100) altTens.drawNumber(intDigits[3], xOffset, yOffset + digitHeight);
             altTens.drawNumber(intDigits[3] - 1, xOffset, yOffset + digitHeight * 2);
@@ -1343,7 +1343,7 @@ void CC_G5_PFD::drawAltTape()
 
     // Draw the background tape
     for (int i = -1; i < 4; i++) {
-        int curVal = ((g5State.altitude / 100) + 2 - i) * 100; // Value to be displayed (100's)
+        int curVal = ((int)g5State.altitude / 100 + 2 - i) * 100; // Value to be displayed (100's)
 
         int tapeSpacing = digitHeight * (i) + ((intDigits[2] * 10 + intDigits[1]) * (digitHeight)) / 100;
 
@@ -1361,7 +1361,7 @@ void CC_G5_PFD::drawAltTape()
 
     // Draw the bug over the tape.
     // If the target g5State.altitude is off the scale, draw it at the boundary.
-    int bugPos = altToY(g5State.targetAltitude, g5State.altitude) - 5;
+    int bugPos = altToY(g5State.targetAltitude, (int)g5State.altitude) - 5;
     // but that's in terms of the attitude sprite,
     // Serial.printf("target: %d, alt: %d, bugpos: %d\n", g5State.targetAltitude, g5State.altitude, bugPos);
     int offset = 61;
@@ -1372,7 +1372,7 @@ void CC_G5_PFD::drawAltTape()
     attitude.setPivot(xRight - 23, bugPos);
     if (g5State.targetAltitude != 0) altBug.pushRotated(90, TFT_WHITE);
     attitude.setTextColor(TFT_CYAN);
-    attitude.drawNumber(g5State.targetAltitude, xRight, altToY(g5State.targetAltitude, g5State.altitude) - 49);
+    attitude.drawNumber(g5State.targetAltitude, xRight, altToY(g5State.targetAltitude, (int)g5State.altitude) - 49);
 
     // Draw the vertical speed scale
     yTop = 200;
@@ -1459,7 +1459,7 @@ void CC_G5_PFD::drawAltTarget()
         lastTargetAlt  = g5State.targetAltitude;
     }
 
-    int altDiff = abs(g5State.altitude - g5State.targetAltitude);
+    int altDiff = (int)fabsf(g5State.altitude - (float)g5State.targetAltitude);
 
     // State machine transitions
     AltAlertState previousState = altAlertState;
@@ -2090,7 +2090,7 @@ void CC_G5_PFD::updateInputValues()
     // This gives the cool, smooth value transitions rather than fake looking ones.
 
     g5State.headingAngle = smoothDirection(g5State.rawHeadingAngle, g5State.headingAngle, 0.15f, 0.02f);
-    g5State.altitude     = smoothInput(g5State.rawAltitude, g5State.altitude, 0.1f, 1);
+    g5State.altitude     = smoothInput(g5State.rawAltitude, g5State.altitude, 0.1f, 1.0f);
     g5State.airspeed     = smoothInput(g5State.rawAirspeed, g5State.airspeed, 0.1f, 0.005f);
     g5State.gsiNeedle    = smoothInput(g5State.rawGsiNeedle, g5State.gsiNeedle, 0.15f, 1.0f);
 
@@ -2192,7 +2192,7 @@ void CC_G5_PFD::saveState()
     prefs.putFloat("fdBank", g5State.flightDirectorBank);
     prefs.putFloat("fdPtch", g5State.flightDirectorPitch);
     prefs.putFloat("desTrk", g5State.desiredTrack);
-    prefs.putInt("alt", g5State.rawAltitude);
+    prefs.putFloat("alt", g5State.rawAltitude);
     prefs.putFloat("kohl", g5State.kohlsman);
     prefs.putInt("oat", g5State.oat);
     prefs.putFloat("pitch", g5State.rawPitchAngle);
@@ -2228,7 +2228,7 @@ bool CC_G5_PFD::restoreState()
     g5State.flightDirectorBank   = prefs.getFloat("fdBank", 0);
     g5State.flightDirectorPitch  = prefs.getFloat("fdPtch", 0);
     g5State.desiredTrack         = prefs.getFloat("desTrk", 0);
-    g5State.rawAltitude          = prefs.getInt("alt", 0);
+    g5State.rawAltitude          = prefs.getFloat("alt", 0.0f);
     g5State.kohlsman             = prefs.getFloat("kohl", 29.92);
     g5State.oat                  = prefs.getInt("oat", 15);
     g5State.rawPitchAngle        = prefs.getFloat("pitch", 0);

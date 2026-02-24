@@ -26,9 +26,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="px"
-     inkscape:zoom="4.5757983"
-     inkscape:cx="112.87648"
-     inkscape:cy="26.880556"
+     inkscape:zoom="18.303193"
+     inkscape:cx="258.67071"
+     inkscape:cy="26.662014"
      inkscape:window-width="3840"
      inkscape:window-height="2054"
      inkscape:window-x="2869"
@@ -40,8 +40,8 @@
     <inkscape:grid
        id="grid1"
        units="px"
-       originx="0"
-       originy="0"
+       originx="-0.050544016"
+       originy="-5.9604615e-09"
        spacingx="0.26458333"
        spacingy="0.26458333"
        empcolor="#0099e5"
@@ -60,7 +60,7 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-12.7,-82.020835)">
+     transform="translate(-12.750544,-82.020835)">
     <path
        style="fill:#000000;fill-opacity:1;stroke:#ffd42a;stroke-width:0.79375;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:8;stroke-dasharray:none;stroke-opacity:1"
        d="m 29.501041,85.592708 v 3.968752 h 10.583333 v 2.645834 h 3.96875 V 85.592708 H 29.501041"
@@ -81,5 +81,19 @@
        style="fill:#000000;fill-opacity:1;stroke:#ffd42a;stroke-width:0.79375;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:8;stroke-dasharray:none;stroke-opacity:1"
        d="M 78.845831,85.592708 V 89.56146 H 68.262498 v 2.645834 h -3.96875 v -6.614586 h 14.552083"
        id="path3" />
+    <rect
+       style="fill:#000000;stroke-width:0.79375;stroke-linecap:square;stroke-miterlimit:8;stroke-dasharray:none"
+       id="rect3"
+       width="1.3229166"
+       height="10.318748"
+       x="80.962494"
+       y="82.814583" />
+    <rect
+       style="fill:#000000;stroke-width:0.79375;stroke-linecap:square;stroke-miterlimit:8;stroke-dasharray:none"
+       id="rect4"
+       width="16.739565"
+       height="10.318748"
+       x="80.388222"
+       y="82.814583" />
   </g>
 </svg>
