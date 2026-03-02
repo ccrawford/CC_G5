@@ -8,10 +8,13 @@
 #include "MFEEPROM.h"
 #include "MFCustomDeviceTypes.h"
 #include "commandmessenger.h"
+#include "Fonts/PrimaSans12.h"
+#include "Fonts/PrimaSans16.h"
+#include "Fonts/PrimaSans18.h"
 
 #include "Sprites\battery.h"
 // #include "Images\PrimaSans32.h" // ORIGINAL
-#include "Images\PrimaSansMid32.h" // Medium weight
+// #include "Images\PrimaSansMid32.h" // Medium weight
 
 #define USE_GUITION_SCREEN
 
@@ -25,7 +28,7 @@
 #define PIf                  3.14159f
 
 #define CC_G5_SETTINGS_OFFSET 2048 // Well past MF config end (59 + 1496 = 1555)
-#define SETTINGS_VERSION      6
+#define SETTINGS_VERSION      8
 #define STATE_VERSION         1 // For the save state when switching between pfd and hsi
 
 #define TFT_MAIN_TRANSPARENT TFT_PINK // Just pick a color not used in either display
@@ -40,8 +43,8 @@ enum class PowerControl { MANUAL=0, DEVICE_MANAGED=1, ALWAYS_ON=2 };
 
 struct CC_G5_Settings {
     int      version               = SETTINGS_VERSION;
-    uint8_t  bearingPointer1Source = 0; // 0: Off, 1: GPS, 2: Nav1, 3: Nav2, 4: ADF
-    uint8_t  bearingPointer2Source = 0; // 0: Off, 1: GPS, 2: Nav1, 3: Nav2, 4: ADF
+    uint8_t  bearingPointer1Source = 2; // 0: Off, 1: GPS, 2: Nav1, 3: Nav2, 4: ADF
+    uint8_t  bearingPointer2Source = 3; // 0: Off, 1: GPS, 2: Nav1, 3: Nav2, 4: ADF
     uint16_t Vr                    = 60;
     uint16_t Vx                    = 75;
     uint16_t Vy                    = 91;
@@ -58,7 +61,7 @@ struct CC_G5_Settings {
     uint8_t  speedUnits            = 0; // 0:knot 1:mph 2:kph
     uint8_t  distanceUnits         = 0; // 0: nm, 1: miles, 2:km
     uint8_t  tempUnits             = 0; // 0: F, 1: 
-    uint8_t  deviceType            = CUSTOM_ISIS_DEVICE;
+    uint8_t  deviceType            = CUSTOM_HSI_DEVICE;
     uint8_t  lcdBrightness         = 100;
     uint8_t  targetAltitude        = 0;
     PowerControl  powerControl     = PowerControl::ALWAYS_ON;
@@ -81,7 +84,7 @@ struct G5State {
     float rawHeadingAngle = 0.0f;
     float headingAngle    = 0.0f;
     int   headingBugAngle = 0;
-    float groundTrack     = 0.0f;
+    float groundTrack     = 10.0f;
 
     // Attitude (PFD)
     float rawBankAngle  = 0.0f;
@@ -93,10 +96,10 @@ struct G5State {
     float turnRate      = 0.0f;
 
     // Speeds
-    float rawAirspeed  = 0.0f;
+    float rawAirspeed  = 100.0f;
     float airspeed     = 0.0f;
     float trueAirspeed = 0.0f;
-    int   groundSpeed  = 0;
+    int   groundSpeed  = 90;
     float machSpeed     = 0.0f;
 
     // Altitude
@@ -120,7 +123,7 @@ struct G5State {
     // CDI (Course Deviation Indicator)
     int   cdiDirection   = 0; // HSI needle direction
     int   rawCdiDirection = 0;
-    float rawCdiOffset   = 0.0f;
+    float rawCdiOffset   = 12.0f;
     float cdiOffset      = 0.0f;
     int   cdiNeedleValid = 1;
     int   cdiToFrom      = 0; // 0=off, 1=to, 2=from
@@ -131,8 +134,8 @@ struct G5State {
     int   gsiNeedleValid = 1;
 
     // Desired track / Course to steer (shared between HSI and PFD)
-    float desiredTrack      = 0.0f; // GPS course to steer / DTK (used by both HSI and PFD)
-    int   desiredTrackValid = 0;
+    float desiredTrack      = 130.0f; // GPS course to steer / DTK (used by both HSI and PFD)
+    int   desiredTrackValid = 1;
     float navCourse         = 0.0f; // NAV OBS course
 
     // OBS mode
@@ -145,17 +148,17 @@ struct G5State {
 
     // Bearing pointers (HSI)
     float bearingAngleGPS   = 0.0f;
-    float bearingAngleVLOC1 = 0.0f;
-    float bearingAngleVLOC2 = 0.0f;
+    float bearingAngleVLOC1 = 129.0f;
+    float bearingAngleVLOC2 = 222.0f;
     float bearingAngleADF   = 0.0f;
-    int   vloc1Type         = 0; // LOC:1, VOR:2, DME:3, ADF:4
-    int   vloc2Type         = 0;
+    int   vloc1Type         = 2; // OFF:0, LOC:1, VOR:2, DME:3, ADF:4
+    int   vloc2Type         = 2;
     bool  adfValid          = false;
 
     // Wind (HSI)
-    float rawWindDir   = 0.0f;
+    float rawWindDir   = 180.0f;
     float windDir      = 0.0f;
-    float rawWindSpeed = 0.0f;
+    float rawWindSpeed = 10.0f;
     float windSpeed    = 0.0f;
 
     // Flight director (PFD)

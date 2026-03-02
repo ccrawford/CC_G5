@@ -191,7 +191,7 @@ void drawBattery(LGFX_Sprite *targetSprite, int x, int y)
     if (batterySprite.bufferLength() == 0) {
         batterySprite.setColorDepth(8);
         batterySprite.createSprite(100, 40);
-        batterySprite.loadFont(PrimaSans32);
+        batterySprite.loadFont(PrimaSans12);
         batterySprite.setTextSize(0.5);
         batterySprite.setTextDatum(CL_DATUM);
         batterySprite.setTextColor(TFT_WHITE);

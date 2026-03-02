@@ -1,4 +1,5 @@
 #include "CC_G5_PFD.h"
+#include "G5Common.h"
 #include "esp_log.h"
 
 #include <Wire.h>
@@ -205,7 +206,7 @@ void CC_G5_PFD::begin()
     lcd.fillScreen(TFT_BLACK);
     lcd.setTextColor(TFT_WHITE, TFT_BLACK);
     // lcd.setBrightness(255); // This doesn't work :-( I'm not sure if we can turn off the backlight or control brightness.
-    lcd.loadFont(PrimaSans32);
+    lcd.loadFont(PrimaSans18);
 
     setupSprites();
 
@@ -232,33 +233,29 @@ void CC_G5_PFD::setupSprites()
     attitude.setColorDepth(ATTITUDE_COLOR_BITS);
     attitude.setBuffer(attBuffer, ATTITUDE_WIDTH, ATTITUDE_HEIGHT);
     attitude.fillSprite(TFT_MAIN_TRANSPARENT);
-    attitude.loadFont(PrimaSans32);
+    attitude.loadFont(PrimaSans18);
     attitude.setTextColor(TFT_LIGHTGRAY);
 
     speedUnit.setColorDepth(8);
     speedUnit.createSprite(26, 82);
-    speedUnit.loadFont(PrimaSans32);
-    speedUnit.setTextSize(1.0);
+    speedUnit.loadFont(PrimaSans18);
     speedUnit.setTextColor(TFT_WHITE, TFT_BLACK);
     speedUnit.setTextDatum(CR_DATUM);
 
     speedTens.setColorDepth(8);
     speedTens.createSprite(50, 40);
-    speedTens.loadFont(PrimaSans32);
-    speedTens.setTextSize(1.0);
+    speedTens.loadFont(PrimaSans18);
     speedTens.setTextColor(TFT_WHITE, TFT_BLACK);
     speedTens.setTextDatum(BR_DATUM);
 
     altUnit.setColorDepth(8);
     altUnit.createSprite(40, 80);
-    altUnit.loadFont(PrimaSans32);
-    altUnit.setTextSize(0.8);
+    altUnit.loadFont(PrimaSans16);
     altUnit.setTextColor(TFT_WHITE, TFT_BLACK);
 
     altTens.setColorDepth(8);
     altTens.createSprite(60, 40);
-    altTens.loadFont(PrimaSans32);
-    altTens.setTextSize(0.8);
+    altTens.loadFont(PrimaSans16);
     altTens.setTextColor(TFT_WHITE, TFT_BLACK);
 
     speedPointer.setColorDepth(8);
@@ -266,8 +263,7 @@ void CC_G5_PFD::setupSprites()
     speedPointer.setBitmapColor(TFT_BLACK, TFT_WHITE);
     speedPointer.drawBitmap(0, 0, SPEEDPOINTER_IMG_DATA, SPEEDPOINTER_IMG_WIDTH, SPEEDPOINTER_IMG_HEIGHT, TFT_BLACK);
     speedPointer.setTextColor(TFT_CYAN);
-    speedPointer.loadFont(PrimaSans32);
-    speedPointer.setTextSize(0.5);
+    speedPointer.loadFont(PrimaSans12);
     speedPointer.setTextDatum(CC_DATUM);
 
     horizonMarker.setColorDepth(8);
@@ -285,21 +281,21 @@ void CC_G5_PFD::setupSprites()
     // gsBox.pushImage(0,0, SPEED_COL_WIDTH, GSBOX_IMG_HEIGHT, GSBOX_IMG_DATA);
     // gsBox.setTextColor(TFT_MAGENTA);
     // gsBox.setTextDatum(BR_DATUM);
-    gsBox.loadFont(PrimaSans32);
+    gsBox.loadFont(PrimaSans18);
 
     kohlsBox.setColorDepth(8);
     kohlsBox.createSprite(ALTITUDE_COL_WIDTH, BOTTOM_BAR_HEIGHT);
     // if(kohlsBox.getBuffer() == nullptr) while(1);
     kohlsBox.setTextColor(TFT_CYAN);
     kohlsBox.setTextDatum(CC_DATUM);
-    kohlsBox.loadFont(PrimaSans32);
+    kohlsBox.loadFont(PrimaSans18);
 
     headingBox.setColorDepth(8);
     headingBox.createSprite(HEADINGBOX_IMG_WIDTH, HEADINGBOX_IMG_HEIGHT);
     headingBox.pushImage(0, 0, HEADINGBOX_IMG_WIDTH, HEADINGBOX_IMG_HEIGHT, HEADINGBOX_IMG_DATA);
     headingBox.setTextColor(TFT_CYAN);
     headingBox.setTextDatum(BR_DATUM);
-    headingBox.loadFont(PrimaSans32);
+    headingBox.loadFont(PrimaSans16);
 
     altBug.setColorDepth(8);
     altBug.createSprite(HEADINGBUG_IMG_WIDTH, HEADINGBUG_IMG_HEIGHT);
@@ -315,7 +311,7 @@ void CC_G5_PFD::setupSprites()
     targetAltBox.setColorDepth(8);
     targetAltBox.createSprite(130, TOP_BAR_HEIGHT);
     targetAltBox.setTextColor(TFT_CYAN);
-    targetAltBox.loadFont(PrimaSans32);
+    targetAltBox.loadFont(PrimaSans18);
     targetAltBox.setTextDatum(CR_DATUM);
     targetAltBox.fillSprite(TFT_BLACK);
     targetAltBox.pushImageRotateZoom(14, 4, 0, 0, 90, 0.6, 0.6, HEADINGBUG_IMG_WIDTH, HEADINGBUG_IMG_HEIGHT, HEADINGBUG_IMG_DATA, TFT_WHITE);
@@ -324,15 +320,13 @@ void CC_G5_PFD::setupSprites()
     targetAltBox.setTextSize(0.5);
     targetAltBox.drawString("f", ALTITUDE_COL_WIDTH - 10, 12);
     targetAltBox.drawString("t", ALTITUDE_COL_WIDTH - 10, 26);
-    targetAltBox.setTextSize(0.9);
 
     altScaleNumber.setColorDepth(8);
     altScaleNumber.createSprite(23, 23);
     altScaleNumber.setPivot(8, 7);
     altScaleNumber.setTextColor(TFT_WHITE, TFT_BLACK);
     altScaleNumber.setTextDatum(MC_DATUM);
-    altScaleNumber.loadFont(PrimaSans32);
-    altScaleNumber.setTextSize(0.6);
+    altScaleNumber.loadFont(PrimaSans16);
 
     vsScale.setColorDepth(8);
     vsScale.createSprite(VSSCALE_IMG_WIDTH, VSSCALE_IMG_HEIGHT);
@@ -358,7 +352,7 @@ void CC_G5_PFD::setupSprites()
     headingTape.createSprite(CENTER_COL_WIDTH, 40);
     headingTape.fillSprite(DARK_SKY_COLOR);
     headingTape.setTextDatum(CC_DATUM);
-    headingTape.loadFont(PrimaSans32);
+    headingTape.loadFont(PrimaSans18);
     headingTape.setTextColor(TFT_WHITE);
 
     if (headingTape.getBuffer() == nullptr) {
@@ -374,9 +368,8 @@ void CC_G5_PFD::setupSprites()
     glideDeviationScale.createSprite(GSDEVIATION_IMG_WIDTH, GSDEVIATION_IMG_HEIGHT);
     glideDeviationScale.pushImage(0, 0, GSDEVIATION_IMG_WIDTH, GSDEVIATION_IMG_HEIGHT, GSDEVIATION_IMG_DATA);
     glideDeviationScale.setTextColor(TFT_MAGENTA);
-    glideDeviationScale.setTextSize(0.5);
     glideDeviationScale.setTextDatum(CC_DATUM);
-    glideDeviationScale.loadFont(PrimaSans32);
+    glideDeviationScale.loadFont(PrimaSans12);
 
     deviationScale.setColorDepth(8);
     horizontalDeviationScale.createSprite(HORIZONTALDEVIATIONSCALE_IMG_WIDTH, HORIZONTALDEVIATIONSCALE_IMG_HEIGHT);
@@ -397,19 +390,17 @@ void CC_G5_PFD::setupSprites()
 
     messageIndicator.setColorDepth(1);
     messageIndicator.createSprite(30, 30);
-    messageIndicator.loadFont(PrimaSans32);
+    messageIndicator.loadFont(PrimaSans16);
     messageIndicator.fillRoundRect(0, 0, 30, 30, 4, TFT_WHITE);
     messageIndicator.drawRoundRect(0, 0, 30, 30, 4, TFT_BLACK);
     messageIndicator.drawRoundRect(1, 1, 28, 28, 3, TFT_BLACK);
     messageIndicator.setTextDatum(CC_DATUM);
-    messageIndicator.setTextSize(0.7);
     messageIndicator.setTextColor(TFT_BLACK, TFT_WHITE);
     messageIndicator.drawString("!", 15, 15);
 
     apBox.setColorDepth(8);
     apBox.createSprite(ATTITUDE_WIDTH, min(30, TOP_BAR_HEIGHT));
-    apBox.loadFont(PrimaSans32);
-    apBox.setTextSize(0.8);
+    apBox.loadFont(PrimaSans16);
     apBox.setTextDatum(BC_DATUM);
 
     if (apBox.getBuffer() == nullptr) {

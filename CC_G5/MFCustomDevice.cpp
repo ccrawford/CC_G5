@@ -116,7 +116,6 @@ void MFCustomDevice::attach(uint16_t adrPin, uint16_t adrType, uint16_t adrConfi
         }
 
         _hsiDevice = new (allocateMemory(sizeof(CC_G5_HSI))) CC_G5_HSI();
-  //      Serial.printf("*****Attaching an HSI\n");
         _hsiDevice->attach();
         _hsiDevice->begin();
         _initialized = true;
@@ -139,25 +138,6 @@ void MFCustomDevice::attach(uint16_t adrPin, uint16_t adrType, uint16_t adrConfi
         //       Serial.printf("mydevice2 attached");
         _pfdDevice->begin();
         _initialized = true;
-    } else if (_customType == CUSTOM_ISIS_DEVICE) {
-
-        // Serial.printf("*****Attaching a PFD\n");
-        /* **********************************************************************************
-            Check if the device fits into the device buffer
-        ********************************************************************************** */
-        if (!FitInMemory(sizeof(CC_ISIS))) {
-            // Error Message to Connector
-            cmdMessenger.sendCmd(kStatus, F("Custom Device does not fit in Memory"));
-            return;
-        }
-
-        _isisDevice = new (allocateMemory(sizeof(CC_ISIS))) CC_ISIS();
-        _isisDevice->attach();
-        // if your custom device does not need a separate begin() function, delete the following
-        // or this function could be called from the custom constructor or attach() function
-        //       Serial.printf("mydevice2 attached");
-        _isisDevice->begin();
-        _initialized = true;
     } else {
         cmdMessenger.sendCmd(kStatus, F("Custom Device is not supported by this firmware version"));
     }
@@ -171,12 +151,12 @@ void MFCustomDevice::attach(uint16_t adrPin, uint16_t adrType, uint16_t adrConfi
 void MFCustomDevice::detach()
 {
     _initialized = false;
-    if (_customType == CUSTOM_HSI_DEVICE) {
-        _hsiDevice->detach();
-    } else if (_customType == CUSTOM_PFD_DEVICE) {
-        _pfdDevice->detach();
-    }else if (_customType == CUSTOM_ISIS_DEVICE) {
-        _isisDevice->detach();
+    if (_customType == CUSTOM_HSI_DEVICE && _hsiDevice != nullptr) {
+        _hsiDevice->~CC_G5_HSI(); // destructor calls detach() internally
+        _hsiDevice = nullptr;
+    } else if (_customType == CUSTOM_PFD_DEVICE && _pfdDevice != nullptr) {
+        _pfdDevice->~CC_G5_PFD(); // destructor calls detach() internally
+        _pfdDevice = nullptr;
     }
 }
 
@@ -199,8 +179,6 @@ void MFCustomDevice::update()
         _hsiDevice->update();
     } else if (_customType == CUSTOM_PFD_DEVICE) {
         _pfdDevice->update();
-    } else if (_customType == CUSTOM_ISIS_DEVICE) {
-        _isisDevice->update();
     }
 }
 
@@ -216,29 +194,19 @@ void MFCustomDevice::update()
 void MFCustomDevice::set(int16_t messageID, char *setPoint)
 {
     if (!_initialized) return;
-    
-    _isisDevice->set(messageID, setPoint);
 
-     if (messageID < MSG_HSI_MIN) {
-         // Common messages - route to active device
-         if (_customType == CUSTOM_HSI_DEVICE)
-             _hsiDevice->setCommon(messageID, setPoint);
-         else if (_customType == CUSTOM_PFD_DEVICE)
-             _pfdDevice->setCommon(messageID, setPoint);
-         else if (_customType == CUSTOM_ISIS_DEVICE)
-             _isisDevice->setCommon(messageID, setPoint);
-     }
-     else if (messageID < MSG_PFD_MIN) {
-         // HSI-specific - only process in HSI mode
-         if (_customType == CUSTOM_HSI_DEVICE)
-             _hsiDevice->setHSI(messageID, setPoint);
-     }
-     else if (messageID < MSG_ISIS_MIN) {
-         // PFD-specific - only process in PFD mode
-         if (_customType == CUSTOM_PFD_DEVICE)
-             _pfdDevice->setPFD(messageID, setPoint);
-     }
-     else {
-        _isisDevice->set(messageID, setPoint);
-     }
+    if (messageID < MSG_HSI_MIN) {
+        if (_customType == CUSTOM_HSI_DEVICE)
+            _hsiDevice->setCommon(messageID, setPoint);
+        else if (_customType == CUSTOM_PFD_DEVICE)
+            _pfdDevice->setCommon(messageID, setPoint);
+    }
+    else if (messageID < MSG_PFD_MIN) {
+        if (_customType == CUSTOM_HSI_DEVICE)
+            _hsiDevice->setHSI(messageID, setPoint);
+    }
+    else {
+        if (_customType == CUSTOM_PFD_DEVICE)
+            _pfdDevice->setPFD(messageID, setPoint);
+    }
 }

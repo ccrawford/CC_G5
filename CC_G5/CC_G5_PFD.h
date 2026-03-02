@@ -352,6 +352,7 @@ class CC_G5_PFD : public CC_G5_Base
 
 public:
     CC_G5_PFD();
+    ~CC_G5_PFD() { detach(); }
     void begin();
     void attach();
     void detach();

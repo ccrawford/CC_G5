@@ -1,7 +1,6 @@
 import sys
 from PIL import Image
 import os
-import numpy as np
 import math
 
 def convert_to_1bit(image_path, threshold=128):
@@ -34,7 +33,7 @@ def convert_to_1bit(image_path, threshold=128):
     total_bytes = bytes_per_row * height
     
     # Get the raw pixel data and pack it
-    pixel_data = list(img.getdata())
+    pixel_data = list(img.get_flattened_data())
     packed_data = []
     
     for y in range(height):

@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="22"
-   height="28"
-   viewBox="0 0 5.8208333 7.4083333"
+   width="19"
+   height="20"
+   viewBox="0 0 5.0270833 5.2916666"
    version="1.1"
    id="svg1"
    inkscape:export-filename="windArrow.png"
@@ -28,8 +28,8 @@
      inkscape:document-units="px"
      inkscape:export-bgcolor="#00000000"
      inkscape:zoom="12.942312"
-     inkscape:cx="-24.68647"
-     inkscape:cy="23.797912"
+     inkscape:cx="-26.463587"
+     inkscape:cy="20.01188"
      inkscape:window-width="3840"
      inkscape:window-height="2054"
      inkscape:window-x="2869"
@@ -40,13 +40,13 @@
      id="defs1">
     <marker
        style="overflow:visible"
-       id="Triangle"
+       id="Triangle-9"
        refX="0"
        refY="0"
        orient="auto-start-reverse"
        inkscape:stockid="Triangle arrow"
-       markerWidth="0.5"
-       markerHeight="0.60000002"
+       markerWidth="0.30000001"
+       markerHeight="0.5"
        viewBox="0 0 1 1"
        inkscape:isstock="true"
        inkscape:collect="always"
@@ -56,18 +56,18 @@
          transform="scale(0.5)"
          style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
          d="M 5.77,0 -2.88,5 V -5 Z"
-         id="path135" />
+         id="path135-8" />
     </marker>
   </defs>
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-97.733618,-134.75162)">
+     transform="translate(-98.201154,-135.74511)">
     <path
-       style="fill:none;stroke:#ffffff;stroke-width:1.5875;stroke-dasharray:none;stroke-dashoffset:1;marker-end:url(#Triangle)"
-       d="m 100.64403,142.17072 v -4.6112"
-       id="path1"
+       style="fill:none;stroke:#ffffff;stroke-width:1.5875;stroke-dasharray:none;stroke-dashoffset:1;marker-end:url(#Triangle-9)"
+       d="m 100.73076,141.00223 -0.0211,-3.53615"
+       id="path1-0"
        sodipodi:nodetypes="cc" />
   </g>
 </svg>
