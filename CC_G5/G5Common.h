@@ -11,6 +11,8 @@
 #include "Fonts/PrimaSans12.h"
 #include "Fonts/PrimaSans16.h"
 #include "Fonts/PrimaSans18.h"
+#include "Fonts/PrimaSans20.h"
+#include "Fonts/PrimaSans24.h"
 
 #include "Sprites\battery.h"
 // #include "Images\PrimaSans32.h" // ORIGINAL
@@ -27,9 +29,22 @@
 
 #define PIf                  3.14159f
 
+#define SCREEN_WIDTH  480
+#define SCREEN_HEIGHT 360
+#define Y_OFFSET      60
+#define X_OFFSET      0
+
+
+
 #define CC_G5_SETTINGS_OFFSET 2048 // Well past MF config end (59 + 1496 = 1555)
-#define SETTINGS_VERSION      8
+#define SETTINGS_VERSION      9
 #define STATE_VERSION         1 // For the save state when switching between pfd and hsi
+
+#define DATA_BOX_HEIGHT_TALL  46  // Common height for tall corner boxes: wind, dist, heading, etc.
+#define DATA_BOX_HEIGHT_MED   32  // Common height for medium corner boxes: dtk, heading,.
+#define DATA_BOX_HEIGHT_SHORT 18  // Common height for short corner boxes: battery, OAT,.
+
+#define DATA_BOX_OUTLINE_COLOR TFT_LIGHTGREY
 
 #define TFT_MAIN_TRANSPARENT TFT_PINK // Just pick a color not used in either display
 
@@ -61,7 +76,7 @@ struct CC_G5_Settings {
     uint8_t  speedUnits            = 0; // 0:knot 1:mph 2:kph
     uint8_t  distanceUnits         = 0; // 0: nm, 1: miles, 2:km
     uint8_t  tempUnits             = 0; // 0: F, 1: 
-    uint8_t  deviceType            = CUSTOM_HSI_DEVICE;
+    uint8_t  deviceType            = CUSTOM_PFD_DEVICE;
     uint8_t  lcdBrightness         = 100;
     uint8_t  targetAltitude        = 0;
     PowerControl  powerControl     = PowerControl::ALWAYS_ON;
@@ -81,35 +96,35 @@ struct G5State {
     unsigned long batteryStartMs  = 0;
 
     // Heading and orientation
-    float rawHeadingAngle = 0.0f;
+    float rawHeadingAngle = 240.0f;
     float headingAngle    = 0.0f;
     int   headingBugAngle = 0;
-    float groundTrack     = 10.0f;
+    float groundTrack     = 247.0f;
 
     // Attitude (PFD)
     float rawBankAngle  = 0.0f;
-    float bankAngle     = 30.0f;
+    float bankAngle     = 0.0f;
     float rawPitchAngle = 0.0f;
-    float pitchAngle    = 8.0f;
+    float pitchAngle    = 0.0f;
     float rawBallPos    = 0.0f;
     float ballPos       = 0.0f;
     float turnRate      = 0.0f;
 
     // Speeds
-    float rawAirspeed  = 100.0f;
+    float rawAirspeed  = 90.0f;
     float airspeed     = 0.0f;
-    float trueAirspeed = 0.0f;
+    float trueAirspeed = 99.0f;
     int   groundSpeed  = 90;
     float machSpeed     = 0.0f;
 
     // Altitude
-    float rawAltitude      = 0.0f;
+    float rawAltitude      = 5000.0f;
     float altitude         = 100.0f;
     int   rawVerticalSpeed = 0;
     int   verticalSpeed    = 0;
-    int   targetAltitude   = 0;
+    int   targetAltitude   = 5000;
     int   densityAltitude  = 1200;
-    float kohlsman         = 29.92f;
+    float kohlsman         = 30.12f;
     int   mbPressure       = 1013;
     int   isStdPressure       = 0;  // 1: Is std pressure set.
 
@@ -131,7 +146,7 @@ struct G5State {
     // Glide slope
     float rawGsiNeedle   = 0.0f;
     float gsiNeedle      = 0.0f;
-    int   gsiNeedleValid = 1;
+    int   gsiNeedleValid = 0;
 
     // Desired track / Course to steer (shared between HSI and PFD)
     float desiredTrack      = 130.0f; // GPS course to steer / DTK (used by both HSI and PFD)
@@ -178,7 +193,7 @@ struct G5State {
     int apTargetVS    = 0;
 
     // Other
-    int oat = 15; // Outside air temp
+    int oat = 60; // Outside air temp
 
     
 };

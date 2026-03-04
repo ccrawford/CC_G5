@@ -25,7 +25,7 @@
           "Active": false,
           "Name": "-------------- PFD ----------------",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "",
+          "Controller": null,
           "Modifiers": {
             "Items": [
               {
@@ -67,7 +67,10 @@
           "Active": false,
           "Name": "Device Type Upper Set",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260"
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          }
         },
         {
           "Source": {
@@ -97,7 +100,10 @@
           "Active": false,
           "Name": "Device Type Upper Get",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260"
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          }
         },
         {
           "Source": {
@@ -127,7 +133,10 @@
           "Active": false,
           "Name": "Force Always On",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260"
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          }
         },
         {
           "Source": {
@@ -157,7 +166,10 @@
           "Active": true,
           "Name": "Pitch",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -208,7 +220,10 @@
           "Active": true,
           "Name": "Bank",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -259,7 +274,10 @@
           "Active": true,
           "Name": "Turn",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -310,7 +328,10 @@
           "Active": true,
           "Name": "Ball",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -361,7 +382,10 @@
           "Active": true,
           "Name": "Airspeed",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -412,7 +436,10 @@
           "Active": true,
           "Name": "True Airspeed",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -463,7 +490,10 @@
           "Active": true,
           "Name": "Ground Speed",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Modifiers": {
             "Items": [
               {
@@ -500,7 +530,10 @@
           "Active": true,
           "Name": "vSpeedArray",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -551,7 +584,10 @@
           "Active": true,
           "Name": "Outside Air Temperature",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -602,7 +638,10 @@
           "Active": true,
           "Name": "Altitude",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -653,7 +692,10 @@
           "Active": true,
           "Name": "Density Altitude",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -704,7 +746,10 @@
           "Active": true,
           "Name": "Vertical Speed",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -755,7 +800,10 @@
           "Active": true,
           "Name": "Target Alt",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -797,7 +845,10 @@
           "Active": true,
           "Name": "Kohlsman Pressure",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -848,7 +899,10 @@
           "Active": true,
           "Name": "Cur Heading",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Modifiers": {
             "Items": [
               {
@@ -887,7 +941,10 @@
           "Active": true,
           "Name": "Heading Bug",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Modifiers": {
             "Items": [
               {
@@ -926,7 +983,10 @@
           "Active": true,
           "Name": "NavCourse (Top tape display)",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -968,7 +1028,10 @@
           "Active": true,
           "Name": "Ground Track",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Modifiers": {
             "Items": [
               {
@@ -1007,7 +1070,10 @@
           "Active": true,
           "Name": "GSI Needle Valid",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260"
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          }
         },
         {
           "Source": {
@@ -1037,7 +1103,10 @@
           "Active": true,
           "Name": "Glide Slope Deviation",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Modifiers": {
             "Items": [
               {
@@ -1076,7 +1145,10 @@
           "Active": true,
           "Name": "Nav CDI Source",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260"
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          }
         },
         {
           "Source": {
@@ -1106,7 +1178,10 @@
           "Active": true,
           "Name": "CDI To/From",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260"
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          }
         },
         {
           "Source": {
@@ -1136,7 +1211,10 @@
           "Active": true,
           "Name": "CDI Lateral Deviation",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Modifiers": {
             "Items": [
               {
@@ -1165,7 +1243,7 @@
           "Active": false,
           "Name": "----------------------------",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "",
+          "Controller": null,
           "Modifiers": {
             "Items": [
               {
@@ -1197,7 +1275,7 @@
           "Active": false,
           "Name": "--------------HSI---------------",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "",
+          "Controller": null,
           "Modifiers": {
             "Items": [
               {
@@ -1229,7 +1307,7 @@
           "Active": false,
           "Name": "--------------- (Note: HSI uses some values from above.) ----------------",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "",
+          "Controller": null,
           "Modifiers": {
             "Items": [
               {
@@ -1271,7 +1349,10 @@
           "Active": true,
           "Name": "OBS Direction (VOR1)",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -1322,7 +1403,10 @@
           "Active": true,
           "Name": "CDI Direction (GPS Desired Track)",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -1392,7 +1476,10 @@
           "Active": true,
           "Name": "CDI Scale Label Enumeration 1-TERM 4-ENR 12-LPV",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -1434,7 +1521,10 @@
           "Active": true,
           "Name": "GPSApproach Approach Type",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -1476,7 +1566,10 @@
           "Active": true,
           "Name": "NavCDIType computed",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -1518,7 +1611,10 @@
           "Active": false,
           "Name": "GPS Distance -- Broken in terminal mode",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -1569,7 +1665,10 @@
           "Active": false,
           "Name": "GPS Distance Conditional Based WP Lat Lon -- Broken in manual sequence",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -1620,7 +1719,10 @@
           "Active": true,
           "Name": "GPS Distance Conditional Based on ETE",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -1671,7 +1773,10 @@
           "Active": true,
           "Name": "ETE to Next Waypoint",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -1714,7 +1819,10 @@
           "Active": true,
           "Name": "Is GPS Vertical Mode Active",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "-",
+          "Controller": {
+            "Name": "",
+            "Serial": "-"
+          },
           "Modifiers": {
             "Items": [
               {
@@ -1745,7 +1853,10 @@
           "Active": true,
           "Name": "Is Approach Active (TERM)",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "-"
+          "Controller": {
+            "Name": "",
+            "Serial": "-"
+          }
         },
         {
           "Source": {
@@ -1767,7 +1878,10 @@
           "Active": true,
           "Name": "GPS Approach Mode",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "-",
+          "Controller": {
+            "Name": "",
+            "Serial": "-"
+          },
           "Modifiers": {
             "Items": [
               {
@@ -1801,7 +1915,10 @@
           "Active": true,
           "Name": "ActiveNavSource",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "-"
+          "Controller": {
+            "Name": "",
+            "Serial": "-"
+          }
         },
         {
           "Source": {
@@ -1823,7 +1940,10 @@
           "Active": true,
           "Name": "Nav Has Localizer",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260"
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          }
         },
         {
           "Source": {
@@ -1845,7 +1965,10 @@
           "Active": true,
           "Name": "Nav Has Nav",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260"
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          }
         },
         {
           "Source": {
@@ -1867,7 +1990,10 @@
           "Active": true,
           "Name": "Nav Has DME",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260"
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          }
         },
         {
           "Source": {
@@ -1889,7 +2015,10 @@
           "Active": true,
           "Name": "Nav1 or Nav2 Selected",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260"
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          }
         },
         {
           "Source": {
@@ -1911,7 +2040,10 @@
           "Active": true,
           "Name": "Nav has To From",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260"
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          }
         },
         {
           "Source": {
@@ -1940,7 +2072,10 @@
           "Active": true,
           "Name": "PowerOn",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260"
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          }
         },
         {
           "Source": {
@@ -1970,7 +2105,10 @@
           "Active": true,
           "Name": "IsOBSMode",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -2012,7 +2150,10 @@
           "Active": true,
           "Name": "HSI CDI Needle Valid based on a lot of stuff",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260"
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          }
         },
         {
           "Source": {
@@ -2042,7 +2183,10 @@
           "Active": true,
           "Name": "Wind Direction",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -2093,7 +2237,10 @@
           "Active": true,
           "Name": "Wind Speed",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -2152,7 +2299,10 @@
           "Active": true,
           "Name": "DesiredTrack",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -2203,7 +2353,10 @@
           "Active": true,
           "Name": "DesiredTrack Valid",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -2254,7 +2407,10 @@
           "Active": true,
           "Name": "GPS Bearing",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -2305,7 +2461,10 @@
           "Active": true,
           "Name": "Nav1 Bearing",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -2356,7 +2515,10 @@
           "Active": true,
           "Name": "Nav2 Bearing",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -2407,7 +2569,10 @@
           "Active": true,
           "Name": "Nav1 Type",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -2449,7 +2614,10 @@
           "Active": true,
           "Name": "Nav2 Type",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -2491,7 +2659,10 @@
           "Active": true,
           "Name": "ADF Valid",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -2533,7 +2704,10 @@
           "Active": true,
           "Name": "ADF Radial",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -2574,7 +2748,10 @@
           "Active": false,
           "Name": "---------AP ----------",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "-",
+          "Controller": {
+            "Name": "",
+            "Serial": "-"
+          },
           "Modifiers": {
             "Items": [
               {
@@ -2616,7 +2793,10 @@
           "Active": true,
           "Name": "AP  On",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -2658,7 +2838,10 @@
           "Active": true,
           "Name": "FD On",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -2700,7 +2883,10 @@
           "Active": true,
           "Name": "Flight Director Bank",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -2759,7 +2945,10 @@
           "Active": true,
           "Name": "Flight Director Pitch",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -2818,7 +3007,10 @@
           "Active": true,
           "Name": "AP Lateral Mode",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -2860,7 +3052,10 @@
           "Active": true,
           "Name": "AP Lateral Armed Mode",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -2919,7 +3114,10 @@
           "Active": true,
           "Name": "AP Vertical Mode",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -2937,7 +3135,7 @@
           "Source": {
             "SimConnectValue": {
               "UUID": "7412995d-21d9-419e-b80d-2e6c56afdb06",
-              "Value": "(A:AUTOPILOT VERTICAL HOLD, Bool) \n(A:AUTOPILOT FLIGHT LEVEL CHANGE, Bool) or\n(A:AUTOPILOT PITCH HOLD, Bool) or\n(A:AUTOPILOT ALTITUDE LOCK, Bool) ! and  # Not already captured\nif{ 1 + }\n(A:AUTOPILOT GLIDESLOPE ARM, Bool)\n(A:GPS DRIVES NAV1, Bool) ! and\nif{ 4 + }\n(A:AUTOPILOT GLIDESLOPE ARM, Bool)\n(A:GPS DRIVES NAV1, Bool) and\nif{ 8 + }",
+              "Value": "(A:AUTOPILOT VERTICAL HOLD, Bool) \n(A:AUTOPILOT FLIGHT LEVEL CHANGE, Bool) or\n(A:AUTOPILOT PITCH HOLD, Bool) or\n(A:AUTOPILOT ALTITUDE LOCK, Bool) ! and\nif{ 1 + }\n(A:AUTOPILOT GLIDESLOPE ARM, Bool)\n(A:GPS DRIVES NAV1, Bool) ! and\nif{ 4 + }\n(A:AUTOPILOT GLIDESLOPE ARM, Bool)\n(A:GPS DRIVES NAV1, Bool) and\nif{ 8 + }",
               "VarType": 2
             },
             "Type": "SimConnectSource"
@@ -2961,7 +3159,10 @@
           "Active": true,
           "Name": "AP Vertical Armed Modes",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -3003,7 +3204,10 @@
           "Active": true,
           "Name": "AP Target VS",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -3045,7 +3249,10 @@
           "Active": true,
           "Name": "AP Target IAS for FLC",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -3087,7 +3294,10 @@
           "Active": true,
           "Name": "Yaw Damper",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -3129,7 +3339,10 @@
           "Active": true,
           "Name": "Alt Hold Target Alt",
           "Type": "OutputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
           "Preconditions": [
             {
               "Type": "config",
@@ -3173,7 +3386,10 @@
           "Active": true,
           "Name": "Kohlsman Knob",
           "Type": "InputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260"
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          }
         },
         {
           "encoder": {
@@ -3196,7 +3412,10 @@
           "Active": true,
           "Name": "Heading Knob",
           "Type": "InputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260"
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          }
         },
         {
           "encoder": {
@@ -3219,7 +3438,10 @@
           "Active": true,
           "Name": "Target Altitude Knob",
           "Type": "InputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260"
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          }
         },
         {
           "DeviceType": "-",
@@ -3228,7 +3450,7 @@
           "Active": true,
           "Name": "Track Knob",
           "Type": "InputConfigItem",
-          "ModuleSerial": ""
+          "Controller": null
         },
         {
           "encoder": {
@@ -3251,7 +3473,10 @@
           "Active": true,
           "Name": "Heading Knob",
           "Type": "InputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260"
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          }
         },
         {
           "encoder": {
@@ -3274,7 +3499,10 @@
           "Active": true,
           "Name": "Course Knob",
           "Type": "InputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260"
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          }
         },
         {
           "button": {
@@ -3296,7 +3524,10 @@
           "Active": true,
           "Name": "ResetTargetAlt",
           "Type": "InputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260"
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          }
         },
         {
           "button": {
@@ -3318,7 +3549,10 @@
           "Active": true,
           "Name": "Reset Heading Bug",
           "Type": "InputConfigItem",
-          "ModuleSerial": "CC_G5 ESP32/ SN-1051DB84E260"
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          }
         }
       ]
     }

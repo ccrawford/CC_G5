@@ -7,7 +7,6 @@ LGFX lcd = LGFX();
 
 // Used in both:
 LGFX_Sprite headingBox(&lcd);
-LGFX_Sprite gsBox(&lcd);
 
 BrightnessMenu brightnessMenu;
 

@@ -21,18 +21,22 @@
 #define CX       240
 #define CY       240
 #define SCREEN_W 480
-#define SCREEN_H 480
 
-#define AP_BAR_HEIGHT     40
-#define TOP_BAR_HEIGHT    40 // This is part of the attitude sprite space.
+#define ATTITUDE_X_CENTER 240       // Relative to top left of sprite
+#define ATTITUDE_Y_CENTER 170
+
+
+#define AP_BAR_HEIGHT     20  // Top black bar with green AP "scoreboard"
+// #define TOP_BAR_HEIGHT    40 // This is part of the attitude sprite space.
 #define BOTTOM_BAR_HEIGHT 40
-#define ATTITUDE_HEIGHT   400
 
+#define ATTITUDE_HEIGHT   340  // SCREEN_HEIGHT - AP_BAR_HEIGHT - TOP_BAR_HEIGHT
 #define ATTITUDE_WIDTH      480
 #define ATTITUDE_COLOR_BITS 8
 
 #define SPEED_COL_WIDTH    100
 #define ALTITUDE_COL_WIDTH 130
+
 #define CENTER_COL_WIDTH   250 // SCREEN_W - SPEED_COL_WIDTH - ALTITUDE_COL_WIDTH    // 250 screen width - speed col - altitude col
 #define CENTER_COL_CENTER  140 // Center of center col is 125, but offset 15 to left.
 
@@ -436,53 +440,4 @@ public:
     bool          altAlertActive = false;
     uint16_t      alertColor     = TFT_CYAN;
 
-    // OLD LOCAL VARIABLES - now in g5State (keeping for reference)
-    // float headingAngle    = 0.0f;
-    // float rawHeadingAngle = 90.0f;
-    // float bankAngle    = -178.0f;
-    // float rawBankAngle = 10.0f;
-    // float pitchAngle    = 4.0f;
-    // float rawPitchAngle = 10.0f;
-    // float airspeed    = 5;
-    // float rawAirspeed = 60;
-    // int altitude    = 300;
-    // int rawAltitude = -100;
-    // int   groundSpeed = 55;
-    // float kohlsman    = 29.94;
-    // int verticalSpeed    = -1000;
-    // int rawVerticalSpeed = 500;
-    // int           targetAltitude     = 500;
-    // float groundTrack      = headingAngle + 5;
-    // int   navCourseToSteer = 21;
-    // float turnRate         = -3.0;
-    // int   headingBugAngle  = 0;
-    // float ballPos    = 0.0;
-    // float rawBallPos = 0.8;
-    // int   navSource = 1;
-    // float navCourse = 256.0f;
-    // int gsiNeedleValid = 1;
-    // float rawGsiNeedle   = 0.0;
-    // float gsiNeedle      = 10.0; // Vertical error. (A:NAV GSI:1,Number) +/-119
-    // int cdiNeedleValid = 1;
-    // int cdiToFrom      = 0;
-    // float cdiOffset    = 10.0; // The deviation scale offset.
-    // float rawCdiOffset = 10.0; // The deviation scale offset.
-    // int   flightDirectorActive = 1;
-    // float flightDirectorPitch  = 5.0;
-    // float flightDirectorBank   = -10.0;
-    // bool terminalModeActive = true;
-    // int  navCDILabelIndex   = 0; // NavCDILabel. GPS:0, LOC1:1, VOR1:2, DME1:3, LOC2:4, VOR2:5, DME2:6, Blank:7
-    // int  gpsApproachType    = 0; // gps approach approach type values. 99: none active.
-    // int oat = 30;
-    // int cdiScaleLabel = 1;
-    // // Autopilot
-    // int apActive      = 0;
-    // int apVMode       = 0;
-    // int apLMode       = 0;
-    // int apVArmedMode  = 0;
-    // int apLArmedMode  = 0;
-    // int apYawDamper   = 0;
-    // int apTargetSpeed = 0;
-    // int apAltCaptured = 0; // THIS IS NOT THE TARGET ALT. it's the displayed captured altitude (nearest 10')
-    // int apTargetVS    = 0;
 };

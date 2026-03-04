@@ -27,7 +27,7 @@
 #include "Sprites\bearingPointerBoxLeft.h"
 #include "Sprites\bearingPointerBoxRight.h"
 
-#include "Sprites\gsBox.h"
+// #include "Sprites\courseBox.h"
 #include "Sprites\distBox.h"
 #include "Sprites\headingBox.h"
 
@@ -52,6 +52,7 @@ LGFX_Sprite bearingPointerBox1(&lcd);
 LGFX_Sprite bearingPointerBox2(&lcd);
 
 LGFX_Sprite batteryHolderSprite(&lcd);
+LGFX_Sprite courseBox(&lcd);
 
 LGFX_Sprite menuSprite(&lcd);
 
@@ -265,8 +266,8 @@ void CC_G5_HSI::setupSprites()
     bearingPointerBox2.setTextColor(TFT_CYAN);
 
     // // GS Is Ground speed, NOT glide slope. THIS IS USED FOR MORE THAN JUST GROUND SPEED
-    gsBox.setColorDepth(8);
-    gsBox.createSprite(DATA_BOX_WIDTH_LEFT, DATA_BOX_HEIGHT_MED);
+    courseBox.setColorDepth(8);
+    courseBox.createSprite(DATA_BOX_WIDTH_LEFT, DATA_BOX_HEIGHT_MED);
 
     distBox.setColorDepth(8);
     distBox.createSprite(DIST_BOX_WIDTH, DATA_BOX_HEIGHT_MED);
@@ -296,7 +297,7 @@ void CC_G5_HSI::setupSprites()
 
     windBox.setColorDepth(8);
     windBox.setBitmapColor(TFT_WHITE, TFT_BLACK);
-    windBox.createSprite(DATA_BOX_WIDTH_LEFT, DATA_BOX_HEIGHT_TALL); // Make the same width and height as the gsBox.
+    windBox.createSprite(DATA_BOX_WIDTH_LEFT, DATA_BOX_HEIGHT_TALL); // Make the same width and height as the courseBox.
     windBox.setTextColor(TFT_WHITE);
     windBox.loadFont(PrimaSans12);
     windBox.setTextDatum(CC_DATUM);
@@ -1063,26 +1064,26 @@ void CC_G5_HSI::drawVORCourseBox()
 {
     // Draw the lower left course heading box. We reuse the ground speed sprite.
 
-    int boxWidth = gsBox.width(), boxHeight = gsBox.height();
+    int boxWidth = courseBox.width(), boxHeight = courseBox.height();
     int borderWidth = 2;
 
-    gsBox.setTextColor(TFT_WHITE, TFT_BLACK);
-    gsBox.fillSprite(TFT_BLACK);
-    gsBox.drawRect(0, 0, boxWidth, boxHeight, DATA_BOX_OUTLINE_COLOR);
-    gsBox.drawRect(1, 1, boxWidth - 2, boxHeight - 2, DATA_BOX_OUTLINE_COLOR);
-    gsBox.setTextDatum(BL_DATUM);
-    gsBox.loadFont(PrimaSans12);
-    gsBox.drawString(g5State.obsModeOn ? "OBS" : "CRS", borderWidth + 1, boxHeight);
-    gsBox.loadFont(PrimaSans18);
-    gsBox.setTextColor(TFT_GREEN, TFT_BLACK);
+    courseBox.setTextColor(TFT_WHITE, TFT_BLACK);
+    courseBox.fillSprite(TFT_BLACK);
+    courseBox.drawRect(0, 0, boxWidth, boxHeight, DATA_BOX_OUTLINE_COLOR);
+    courseBox.drawRect(1, 1, boxWidth - 2, boxHeight - 2, DATA_BOX_OUTLINE_COLOR);
+    courseBox.setTextDatum(BL_DATUM);
+    courseBox.loadFont(PrimaSans12);
+    courseBox.drawString(g5State.obsModeOn ? "OBS" : "CRS", borderWidth + 1, boxHeight);
+    courseBox.loadFont(PrimaSans18);
+    courseBox.setTextColor(TFT_GREEN, TFT_BLACK);
     char buf[6];
     if (g5State.cdiNeedleValid)
         sprintf(buf, "%3.0f °", g5State.obsAngle);
     else
         sprintf(buf, "---°");
-    gsBox.setTextDatum(BR_DATUM);
-    gsBox.drawString(buf, boxWidth - (borderWidth + 1), boxHeight);
-    gsBox.pushSprite(X_OFFSET, Y_OFFSET + SCREEN_HEIGHT - gsBox.height());
+    courseBox.setTextDatum(BR_DATUM);
+    courseBox.drawString(buf, boxWidth - (borderWidth + 1), boxHeight);
+    courseBox.pushSprite(X_OFFSET, Y_OFFSET + SCREEN_HEIGHT - courseBox.height());
 }
 
 void CC_G5_HSI::drawCDIPointer()
@@ -1192,7 +1193,7 @@ void CC_G5_HSI::drawDesiredTrack()
     dtkBox.loadFont(PrimaSans18);
     dtkBox.setTextColor(TFT_MAGENTA);
     dtkBox.setTextDatum(BR_DATUM);
-    // gsBox.fillRect(42, 6, 78, 30, TFT_BLACK);
+    // courseBox.fillRect(42, 6, 78, 30, TFT_BLACK);
     dtkBox.drawString(buf, dtkBox.width() - 9, dtkBox.height());
     dtkBox.pushSprite(0, Y_OFFSET + SCREEN_HEIGHT - dtkBox.height());
 }

@@ -13,10 +13,6 @@
 //  #define RP2040_ADDR 0x08    // RP2040 I2C slave address
 #define TFT_BACKGROUND_COLOR TFT_BLACK
 
-#define SCREEN_WIDTH  480
-#define SCREEN_HEIGHT 360
-#define Y_OFFSET      60
-#define X_OFFSET      0
 
 #define COMPASS_OUTER_RADIUS 157
 #define COMPASS_INNER_RADIUS 91
@@ -24,7 +20,7 @@
 
 #define COMPASS_OUTER_TICK_SIZE 15
 
-#define DATA_BOX_OUTLINE_COLOR TFT_LIGHTGREY
+
 
 #define DIST_BOX_WIDTH        148
 #define DATA_BOX_WIDTH_LEFT   105 // Common width for corner boxes: wind, dtk, heading, etc.
