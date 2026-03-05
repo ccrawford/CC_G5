@@ -42,6 +42,15 @@
 
 #define TFT_BACKGROUND_COLOR TFT_BLACK
 
+// Altitude tape vertical scale: pixels per 100ft band.
+// Raise to zoom in (fewer feet visible), lower to zoom out (more feet visible).
+// All tape geometry is derived from this one value.
+#define ALT_PX_PER_100FT 80
+
+// Speed tape vertical scale: pixels per 10kt band.
+// All speed tape geometry is derived from this one value.
+#define SPD_PX_PER_10KT  65
+
 #define SPEED_ALIVE_SPEED 20
 
 #define TEXT_BOX_HEIGHT 40

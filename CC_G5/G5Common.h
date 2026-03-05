@@ -44,7 +44,11 @@
 #define DATA_BOX_HEIGHT_MED   32  // Common height for medium corner boxes: dtk, heading,.
 #define DATA_BOX_HEIGHT_SHORT 18  // Common height for short corner boxes: battery, OAT,.
 
-#define DATA_BOX_OUTLINE_COLOR TFT_LIGHTGREY
+#define TFT_GRAY 0xb596    // #b5b2b5 
+#define DATA_BOX_OUTLINE_COLOR TFT_GRAY
+#define TFT_TRANSPARENT_LIGHTBLACK 8456U   // I use this when i need a transparent dark background for blending.
+                                        // Use 080408ff in inkscape
+
 
 #define TFT_MAIN_TRANSPARENT TFT_PINK // Just pick a color not used in either display
 
@@ -98,17 +102,17 @@ struct G5State {
     // Heading and orientation
     float rawHeadingAngle = 240.0f;
     float headingAngle    = 0.0f;
-    int   headingBugAngle = 0;
+    int   headingBugAngle = 210.0f;
     float groundTrack     = 247.0f;
 
-    // Attitude (PFD)
+    // Attitude (PFD) 
     float rawBankAngle  = 0.0f;
     float bankAngle     = 0.0f;
     float rawPitchAngle = 0.0f;
     float pitchAngle    = 0.0f;
     float rawBallPos    = 0.0f;
     float ballPos       = 0.0f;
-    float turnRate      = 0.0f;
+    float turnRate      = 2.0f;
 
     // Speeds
     float rawAirspeed  = 90.0f;
@@ -162,6 +166,8 @@ struct G5State {
     int   gpsEteWp         = 0;
 
     // Bearing pointers (HSI)
+    int   bearing1Source    = 0; 
+    int   bearing2Source    = 0;
     float bearingAngleGPS   = 0.0f;
     float bearingAngleVLOC1 = 129.0f;
     float bearingAngleVLOC2 = 222.0f;

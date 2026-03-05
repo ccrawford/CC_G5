@@ -43,7 +43,7 @@
           "Source": {
             "SimConnectValue": {
               "UUID": "0",
-              "Value": "0 (>L:ccDeviceID) (L:ccDeviceID)",
+              "Value": "1 (>L:ccDeviceID) (L:ccDeviceID)",
               "VarType": 2
             },
             "Type": "SimConnectSource"
@@ -64,13 +64,15 @@
           "DeviceType": "CustomDevice",
           "DeviceName": "CCs CC_G5",
           "GUID": "3e54285f-a8e7-4148-bdae-e30f2364c11a",
-          "Active": false,
+          "Active": true,
           "Name": "Device Type Upper Set",
           "Type": "OutputConfigItem",
           "Controller": {
             "Name": "CC_G5 ESP32",
             "Serial": "SN-1051DB84E260"
-          }
+          },
+          "RawValue": "1",
+          "Value": "1"
         },
         {
           "Source": {
@@ -190,7 +192,9 @@
                 "Active": true
               }
             ]
-          }
+          },
+          "RawValue": "-0.57911205291748047",
+          "Value": "-0.58"
         },
         {
           "Source": {
@@ -244,7 +248,9 @@
                 "Active": true
               }
             ]
-          }
+          },
+          "RawValue": "-0.79163384437561035",
+          "Value": "-0.8"
         },
         {
           "Source": {
@@ -298,7 +304,9 @@
                 "Active": true
               }
             ]
-          }
+          },
+          "RawValue": "0.42040222883224487",
+          "Value": "0.42"
         },
         {
           "Source": {
@@ -352,7 +360,9 @@
                 "Active": true
               }
             ]
-          }
+          },
+          "RawValue": "-0.0625",
+          "Value": "-0.06"
         },
         {
           "Source": {
@@ -406,7 +416,9 @@
                 "Active": true
               }
             ]
-          }
+          },
+          "RawValue": "119.41001129150391",
+          "Value": "119.41"
         },
         {
           "Source": {
@@ -460,7 +472,9 @@
                 "Active": true
               }
             ]
-          }
+          },
+          "RawValue": "121.76171112060547",
+          "Value": "122"
         },
         {
           "Source": {
@@ -502,7 +516,9 @@
                 "Active": true
               }
             ]
-          }
+          },
+          "RawValue": "130.17588806152344",
+          "Value": "130"
         },
         {
           "Source": {
@@ -554,7 +570,9 @@
                 "Active": true
               }
             ]
-          }
+          },
+          "RawValue": "0",
+          "Value": "41|52|55|62|73|68|99|111|129|163"
         },
         {
           "Source": {
@@ -608,7 +626,9 @@
                 "Active": true
               }
             ]
-          }
+          },
+          "RawValue": "4.4557433128356934",
+          "Value": "4"
         },
         {
           "Source": {
@@ -662,7 +682,9 @@
                 "Active": true
               }
             ]
-          }
+          },
+          "RawValue": "2157.499267578125",
+          "Value": "2157"
         },
         {
           "Source": {
@@ -716,7 +738,9 @@
                 "Active": true
               }
             ]
-          }
+          },
+          "RawValue": "1201.353759765625",
+          "Value": "1201"
         },
         {
           "Source": {
@@ -770,7 +794,9 @@
                 "Active": true
               }
             ]
-          }
+          },
+          "RawValue": "-103.79129791259766",
+          "Value": "-104"
         },
         {
           "Source": {
@@ -815,7 +841,9 @@
               "Logic": "and",
               "Active": true
             }
-          ]
+          ],
+          "RawValue": "0",
+          "Value": "0"
         },
         {
           "Source": {
@@ -869,7 +897,9 @@
                 "Active": true
               }
             ]
-          }
+          },
+          "RawValue": "30.122346878051758",
+          "Value": "30.12"
         },
         {
           "Source": {
@@ -909,9 +939,16 @@
                 "Type": "Transformation",
                 "Expression": "Round($,1)",
                 "Active": true
+              },
+              {
+                "Type": "Transformation",
+                "Expression": "if($=0,360,$)",
+                "Active": true
               }
             ]
-          }
+          },
+          "RawValue": "257.525390625",
+          "Value": "257.5"
         },
         {
           "Source": {
@@ -951,9 +988,16 @@
                 "Type": "Transformation",
                 "Expression": "Round($,0)",
                 "Active": true
+              },
+              {
+                "Type": "Transformation",
+                "Expression": "if($=0,360,$)",
+                "Active": true
               }
             ]
-          }
+          },
+          "RawValue": "257",
+          "Value": "257"
         },
         {
           "Source": {
@@ -998,7 +1042,9 @@
               "Logic": "and",
               "Active": true
             }
-          ]
+          ],
+          "RawValue": "0",
+          "Value": "0"
         },
         {
           "Source": {
@@ -1040,7 +1086,9 @@
                 "Active": true
               }
             ]
-          }
+          },
+          "RawValue": "260.6236572265625",
+          "Value": "260.6"
         },
         {
           "Source": {
@@ -1073,7 +1121,9 @@
           "Controller": {
             "Name": "CC_G5 ESP32",
             "Serial": "SN-1051DB84E260"
-          }
+          },
+          "RawValue": "0",
+          "Value": "0"
         },
         {
           "Source": {
@@ -1115,7 +1165,9 @@
                 "Active": true
               }
             ]
-          }
+          },
+          "RawValue": "0",
+          "Value": "0"
         },
         {
           "Source": {
@@ -1148,7 +1200,9 @@
           "Controller": {
             "Name": "CC_G5 ESP32",
             "Serial": "SN-1051DB84E260"
-          }
+          },
+          "RawValue": "1",
+          "Value": "1"
         },
         {
           "Source": {
@@ -1181,7 +1235,9 @@
           "Controller": {
             "Name": "CC_G5 ESP32",
             "Serial": "SN-1051DB84E260"
-          }
+          },
+          "RawValue": "1",
+          "Value": "1"
         },
         {
           "Source": {
@@ -1223,7 +1279,9 @@
                 "Active": true
               }
             ]
-          }
+          },
+          "RawValue": "-98.2187728881836",
+          "Value": "-98.2"
         },
         {
           "Source": {
@@ -1373,7 +1431,9 @@
                 "Active": true
               }
             ]
-          }
+          },
+          "RawValue": "0",
+          "Value": "0"
         },
         {
           "Source": {
@@ -1446,13 +1506,15 @@
               "Placeholder": "%",
               "TestValue": "1"
             }
-          ]
+          ],
+          "RawValue": "220.28056335449219",
+          "Value": "220.3"
         },
         {
           "Source": {
             "SimConnectValue": {
               "UUID": "0",
-              "Value": "(L:WTGarmin_LNavData_CDI_Scale_Label)",
+              "Value": "(A:GPS CDI SCALING, meters) 0 == if{ 5 } els{\n  (A:GPS CDI SCALING, meters) 3000 > if{ 0 } els{\n    (A:GPS IS APPROACH ACTIVE, Bool) ! if{ 1 } els{\n      (A:GPS APPROACH APPROACH TYPE, Enum) 10 == \n      (A:GPS APPROACH APPROACH TYPE, Enum) 1 == |\n      if{\n        (L:WTAP_GP_Service_Level, number) 8 == if{ 12 } els{\n        (L:WTAP_GP_Service_Level, number) 7 == if{ 11 } els{\n        (L:WTAP_GP_Service_Level, number) 5 == \n        (L:WTAP_GP_Service_Level, number) 6 == | if{ 9 } els{\n        (L:WTAP_GP_Service_Level, number) 3 == \n        (L:WTAP_GP_Service_Level, number) 4 == | if{ 7 } els{\n        6 }}}}\n      } els{ 14 }\n    }\n  }\n}",
               "VarType": 2
             },
             "Type": "SimConnectSource"
@@ -1491,7 +1553,48 @@
               "Logic": "and",
               "Active": true
             }
-          ]
+          ],
+          "RawValue": "1",
+          "Value": "1"
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "0",
+              "Value": "(A:GPS CDI SCALING, meters) 0 == if{ 5 } els{\n  (A:GPS CDI SCALING, meters) 3000 > if{ 0 } els{\n    (A:GPS IS APPROACH ACTIVE, Bool) ! if{ 1 } els{\n      (A:GPS APPROACH APPROACH TYPE, Enum) 10 == \n      (A:GPS APPROACH APPROACH TYPE, Enum) 1 == |\n      if{\n        (L:WTAP_GP_Service_Level, number) 8 == if{ 12 } els{\n        (L:WTAP_GP_Service_Level, number) 7 == if{ 11 } els{\n        (L:WTAP_GP_Service_Level, number) 5 == \n        (L:WTAP_GP_Service_Level, number) 6 == | if{ 9 } els{\n        (L:WTAP_GP_Service_Level, number) 3 == \n        (L:WTAP_GP_Service_Level, number) 4 == | if{ 7 } els{\n        6 }}}}\n      } els{ 14 }\n    }\n  }\n}",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "DeviceType": "-",
+          "DeviceName": null,
+          "GUID": "eeab3a86-cdb2-4f19-a2bb-a8f5c6043af8",
+          "Active": true,
+          "Name": "CDI Scale Label Enum 0:ENR, 1:TERM, 2:LNAV, 3:LNAV+V, 4:LP, 5:LPV 6:NONE",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-1051DB84E260"
+          },
+          "Preconditions": [
+            {
+              "Type": "config",
+              "Ref": "c6685ae0-a651-42ab-a572-23cca2564df2",
+              "Serial": null,
+              "Pin": null,
+              "Operand": "!=",
+              "Value": "1",
+              "Logic": "and",
+              "Active": true
+            }
+          ],
+          "RawValue": "1",
+          "Value": "1"
         },
         {
           "Source": {
@@ -1536,7 +1639,9 @@
               "Logic": "and",
               "Active": true
             }
-          ]
+          ],
+          "RawValue": "19",
+          "Value": "19"
         },
         {
           "Source": {
@@ -1581,7 +1686,9 @@
               "Logic": "and",
               "Active": true
             }
-          ]
+          ],
+          "RawValue": "0",
+          "Value": "0"
         },
         {
           "Source": {
@@ -1743,7 +1850,9 @@
                 "Active": true
               }
             ]
-          }
+          },
+          "RawValue": "8.6724357604980469",
+          "Value": "8.7"
         },
         {
           "Source": {
@@ -1797,7 +1906,9 @@
                 "Active": true
               }
             ]
-          }
+          },
+          "RawValue": "239",
+          "Value": "239"
         },
         {
           "Source": {
@@ -1831,6 +1942,11 @@
                 "Active": true
               }
             ]
+          },
+          "RawValue": "0",
+          "Value": "0",
+          "Status": {
+            "Device": "ExecutionError"
           }
         },
         {
@@ -1856,6 +1972,11 @@
           "Controller": {
             "Name": "",
             "Serial": "-"
+          },
+          "RawValue": "0",
+          "Value": "0",
+          "Status": {
+            "Device": "ExecutionError"
           }
         },
         {
@@ -1893,6 +2014,11 @@
                 "Active": true
               }
             ]
+          },
+          "RawValue": "0",
+          "Value": "0",
+          "Status": {
+            "Device": "ExecutionError"
           }
         },
         {
@@ -1918,6 +2044,11 @@
           "Controller": {
             "Name": "",
             "Serial": "-"
+          },
+          "RawValue": "0",
+          "Value": "0",
+          "Status": {
+            "Device": "ExecutionError"
           }
         },
         {
@@ -1943,7 +2074,9 @@
           "Controller": {
             "Name": "CC_G5 ESP32",
             "Serial": "SN-1051DB84E260"
-          }
+          },
+          "RawValue": "1",
+          "Value": "1"
         },
         {
           "Source": {
@@ -1968,7 +2101,9 @@
           "Controller": {
             "Name": "CC_G5 ESP32",
             "Serial": "SN-1051DB84E260"
-          }
+          },
+          "RawValue": "1",
+          "Value": "1"
         },
         {
           "Source": {
@@ -1993,7 +2128,9 @@
           "Controller": {
             "Name": "CC_G5 ESP32",
             "Serial": "SN-1051DB84E260"
-          }
+          },
+          "RawValue": "1",
+          "Value": "1"
         },
         {
           "Source": {
@@ -2018,7 +2155,9 @@
           "Controller": {
             "Name": "CC_G5 ESP32",
             "Serial": "SN-1051DB84E260"
-          }
+          },
+          "RawValue": "1",
+          "Value": "1"
         },
         {
           "Source": {
@@ -2043,7 +2182,9 @@
           "Controller": {
             "Name": "CC_G5 ESP32",
             "Serial": "SN-1051DB84E260"
-          }
+          },
+          "RawValue": "1",
+          "Value": "1"
         },
         {
           "Source": {
@@ -2075,7 +2216,9 @@
           "Controller": {
             "Name": "CC_G5 ESP32",
             "Serial": "SN-1051DB84E260"
-          }
+          },
+          "RawValue": "1",
+          "Value": "1"
         },
         {
           "Source": {
@@ -2120,7 +2263,9 @@
               "Logic": "and",
               "Active": true
             }
-          ]
+          ],
+          "RawValue": "0",
+          "Value": "0"
         },
         {
           "Source": {
@@ -2153,7 +2298,9 @@
           "Controller": {
             "Name": "CC_G5 ESP32",
             "Serial": "SN-1051DB84E260"
-          }
+          },
+          "RawValue": "1",
+          "Value": "1"
         },
         {
           "Source": {
@@ -2207,7 +2354,9 @@
                 "Active": true
               }
             ]
-          }
+          },
+          "RawValue": "107.80400848388672",
+          "Value": "108"
         },
         {
           "Source": {
@@ -2269,7 +2418,9 @@
               "Placeholder": "#",
               "TestValue": "1"
             }
-          ]
+          ],
+          "RawValue": "11.347512245178223",
+          "Value": "11"
         },
         {
           "Source": {
@@ -2323,7 +2474,9 @@
                 "Active": true
               }
             ]
-          }
+          },
+          "RawValue": "220.28056335449219",
+          "Value": "220.3"
         },
         {
           "Source": {
@@ -2377,7 +2530,9 @@
                 "Active": true
               }
             ]
-          }
+          },
+          "RawValue": "16061.3515625",
+          "Value": "1"
         },
         {
           "Source": {
@@ -2431,7 +2586,9 @@
                 "Active": true
               }
             ]
-          }
+          },
+          "RawValue": "215.16435241699219",
+          "Value": "215.2"
         },
         {
           "Source": {
@@ -2485,7 +2642,9 @@
                 "Active": true
               }
             ]
-          }
+          },
+          "RawValue": "-80.747879028320312",
+          "Value": "-80.7"
         },
         {
           "Source": {
@@ -2539,7 +2698,9 @@
                 "Active": true
               }
             ]
-          }
+          },
+          "RawValue": "-80.747879028320312",
+          "Value": "-80.7"
         },
         {
           "Source": {
@@ -2584,7 +2745,9 @@
               "Logic": "and",
               "Active": true
             }
-          ]
+          ],
+          "RawValue": "1",
+          "Value": "1"
         },
         {
           "Source": {
@@ -2629,7 +2792,9 @@
               "Logic": "and",
               "Active": true
             }
-          ]
+          ],
+          "RawValue": "1",
+          "Value": "1"
         },
         {
           "Source": {
@@ -2674,7 +2839,9 @@
               "Logic": "and",
               "Active": true
             }
-          ]
+          ],
+          "RawValue": "0",
+          "Value": "0"
         },
         {
           "Source": {
@@ -2728,7 +2895,9 @@
                 "Active": true
               }
             ]
-          }
+          },
+          "RawValue": "90",
+          "Value": "90"
         },
         {
           "Source": {
@@ -2808,7 +2977,9 @@
               "Logic": "and",
               "Active": true
             }
-          ]
+          ],
+          "RawValue": "1",
+          "Value": "1"
         },
         {
           "Source": {
@@ -2853,7 +3024,9 @@
               "Logic": "and",
               "Active": true
             }
-          ]
+          ],
+          "RawValue": "1",
+          "Value": "1"
         },
         {
           "Source": {
@@ -2915,7 +3088,9 @@
               "Placeholder": "#",
               "TestValue": "1"
             }
-          ]
+          ],
+          "RawValue": "0.62803030014038086",
+          "Value": "0.6"
         },
         {
           "Source": {
@@ -2977,7 +3152,9 @@
               "Placeholder": "#",
               "TestValue": "1"
             }
-          ]
+          ],
+          "RawValue": "-0.91925793886184692",
+          "Value": "-0.9"
         },
         {
           "Source": {
@@ -3022,7 +3199,9 @@
               "Logic": "and",
               "Active": true
             }
-          ]
+          ],
+          "RawValue": "2",
+          "Value": "2"
         },
         {
           "Source": {
@@ -3084,7 +3263,9 @@
               "Placeholder": "#",
               "TestValue": "1"
             }
-          ]
+          ],
+          "RawValue": "0",
+          "Value": "0"
         },
         {
           "Source": {
@@ -3129,7 +3310,9 @@
               "Logic": "and",
               "Active": true
             }
-          ]
+          ],
+          "RawValue": "1",
+          "Value": "1"
         },
         {
           "Source": {
@@ -3174,7 +3357,9 @@
               "Logic": "and",
               "Active": true
             }
-          ]
+          ],
+          "RawValue": "0",
+          "Value": "0"
         },
         {
           "Source": {
@@ -3219,7 +3404,9 @@
               "Logic": "and",
               "Active": true
             }
-          ]
+          ],
+          "RawValue": "0",
+          "Value": "0"
         },
         {
           "Source": {
@@ -3264,7 +3451,9 @@
               "Logic": "and",
               "Active": true
             }
-          ]
+          ],
+          "RawValue": "0",
+          "Value": "0"
         },
         {
           "Source": {
@@ -3309,7 +3498,9 @@
               "Logic": "and",
               "Active": true
             }
-          ]
+          ],
+          "RawValue": "0",
+          "Value": "0"
         },
         {
           "Source": {
@@ -3363,7 +3554,9 @@
                 "Active": true
               }
             ]
-          }
+          },
+          "RawValue": "2156.033935546875",
+          "Value": "2160"
         },
         {
           "encoder": {

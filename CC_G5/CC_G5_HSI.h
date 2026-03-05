@@ -13,6 +13,10 @@
 //  #define RP2040_ADDR 0x08    // RP2040 I2C slave address
 #define TFT_BACKGROUND_COLOR TFT_BLACK
 
+#define COMPASS_WIDTH    406
+#define COMPASS_HEIGHT   360
+#define COMPASS_CENTER_X 203 // In compass coordinates
+#define COMPASS_CENTER_Y 180 // In compass coordinates
 
 #define COMPASS_OUTER_RADIUS 157
 #define COMPASS_INNER_RADIUS 91
@@ -20,7 +24,8 @@
 
 #define COMPASS_OUTER_TICK_SIZE 15
 
-
+#define HEADING_POINTER_WIDTH 19
+#define HEADINGBOX_LEFT_SHIFT 5
 
 #define DIST_BOX_WIDTH        148
 #define DATA_BOX_WIDTH_LEFT   105 // Common width for corner boxes: wind, dtk, heading, etc.
@@ -29,9 +34,9 @@
 #define DATA_BOX_HEIGHT_MED   32  // Common height for medium corner boxes: dtk, heading,.
 #define DATA_BOX_HEIGHT_SHORT 18  // Common height for short corner boxes: battery, OAT,.
 
-#define CUR_HEADING_Y_OFFSET 26
-#define NAVSOURCE_GPS        1
-#define NAVSOURCE_NAV        0
+// #define CUR_HEADING_Y_OFFSET 26
+#define NAVSOURCE_GPS 1
+#define NAVSOURCE_NAV 0
 
 // Was 188
 
@@ -288,6 +293,8 @@ private:
     void drawDesiredTrack();
     void drawVORCourseBox();
 
+    void drawOrangeCenterTick();
+
     void drawBearingPointer1();
     void drawBearingPointer2();
 
@@ -311,10 +318,7 @@ public:
     // Sprite management for menu system
     void setupCompassSprites();
 
-    int compassCenterX;
     int compassCenterY;
-
-//    char bearingPointer1Source[10];
 
     // Local calculated bearing pointer angles (computed from g5State sources)
     float getBearingPointerAngle(uint8_t source);
@@ -322,42 +326,4 @@ public:
     float rawBearingPointer1Angle = 10.0;
     float bearingPointer2Angle    = 200.0;
     float rawBearingPointer2Angle = 350.0;
-
-    // OLD LOCAL VARIABLES - now in g5State (keeping for reference)
-    // float headingAngle    = 0.0f;
-    // float rawHeadingAngle = 90.0f;
-    // int cdiDirection   = 0;
-    // int navSource      = 1; // 1-GPS, 0-VOR
-    // int cdiNeedleValid = 1;
-    // float cdiOffset    = 100.0; // The deviation scale offset.
-    // float rawCdiOffset = 0.0;   // The deviation scale offset.
-    // int   cdiToFrom          = 2; // 0 off, 1 To, 2 From
-    // int   headingBugAngle    = 0;
-    // int   groundSpeed        = 0;
-    // float distNextWaypoint   = 0.1;
-    // int   groundTrack        = 330;
-    // int   desiredTrackValid  = 1;
-    // float desiredTrack       = 200.0f;
-    // int   dtkIsValid         = 1;
-    // bool  terminalModeActive = true;
-    // int   navCDILabelIndex   = 0; // NavCDILabel. GPS:0, LOC1:1, VOR1:2, DME1:3, LOC2:4, VOR2:5, DME2:6, Blank:7
-    // int   gpsApproachType    = 0; // gps approach approach type values. 19: none active.
-    // 0 = None 1 = GPS 2 = VOR 3 = NDB 4 = ILS 5 = Localizer 6 = SDF 7 = LDA 8 = VOR/ DME 9 = NDB/ DME 10 = RNAV 11 = Backcourse
-    // int   obsModeOn = 0; // 1 on, 0 off
-    // float obsAngle  = 0; // Obs direction.
-    // int cdiScaleLabel = 1;
-    // float bearingAngleGPS         = 10.0f;
-    // float bearingAngleVLOC1       = 20.0f;
-    // int   vloc1Type               = 1; // Bearing label. LOC:1, VOR:2, DME:3, ADF:4, Detuned:7
-    // float bearingAngleVLOC2       = 30.0f;
-    // float bearingAngleADF         = 15.0f;
-    // int   vloc2Type               = 7; // Bearing label. LOC:1, VOR:2, DME:3, Detuned:7
-    // bool adfValid = true;
-    // int   gsiNeedleValid = 1;
-    // float gsiNeedle      = -100.0; // Vertical error. (A:NAV GSI:1,Number) +/-119
-    // float rawGsiNeedle   = 0.0;    // Vertical error. (A:NAV GSI:1,Number) +/-119
-    // float windSpeed    = 5.0f;
-    // float rawWindSpeed = 1.5;
-    // float windDir    = 20.0;
-    // float rawWindDir = 200;
 };

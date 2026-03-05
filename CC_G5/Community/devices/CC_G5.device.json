@@ -138,6 +138,16 @@
         "description": "Navigation CDI source label index"
       },
       {
+        "id": 48,
+        "Label": "Bearing1 Source",
+        "description": "HSI Bearing Pointer 1 source: 0-Off, 1-Nav1 2-Nav2, 3-GPS, 4-ADF"
+      },
+      {
+        "id": 49,
+        "Label": "Bearing2 Source",
+        "description": "HSI Bearing Pointer 2 source: 0-Off, 1-Nav1, 2-Nav2, 3-GPS, 4-ADF"
+      },
+      {
         "id": 39,
         "Label": "Nav1 Bearing Angle",
         "description": "Nav1 station bearing in degrees"

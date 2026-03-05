@@ -197,32 +197,14 @@ void CC_G5_HSI::setupSprites()
     curHdg.createSprite(67, 26); // 67x26
     curHdg.setTextColor(TFT_WHITE, TFT_BLACK);
 
-    {
-        const int hdgWidth           = curHdg.width() - 1;
-        const int hdgHeight          = curHdg.height() - 1;
-        const int triangleWidth      = 19;
-        const int triangleHeight     = 11;
-        const int triangleLeftOffset = (hdgWidth - triangleWidth) / 2;
-        const int rectangleHeight    = hdgHeight;
+    curHdg.fillSprite(TFT_BLACK);
+    curHdg.setColor(DATA_BOX_OUTLINE_COLOR);
+    curHdg.setTextColor(TFT_WHITE);
+    curHdg.setTextDatum(MC_DATUM);
+    curHdg.loadFont(PrimaSans18);
 
-        curHdg.fillSprite(TFT_BLACK);
-        curHdg.setColor(DATA_BOX_OUTLINE_COLOR);
-        curHdg.setTextColor(TFT_WHITE);
-        curHdg.setTextDatum(MC_DATUM);
-        curHdg.loadFont(PrimaSans18);
-
-        curHdg.drawLine(0, 0, hdgWidth, 0, TFT_WHITE);                                                   // ------
-        curHdg.drawLine(0, 0, 0, rectangleHeight);                                                       //  |
-        curHdg.drawLine(0, rectangleHeight, triangleLeftOffset, rectangleHeight);                        // -
-        curHdg.drawLine(triangleLeftOffset + triangleWidth, rectangleHeight, hdgWidth, rectangleHeight); // -
-        curHdg.drawLine(hdgWidth, rectangleHeight, hdgWidth, 1);                                         // |
-    }
-
-    // Calculate compass center coordinates (needs curHdg.height())
-    const int compassLeftShift = (lcd.width() - compass.width()) / 2;
-    const int compassTopShift  = curHdg.height() + Y_OFFSET - 8;
-    compassCenterX             = compassLeftShift + (compass.width() / 2);
-    compassCenterY             = compassTopShift + (compass.height() / 2);
+    curHdg.drawRect(0, 0, curHdg.width(), curHdg.height(), DATA_BOX_OUTLINE_COLOR);
+    curHdg.drawRect(1, 1, curHdg.width() - 2, curHdg.height() - 2, DATA_BOX_OUTLINE_COLOR);
 
     glideDeviationScale.createSprite(GSDEVIATION_IMG_WIDTH, GSDEVIATION_IMG_HEIGHT);
     glideDeviationScale.pushImage(0, 0, GSDEVIATION_IMG_WIDTH, GSDEVIATION_IMG_HEIGHT, GSDEVIATION_IMG_DATA);
@@ -274,6 +256,12 @@ void CC_G5_HSI::setupSprites()
     distBox.setColor(DATA_BOX_OUTLINE_COLOR);
     distBox.drawRect(0, 0, distBox.width(), distBox.height());
     distBox.drawRect(1, 1, distBox.width() - 2, distBox.height() - 2);
+
+    distBox.setTextDatum(BL_DATUM);
+    distBox.setTextColor(TFT_WHITE);
+    distBox.loadFont(PrimaSans12);
+    distBox.drawString("DIST", 4, distBox.height());
+
     distBox.setTextColor(TFT_MAGENTA);
     distBox.setTextDatum(BR_DATUM);
     distBox.loadFont(PrimaSans18);
@@ -302,8 +290,8 @@ void CC_G5_HSI::setupSprites()
     windBox.loadFont(PrimaSans12);
     windBox.setTextDatum(CC_DATUM);
     windBox.fillSprite(TFT_BLACK);
-    windBox.drawRect(0, 0, windBox.width(), windBox.height(), TFT_LIGHTGRAY);
-    windBox.drawRect(1, 1, windBox.width() - 2, windBox.height() - 2, TFT_LIGHTGRAY);
+    windBox.drawRect(0, 0, windBox.width(), windBox.height(), DATA_BOX_OUTLINE_COLOR);
+    windBox.drawRect(1, 1, windBox.width() - 2, windBox.height() - 2, DATA_BOX_OUTLINE_COLOR);
     windBox.setPivot(WINDARROW_IMG_WIDTH + 4, windBox.height() / 2);
 
     windArrow.setColorDepth(1);
@@ -319,7 +307,7 @@ void CC_G5_HSI::setupCompassSprites()
     // compass.setPsram(true); //Gets way too jittery when we try this.
 
     compass.setColorDepth(8);
-    void *buffer = compass.createSprite(406, 360); // Sprite s/b big enough to hold compass and outer markers
+    void *buffer = compass.createSprite(COMPASS_WIDTH, COMPASS_HEIGHT); // Sprite s/b big enough to hold compass and outer markers
     // void *buffer = compass.createSprite(406, 406); // Sprite s/b big enough to hold compass and outer markers
 
     if (buffer != nullptr) {
@@ -369,27 +357,23 @@ void CC_G5_HSI::updateCommon()
     compass.fillSprite(TFT_MAIN_TRANSPARENT);
 
     compass.fillCircle(compass.width() / 2, compass.height() / 2, COMPASS_OUTER_RADIUS + 16, TFT_BLACK);
-    // curHdg.fillSprite(TFT_BLACK);
 
+    drawHeadingBug();
     drawCompass();
 
-    // if (g5State.navSource == NAVSOURCE_GPS)
-    //     updateGps();
-    // else
-    //     updateNav();
-
+    drawCDIBar(); // CDI bar below other labels
+    drawDeviationScale();
     drawCDIScaleLabel();
     drawCDISource();
     drawNavCDILabel();
 
-    drawDeviationScale();
+    drawWPTAlert();
     drawCurrentTrack();
     drawCDIPointer();
-    drawCDIBar();
-    drawWPTAlert();
 
     drawCurrentHeading();
-    drawHeadingBug();
+
+    // drawHeadingBug();
     drawBearingPointer1();
     drawBearingPointer2();
 
@@ -402,11 +386,11 @@ void CC_G5_HSI::updateCommon()
     processMenu();
     brightnessMenu.draw(&compass);
     drawPlaneIcon();
+    drawOrangeCenterTick();
 
     drawShutdown(&compass);
 
     compass.pushSprite(&lcd, (SCREEN_WIDTH - compass.width()) / 2, Y_OFFSET + 18, TFT_MAIN_TRANSPARENT);
-    //    curHdg.pushSprite(&lcd, (SCREEN_WIDTH/2) - curHdg.width() / 2, Y_OFFSET);
 
     drawGlideSlope();
 
@@ -521,6 +505,14 @@ void CC_G5_HSI::setHSI(int16_t messageID, char *setPoint)
     case 47: // ETE
         g5State.gpsEteWp = atoi(setPoint);
         break;
+    case 48: // Bearing point source for use without buttons.
+        g5State.bearing1Source           = atoi(setPoint);
+        g5Settings.bearingPointer1Source = atoi(setPoint);
+        break;
+    case 49: // Bearing point source for use without buttons.
+        g5State.bearing2Source           = atoi(setPoint);
+        g5Settings.bearingPointer2Source = atoi(setPoint);
+        break;
     }
 }
 
@@ -575,19 +567,20 @@ void CC_G5_HSI::update()
     //     lcd.drawRect(X_OFFSET,Y_OFFSET,SCREEN_WIDTH,SCREEN_HEIGHT,TFT_RED);
 
     g5State.forceRedraw = false;
+    /*
+        if (millis() - testLastUpdate > 500) {
+            g5State.rawHeadingAngle -= 0.5f;
+            if (g5State.rawHeadingAngle < 0) g5State.rawHeadingAngle = 359;
 
-    if (millis() - testLastUpdate > 500) {
-        g5State.rawHeadingAngle -= 0.5f;
-        if (g5State.rawHeadingAngle < 0) g5State.rawHeadingAngle = 359;
+            g5State.headingBugAngle += 1;
+            if (g5State.headingBugAngle > 359) g5State.headingBugAngle = 0;
+            testLastUpdate = millis();
+        }
 
-        g5State.headingBugAngle += 1;
-        if (g5State.headingBugAngle > 359) g5State.headingBugAngle = 0;
-        testLastUpdate = millis();
-    }
-
-    sprintf(buf, "HSI %4.1f f/s", 1000.0 / (now - lastFrameUpdate));
-    //   lcd.drawString(buf, 360, 0);
-    lastFrameUpdate = now;
+        sprintf(buf, "HSI %4.1f f/s", 1000.0 / (now - lastFrameUpdate));
+        //   lcd.drawString(buf, 360, 0);
+        lastFrameUpdate = now;
+        */
 }
 
 void CC_G5_HSI::setNavSource()
@@ -644,7 +637,7 @@ void CC_G5_HSI::drawNavCDILabel()
 {
     //  This is drawn at the 10 o'clock position on the compass.
     if (g5State.navSource == NAVSOURCE_GPS) return;
-    compass.setTextColor(TFT_GREEN, TFT_BLACK);
+    compass.setTextColor(TFT_GREEN);
     compass.loadFont(PrimaSans16);
     char mode[10];
 
@@ -677,7 +670,7 @@ void CC_G5_HSI::drawRadioNavApproachType()
     // This is drawn at the 2 o'clock position on the compass.
     if (g5State.navSource == NAVSOURCE_GPS) return;
 
-    compass.setTextColor(TFT_GREEN, TFT_BLACK);
+    compass.setTextColor(TFT_GREEN);
     compass.loadFont(PrimaSans16);
     char mode[10] = "\0";
 
@@ -710,9 +703,9 @@ void CC_G5_HSI::drawCDIScaleLabel()
 {
 
     if (g5State.navSource == NAVSOURCE_GPS) {
-        compass.setTextColor(TFT_MAGENTA, TFT_BLACK);
+        compass.setTextColor(TFT_MAGENTA);
     } else {
-        compass.setTextColor(TFT_GREEN, TFT_BLACK);
+        compass.setTextColor(TFT_GREEN);
     }
 
     compass.loadFont(PrimaSans16);
@@ -762,7 +755,7 @@ void CC_G5_HSI::drawCDISource()
 {
     if (g5State.navSource != NAVSOURCE_GPS) return;
 
-    compass.setTextColor(TFT_MAGENTA, TFT_BLACK);
+    compass.setTextColor(TFT_MAGENTA);
     compass.loadFont(PrimaSans16);
     compass.setTextDatum(BR_DATUM);
     compass.drawString("GPS", compass.width() / 2 - 20, compass.height() / 2 - 40);
@@ -776,7 +769,7 @@ void CC_G5_HSI::drawWPTAlert()
 
     // If the ete to next wp is less than 30 sec and getting lower, then show WPT reminder
     if (g5State.gpsEteWp < 30 && g5State.gpsEteWp > 10 && g5State.gpsEteWp <= lastETE && (millis() % 1000) > 300) {
-        compass.setTextColor(TFT_WHITE, TFT_BLACK);
+        compass.setTextColor(TFT_WHITE);
         compass.loadFont(PrimaSans16);
         compass.setTextDatum(BR_DATUM);
         compass.drawString("WPT", compass.width() / 2 - 20, compass.height() / 2 + 40);
@@ -801,12 +794,6 @@ void CC_G5_HSI::drawCompass()
     int   mediumTickWidth  = 1;
     int   smallTickWidth   = 1;
     float offsetAngle      = g5State.headingAngle - 0; // Initial offset angle in degrees
-
-    // Draw the outer circle
-    //    lcd.drawCircle(centerX, centerY, outerRadius, TFT_WHITE);
-
-    // Draw the inner circle NOT SURE WHEN TO DRAW THIS...MAYBE IF NO CDI?
-    //     compass.drawCircle(centerX, centerY, innerRadius, TFT_WHITE);
 
     // Draw ticks for all 360 degrees
     for (int i = 0; i < 360; i += 5) {
@@ -876,20 +863,30 @@ void CC_G5_HSI::drawCompass()
     }
 
     // Draw the V of the pointer. Gotta do it here to prevent flicker. FIXX
-    compass.drawLine(centerX - 12, 8, centerX, 17, DATA_BOX_OUTLINE_COLOR);
-    compass.drawLine(centerX, 17, centerX + 12, 8, DATA_BOX_OUTLINE_COLOR);
-
-    // Draw the big orange/yellow tik at the top about 2 px outside outer radius.
-    compass.drawWideLine(centerX, compass.height() / 2 - COMPASS_OUTER_RADIUS - 2, centerX, majorTickLength + (compass.height() / 2 - COMPASS_OUTER_RADIUS - 2), 2, TFT_ORANGE);
+    // Draw pointer triangle
+    const int tx2 = COMPASS_CENTER_X;
+    const int tx1 = tx2 - HEADING_POINTER_WIDTH / 2;
+    const int tx3 = tx2 + HEADING_POINTER_WIDTH / 2;
+    const int ty1 = 6;
+    const int ty2 = 17;
+    const int ty3 = ty1;
+    compass.fillTriangle(tx1, ty1, tx2, ty2, tx3, ty3, DATA_BOX_OUTLINE_COLOR);
+    compass.fillTriangle(tx1 + 2, ty1, tx2, ty2 - 2, tx3 - 2, ty3, TFT_BLACK);
 
     // draw the inner circle
     compass.drawCircle(centerX, centerY, innerRadius + 2, TFT_WHITE);
     compass.drawCircle(centerX, centerY, innerRadius + 1, TFT_WHITE);
 }
 
+void CC_G5_HSI::drawOrangeCenterTick()
+{
+    // Draw the big orange/yellow tik at the top about 2 px outside outer radius. FIXX needs to be drawn
+    compass.drawWideLine(COMPASS_CENTER_X, 18, COMPASS_CENTER_X, 32 + 18, 2, TFT_ORANGE);
+}
+
 void CC_G5_HSI::drawBearingPointer1()
 {
-    // draw the Bearing Pointer
+    // draw the Bearing Pointer if it's on
     if (g5Settings.bearingPointer1Source == 0) return;
 
     // draw the Bearing Pointer label
@@ -897,9 +894,9 @@ void CC_G5_HSI::drawBearingPointer1()
     if (hsiMenu.menuActive && hsiMenu.currentState == HSIMenu::MenuState::BROWSING) return;
 
     int navType = 0;
-    if (g5Settings.bearingPointer1Source == 2)
+    if (g5Settings.bearingPointer1Source == 1)
         navType = g5State.vloc1Type;
-    else if (g5Settings.bearingPointer1Source == 3)
+    else if (g5Settings.bearingPointer1Source == 2)
         navType = g5State.vloc2Type;
 
     char buf[10];
@@ -922,18 +919,18 @@ void CC_G5_HSI::drawBearingPointer1()
     }
 
     // Only draw the bearing pointer if it's VOR or GPS: 1 (or ADF and the ADF is valid 4)
-    if (navType == 2 || g5Settings.bearingPointer1Source == 1 || (g5Settings.bearingPointer1Source == 4 && g5State.adfValid)) {
+    if (navType == 2 || g5Settings.bearingPointer1Source == 3 || (g5Settings.bearingPointer1Source == 4 && g5State.adfValid)) {
         bearingPointer1.setBitmapColor(TFT_CYAN, TFT_BLACK);
         compass.setPivot(compass.width() / 2, compass.height() / 2);
         bearingPointer1.pushRotated(bearingPointer1Angle - g5State.headingAngle + 180, TFT_BLACK);
     }
 
     // Draw the info box in the lower left
-    if (g5Settings.bearingPointer1Source == 1) strcpy(buf, "GPS");
+    if (g5Settings.bearingPointer1Source == 3) strcpy(buf, "GPS");
     if (g5Settings.bearingPointer1Source == 4) strcpy(buf, "ADF");
-    bearingPointerBox1.fillRect(4, 23, 60, 25, TFT_BLACK); // numbers from inkscape
+    bearingPointerBox1.fillRect(4, 25, 60, 22, TFT_BLACK); // numbers from inkscape
     bearingPointerBox1.drawString(buf, 12, bearingPointerBox1.height() - 1);
-    bearingPointerBox1.pushSprite(X_OFFSET, Y_OFFSET + SCREEN_HEIGHT - dtkBox.height() - bearingPointerBox1.height() + 2, TFT_BLACK);
+    bearingPointerBox1.pushSprite(X_OFFSET, Y_OFFSET + SCREEN_HEIGHT - dtkBox.height() - bearingPointerBox1.height() + 2, TFT_TRANSPARENT_LIGHTBLACK);
 }
 
 void CC_G5_HSI::drawBearingPointer2()
@@ -947,9 +944,9 @@ void CC_G5_HSI::drawBearingPointer2()
     // Figure out correct labels.
 
     int navType;
-    if (g5Settings.bearingPointer2Source == 2)
+    if (g5Settings.bearingPointer2Source == 1)
         navType = g5State.vloc1Type;
-    else if (g5Settings.bearingPointer2Source == 3)
+    else if (g5Settings.bearingPointer2Source == 2)
         navType = g5State.vloc2Type;
 
     char buf[10];
@@ -974,11 +971,11 @@ void CC_G5_HSI::drawBearingPointer2()
         break;
     }
 
-    if (g5Settings.bearingPointer2Source == 1) strcpy(buf, "GPS");
+    if (g5Settings.bearingPointer2Source == 3) strcpy(buf, "GPS");
     if (g5Settings.bearingPointer2Source == 4) strcpy(buf, "ADF");
 
     // draw the actual Bearing Pointer, but only if it's a type that draws and is valid.
-    if (navType == 2 || g5Settings.bearingPointer2Source == 1 || (g5Settings.bearingPointer2Source == 4 && g5State.adfValid)) {
+    if (navType == 2 || g5Settings.bearingPointer2Source == 3 || (g5Settings.bearingPointer2Source == 4 && g5State.adfValid)) {
         bearingPointer2.setBitmapColor(TFT_CYAN, TFT_BLACK);
         compass.setPivot(compass.width() / 2, compass.height() / 2);
         bearingPointer2.pushRotated(bearingPointer2Angle - g5State.headingAngle + 180, TFT_BLACK);
@@ -987,9 +984,9 @@ void CC_G5_HSI::drawBearingPointer2()
     // Draw info box in lower right
     // But don't draw it if the glideslope is active.
     if (!g5State.gsiNeedleValid) {
-        bearingPointerBox2.fillRect(10, 25, 80, 22, TFT_BLACK); // numbers from inkscape
+        bearingPointerBox2.fillRect(15, 25, 75, 22, TFT_BLACK); // numbers from inkscape
         bearingPointerBox2.drawString(buf, bearingPointerBox2.width() - 12, bearingPointerBox2.height() - 1);
-        bearingPointerBox2.pushSprite(X_OFFSET + SCREEN_WIDTH - bearingPointerBox2.width(), Y_OFFSET + SCREEN_HEIGHT - headingBox.height() - bearingPointerBox2.height() + 2, TFT_BLACK);
+        bearingPointerBox2.pushSprite(X_OFFSET + SCREEN_WIDTH - bearingPointerBox2.width(), Y_OFFSET + SCREEN_HEIGHT - headingBox.height() - bearingPointerBox2.height() + 2, TFT_TRANSPARENT_LIGHTBLACK);
     }
 }
 
@@ -1052,12 +1049,12 @@ void CC_G5_HSI::drawCurrentHeading()
     lastHeading = hdgInteger;
 
     char hdgStr[6];
-    curHdg.fillRect(3, 2, curHdg.width() - 4, curHdg.height() - 4, TFT_BLACK);
+
+    curHdg.fillRect(3, 2, curHdg.width() - 6, curHdg.height() - 4, TFT_BLACK);
     sprintf(hdgStr, "%03d\xB0", hdgInteger);
 
     curHdg.drawString(hdgStr, curHdg.width() / 2, curHdg.height() / 2 + 1);
-    curHdg.pushSprite(&lcd, (SCREEN_WIDTH / 2) - curHdg.width() / 2, Y_OFFSET);
-    // We used to push it later. not sure why.
+    curHdg.pushSprite(&lcd, (SCREEN_WIDTH / 2) - curHdg.width() / 2 + HEADINGBOX_LEFT_SHIFT, Y_OFFSET);
 }
 
 void CC_G5_HSI::drawVORCourseBox()
@@ -1211,22 +1208,19 @@ void CC_G5_HSI::drawDistNextWaypoint()
     lastDist  = g5State.distNextWaypoint;
     lastValid = g5State.cdiNeedleValid;
 
-    distBox.setTextDatum(BL_DATUM);
-    distBox.setTextColor(TFT_WHITE);
-    distBox.loadFont(PrimaSans12);
-    distBox.drawString("DIST", 4, distBox.height());
-
     distBox.loadFont(PrimaSans18);
-    distBox.setTextColor(TFT_MAGENTA);
+    distBox.setTextDatum(BR_DATUM);
+    distBox.setTextSize(1.0);
+
     char buf[7];
     if (g5State.cdiNeedleValid)
         sprintf(buf, "%0.1f", g5State.distNextWaypoint);
     else
         sprintf(buf, "---.-");
     distBox.fillRect(distBox.width() - 105, 3, 100, distBox.height() - 6, TFT_BLACK);
-    distBox.setTextDatum(BR_DATUM);
     distBox.drawString(buf, distBox.width() - 28, distBox.height());
     distBox.loadFont(PrimaSans12);
+    distBox.setTextSize(0.8);
     distBox.setTextDatum(TL_DATUM);
     distBox.drawString("n", distBox.width() - 26, 1);
     distBox.drawString("m", distBox.width() - 26, 13);
@@ -1262,9 +1256,9 @@ void CC_G5_HSI::drawWind()
     } else {
         windArrow.pushRotated(((int)(g5State.windDir - g5State.headingAngle) + 180 + 360) % 360, TFT_BLACK);
         sprintf(buf, "%d KT", (int)(g5State.windSpeed + 0.5f));
-        windBox.drawString(buf, x_center, 33);
-        sprintf(buf, "%02d0\xB0", (int)(g5State.windDir + 0.5f) / 10);
         windBox.drawString(buf, x_center, 15);
+        sprintf(buf, "%02d0\xB0", (int)(g5State.windDir + 0.5f) / 10);
+        windBox.drawString(buf, x_center, 33);
     }
     windBox.pushSprite(X_OFFSET, Y_OFFSET);
 }
