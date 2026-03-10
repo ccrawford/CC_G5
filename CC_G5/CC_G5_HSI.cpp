@@ -148,7 +148,7 @@ void CC_G5_HSI::begin()
     lcd.fillScreen(TFT_BACKGROUND_COLOR);
     lcd.setTextColor(TFT_WHITE, TFT_BLACK);
     lcd.loadFont(PrimaSans18);
-    lcd.setClipRect(X_OFFSET, Y_OFFSET, SCREEN_WIDTH, SCREEN_HEIGHT);
+    // lcd.setClipRect(X_OFFSET, Y_OFFSET, SCREEN_WIDTH, SCREEN_HEIGHT);
 
     // Setup menu structure
 
@@ -207,8 +207,8 @@ void CC_G5_HSI::setupSprites()
     curHdg.drawRect(0, 0, curHdg.width(), curHdg.height(), DATA_BOX_OUTLINE_COLOR);
     curHdg.drawRect(1, 1, curHdg.width() - 2, curHdg.height() - 2, DATA_BOX_OUTLINE_COLOR);
     // Black out the part of the border for the triangle pointer. Pointer is drawn by compass, so leaving it intact causes flicker.
-    curHdg.drawFastHLine(curHdg.width()/2 - HEADING_POINTER_WIDTH/2 -2,curHdg.height()-1, HEADING_POINTER_WIDTH-6, TFT_BLACK); 
-    curHdg.drawFastHLine(curHdg.width()/2 - HEADING_POINTER_WIDTH/2 -3,curHdg.height()-2, HEADING_POINTER_WIDTH-4, TFT_BLACK); 
+    curHdg.drawFastHLine(curHdg.width() / 2 - HEADING_POINTER_WIDTH / 2 - 2, curHdg.height() - 1, HEADING_POINTER_WIDTH - 6, TFT_BLACK);
+    curHdg.drawFastHLine(curHdg.width() / 2 - HEADING_POINTER_WIDTH / 2 - 3, curHdg.height() - 2, HEADING_POINTER_WIDTH - 4, TFT_BLACK);
 
     glideDeviationScale.createSprite(GSDEVIATION_IMG_WIDTH, GSDEVIATION_IMG_HEIGHT);
     glideDeviationScale.pushImage(0, 0, GSDEVIATION_IMG_WIDTH, GSDEVIATION_IMG_HEIGHT, GSDEVIATION_IMG_DATA);
@@ -359,16 +359,16 @@ void CC_G5_HSI::updateCommon()
     // Clear the compass sprite. Use MAIN_TRANSPARENAT as the transparent color. It's not used in the display.
     compass.fillSprite(TFT_MAIN_TRANSPARENT);
 
-    compass.fillCircle(compass.width() / 2, compass.height() / 2, COMPASS_OUTER_RADIUS + 15, TFT_BLACK);  // Try this to reduce heading box flicker
+    compass.fillCircle(COMPASS_CENTER_X, COMPASS_CENTER_Y, COMPASS_OUTER_RADIUS + 15, TFT_BLACK); // Try this to reduce heading box flicker
 
     drawHeadingBug();
     drawCompass();
 
-    drawCDIBar(); // CDI bar below other labels
     drawDeviationScale();
     drawCDIScaleLabel();
     drawCDISource();
     drawNavCDILabel();
+    drawCDIBar(); 
 
     drawWPTAlert();
     drawCurrentTrack();
@@ -393,7 +393,9 @@ void CC_G5_HSI::updateCommon()
 
     drawShutdown(&compass);
 
-    compass.pushSprite(&lcd, (SCREEN_WIDTH - compass.width()) / 2, Y_OFFSET + 18, TFT_MAIN_TRANSPARENT);
+    compass.drawRect(0,0,COMPASS_WIDTH, COMPASS_HEIGHT, TFT_RED);
+
+    compass.pushSprite(&lcd, X_OFFSET + COMPASS_X_OFFSET, Y_OFFSET + COMPASS_Y_OFFSET, TFT_MAIN_TRANSPARENT);
 
     drawGlideSlope();
 
@@ -624,12 +626,12 @@ void CC_G5_HSI::drawCompassOuterMarkers()
     for (int angle : angles) {
 
         // float innerX = compassCenterX + (radius) * (float)cos(angle * PIf / 180.0f);
-        float innerX = compass.width() / 2 + (radius) * (float)cos(angle * PIf / 180.0f);
+        float innerX = COMPASS_CENTER_X + (radius) * (float)cos(angle * PIf / 180.0f);
         // float innerY = compassCenterY + (radius) * (float)sin(angle * PIf / 180.0f);
-        float innerY = compass.height() / 2 + (radius) * (float)sin(angle * PIf / 180.0f);
+        float innerY = COMPASS_CENTER_Y + (radius) * (float)sin(angle * PIf / 180.0f);
 
-        float outerX = compass.width() / 2 + (radius + tickLength) * (float)cos(angle * PIf / 180.0f);
-        float outerY = compass.height() / 2 + (radius + tickLength) * (float)sin(angle * PIf / 180.0f);
+        float outerX = COMPASS_CENTER_X + (radius + tickLength) * (float)cos(angle * PIf / 180.0f);
+        float outerY = COMPASS_CENTER_Y + (radius + tickLength) * (float)sin(angle * PIf / 180.0f);
 
         // Draw the tick mark
         compass.drawWideLine(outerX, outerY, innerX, innerY, 2, 0xFFFFFF);
@@ -665,7 +667,7 @@ void CC_G5_HSI::drawNavCDILabel()
     }
 
     compass.setTextDatum(BR_DATUM);
-    compass.drawString(mode, compass.width() / 2 - 17, compass.height() / 2 - 40);
+    compass.drawString(mode, COMPASS_CENTER_X - 17, COMPASS_CENTER_Y- 40);
 }
 
 void CC_G5_HSI::drawRadioNavApproachType()
@@ -698,8 +700,8 @@ void CC_G5_HSI::drawRadioNavApproachType()
 
     compass.setTextDatum(BL_DATUM);
     // Clear the old text
-    compass.fillRect(compass.width() / 2 + 3, compass.height() / 2 - 60, 50, 20, TFT_BLACK);
-    compass.drawString(mode, compass.width() / 2 + 10, compass.height() / 2 - 40);
+    compass.fillRect(COMPASS_CENTER_X + 3, COMPASS_CENTER_Y - 60, 50, 20, TFT_BLACK);
+    compass.drawString(mode, COMPASS_CENTER_X + 10, COMPASS_CENTER_Y - 40);
 }
 
 void CC_G5_HSI::drawCDIScaleLabel()
@@ -715,7 +717,7 @@ void CC_G5_HSI::drawCDIScaleLabel()
     char mode[10];
 
     // There's no real good way to determine DEP vs TERM vs TDEP vs TARR vs ENR vs OCN.
-    // Really, all we have is a scaling factor. 
+    // Really, all we have is a scaling factor.
     const char *const CDI_LABELS[] = {
         "DEP",    // 0: Departure
         "TERM",   // 1: Terminal
@@ -746,13 +748,13 @@ void CC_G5_HSI::drawCDIScaleLabel()
     }
 
     compass.setTextDatum(BL_DATUM);
-    compass.fillRect(compass.width() / 2 + 10, compass.height() / 2 - 60, 50, 20, TFT_BLACK);
-    compass.drawString(mode, compass.width() / 2 + 10, compass.height() / 2 - 40);
+    compass.fillRect(COMPASS_CENTER_X + 10, COMPASS_CENTER_Y - 63, 57, 20, TFT_BLACK);
+    compass.drawString(mode, COMPASS_CENTER_X + 10, COMPASS_CENTER_Y - 40);
 
     // if obs is on, put indicator up in lower right of inner circle.
     if (g5State.obsModeOn) {
         compass.setTextDatum(TL_DATUM);
-        compass.drawString("OBS", compass.width() / 2 + 17, compass.height() / 2 + 40);
+        compass.drawString("OBS", COMPASS_CENTER_X + 17, COMPASS_CENTER_Y + 40);
     }
 }
 
@@ -763,7 +765,7 @@ void CC_G5_HSI::drawCDISource()
     compass.setTextColor(TFT_MAGENTA);
     compass.loadFont(PrimaSans16);
     compass.setTextDatum(BR_DATUM);
-    compass.drawString("GPS", compass.width() / 2 - 20, compass.height() / 2 - 40);
+    compass.drawString("GPS", COMPASS_CENTER_X - 20, COMPASS_CENTER_Y - 40);
 }
 
 void CC_G5_HSI::drawWPTAlert()
@@ -777,7 +779,7 @@ void CC_G5_HSI::drawWPTAlert()
         compass.setTextColor(TFT_WHITE);
         compass.loadFont(PrimaSans16);
         compass.setTextDatum(BR_DATUM);
-        compass.drawString("WPT", compass.width() / 2 - 20, compass.height() / 2 + 40);
+        compass.drawString("WPT", COMPASS_CENTER_X - 20, COMPASS_CENTER_Y + 40);
 
         // Turn on the WPT blinker.
     }
@@ -788,8 +790,8 @@ void CC_G5_HSI::drawWPTAlert()
 void CC_G5_HSI::drawCompass()
 {
 
-    int   centerX          = compass.width() / 2;
-    int   centerY          = compass.height() / 2;
+    int   centerX          = COMPASS_CENTER_X;
+    int   centerY          = COMPASS_CENTER_Y;
     int   outerRadius      = COMPASS_OUTER_RADIUS; // Leave some margin
     int   innerRadius      = COMPASS_INNER_RADIUS; // Inner circle radius
     int   majorTickLength  = 22;
@@ -926,7 +928,7 @@ void CC_G5_HSI::drawBearingPointer1()
     // Only draw the bearing pointer if it's VOR or GPS: 1 (or ADF and the ADF is valid 4)
     if (navType == 2 || g5Settings.bearingPointer1Source == 3 || (g5Settings.bearingPointer1Source == 4 && g5State.adfValid)) {
         bearingPointer1.setBitmapColor(TFT_CYAN, TFT_BLACK);
-        compass.setPivot(compass.width() / 2, compass.height() / 2);
+        compass.setPivot(COMPASS_CENTER_X, COMPASS_CENTER_Y);
         bearingPointer1.pushRotated(bearingPointer1Angle - g5State.headingAngle + 180, TFT_BLACK);
     }
 
@@ -982,7 +984,7 @@ void CC_G5_HSI::drawBearingPointer2()
     // draw the actual Bearing Pointer, but only if it's a type that draws and is valid.
     if (navType == 2 || g5Settings.bearingPointer2Source == 3 || (g5Settings.bearingPointer2Source == 4 && g5State.adfValid)) {
         bearingPointer2.setBitmapColor(TFT_CYAN, TFT_BLACK);
-        compass.setPivot(compass.width() / 2, compass.height() / 2);
+        compass.setPivot(COMPASS_CENTER_X, COMPASS_CENTER_Y);
         bearingPointer2.pushRotated(bearingPointer2Angle - g5State.headingAngle + 180, TFT_BLACK);
     }
 
@@ -1023,16 +1025,15 @@ void CC_G5_HSI::drawGlideSlope()
 
     const float scaleMax    = 127.0;
     const float scaleMin    = -127.0;
-    const float scaleOffset = 22.0; // Distance the scale starts from top of sprite.
-    const int centerY = 132;    // center point of deviation scale sprite.
-    const float scaleFactor = 0.84375;    // 216px/256deviation 0.84 pix per deviation
-
+    const float scaleOffset = 22.0;    // Distance the scale starts from top of sprite.
+    const int   centerY     = 132;     // center point of deviation scale sprite.
+    const float scaleFactor = 0.84375; // 216px/256deviation 0.84 pix per deviation
 
     // Refill the sprite to overwrite old diamond.
     glideDeviationScale.fillSprite(TFT_BLACK);
     glideDeviationScale.pushImage(0, 0, GSDEVIATION_IMG_WIDTH, GSDEVIATION_IMG_HEIGHT, GSDEVIATION_IMG_DATA);
 
-    int markerCenterPosition = centerY + (int)(g5State.gsiNeedle*scaleFactor) - (deviationDiamond.height() / 2.0);
+    int markerCenterPosition = centerY + (int)(g5State.gsiNeedle * scaleFactor) - (deviationDiamond.height() / 2.0);
 
     if (g5State.navSource == NAVSOURCE_GPS) {
         glideDeviationScale.setTextColor(TFT_MAGENTA);
@@ -1050,13 +1051,13 @@ void CC_G5_HSI::drawGlideSlope()
 
 void CC_G5_HSI::drawPlaneIcon()
 {
-    compass.drawBitmap((compass.width() / 2) - (PLANEICON_IMG_WIDTH / 2), (compass.height() / 2) - (PLANEICON_IMG_HEIGHT / 2), PLANEICON_IMG_DATA, PLANEICON_IMG_WIDTH, PLANEICON_IMG_HEIGHT, TFT_WHITE);
+    compass.drawBitmap((COMPASS_CENTER_X) - (PLANEICON_IMG_WIDTH / 2), (COMPASS_CENTER_Y) - (PLANEICON_IMG_HEIGHT / 2), PLANEICON_IMG_DATA, PLANEICON_IMG_WIDTH, PLANEICON_IMG_HEIGHT, TFT_WHITE);
 }
 
 void CC_G5_HSI::drawDeviationScale()
 {
     if (!g5State.cdiNeedleValid) return;
-    compass.setPivot(compass.width() / 2, compass.height() / 2);
+    compass.setPivot(COMPASS_CENTER_X, COMPASS_CENTER_Y);
     deviationScale.pushRotated(&compass, (g5State.cdiDirection - g5State.headingAngle), TFT_BLACK);
 }
 
@@ -1107,7 +1108,7 @@ void CC_G5_HSI::drawVORCourseBox()
 void CC_G5_HSI::drawCDIPointer()
 {
     if (!g5State.cdiNeedleValid) return;
-    compass.setPivot(compass.width() / 2, compass.height() / 2);
+    compass.setPivot(COMPASS_CENTER_X, COMPASS_CENTER_Y);
     if (g5State.navSource == NAVSOURCE_GPS) {
         cdiPtr.pushRotated(&compass, g5State.cdiDirection - g5State.headingAngle, TFT_WHITE);
     } else {
@@ -1120,7 +1121,7 @@ void CC_G5_HSI::drawCurrentTrack()
     // Draw the magenta triangle at the end of the dashed line
     // I think this is valid as long as our airspeed is decent.
     if (g5State.groundSpeed < 20) return;
-    compass.setPivot(compass.width() / 2, compass.height() / 2);
+    compass.setPivot(COMPASS_CENTER_X, COMPASS_CENTER_Y);
     currentTrackPtr.pushRotated(&compass, g5State.groundTrack - g5State.headingAngle, TFT_BLACK);
 }
 
@@ -1144,12 +1145,12 @@ void CC_G5_HSI::drawCDIBar()
         barAngle = g5State.obsAngle;
 
     float pixelOffset = g5State.cdiOffset * (float)DEVIATIONSCALE_IMG_WIDTH / 248; // needs to move a little more
-    compass.setPivot(compass.width() / 2 + (pixelOffset * (float)cos((barAngle - g5State.headingAngle) * PIf / 180.0f)),
-                     (compass.height() / 2 + (pixelOffset * (float)sin((barAngle - g5State.headingAngle) * PIf / 180.0f))));
+    compass.setPivot(COMPASS_CENTER_X + (pixelOffset * (float)cos((barAngle - g5State.headingAngle) * PIf / 180.0f)),
+                     (COMPASS_CENTER_Y + (pixelOffset * (float)sin((barAngle - g5State.headingAngle) * PIf / 180.0f))));
     cdiBar.setPivot(cdiBar.width() / 2, cdiBar.height() / 2); // Pivot around the middle of the sprite.
     cdiBar.pushRotated(&compass, barAngle - g5State.headingAngle);
 
-    compass.setPivot(compass.width() / 2, compass.height() / 2);
+    compass.setPivot(COMPASS_CENTER_X, COMPASS_CENTER_Y);
 
     toFrom.setPivot(TOFROM_IMG_WIDTH / 2, 46); // It's actually really close to the pivot. Was 86
     // Fix: If we're on an ILS or localizer approach, we don't draw this.
@@ -1159,7 +1160,7 @@ void CC_G5_HSI::drawCDIBar()
 
 void CC_G5_HSI::drawHeadingBug()
 {
-    compass.setPivot(compass.width() / 2, compass.height() / 2); // Center of Compass
+    compass.setPivot(COMPASS_CENTER_X, COMPASS_CENTER_Y); // Center of Compass
     headingBug.pushRotated(&compass, g5State.headingBugAngle - g5State.headingAngle, TFT_WHITE);
 }
 

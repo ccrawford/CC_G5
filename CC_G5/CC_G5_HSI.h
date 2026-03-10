@@ -14,9 +14,11 @@
 #define TFT_BACKGROUND_COLOR TFT_BLACK
 
 #define COMPASS_WIDTH    406
-#define COMPASS_HEIGHT   360
+#define COMPASS_HEIGHT   342
 #define COMPASS_CENTER_X 203 // In compass coordinates
 #define COMPASS_CENTER_Y 180 // In compass coordinates
+#define COMPASS_Y_OFFSET 18
+#define COMPASS_X_OFFSET 37 // (SCREEN_WIDTH - COMPASS_WIDTH) / 2
 
 #define COMPASS_OUTER_RADIUS 157
 #define COMPASS_INNER_RADIUS 91

@@ -100,7 +100,7 @@
       {
         "id": 33,
         "Label": "CDI Scale Label",
-        "description": "CDI scale type (ENR, TERM, LPV, etc.)"
+        "description": "CDI scale type (4:ENR, 1:TERM, 12:LPV, 6:LNAV, 19: blank, others)"
       },
       {
         "id": 34,
