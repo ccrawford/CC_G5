@@ -49,8 +49,8 @@ LGFX_Sprite distBox(&lcd);
 LGFX_Sprite dtkBox(&lcd);
 LGFX_Sprite bearingPointer1(&compass);
 LGFX_Sprite bearingPointer2(&compass);
-LGFX_Sprite bearingPointerBox1(&lcd);
-LGFX_Sprite bearingPointerBox2(&lcd);
+LGFX_Sprite bearingPointerBox1(&compass);    // We don't really need these. Could draw direct to Compass.
+LGFX_Sprite bearingPointerBox2(&compass);
 
 LGFX_Sprite batteryHolderSprite(&lcd);
 LGFX_Sprite courseBox(&lcd);
@@ -148,7 +148,7 @@ void CC_G5_HSI::begin()
     lcd.fillScreen(TFT_BACKGROUND_COLOR);
     lcd.setTextColor(TFT_WHITE, TFT_BLACK);
     lcd.loadFont(PrimaSans18);
-    // lcd.setClipRect(X_OFFSET, Y_OFFSET, SCREEN_WIDTH, SCREEN_HEIGHT);
+    lcd.setClipRect(X_OFFSET, Y_OFFSET, SCREEN_WIDTH, SCREEN_HEIGHT);
 
     // Setup menu structure
 
@@ -303,6 +303,11 @@ void CC_G5_HSI::setupSprites()
     windArrow.createSprite(WINDARROW_IMG_WIDTH, WINDARROW_IMG_HEIGHT);
     windArrow.setBuffer(const_cast<std::uint8_t *>(WINDARROW_IMG_DATA), WINDARROW_IMG_WIDTH, WINDARROW_IMG_HEIGHT);
     windArrow.setPivot(WINDARROW_IMG_WIDTH / 2, WINDARROW_IMG_HEIGHT / 2);
+
+    toFrom.setColorDepth(8);
+    toFrom.createSprite(TOFROM_IMG_WIDTH, TOFROM_IMG_HEIGHT);
+    toFrom.pushImage(0,0, TOFROM_IMG_WIDTH, TOFROM_IMG_HEIGHT, TOFROM_IMG_DATA);
+    toFrom.setPivot(TOFROM_IMG_WIDTH / 2, 86);
 }
 
 void CC_G5_HSI::setupCompassSprites()
@@ -346,8 +351,8 @@ void CC_G5_HSI::setupCompassSprites()
     headingBug.setBuffer(const_cast<std::uint16_t *>(HEADINGBUGHSI_IMG_DATA), HEADINGBUGHSI_IMG_WIDTH, HEADINGBUGHSI_IMG_HEIGHT, 16);
     headingBug.setPivot(HEADINGBUGHSI_IMG_WIDTH / 2, HEADINGBUGHSI_IMG_HEIGHT + COMPASS_OUTER_RADIUS);
 
-    toFrom.setBuffer(const_cast<std::uint16_t *>(TOFROM_IMG_DATA), TOFROM_IMG_WIDTH, TOFROM_IMG_HEIGHT, 16);
-    toFrom.setPivot(TOFROM_IMG_WIDTH / 2, 86);
+//    toFrom.setBuffer(const_cast<std::uint16_t *>(TOFROM_IMG_DATA), TOFROM_IMG_WIDTH, TOFROM_IMG_HEIGHT, 16);
+ 
 }
 
 void CC_G5_HSI::updateCommon()
@@ -361,6 +366,8 @@ void CC_G5_HSI::updateCommon()
 
     compass.fillCircle(COMPASS_CENTER_X, COMPASS_CENTER_Y, COMPASS_OUTER_RADIUS + 15, TFT_BLACK); // Try this to reduce heading box flicker
 
+    drawBearingPointer1();
+    drawBearingPointer2();
     drawHeadingBug();
     drawCompass();
 
@@ -377,8 +384,6 @@ void CC_G5_HSI::updateCommon()
     drawCurrentHeading();
 
     // drawHeadingBug();
-    drawBearingPointer1();
-    drawBearingPointer2();
 
     // Draw adjustment popup onto compass before pushing to LCD
     // if (menu.currentState == MenuState::ADJUSTING) {
@@ -393,7 +398,8 @@ void CC_G5_HSI::updateCommon()
 
     drawShutdown(&compass);
 
-    compass.drawRect(0,0,COMPASS_WIDTH, COMPASS_HEIGHT, TFT_RED);
+    // Debug rectangle
+    // compass.drawRect(0,0,COMPASS_WIDTH, COMPASS_HEIGHT, TFT_RED);
 
     compass.pushSprite(&lcd, X_OFFSET + COMPASS_X_OFFSET, Y_OFFSET + COMPASS_Y_OFFSET, TFT_MAIN_TRANSPARENT);
 
@@ -602,13 +608,15 @@ void CC_G5_HSI::setNavSource()
         cdiPtr.setBuffer(const_cast<std::uint16_t *>(CDIPOINTER_IMG_DATA), CDIPOINTER_IMG_WIDTH, CDIPOINTER_IMG_HEIGHT, 16);
         cdiBar.setBuffer(const_cast<std::uint16_t *>(CDIBAR_IMG_DATA), CDIBAR_IMG_WIDTH, CDIBAR_IMG_HEIGHT, 16);
         // deviationDiamond.setBuffer(const_cast<std::uint8_t*>(DIAMONDBITMAP_IMG_DATA), DIAMONDBITMAP_IMG_WIDTH, DIAMONDBITMAP_IMG_HEIGHT, );
-        toFrom.setBuffer(const_cast<std::uint16_t *>(TOFROM_IMG_DATA), TOFROM_IMG_WIDTH, TOFROM_IMG_HEIGHT, 16);
-
+        //toFrom.setBuffer(const_cast<std::uint16_t *>(TOFROM_IMG_DATA), TOFROM_IMG_WIDTH, TOFROM_IMG_HEIGHT, 16);
+        toFrom.pushImage(0,0, TOFROM_IMG_WIDTH, TOFROM_IMG_HEIGHT, TOFROM_IMG_DATA);
+        
     } else if (g5State.navSource == NAVSOURCE_NAV) {
         cdiPtr.setBuffer(const_cast<std::uint16_t *>(CDIPOINTERGREEN_IMG_DATA), CDIPOINTERGREEN_IMG_WIDTH, CDIPOINTERGREEN_IMG_HEIGHT, 16);
         cdiBar.setBuffer(const_cast<std::uint16_t *>(CDIBARGREEN_IMG_DATA), CDIBARGREEN_IMG_WIDTH, CDIBARGREEN_IMG_HEIGHT, 16);
         // deviationDiamond.setBuffer(const_cast<std::uint8_t*>(DIAMONDBITMAP_IMG_DATA), DIAMONDBITMAP_IMG_WIDTH, DIAMONDBITMAP_IMG_HEIGHT);
-        toFrom.setBuffer(const_cast<std::uint16_t *>(TOFROMGREEN_IMG_DATA), TOFROMGREEN_IMG_WIDTH, TOFROMGREEN_IMG_HEIGHT, 16);
+        //toFrom.setBuffer(const_cast<std::uint16_t *>(TOFROMGREEN_IMG_DATA), TOFROMGREEN_IMG_WIDTH, TOFROMGREEN_IMG_HEIGHT, 16);
+        toFrom.pushImage(0,0, TOFROM_IMG_WIDTH, TOFROM_IMG_HEIGHT, TOFROMGREEN_IMG_DATA);
     }
 
     lastNavSource = g5State.navSource;
@@ -937,7 +945,8 @@ void CC_G5_HSI::drawBearingPointer1()
     if (g5Settings.bearingPointer1Source == 4) strcpy(buf, "ADF");
     bearingPointerBox1.fillRect(4, 25, 60, 22, TFT_BLACK); // numbers from inkscape
     bearingPointerBox1.drawString(buf, 12, bearingPointerBox1.height() - 1);
-    bearingPointerBox1.pushSprite(X_OFFSET, Y_OFFSET + SCREEN_HEIGHT - dtkBox.height() - bearingPointerBox1.height() + 2, TFT_TRANSPARENT_LIGHTBLACK);
+    // bearingPointerBox1.pushSprite(X_OFFSET, Y_OFFSET + SCREEN_HEIGHT - dtkBox.height() - bearingPointerBox1.height() + 2, TFT_TRANSPARENT_LIGHTBLACK);
+    bearingPointerBox1.pushSprite(0, COMPASS_HEIGHT - dtkBox.height() - bearingPointerBox1.height() + 2);
 }
 
 void CC_G5_HSI::drawBearingPointer2()
@@ -991,9 +1000,9 @@ void CC_G5_HSI::drawBearingPointer2()
     // Draw info box in lower right
     // But don't draw it if the glideslope is active.
     if (!g5State.gsiNeedleValid) {
-        bearingPointerBox2.fillRect(15, 25, 75, 22, TFT_BLACK); // numbers from inkscape
+        bearingPointerBox2.fillRect(15, 25, 81, 22, TFT_BLACK); // numbers from inkscape
         bearingPointerBox2.drawString(buf, bearingPointerBox2.width() - 12, bearingPointerBox2.height() - 1);
-        bearingPointerBox2.pushSprite(X_OFFSET + SCREEN_WIDTH - bearingPointerBox2.width(), Y_OFFSET + SCREEN_HEIGHT - headingBox.height() - bearingPointerBox2.height() + 2, TFT_TRANSPARENT_LIGHTBLACK);
+        bearingPointerBox2.pushSprite(X_OFFSET + COMPASS_WIDTH - bearingPointerBox2.width(), COMPASS_HEIGHT - headingBox.height() - bearingPointerBox2.height() + 2);
     }
 }
 
@@ -1154,7 +1163,7 @@ void CC_G5_HSI::drawCDIBar()
 
     toFrom.setPivot(TOFROM_IMG_WIDTH / 2, 46); // It's actually really close to the pivot. Was 86
     // Fix: If we're on an ILS or localizer approach, we don't draw this.
-    if (g5State.gpsApproachType == 99)
+    if (g5State.gpsApproachType != 99)
         toFrom.pushRotated(&compass, barAngle - g5State.headingAngle + (g5State.cdiToFrom == 2 ? 180 : 0), TFT_WHITE);
 }
 
