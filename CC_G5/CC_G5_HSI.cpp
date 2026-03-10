@@ -11,6 +11,7 @@
 #include "Sprites\currentTrackPointer.h"
 #include "Sprites\headingBug.h"
 #include "Sprites\headingBugSmall.h"
+#include "Sprites\headingBugHSI.h"
 #include "Sprites\deviationScale.h"
 #include "Sprites\gsDeviation.h"
 #include "Sprites\deviationDiamond.h"
@@ -205,6 +206,9 @@ void CC_G5_HSI::setupSprites()
 
     curHdg.drawRect(0, 0, curHdg.width(), curHdg.height(), DATA_BOX_OUTLINE_COLOR);
     curHdg.drawRect(1, 1, curHdg.width() - 2, curHdg.height() - 2, DATA_BOX_OUTLINE_COLOR);
+    // Black out the part of the border for the triangle pointer. Pointer is drawn by compass, so leaving it intact causes flicker.
+    curHdg.drawFastHLine(curHdg.width()/2 - HEADING_POINTER_WIDTH/2 -2,curHdg.height()-1, HEADING_POINTER_WIDTH-6, TFT_BLACK); 
+    curHdg.drawFastHLine(curHdg.width()/2 - HEADING_POINTER_WIDTH/2 -3,curHdg.height()-2, HEADING_POINTER_WIDTH-4, TFT_BLACK); 
 
     glideDeviationScale.createSprite(GSDEVIATION_IMG_WIDTH, GSDEVIATION_IMG_HEIGHT);
     glideDeviationScale.pushImage(0, 0, GSDEVIATION_IMG_WIDTH, GSDEVIATION_IMG_HEIGHT, GSDEVIATION_IMG_DATA);
@@ -339,8 +343,8 @@ void CC_G5_HSI::setupCompassSprites()
         deviationScale.setPivot(deviationScale.width() / 2, deviationScale.height() / 2);
     }
 
-    headingBug.setBuffer(const_cast<std::uint16_t *>(HEADINGBUG_IMG_DATA), HEADINGBUG_IMG_WIDTH, HEADINGBUG_IMG_HEIGHT, 16);
-    headingBug.setPivot(HEADINGBUG_IMG_WIDTH / 2, HEADINGBUG_IMG_HEIGHT + COMPASS_OUTER_RADIUS);
+    headingBug.setBuffer(const_cast<std::uint16_t *>(HEADINGBUGHSI_IMG_DATA), HEADINGBUGHSI_IMG_WIDTH, HEADINGBUGHSI_IMG_HEIGHT, 16);
+    headingBug.setPivot(HEADINGBUGHSI_IMG_WIDTH / 2, HEADINGBUGHSI_IMG_HEIGHT + COMPASS_OUTER_RADIUS);
 
     toFrom.setBuffer(const_cast<std::uint16_t *>(TOFROM_IMG_DATA), TOFROM_IMG_WIDTH, TOFROM_IMG_HEIGHT, 16);
     toFrom.setPivot(TOFROM_IMG_WIDTH / 2, 86);
@@ -352,11 +356,10 @@ void CC_G5_HSI::updateCommon()
     // setNavSource() has an internal guard so it's a no-op when the source hasn't changed.
     setNavSource();
 
-    // Clear the compass sprite. Use RED as the transparent color. It's not used in the display.
-    // compass.fillSprite(TFT_BLACK);
+    // Clear the compass sprite. Use MAIN_TRANSPARENAT as the transparent color. It's not used in the display.
     compass.fillSprite(TFT_MAIN_TRANSPARENT);
 
-    compass.fillCircle(compass.width() / 2, compass.height() / 2, COMPASS_OUTER_RADIUS + 16, TFT_BLACK);
+    compass.fillCircle(compass.width() / 2, compass.height() / 2, COMPASS_OUTER_RADIUS + 15, TFT_BLACK);  // Try this to reduce heading box flicker
 
     drawHeadingBug();
     drawCompass();
@@ -538,7 +541,7 @@ void CC_G5_HSI::updateInputValues()
 {
     g5State.headingAngle = smoothDirection(g5State.rawHeadingAngle, g5State.headingAngle, 0.15f, 0.2f);
     g5State.cdiDirection = smoothDirection(g5State.rawCdiDirection, g5State.cdiDirection, 0.15f, 0.5f);
-    g5State.gsiNeedle    = smoothInput(g5State.rawGsiNeedle, g5State.gsiNeedle, 0.15f, 1.0f);
+    g5State.gsiNeedle    = smoothInput(g5State.rawGsiNeedle, g5State.gsiNeedle, 0.15f, 0.1f);
     g5State.cdiOffset    = smoothInput(g5State.rawCdiOffset, g5State.cdiOffset, 0.15f, 1.0f);
     g5State.windDir      = smoothInput(g5State.rawWindDir, g5State.windDir, 0.15f, 5.0f);
     g5State.windSpeed    = smoothInput(g5State.rawWindSpeed, g5State.windSpeed, 0.15f, 0.2f);
@@ -711,6 +714,8 @@ void CC_G5_HSI::drawCDIScaleLabel()
     compass.loadFont(PrimaSans16);
     char mode[10];
 
+    // There's no real good way to determine DEP vs TERM vs TDEP vs TARR vs ENR vs OCN.
+    // Really, all we have is a scaling factor. 
     const char *const CDI_LABELS[] = {
         "DEP",    // 0: Departure
         "TERM",   // 1: Terminal
@@ -993,7 +998,20 @@ void CC_G5_HSI::drawBearingPointer2()
 void CC_G5_HSI::drawGlideSlope()
 {
 
+    static bool wasValid = false;
+
+    if (wasValid && !g5State.gsiNeedleValid) {
+        // clear and push sprite.
+        glideDeviationScale.fillSprite(TFT_BLACK);
+        glideDeviationScale.pushSprite(&lcd, lcd.width() - glideDeviationScale.width() - 24, Y_OFFSET + 7 + COMPASS_CENTER_Y - glideDeviationScale.height() / 2);
+        wasValid = false;
+    }
+
     if (!g5State.gsiNeedleValid) return;
+
+    wasValid = true;
+
+    // Since this is drawn on the LCD, we need to erase it if it was valid and is no longer.
 
     // To Do: Set appropriate bug position
     //        Figure out if we skip this because wrong mode.
@@ -1006,25 +1024,28 @@ void CC_G5_HSI::drawGlideSlope()
     const float scaleMax    = 127.0;
     const float scaleMin    = -127.0;
     const float scaleOffset = 22.0; // Distance the scale starts from top of sprite.
+    const int centerY = 132;    // center point of deviation scale sprite.
+    const float scaleFactor = 0.84375;    // 216px/256deviation 0.84 pix per deviation
+
 
     // Refill the sprite to overwrite old diamond.
     glideDeviationScale.fillSprite(TFT_BLACK);
     glideDeviationScale.pushImage(0, 0, GSDEVIATION_IMG_WIDTH, GSDEVIATION_IMG_HEIGHT, GSDEVIATION_IMG_DATA);
 
-    int markerCenterPosition = (int)(scaleOffset + ((g5State.gsiNeedle + scaleMax) * (190.0 / (scaleMax - scaleMin))) - (deviationDiamond.height() / 2.0));
+    int markerCenterPosition = centerY + (int)(g5State.gsiNeedle*scaleFactor) - (deviationDiamond.height() / 2.0);
 
     if (g5State.navSource == NAVSOURCE_GPS) {
         glideDeviationScale.setTextColor(TFT_MAGENTA);
-        glideDeviationScale.drawString("G", glideDeviationScale.width() / 2, 10);
+        glideDeviationScale.drawString("G", glideDeviationScale.width() / 2, 13);
         glideDeviationScale.drawBitmap(1, markerCenterPosition, DIAMONDBITMAP_IMG_DATA, DIAMONDBITMAP_IMG_WIDTH, DIAMONDBITMAP_IMG_HEIGHT, TFT_MAGENTA);
 
     } else {
         glideDeviationScale.setTextColor(TFT_GREEN);
-        glideDeviationScale.drawString("L", glideDeviationScale.width() / 2, 10);
+        glideDeviationScale.drawString("L", glideDeviationScale.width() / 2, 13);
         glideDeviationScale.drawBitmap(1, markerCenterPosition, DIAMONDBITMAP_IMG_DATA, DIAMONDBITMAP_IMG_WIDTH, DIAMONDBITMAP_IMG_HEIGHT, TFT_GREEN);
     }
 
-    glideDeviationScale.pushSprite(&lcd, lcd.width() - glideDeviationScale.width() - 2, lcd.height() / 2 - glideDeviationScale.height() / 2);
+    glideDeviationScale.pushSprite(&lcd, lcd.width() - glideDeviationScale.width() - 24, Y_OFFSET + 7 + COMPASS_CENTER_Y - glideDeviationScale.height() / 2);
 }
 
 void CC_G5_HSI::drawPlaneIcon()
@@ -1045,7 +1066,7 @@ void CC_G5_HSI::drawCurrentHeading()
     static int lastHeading = -999;
 
     int hdgInteger = round(g5State.headingAngle);
-    if (hdgInteger == lastHeading) return;
+    // if (hdgInteger == lastHeading) return;
     lastHeading = hdgInteger;
 
     char hdgStr[6];
@@ -1122,7 +1143,7 @@ void CC_G5_HSI::drawCDIBar()
     else
         barAngle = g5State.obsAngle;
 
-    float pixelOffset = g5State.cdiOffset * (float)DEVIATIONSCALE_IMG_WIDTH / 254;
+    float pixelOffset = g5State.cdiOffset * (float)DEVIATIONSCALE_IMG_WIDTH / 248; // needs to move a little more
     compass.setPivot(compass.width() / 2 + (pixelOffset * (float)cos((barAngle - g5State.headingAngle) * PIf / 180.0f)),
                      (compass.height() / 2 + (pixelOffset * (float)sin((barAngle - g5State.headingAngle) * PIf / 180.0f))));
     cdiBar.setPivot(cdiBar.width() / 2, cdiBar.height() / 2); // Pivot around the middle of the sprite.
@@ -1222,8 +1243,8 @@ void CC_G5_HSI::drawDistNextWaypoint()
     distBox.loadFont(PrimaSans12);
     distBox.setTextSize(0.8);
     distBox.setTextDatum(TL_DATUM);
-    distBox.drawString("n", distBox.width() - 26, 1);
-    distBox.drawString("m", distBox.width() - 26, 13);
+    distBox.drawString("n", distBox.width() - 26, 3);
+    distBox.drawString("m", distBox.width() - 26, 15);
     distBox.pushSprite(SCREEN_WIDTH + X_OFFSET - distBox.width(), Y_OFFSET);
 }
 
