@@ -27,8 +27,8 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="px"
      inkscape:zoom="9.1515966"
-     inkscape:cx="-21.198487"
-     inkscape:cy="96.704437"
+     inkscape:cx="-65.343789"
+     inkscape:cy="72.446375"
      inkscape:window-width="3840"
      inkscape:window-height="2054"
      inkscape:window-x="2869"
@@ -44,47 +44,54 @@
      id="layer1"
      transform="translate(-134.40829,-70.643748)">
     <rect
-       style="fill:#ffffff;fill-opacity:0;stroke:#ababab;stroke-width:0.264583;stroke-linecap:square;stroke-miterlimit:8;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:#151515;fill-opacity:0;stroke:#ababab;stroke-width:0.264583;stroke-linecap:square;stroke-miterlimit:8;stroke-dasharray:none;stroke-opacity:1"
        id="rect41"
        width="5.5562506"
        height="43.391666"
        x="134.54062"
        y="70.776039" />
     <path
-       style="fill:#ffffff;fill-opacity:0;stroke:#ababab;stroke-width:0.264583;stroke-linecap:square;stroke-miterlimit:8;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:#080408;fill-opacity:1;stroke:#ababab;stroke-width:0.264583;stroke-linecap:square;stroke-miterlimit:8;stroke-dasharray:none;stroke-opacity:1"
        d="m 134.54058,76.067706 h 5.5562"
        id="path41" />
     <path
-       style="fill:#ffffff;fill-opacity:0;stroke:#ababab;stroke-width:0.264583;stroke-linecap:square;stroke-miterlimit:8;stroke-dasharray:none;stroke-opacity:1"
-       d="m 134.54063,95.646873 h 5.5562"
+       style="fill:#151515;fill-opacity:0;stroke:#ababab;stroke-width:0.264583;stroke-linecap:square;stroke-miterlimit:8;stroke-dasharray:none;stroke-opacity:1"
+       d="m 134.54063,95.117706 h 5.5562"
        id="path42" />
     <ellipse
-       style="fill:#ffffff;fill-opacity:0;stroke:#ababab;stroke-width:0.26458333;stroke-linecap:square;stroke-miterlimit:8;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:#151515;fill-opacity:0;stroke:#ababab;stroke-width:0.26458333;stroke-linecap:square;stroke-miterlimit:8;stroke-dasharray:none;stroke-opacity:1"
        id="path43"
        cx="137.38486"
        cy="80.962494"
        rx="1.0583335"
        ry="1.0583333" />
     <ellipse
-       style="fill:#ffffff;fill-opacity:0;stroke:#ababab;stroke-width:0.264583;stroke-linecap:square;stroke-miterlimit:8;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:#151515;fill-opacity:0;stroke:#ababab;stroke-width:0.264583;stroke-linecap:square;stroke-miterlimit:8;stroke-dasharray:none;stroke-opacity:1"
        id="path43-5"
        cx="137.38486"
        cy="88.30233"
        rx="1.0583335"
        ry="1.0583333" />
     <ellipse
-       style="fill:#d3d3d3;fill-opacity:0;stroke:#ababab;stroke-width:0.264583;stroke-linecap:square;stroke-miterlimit:8;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:#151515;fill-opacity:0;stroke:#ababab;stroke-width:0.264583;stroke-linecap:square;stroke-miterlimit:8;stroke-dasharray:none;stroke-opacity:1"
        id="circle3"
        cx="137.38486"
        cy="102.98201"
        rx="1.0583335"
        ry="1.0583333" />
     <ellipse
-       style="fill:#ffffff;fill-opacity:0;stroke:#ababab;stroke-width:0.264583;stroke-linecap:square;stroke-miterlimit:8;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:#151515;fill-opacity:0;stroke:#ababab;stroke-width:0.264583;stroke-linecap:square;stroke-miterlimit:8;stroke-dasharray:none;stroke-opacity:1"
        id="circle4"
        cx="137.38486"
        cy="110.32185"
        rx="1.0583335"
        ry="1.0583333" />
+    <rect
+       style="fill:#080408;fill-opacity:1;stroke:#ababab;stroke-width:0.264583;stroke-linecap:square;stroke-miterlimit:8;stroke-dasharray:none;stroke-opacity:1"
+       id="rect1"
+       width="5.5562506"
+       height="5.2916665"
+       x="134.54062"
+       y="70.776039" />
   </g>
 </svg>

@@ -32,7 +32,9 @@
     "MobiFlightType": "CC_G5 ESP32",
     "ResetFirmwareFile": "reset.esp32_s3_devkit_merged.bin",
     "CustomDeviceTypes": [
-      "CC_G5"
+      "CC_G5",
+      "CC_G5_HSI",
+      "CC_G5_PFD"
     ],
     "Community": {
       "Project": "CC G5",

@@ -2,12 +2,9 @@
 #include "commandmessenger.h"
 #include "allocateMem.h"
 #include "MFEEPROM.h"
+#include <pgmspace.h>
 
-#ifdef HAS_CONFIG_IN_FLASH
 #include "MFCustomDevicesConfig.h"
-#else
-const char CustomDeviceConfig[] PROGMEM = {};
-#endif
 
 extern MFEEPROM MFeeprom;
 
@@ -29,35 +26,40 @@ extern MFEEPROM MFeeprom;
 ********************************************************************************** */
 #define MEMLEN_STRING_BUFFER 40
 
-// reads a string from EEPROM or Flash at given address which is '.' terminated and saves it to the buffer
-bool MFCustomDevice::getStringFromMem(uint16_t addrMem, char *buffer, bool configFromFlash)
+// Reads a '.' terminated string from EEPROM at addrMem into buffer.
+// Replaces the trailing '.' with a null terminator.
+bool MFCustomDevice::getStringFromMem(uint16_t addrMem, char *buffer)
 {
-    // Serial.printf("GetString\n");
-
     char     temp    = 0;
     uint8_t  counter = 0;
     uint16_t length  = MFeeprom.get_length();
     do {
-        if (configFromFlash) {
-            Serial.println("config from flash.");
-            temp = pgm_read_byte_near(CustomDeviceConfig + addrMem++);
-            if (addrMem > sizeof(CustomDeviceConfig))
+        temp = MFeeprom.read_byte(addrMem++);
+        if (addrMem > length)
             return false;
-        } else {
-            Serial.println("config not from flash.");
-            temp = MFeeprom.read_byte(addrMem++);
-            if (addrMem > length)
-                return false;
-        }
-        buffer[counter++] = temp;              // save character and locate next buffer position
-        if (counter >= MEMLEN_STRING_BUFFER) { // nameBuffer will be exceeded
-            return false;                      // abort copying to buffer
-        }
-    } while (temp != '.'); // reads until limiter '.' and locates the next free buffer position
-    buffer[counter - 1] = 0x00; // replace '.' by NULL, terminates the string
+        buffer[counter++] = temp;
+        if (counter >= MEMLEN_STRING_BUFFER)
+            return false;
+    } while (temp != '.');
+    buffer[counter - 1] = 0x00; // replace '.' with null terminator
+    return true;
+}
 
-    // Serial.printf("GotString '%s'\n", buffer);
-
+// Reads a '.' terminated string from a PROGMEM (flash) string at byte offset into buffer.
+// Replaces the trailing '.' with a null terminator.
+bool MFCustomDevice::getStringFromFlash(const char *flashStr, uint16_t offset, char *buffer)
+{
+    char    temp    = 0;
+    uint8_t counter = 0;
+    do {
+        temp = pgm_read_byte_near(flashStr + offset++);
+        if (temp == 0x00)      // hit end of flash string without finding '.'
+            return false;
+        buffer[counter++] = temp;
+        if (counter >= MEMLEN_STRING_BUFFER)
+            return false;
+    } while (temp != '.');
+    buffer[counter - 1] = 0x00; // replace '.' with null terminator
     return true;
 }
 
@@ -83,27 +85,23 @@ void MFCustomDevice::attach(uint16_t adrPin, uint16_t adrType, uint16_t adrConfi
         Do something which is required to setup your custom device
     ********************************************************************************** */
 
-    // char parameter[MEMLEN_STRING_BUFFER];
-
     /* **********************************************************************************
-        Read the Type from the EEPROM or Flash, copy it into a buffer and evaluate it
-        The string get's NOT stored as this would need a lot of RAM, instead a variable
-        is used to store the type
+        Read the device type string from EEPROM — this is what the user picked in
+        MobiFlight Connector. Pin and encoder config comes from firmware flash (see
+        MFCustomDevicesConfig.h), so adrPin and adrConfig from the connector are ignored.
     ********************************************************************************** */
 
-    // Let's not figure out the type from config, but instead from the device.
-    loadSettings(); // From G5Common
-
-    _customType = g5Settings.deviceType;
-//    Serial.printf("****In custom device attach. _customType is %d, settings type: %d and the HSI type is: %d\n", _customType, g5Settings.deviceType, CUSTOM_HSI_DEVICE);
-
-    /*
-    getStringFromMem(adrType, parameter, configFromFlash);
+    char parameter[MEMLEN_STRING_BUFFER];
+    getStringFromMem(adrType, parameter);
     if (strcmp(parameter, "CC_G5_HSI") == 0)
         _customType = CUSTOM_HSI_DEVICE;
-    if (strcmp(parameter, "CC_G5_PFD") == 0)
+    else if (strcmp(parameter, "CC_G5_PFD") == 0)
         _customType = CUSTOM_PFD_DEVICE;
-        */
+    else {
+        // "CC_G5" switchable device: respect the saved setting
+        loadSettings();
+        _customType = (g5Settings.deviceType == CUSTOM_PFD_DEVICE) ? CUSTOM_PFD_DEVICE : CUSTOM_HSI_DEVICE;
+    }
 
     if (_customType == CUSTOM_HSI_DEVICE) {
         /* **********************************************************************************
@@ -208,5 +206,43 @@ void MFCustomDevice::set(int16_t messageID, char *setPoint)
     else {
         if (_customType == CUSTOM_PFD_DEVICE)
             _pfdDevice->setPFD(messageID, setPoint);
+    }
+}
+
+// Called from OnGetConfig() in Config.cpp to append virtual encoder/button records
+// to the kGetConfig response. typeAddrEEPROM points to the device type string in
+// EEPROM (e.g. "CC_G5_HSI."). We read it to pick the right virtual config string,
+// then stream each character via cmdMessenger.sendArg so the Connector sees them
+// as part of the config alongside the user's custom device record.
+void appendVirtualDeviceConfig(uint16_t typeAddrEEPROM)
+{
+    char typeStr[MEMLEN_STRING_BUFFER];
+
+    // Read the '.' terminated type string from EEPROM
+    char     temp    = 0;
+    uint8_t  counter = 0;
+    uint16_t addr    = typeAddrEEPROM;
+    do {
+        temp = MFeeprom.read_byte(addr++);
+        typeStr[counter++] = temp;
+        if (counter >= MEMLEN_STRING_BUFFER) return;
+    } while (temp != '.' && temp != 0x00);
+    typeStr[counter - 1] = 0x00;
+
+    // Select the virtual config string for this device type
+    const char *virtualCfg = nullptr;
+    if (strcmp(typeStr, "CC_G5_HSI") == 0)
+        virtualCfg = HSI_VirtualConfig;
+    else if (strcmp(typeStr, "CC_G5_PFD") == 0)
+        virtualCfg = PFD_VirtualConfig;
+    else
+        virtualCfg = Switchable_VirtualConfig;
+
+    // Stream each character — Config.cpp has already sent the first arg with
+    // sendCmdArg, so all subsequent characters use sendArg (adds comma separator)
+    uint16_t i = 0;
+    char     c;
+    while ((c = pgm_read_byte_near(virtualCfg + i++)) != 0x00) {
+        cmdMessenger.sendArg(c);
     }
 }

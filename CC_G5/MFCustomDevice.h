@@ -15,7 +15,8 @@ public:
     void set(int16_t messageID, char *setPoint);
 
 private:
-    bool       getStringFromMem(uint16_t addreeprom, char *buffer, bool configFromFlash);
+    bool       getStringFromMem(uint16_t addrMem, char *buffer);
+    bool       getStringFromFlash(const char *flashStr, uint16_t offset, char *buffer);
     bool       _initialized = false;
     CC_G5_HSI *_hsiDevice   = nullptr;
     CC_G5_PFD *_pfdDevice   = nullptr;

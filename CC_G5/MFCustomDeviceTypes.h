@@ -2,8 +2,9 @@
 
 // Device type enumeration
 enum {
-    CUSTOM_PFD_DEVICE  = 0,
-    CUSTOM_HSI_DEVICE  = 1
+    CUSTOM_PFD_DEVICE        = 0,
+    CUSTOM_HSI_DEVICE        = 1,
+    CUSTOM_SWITCHABLE_DEVICE = 2  // Runtime-switchable via saved settings
 };
 
 // Message ID routing boundaries.

@@ -1,24 +1,50 @@
 #pragma once
 
-// Define your input custom devices and uncomment -DHAS_CONFIG_IN_FLASH
-// in your MFCustomDevice_platformio.ini
-const char CustomDeviceConfig[] PROGMEM =
-    {
-        "17.CC_G5.1..CCs CC_G5:"
-        "8.2.3.0.encHeading:"
-        "8.4.5.0.encCourse:"
-        "1.6.btnHsiEncoder:"
-        "8.2.3.0.encKohls:"
-        "8.4.5.0.encTargetAlt:"
-        "8.6.7.0.encTrack:"
-        "1.8.btnPfdEncoder:"
-        "1.8.btnPfdPower:"
-        "1.8.btnHsiPower:"
-        "1.8.btnPfdDevice:"
-        "1.8.btnHsiDevice:"};
+// The MobiFlight core (Config.cpp) expects CustomDeviceConfig to exist when
+// HAS_CONFIG_IN_FLASH is defined. We keep it as an empty stub so that
+// configLengthFlash == 0 and configStoredInFlash() returns false — meaning
+// the core will not try to load the full config from flash. Instead, the
+// device type comes from EEPROM (set in MobiFlight Connector), and the
+// firmware supplies per-type configs from the constants below.
+const char CustomDeviceConfig[] PROGMEM = {};
 
-//"17.CC_G5_AIO.1..CCs CC_G5 XXX:8.2.3.0.encHeading:8.4.5.0.encCourse:1.6.btnHsiEncoder:8.2.3.0.encKohls:8.4.5.0.encTargetAlt:8.6.7.0.encTrack:1.8.btnPfdEncoder:"
-// "17.CC_G5_HSI.1..CCs CC_G5 XXX:8.2.3.0.encHeading:8.4.5.0.encCourse:1.6.btnHsiEncoder:"
-// 17.CC_G5_PFD.1..CCs CC_G5 PFD:8.2.3.0.encKohls:8.4.5.0.encTargetAlt:8.6.7.0.encTrack:1.8.btnPfdEncoder:
+// Virtual encoder/button records appended to kGetConfig responses.
+// These devices have no physical pins — Encoder::Add() and MFButton::attach()
+// are short-circuited in the core to skip GPIO setup. They appear in the
+// Connector so users can map sim variables/events to them by name.
+//
+// Wire format matches the MobiFlight config string protocol:
+//   Encoder: 8.pin1.pin2.type.name:
+//   Button:  1.pin.name:
+//
+// Pin numbers are arbitrary (chosen to not clash with real board pins).
+// Unique per-type ranges: HSI=100-109, PFD=110-119, Switchable=100-119
 
-// 17.CC_G5_PFD.1..CCs CC_G5 PFD:8.2.3.0.encKohls:8.4.5.0.encTargetAlt:8.6.7.0.encTrack:1.8.btnPfdEncoder:
+const char HSI_VirtualConfig[] PROGMEM =
+    "8.100.101.0.encHeading:"
+    "8.102.103.0.encCourse:"
+    "1.104.btnHsiEncoder:"
+    "1.105.btnHsiPower:"
+    "1.106.btnHsiDevice:";
+
+const char PFD_VirtualConfig[] PROGMEM =
+    "8.110.111.0.encKohls:"
+    "8.112.113.0.encTargetAlt:"
+    "8.114.115.0.encTrack:"
+    "1.116.btnPfdEncoder:"
+    "1.117.btnPfdPower:"
+    "1.118.btnPfdDevice:";
+
+// Switchable device exposes all inputs from both HSI and PFD.
+const char Switchable_VirtualConfig[] PROGMEM =
+    "8.100.101.0.encHeading:"
+    "8.102.103.0.encCourse:"
+    "1.104.btnHsiEncoder:"
+    "1.105.btnHsiPower:"
+    "1.106.btnHsiDevice:"
+    "8.110.111.0.encKohls:"
+    "8.112.113.0.encTargetAlt:"
+    "8.114.115.0.encTrack:"
+    "1.116.btnPfdEncoder:"
+    "1.117.btnPfdPower:"
+    "1.118.btnPfdDevice:";

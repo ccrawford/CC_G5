@@ -4,200 +4,218 @@
     "Label": "CCs CC_G5 PFD",
     "Type": "CC_G5_PFD",
     "Author": "CCrawford",
-    "URL": "https://github.com/ccrawford",
+    "URL": "https://github.com/ccrawford/CC_G5",
     "Version": "2.5.1"
   },
   "Config": {
-    "Pins": [
-      "DummyPin"
-    ],
+    "Pins": [],
     "isI2C": false
   },
   "MessageTypes": [
     {
       "id": 0,
-      "label": "Heading (true)",
-      "description": "$ will display the heading (integer degrees) (A:GPS GROUND TRUE HEADING,Degrees)"
+      "Label": "AP Heading Bug",
+      "description": "Autopilot heading bug angle in degrees"
     },
     {
       "id": 1,
-      "label": "Heading Bug",
-      "description": "$ will be displayed as Heading bug (A:AUTOPILOT HEADING LOCK DIR,Degrees)"
+      "Label": "Approach Type",
+      "description": "GPS approach type identifier"
     },
     {
       "id": 2,
-      "label": "Airspeed",
-      "description": "$ will be displayed as the Airspeed"
+      "Label": "CDI Lateral Deviation",
+      "description": "Course deviation indicator lateral needle position"
     },
     {
       "id": 3,
-      "label": "Altitude",
-      "description": "$ Current altitude in feet"
+      "Label": "CDI Needle Valid",
+      "description": "CDI needle has valid navigation data"
     },
     {
       "id": 4,
-      "label": "CDI Lateral Deviation",
-      "description": "$ will be displayed as the CDI Deviation (A:HSI CDI NEEDLE,Number)"
+      "Label": "CDI To/From Flag",
+      "description": "Navigation to/from indicator (0=off, 1=to, 2=from)"
     },
     {
       "id": 5,
-      "label": "Pitch",
-      "description": "$ Current pitch in degrees (nearest 0.1)"
+      "Label": "Glide Slope Deviation",
+      "description": "Glide slope vertical deviation"
     },
     {
       "id": 6,
-      "label": "GPS Ground Speed",
-      "description": "$ will be displayed as the ground speed in knots (A:GPS GROUND SPEED,knots)"
+      "Label": "Glide Slope Needle Valid",
+      "description": "Glide slope needle has valid data"
     },
     {
       "id": 7,
-      "label": "GPS Ground True Track",
-      "description": "$ will be displayed as the GPS Track (A:GPS GROUND TRUE TRACK,Degrees)"
+      "Label": "Ground Speed",
+      "description": "GPS ground speed in knots"
     },
     {
       "id": 8,
-      "label": "Bank Angle",
-      "description": "$ Current bank angle in degrees"
+      "Label": "Ground Track (Magnetic)",
+      "description": "GPS ground track in magnetic degrees"
     },
     {
       "id": 9,
-      "label": "GPS Drives Nav",
-      "description": "$ Does GPS (true) or VOR (false) drive Nav? (A:GPS DRIVES NAV1,Bool)"
+      "Label": "Heading (Magnetic)",
+      "description": "Current magnetic heading in degrees"
     },
     {
       "id": 10,
-      "label": "Target Altitude",
-      "description": "$ AP Target altitude for bug and tape"
-    },
-    {
-      "id": 11,
-      "label": "Slip/Skid",
-      "description": "$ is slip/skid indicator (A:TURN COORDINATOR BALL,Position)"
+      "Label": "Nav Source",
+      "description": "Navigation source (0=NAV, 1=GPS)"
     },
     {
       "id": 12,
-      "label": "Current Baro",
-      "description": "$ is current baro setting (kohlsman) in inHg (A:KOHLSMAN SETTING HG:index, inHg)"
+      "Label": "Screen Brightness",
+      "description": "Screen brightness from 0 (off) to 255 (full on)"
     },
     {
       "id": 13,
-      "label": "Turn Rate",
-      "description": "$ Turn rate in degrees (A:DELTA HEADING RATE,Degrees per second)"
+      "Label": "Power On/Off",
+      "description": "Power off/on (0=Off, 1=On)"
     },
     {
       "id": 14,
-      "label": "Vertical Speed",
-      "description": "$ is Vertical speed in ft/min (A:VERTICAL SPEED,Feet per minute)"
+      "Label": "Power Control",
+      "description": "Manually control from MF: 0, Automatic device control: 1, Always on: 2"
     },
     {
-      "id": 15,
-      "label": "GSI Needle Valid",
-      "description": "$ if the GSI Needle is valid/alive"
+      "id": 60,
+      "Label": "Airspeed",
+      "description": "Indicated airspeed in knots"
     },
     {
-      "id": 16,
-      "label": "CDI Needle Valid",
-      "description": "$ if the CDI Needle is valid/alive"
+      "id": 61,
+      "Label": "AP Active",
+      "description": "Autopilot master is active"
     },
     {
-      "id": 17,
-      "label": "Nav Course to Steer",
-      "description": "$ Nav Course to Steer in Degrees"
+      "id": 62,
+      "Label": "AP Alt Captured",
+      "description": "Autopilot has captured target altitude"
     },
     {
-      "id": 18,
-      "label": "Glide Slope Deviation",
-      "description": "$ is (A:HSI GSI NEEDLE,Number)"
+      "id": 63,
+      "Label": "AP Altitude Bug",
+      "description": "Autopilot target altitude in feet"
     },
     {
-      "id": 19,
-      "label": "Nav Source",
-      "description": "$ GPS=0 Nav1=1 Nav2=2"
+      "id": 64,
+      "Label": "AP Armed Lateral Mode",
+      "description": "Autopilot armed lateral mode"
     },
     {
-      "id": 20,
-      "label": "Flight Director Active",
-      "description": "$ is 1 for FD on, 0 for off (A:AUTOPILOT FLIGHT DIRECTOR ACTIVE,Bool)"
+      "id": 65,
+      "Label": "AP Armed Vertical Mode",
+      "description": "Autopilot armed vertical mode"
     },
     {
-      "id": 21,
-      "label": "Flight Director Pitch",
-      "description": "$ Flight Director Pitch in Degree (A:AUTOPILOT FLIGHT DIRECTOR PITCH,Degrees)"
+      "id": 66,
+      "Label": "AP Lateral Mode",
+      "description": "Autopilot active lateral mode"
     },
     {
-      "id": 22,
-      "label": "Flight Director Bank",
-      "description": "$ Flight Director Bank in degrees (A:AUTOPILOT FLIGHT DIRECTOR BANK,Degrees)"
+      "id": 67,
+      "Label": "AP Speed Bug",
+      "description": "Autopilot target airspeed in knots"
     },
     {
-      "id": 23,
-      "label": "CDI To/From",
-      "description": "$ To From: 0: off, 1: To, 2: From (A:NAV TOFROM:index,Enum)"
+      "id": 68,
+      "Label": "AP Vertical Mode",
+      "description": "Autopilot active vertical mode"
     },
     {
-      "id": 24,
-      "label": "Approach Type (A:GPS APPROACH APPROACH TYPE)",
-      "description": "$ is value from that simvar. 0 none, 1 gps, 2 vor, 3 ndb, 4 ils, 5, localizer, etc"
+      "id": 69,
+      "Label": "AP Vertical Speed Bug",
+      "description": "Autopilot target vertical speed in fpm"
     },
     {
-      "id": 25,
-      "label": "OBS (Course) Heading",
-      "description": "$ is the OBS heading in degrees (A:GPS OBS VALUE:1, degrees)"
+      "id": 70,
+      "Label": "AP Yaw Damper",
+      "description": "Yaw damper is active"
     },
     {
-      "id": 26,
-      "label": "AP Active",
-      "description": "AP on"
+      "id": 71,
+      "Label": "Ball (Slip/Skid) Position",
+      "description": "Slip/skid ball position"
     },
     {
-      "id": 27,
-      "label": "AP Lateral Active Mode",
-      "description": "Codes: 0=Off, 1=ROL, 2=HDG, 3=GPS, 4=VOR, 5=LOC"
+      "id": 72,
+      "Label": "Bank Angle",
+      "description": "Aircraft bank angle in degrees"
     },
     {
-      "id": 28,
-      "label": "AP Lateral Armed Mode Bitflags",
-      "description": "Bitflags: 1=LOC, 2=VOR, 4=GPS"
+      "id": 73,
+      "Label": "FD Active",
+      "description": "Flight director is active"
     },
     {
-      "id": 29,
-      "label": "AP Vertical Active Mode",
-      "description": "0=Off, 1=ALT, 2=VS, 3=PIT, 4=IAS, 5=ALTS, 6=GS, 7=GP"
+      "id": 74,
+      "Label": "FD Bank Angle",
+      "description": "Flight director commanded bank in degrees"
     },
     {
-      "id": 30,
-      "label": "AP Vertical Armed Mode Bitflags",
-      "description": "1=ALTS, 2=ALT, 4=GS, 8=GP"
+      "id": 75,
+      "Label": "FD Pitch",
+      "description": "Flight director commanded pitch in degrees"
     },
     {
-      "id": 31,
-      "label": "AP Target VS",
-      "description": "VS in feet/min  (A:AUTOPILOT VERTICAL HOLD VAR,Feet/minute)"
+      "id": 76,
+      "Label": "GPS Course to Steer",
+      "description": "GPS navigation course to steer in degrees"
     },
     {
-      "id": 32,
-      "label": "AP target IAS in knots for FLC",
-      "description": "$ is target IAS for FLC"
+      "id": 77,
+      "Label": "Indicated Altitude",
+      "description": "Current indicated altitude in feet"
     },
     {
-      "id": 33,
-      "label": "ALT Hold captured target in ft",
-      "description": "$ is: (A:AUTOPILOT ALTITUDE LOCK, Bool) (L:ALT_HOLD_PREV, Bool) != if{ (A:AUTOPILOT ALTITUDE LOCK, Bool) if{ (A:INDICATED ALTITUDE, feet) (>L:CAPTURED_ALT) } (A:AUTOPILOT ALTITUDE LOCK, Bool) (>L:ALT_HOLD_PREV) } (L:CAPTURED_ALT)"
+      "id": 78,
+      "Label": "Kohlsman Value",
+      "description": "Altimeter barometric pressure setting"
     },
     {
-      "id": 34,
-      "label": "AP Yaw Damper On",
-      "description": "$ is if AP Yaw Damper is active"
+      "id": 79,
+      "Label": "OAT",
+      "description": "Outside air temperature"
     },
     {
-      "id": 35,
-      "label": "V Speed vector",
-      "description": "$ as vSpeeds separated by |. Vs0|Vs1|Vr|Vx|Vy|Vg|Va|Vfe|Vno|Vne  Assign 0 to skip display of marker"
+      "id": 80,
+      "Label": "Pitch Angle",
+      "description": "Aircraft pitch angle in degrees"
     },
     {
-      "id": 36,
-      "label": "Outside Air Temp",
-      "description": "$ as OAT in desired scale"
+      "id": 81,
+      "Label": "Turn Rate",
+      "description": "Turn rate indicator value"
+    },
+    {
+      "id": 82,
+      "Label": "V-Speeds Array",
+      "description": "V-speed reference markers ('Vs0|Vs1|Vr|Vx|Vy|Vg|Va|Vfe|Vno|Vne') Vr, x, y, g, a are displayed. Use 0 to skip. Example for C172: '41|52|55|62|73|68|99|111|129|163'"
+    },
+    {
+      "id": 83,
+      "Label": "Vertical Speed",
+      "description": "Vertical speed in feet per minute"
+    },
+    {
+      "id": 84,
+      "Label": "NAV OBS Course",
+      "description": "NAV OBS course setting in degrees"
+    },
+    {
+      "id": 85,
+      "Label": "Density Altitude",
+      "description": "Current density altitude in feet"
+    },
+    {
+      "id": 86,
+      "Label": "True Airspeed",
+      "description": "True airspeed in knots"
     }
   ]
 }
