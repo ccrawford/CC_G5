@@ -115,8 +115,8 @@ struct G5State {
     float turnRate      = 2.0f;
 
     // Speeds
-    float rawAirspeed  = 90.0f;
-    float airspeed     = 0.0f;
+    float rawAirspeed  = 0.0f;
+    float airspeed     = 30.0f;
     float trueAirspeed = 99.0f;
     int   groundSpeed  = 90;
     float machSpeed     = 0.0f;
@@ -150,7 +150,7 @@ struct G5State {
     // Glide slope
     float rawGsiNeedle   = 0.0f;
     float gsiNeedle      = 0.0f;
-    int   gsiNeedleValid = 0;
+    int   gsiNeedleValid = 1;
 
     // Desired track / Course to steer (shared between HSI and PFD)
     float desiredTrack      = 130.0f; // GPS course to steer / DTK (used by both HSI and PFD)
