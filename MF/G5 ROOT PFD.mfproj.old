@@ -1,0 +1,2455 @@
+{
+  "Name": "G5 ROOT PFD",
+  "ConfigFiles": [
+    {
+      "Label": "G5 ROOT CONFIG",
+      "FileName": "C:\\Users\\chris\\source\\repos\\FSHardware\\CC_G5\\MF\\G5 ROOT CONFIG.mcc",
+      "ReferenceOnly": false,
+      "EmbedContent": true,
+      "ConfigItems": [
+        {
+          "Source": {
+            "SimConnectValue": {
+              "VarType": 0
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "DeviceType": "",
+          "DeviceName": null,
+          "GUID": "4ae17589-e502-4a97-9e8d-79e704f98d66",
+          "Active": false,
+          "Name": "-------------- PFD ----------------",
+          "Type": "OutputConfigItem",
+          "Controller": null,
+          "Modifiers": {
+            "Items": [
+              {
+                "Type": "Comparison",
+                "Operand": "=",
+                "Value": "",
+                "IfValue": "1",
+                "ElseValue": "0",
+                "Active": true
+              }
+            ]
+          }
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "0",
+              "Value": "2",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 3.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 14,
+            "Value": "2",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "9a45f70e-4db0-46f8-8d88-af63808f9833",
+          "Active": false,
+          "Name": "Power emulation : 0-Manual, 1-Automatic, 2-Always on",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          }
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "26539606-5bbf-4b94-a212-1ecf0d8d3733",
+              "Value": "(A:ATTITUDE INDICATOR PITCH DEGREES,degrees)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 11.2,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 80,
+            "Value": "Round($,1)",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "5fa90404-4919-42a5-8949-40860ad217ca",
+          "Active": true,
+          "Name": "Attitude Indicator Pitch",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          },
+          "Preconditions": [
+            {
+              "Type": "config",
+              "Ref": "c6685ae0-a651-42ab-a572-23cca2564df2",
+              "Serial": null,
+              "Pin": null,
+              "Operand": "!=",
+              "Value": "0",
+              "Logic": "and",
+              "Active": true
+            }
+          ],
+          "Modifiers": {
+            "Items": [
+              {
+                "Type": "Transformation",
+                "Expression": "Round($,2)",
+                "Active": true
+              }
+            ]
+          }
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "6357059b-d04d-42b5-ab24-5212f273d8bf",
+              "Value": "(A:ATTITUDE INDICATOR BANK DEGREES,Degrees)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": -10.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 72,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "be8c912d-4b64-4688-8e0b-4966deceb1d7",
+          "Active": true,
+          "Name": "Attitude Indicator Bank",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          },
+          "Preconditions": [
+            {
+              "Type": "config",
+              "Ref": "c6685ae0-a651-42ab-a572-23cca2564df2",
+              "Serial": null,
+              "Pin": null,
+              "Operand": "!=",
+              "Value": "0",
+              "Logic": "and",
+              "Active": true
+            }
+          ],
+          "Modifiers": {
+            "Items": [
+              {
+                "Type": "Transformation",
+                "Expression": "Round($,1)",
+                "Active": true
+              }
+            ]
+          }
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "b5074cc0-e826-466c-aab0-4fabdb639680",
+              "Value": "(A:TURN INDICATOR RATE,Degrees per second)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 81,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "f984fec0-8371-4635-ba30-6b249c3b3f86",
+          "Active": true,
+          "Name": "Turn Rate",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          },
+          "Preconditions": [
+            {
+              "Type": "config",
+              "Ref": "c6685ae0-a651-42ab-a572-23cca2564df2",
+              "Serial": null,
+              "Pin": null,
+              "Operand": "!=",
+              "Value": "0",
+              "Logic": "and",
+              "Active": true
+            }
+          ],
+          "Modifiers": {
+            "Items": [
+              {
+                "Type": "Transformation",
+                "Expression": "Round($,2)",
+                "Active": true
+              }
+            ]
+          }
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "fb66e24d-5aea-4eb2-88c0-9d96cff6233f",
+              "Value": "(A:TURN COORDINATOR BALL,Position)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": -0.5,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 71,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "2715c04c-7090-4979-baf4-b3e4dacce062",
+          "Active": true,
+          "Name": "Slip/Skid Indicator Ball",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          },
+          "Preconditions": [
+            {
+              "Type": "config",
+              "Ref": "c6685ae0-a651-42ab-a572-23cca2564df2",
+              "Serial": null,
+              "Pin": null,
+              "Operand": "!=",
+              "Value": "0",
+              "Logic": "and",
+              "Active": true
+            }
+          ],
+          "Modifiers": {
+            "Items": [
+              {
+                "Type": "Transformation",
+                "Expression": "Round($,2)",
+                "Active": true
+              }
+            ]
+          }
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "bbb26a5f-319a-49bf-b48a-1f4e0da43e32",
+              "Value": "(A:AIRSPEED INDICATED,Knots)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 60,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "7f9eb833-1179-442f-94fc-c59f021428a2",
+          "Active": true,
+          "Name": "Indicated Airspeed",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          },
+          "Preconditions": [
+            {
+              "Type": "config",
+              "Ref": "c6685ae0-a651-42ab-a572-23cca2564df2",
+              "Serial": null,
+              "Pin": null,
+              "Operand": "!=",
+              "Value": "0",
+              "Logic": "and",
+              "Active": true
+            }
+          ],
+          "Modifiers": {
+            "Items": [
+              {
+                "Type": "Transformation",
+                "Expression": "Round($,2)",
+                "Active": true
+              }
+            ]
+          }
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "78061839-a597-4650-83cb-a9902b6f402b",
+              "Value": "(A:GPS GROUND SPEED,knots)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 7,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "91ab3b4d-4925-463d-a2c1-f627b41bb9fa",
+          "Active": true,
+          "Name": "GPS Ground Speed",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          },
+          "Modifiers": {
+            "Items": [
+              {
+                "Type": "Transformation",
+                "Expression": "Round($,0)",
+                "Active": true
+              }
+            ]
+          }
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "987cbe1e-8b29-4c75-b23f-8400e2d0ea9a",
+              "Value": "(A:AIRSPEED TRUE,Knots)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 86,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "04d8c1a9-6f1d-4c73-b26f-a9cb6f2aaab7",
+          "Active": true,
+          "Name": "True Airspeed",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          },
+          "Preconditions": [
+            {
+              "Type": "config",
+              "Ref": "c6685ae0-a651-42ab-a572-23cca2564df2",
+              "Serial": null,
+              "Pin": null,
+              "Operand": "!=",
+              "Value": "0",
+              "Logic": "and",
+              "Active": true
+            }
+          ],
+          "Modifiers": {
+            "Items": [
+              {
+                "Type": "Transformation",
+                "Expression": "Round($,0)",
+                "Active": true
+              }
+            ]
+          }
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "VarType": 0
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 82,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "34c466d6-9bd8-4ca9-8309-dc6244c9915a",
+          "Active": true,
+          "Name": "vSpeed Array",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          },
+          "Preconditions": [
+            {
+              "Type": "config",
+              "Ref": "c6685ae0-a651-42ab-a572-23cca2564df2",
+              "Serial": null,
+              "Pin": null,
+              "Operand": "!=",
+              "Value": "0",
+              "Logic": "and",
+              "Active": true
+            }
+          ],
+          "Modifiers": {
+            "Items": [
+              {
+                "Type": "Transformation",
+                "Expression": "'41|52|55|62|73|68|99|111|129|163'",
+                "Active": true
+              }
+            ]
+          }
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "5d998d1b-32d7-4e17-aac1-3ee6601f136a",
+              "Value": "(A:AMBIENT TEMPERATURE,Celsius)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 79,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "11437de2-373f-4a5c-acd2-0c2f59564ab4",
+          "Active": true,
+          "Name": "Outside Air Temperature",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          },
+          "Preconditions": [
+            {
+              "Type": "config",
+              "Ref": "c6685ae0-a651-42ab-a572-23cca2564df2",
+              "Serial": null,
+              "Pin": null,
+              "Operand": "!=",
+              "Value": "0",
+              "Logic": "and",
+              "Active": true
+            }
+          ],
+          "Modifiers": {
+            "Items": [
+              {
+                "Type": "Transformation",
+                "Expression": "Round($,0)",
+                "Active": true
+              }
+            ]
+          }
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "3110ef7c-3b03-4d05-99d6-fb582d3ac3f8",
+              "Value": "(A:INDICATED ALTITUDE,Feet)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 77,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "40d6d08b-0268-4cb8-a538-2046d5497d5f",
+          "Active": true,
+          "Name": "Indicated Altitude",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          },
+          "Preconditions": [
+            {
+              "Type": "config",
+              "Ref": "c6685ae0-a651-42ab-a572-23cca2564df2",
+              "Serial": null,
+              "Pin": null,
+              "Operand": "!=",
+              "Value": "0",
+              "Logic": "and",
+              "Active": true
+            }
+          ],
+          "Modifiers": {
+            "Items": [
+              {
+                "Type": "Transformation",
+                "Expression": "Round($,0)",
+                "Active": true
+              }
+            ]
+          }
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "97742ed4-9f94-4052-8d8d-34d43eff9e6f",
+              "Value": "(A:DENSITY ALTITUDE, feet)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 85,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "884b5b3c-4a66-4678-b708-d9daec94dc10",
+          "Active": true,
+          "Name": "Density Altitude",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          },
+          "Preconditions": [
+            {
+              "Type": "config",
+              "Ref": "c6685ae0-a651-42ab-a572-23cca2564df2",
+              "Serial": null,
+              "Pin": null,
+              "Operand": "!=",
+              "Value": "0",
+              "Logic": "and",
+              "Active": true
+            }
+          ],
+          "Modifiers": {
+            "Items": [
+              {
+                "Type": "Transformation",
+                "Expression": "Round($,0)",
+                "Active": true
+              }
+            ]
+          }
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "d9f02170-cc32-474c-b680-8fa1d8891677",
+              "Value": "(A:VERTICAL SPEED,Feet per minute)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 83,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "28f4cd8f-5f9c-4642-aade-0167642cdbd5",
+          "Active": true,
+          "Name": "Vertical Speed",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          },
+          "Preconditions": [
+            {
+              "Type": "config",
+              "Ref": "c6685ae0-a651-42ab-a572-23cca2564df2",
+              "Serial": null,
+              "Pin": null,
+              "Operand": "!=",
+              "Value": "0",
+              "Logic": "and",
+              "Active": true
+            }
+          ],
+          "Modifiers": {
+            "Items": [
+              {
+                "Type": "Transformation",
+                "Expression": "Round($,0)",
+                "Active": true
+              }
+            ]
+          }
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "7ac4737f-b97d-4bbb-af35-7067a5f1c1aa",
+              "Value": "(A:AUTOPILOT ALTITUDE LOCK VAR:1,Feet)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 6000.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 63,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "4053d35d-7660-4dbe-9be3-ef8bb6aa9584",
+          "Active": true,
+          "Name": "Target Altitude",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          },
+          "Preconditions": [
+            {
+              "Type": "config",
+              "Ref": "c6685ae0-a651-42ab-a572-23cca2564df2",
+              "Serial": null,
+              "Pin": null,
+              "Operand": "!=",
+              "Value": "0",
+              "Logic": "and",
+              "Active": true
+            }
+          ]
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "2f595653-50dd-4394-8895-af62769febe5",
+              "Value": "(A:KOHLSMAN SETTING HG:1, inHg)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 23.92334,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 78,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "38f862bf-fa83-4866-886c-e43fe44de270",
+          "Active": true,
+          "Name": "Kohlsman Pressure",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          },
+          "Preconditions": [
+            {
+              "Type": "config",
+              "Ref": "c6685ae0-a651-42ab-a572-23cca2564df2",
+              "Serial": null,
+              "Pin": null,
+              "Operand": "!=",
+              "Value": "0",
+              "Logic": "and",
+              "Active": true
+            }
+          ],
+          "Modifiers": {
+            "Items": [
+              {
+                "Type": "Transformation",
+                "Expression": "Round($,2)",
+                "Active": true
+              }
+            ]
+          }
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "VarType": 0
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "DeviceType": "",
+          "DeviceName": null,
+          "GUID": "ee34a078-fd4e-4aae-b368-7a7ccb3764f3",
+          "Active": false,
+          "Name": "---------TOP HEADING TAPE ---------",
+          "Type": "OutputConfigItem",
+          "Controller": null,
+          "Modifiers": {
+            "Items": [
+              {
+                "Type": "Comparison",
+                "Operand": "=",
+                "Value": "",
+                "IfValue": "1",
+                "ElseValue": "0",
+                "Active": true
+              }
+            ]
+          }
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "9abdcb43-072b-447d-b53f-8b1eb144f07e",
+              "Value": "(A:PLANE HEADING DEGREES MAGNETIC,Degrees)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 149.8,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 9,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "ba20779b-6702-4a2c-8e95-b01a7bfa4daf",
+          "Active": true,
+          "Name": "Magnetic Heading",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          },
+          "Modifiers": {
+            "Items": [
+              {
+                "Type": "Transformation",
+                "Expression": "Round($,1)",
+                "Active": true
+              },
+              {
+                "Type": "Transformation",
+                "Expression": "if($=0,360,$)",
+                "Active": true
+              }
+            ]
+          }
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "e47210e8-7db4-4980-9f57-b3682fb3742d",
+              "Value": "(A:AUTOPILOT HEADING LOCK DIR,Degrees)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 0,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "283a42bf-3827-40a2-a8fc-dbdd83f2679a",
+          "Active": true,
+          "Name": "Heading Bug",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          },
+          "Modifiers": {
+            "Items": [
+              {
+                "Type": "Transformation",
+                "Expression": "Round($,0)",
+                "Active": true
+              },
+              {
+                "Type": "Transformation",
+                "Expression": "if($=0,360,$)",
+                "Active": true
+              }
+            ]
+          }
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "6bbf319a-5031-477e-ba46-8a24936f7d25",
+              "Value": "(A:NAV OBS:1,Degrees)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 76,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "d5b7ed47-2370-4f4f-9a91-aa9a3c165c01",
+          "Active": true,
+          "Name": "Navigation Course (Top tape display during radio nav)",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          },
+          "Preconditions": [
+            {
+              "Type": "config",
+              "Ref": "c6685ae0-a651-42ab-a572-23cca2564df2",
+              "Serial": null,
+              "Pin": null,
+              "Operand": "!=",
+              "Value": "0",
+              "Logic": "and",
+              "Active": true
+            }
+          ]
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "b598b56d-f20d-46aa-82ba-2306e18c76c3",
+              "Value": "(A:GPS GROUND MAGNETIC TRACK, Degrees)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 8,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "f3c68c65-2ff4-4a09-8cd3-a627803f5661",
+          "Active": true,
+          "Name": "Ground Track (Top tape display during GPS nav)",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          },
+          "Modifiers": {
+            "Items": [
+              {
+                "Type": "Transformation",
+                "Expression": "Round($,1)",
+                "Active": true
+              }
+            ]
+          }
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "VarType": 0
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "DeviceType": "",
+          "DeviceName": null,
+          "GUID": "80a6d178-7e98-4406-bdc2-9623b4f462e1",
+          "Active": false,
+          "Name": "---------Course Deviation -----------",
+          "Type": "OutputConfigItem",
+          "Controller": null,
+          "Modifiers": {
+            "Items": [
+              {
+                "Type": "Comparison",
+                "Operand": "=",
+                "Value": "",
+                "IfValue": "1",
+                "ElseValue": "0",
+                "Active": true
+              }
+            ]
+          }
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "bb774a66-c4bb-421f-8f98-64958519519e",
+              "Value": "(A:HSI BEARING, degrees) 0 > (A:HSI GSI NEEDLE VALID,Bool) OR",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 6,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "8b9fbc55-4cf4-4e95-b4f6-d493a58eca3f",
+          "Active": true,
+          "Name": "Glide Slope Needle Valid",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          }
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "c96f63e9-dc77-467b-a038-a5a252439ca8",
+              "Value": "(A:HSI GSI NEEDLE,Number)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 5,
+            "Value": "Round($)",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "b3a813a4-74eb-432a-9a5f-f5f2c78a59ae",
+          "Active": true,
+          "Name": "Glide Slope Deviation",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          },
+          "Modifiers": {
+            "Items": [
+              {
+                "Type": "Transformation",
+                "Expression": "Round($,1)",
+                "Active": true
+              }
+            ]
+          }
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "f6960682-68a0-4ba7-a19c-969b46f9c43b",
+              "Value": "(A:GPS DRIVES NAV1,Bool)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 10,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "f5a922a5-4f31-41fa-967f-7de79df0ed28",
+          "Active": true,
+          "Name": "Nav Source (GPS or NAV1)",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          }
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "32157e49-4191-4e8a-a1c1-dac5e730a2cb",
+              "Value": "(A:HSI TF FLAGS,Enum)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 4,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "823fec11-06ec-4bc4-a33f-7f061a54ad37",
+          "Active": true,
+          "Name": "CDI To/From Flag",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          }
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "9074481c-6109-40ee-a965-0f62bbff37fa",
+              "Value": "(A:HSI CDI NEEDLE,Number)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 2,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "4cb67497-713c-4afd-88c6-ca75b70be262",
+          "Active": true,
+          "Name": "CDI Lateral Deviation",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          },
+          "Modifiers": {
+            "Items": [
+              {
+                "Type": "Transformation",
+                "Expression": "Round($,1)",
+                "Active": true
+              }
+            ]
+          }
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "0",
+              "Value": "(A:GPS CDI SCALING, meters) 0 == if{ 5 } els{\n  (A:GPS CDI SCALING, meters) 3000 > if{ 0 } els{\n    (A:GPS IS APPROACH ACTIVE, Bool) ! if{ 1 } els{\n      (A:GPS APPROACH APPROACH TYPE, Enum) 10 == \n      (A:GPS APPROACH APPROACH TYPE, Enum) 1 == |\n      if{\n        (L:WTAP_GP_Service_Level, number) 8 == if{ 12 } els{\n        (L:WTAP_GP_Service_Level, number) 7 == if{ 11 } els{\n        (L:WTAP_GP_Service_Level, number) 5 == \n        (L:WTAP_GP_Service_Level, number) 6 == | if{ 9 } els{\n        (L:WTAP_GP_Service_Level, number) 3 == \n        (L:WTAP_GP_Service_Level, number) 4 == | if{ 7 } els{\n        6 }}}}\n      } els{ 14 }\n    }\n  }\n}",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "DeviceType": "-",
+          "DeviceName": null,
+          "GUID": "eeab3a86-cdb2-4f19-a2bb-a8f5c6043af8",
+          "Active": true,
+          "Name": "CDI Scale Label Enum 0:ENR, 1:TERM, 2:LNAV, 3:LNAV+V, 4:LP, 5:LPV 6:NONE",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          },
+          "Preconditions": [
+            {
+              "Type": "config",
+              "Ref": "c6685ae0-a651-42ab-a572-23cca2564df2",
+              "Serial": null,
+              "Pin": null,
+              "Operand": "!=",
+              "Value": "1",
+              "Logic": "and",
+              "Active": true
+            }
+          ]
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "f84146ab-4a98-44e5-826f-edfc7e7164fb",
+              "Value": "(A:GPS IS APPROACH ACTIVE:1, Bool) \nif{ (A:GPS APPROACH APPROACH TYPE,Enum) }\nels{ 19 }",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 1,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "f6f0b286-8a44-48dd-8bb7-0e0bc17bbe75",
+          "Active": true,
+          "Name": "GPSApproach Approach Type",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          },
+          "Preconditions": [
+            {
+              "Type": "config",
+              "Ref": "c6685ae0-a651-42ab-a572-23cca2564df2",
+              "Serial": null,
+              "Pin": null,
+              "Operand": "!=",
+              "Value": "1",
+              "Logic": "and",
+              "Active": true
+            }
+          ]
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "6078422a-1f03-4ed8-8999-7a8afb01b602",
+              "Value": "(A:GPS VERTICAL ANGLE,Degrees)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "DeviceType": "-",
+          "DeviceName": null,
+          "GUID": "c3f3b95c-f183-4377-9385-bd8860f250b4",
+          "Active": true,
+          "Name": "Is GPS Vertical Mode Active",
+          "Type": "OutputConfigItem",
+          "Controller": null,
+          "Modifiers": {
+            "Items": [
+              {
+                "Type": "Transformation",
+                "Expression": "if($!=0,1,0)",
+                "Active": true
+              }
+            ]
+          }
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "af42603c-d44e-44f5-ac91-5e9485664ecd",
+              "Value": "(A:GPS IS APPROACH ACTIVE,Bool)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "DeviceType": "-",
+          "DeviceName": null,
+          "GUID": "5821ae0a-0cd2-4824-ac45-c60e7abd7a17",
+          "Active": true,
+          "Name": "Is Approach Active (TERM)",
+          "Type": "OutputConfigItem",
+          "Controller": null
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "5696ac40-f566-457b-8d98-67e07331763b",
+              "Value": "(A:GPS APPROACH MODE,Enum)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "DeviceType": "-",
+          "DeviceName": null,
+          "GUID": "5236d3ef-ee0e-4baf-b72e-3670515ea7c0",
+          "Active": true,
+          "Name": "GPS Approach Mode",
+          "Type": "OutputConfigItem",
+          "Controller": null,
+          "Modifiers": {
+            "Items": [
+              {
+                "Type": "Comparison",
+                "Operand": "=",
+                "Value": "",
+                "IfValue": "1",
+                "ElseValue": "0",
+                "Active": true
+              }
+            ]
+          }
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "0",
+              "Value": "(L:WTGarmin_Nav_ActiveNavSource:1)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "DeviceType": "-",
+          "DeviceName": null,
+          "GUID": "44e89dd0-499b-4ee4-b84b-a605ba137f93",
+          "Active": true,
+          "Name": "ActiveNavSource",
+          "Type": "OutputConfigItem",
+          "Controller": null
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "9c1ccb5a-cbf8-4570-af72-15e66acc352e",
+              "Value": "(A:NAV HAS LOCALIZER:1,Bool)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "DeviceType": "-",
+          "DeviceName": null,
+          "GUID": "1354cb41-1db8-4d5a-b0e1-e4ca6fb20d14",
+          "Active": true,
+          "Name": "Nav Has Localizer",
+          "Type": "OutputConfigItem",
+          "Controller": null
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "14a9706d-54e0-42ea-abaa-cea7d030610c",
+              "Value": "(A:NAV HAS NAV:1,Bool)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "DeviceType": "-",
+          "DeviceName": null,
+          "GUID": "4ef0c426-0384-4afe-a901-618112ebea7f",
+          "Active": true,
+          "Name": "Nav Has Nav",
+          "Type": "OutputConfigItem",
+          "Controller": null
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "4b8fb048-1db7-44ad-8b5e-d1bdb95edccb",
+              "Value": "(A:NAV HAS DME:1,Bool)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "DeviceType": "-",
+          "DeviceName": null,
+          "GUID": "d98e0a0c-45bd-42cb-8ae1-2740d9494b8b",
+          "Active": true,
+          "Name": "Nav Has DME",
+          "Type": "OutputConfigItem",
+          "Controller": null
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "06f5b13f-25b7-4784-88b9-ca18ba0cfeb5",
+              "Value": "(A:AUTOPILOT NAV SELECTED,Number)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "DeviceType": "-",
+          "DeviceName": null,
+          "GUID": "ddea52fc-7731-4320-a50c-da76c801fdf1",
+          "Active": true,
+          "Name": "Nav1 or Nav2 Selected",
+          "Type": "OutputConfigItem",
+          "Controller": null
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "0",
+              "Value": "(A:NAV TOFROM:2, Number)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "DeviceType": "-",
+          "DeviceName": null,
+          "GUID": "3dbd2a58-7c7d-4cd4-9da9-06abe9a839f7",
+          "Active": true,
+          "Name": "Nav has To From",
+          "Type": "OutputConfigItem",
+          "Controller": null
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "91f78aaf-2873-4e63-9b7e-17548e4d42f9",
+              "Value": "(A:CIRCUIT AVIONICS ON,Bool)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "PowerSwitchLight",
+            "Pin": "PowerSwitchLight",
+            "Brightness": 255,
+            "PwmMode": false,
+            "Type": "Output"
+          },
+          "DeviceType": "Output",
+          "DeviceName": "PowerSwitchLight",
+          "GUID": "73f882e4-a36c-4612-af20-3f9c561b515c",
+          "Active": true,
+          "Name": "PowerOn",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          }
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "06ad11ba-d18f-4bc7-a2a1-33baa28fef90",
+              "Value": "(A:HSI BEARING, degrees) 0 > (A:HSI CDI NEEDLE VALID, Bool) | (A:GPS DRIVES NAV1, Bool) (A:GPS WP NEXT LAT, degrees) 0 != & |",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 3,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "201f7b9d-83ee-49c7-ad9c-aa938c5df0c2",
+          "Active": true,
+          "Name": "HSI CDI Needle Valid based on a lot of stuff",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          }
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "VarType": 0
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "DeviceType": "",
+          "DeviceName": null,
+          "GUID": "d1d505b8-1238-431d-8aed-08ed744ae9b2",
+          "Active": false,
+          "Name": "---------AP ----------",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "",
+            "Serial": "-"
+          },
+          "Modifiers": {
+            "Items": [
+              {
+                "Type": "Comparison",
+                "Operand": "=",
+                "Value": "",
+                "IfValue": "1",
+                "ElseValue": "0",
+                "Active": true
+              }
+            ]
+          }
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "59411677-275b-4f69-82d2-eb93c20db76c",
+              "Value": "(A:AUTOPILOT MASTER,Bool)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 61,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "f13ec041-ba76-4c17-95a6-5da9e99741c7",
+          "Active": true,
+          "Name": "AP  On",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          },
+          "Preconditions": [
+            {
+              "Type": "config",
+              "Ref": "c6685ae0-a651-42ab-a572-23cca2564df2",
+              "Serial": null,
+              "Pin": null,
+              "Operand": "!=",
+              "Value": "0",
+              "Logic": "and",
+              "Active": true
+            }
+          ]
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "2ac729ee-dcb3-4103-b61b-da3913a471e2",
+              "Value": "(A:AUTOPILOT FLIGHT DIRECTOR ACTIVE,Bool)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 73,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "a1cddeb4-275d-4a75-b9dd-9cf3d9d0a074",
+          "Active": true,
+          "Name": "FD On",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          },
+          "Preconditions": [
+            {
+              "Type": "config",
+              "Ref": "c6685ae0-a651-42ab-a572-23cca2564df2",
+              "Serial": null,
+              "Pin": null,
+              "Operand": "!=",
+              "Value": "0",
+              "Logic": "and",
+              "Active": true
+            }
+          ]
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "812f6173-e458-48e3-8d54-13e22db9f497",
+              "Value": "(A:AUTOPILOT FLIGHT DIRECTOR BANK,Degrees)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 74,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "ad9e2d3a-6326-452b-af30-5dc694cabc27",
+          "Active": true,
+          "Name": "Flight Director Bank",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          },
+          "Preconditions": [
+            {
+              "Type": "config",
+              "Ref": "c6685ae0-a651-42ab-a572-23cca2564df2",
+              "Serial": null,
+              "Pin": null,
+              "Operand": "!=",
+              "Value": "0",
+              "Logic": "and",
+              "Active": true
+            }
+          ],
+          "Modifiers": {
+            "Items": [
+              {
+                "Type": "Transformation",
+                "Expression": "if(#=1, Round($,1), 0)",
+                "Active": true
+              }
+            ]
+          },
+          "ConfigRefs": [
+            {
+              "Active": true,
+              "Ref": "a1cddeb4-275d-4a75-b9dd-9cf3d9d0a074",
+              "Placeholder": "#",
+              "TestValue": "1"
+            }
+          ]
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "b4ae4e99-af27-4b64-a420-076cd7f8c48a",
+              "Value": "(A:AUTOPILOT FLIGHT DIRECTOR PITCH,Degrees)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 75,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "10610274-0791-4882-9467-f728cbfcce26",
+          "Active": true,
+          "Name": "Flight Director Pitch",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          },
+          "Preconditions": [
+            {
+              "Type": "config",
+              "Ref": "c6685ae0-a651-42ab-a572-23cca2564df2",
+              "Serial": null,
+              "Pin": null,
+              "Operand": "!=",
+              "Value": "0",
+              "Logic": "and",
+              "Active": true
+            }
+          ],
+          "Modifiers": {
+            "Items": [
+              {
+                "Type": "Transformation",
+                "Expression": "if(#=1, Round($,1), 0)",
+                "Active": true
+              }
+            ]
+          },
+          "ConfigRefs": [
+            {
+              "Active": true,
+              "Ref": "a1cddeb4-275d-4a75-b9dd-9cf3d9d0a074",
+              "Placeholder": "#",
+              "TestValue": "1"
+            }
+          ]
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "0",
+              "Value": "  (A:AUTOPILOT BANK HOLD, Bool) if{ 1 } els{\n    (A:AUTOPILOT HEADING LOCK, Bool) if{ 2 } els{\n      (A:AUTOPILOT BACKCOURSE HOLD, Bool) if{ 6 } els{\n        (A:AUTOPILOT NAV1 LOCK, Bool) if{\n          (A:GPS DRIVES NAV1, Bool) if{ 3 } els{\n            (A:NAV HAS LOCALIZER:1, Bool) if{ 5 } els{ 4 }\n          }\n        } els{\n          (A:AUTOPILOT APPROACH HOLD, Bool) if{\n            (A:GPS DRIVES NAV1, Bool) if{ 3 } els{ 5 }\n          } els{ 0 }\n        }\n      }\n    }\n  }",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 66,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "3d8bf04e-0d0a-4ae3-8f81-843fad40aff7",
+          "Active": true,
+          "Name": "AP Lateral Mode Enumeration",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          },
+          "Preconditions": [
+            {
+              "Type": "config",
+              "Ref": "c6685ae0-a651-42ab-a572-23cca2564df2",
+              "Serial": null,
+              "Pin": null,
+              "Operand": "!=",
+              "Value": "0",
+              "Logic": "and",
+              "Active": true
+            }
+          ]
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "a72a02c3-8080-4655-9196-fedf99e47990",
+              "Value": "(A:AUTOPILOT APPROACH HOLD, Bool) if{\n  (A:AUTOPILOT BACKCOURSE HOLD, Bool) if{ 6 } els{\n    (A:GPS DRIVES NAV1, Bool) if{ 3 } els{\n      (A:NAV HAS LOCALIZER:1, Bool) if{ 5 } els{ 4 }\n    }\n  }\n} els{\n  (A:AUTOPILOT NAV1 LOCK, Bool) if{\n    (A:AUTOPILOT HEADING LOCK, Bool) \n    (A:AUTOPILOT BANK HOLD, Bool) or\n    if{\n      (A:GPS DRIVES NAV1, Bool) if{ 3 } els{\n         (A:NAV HAS LOCALIZER:1, Bool) if{ 5 } els{ 4 }\n      }\n    } els{ 0 }\n  } els{ 0 }\n}",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 64,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "3f48e6ad-25e7-484e-9d4c-cdf1847eddcd",
+          "Active": true,
+          "Name": "AP Lateral Armed Mode Enumeration",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          },
+          "Preconditions": [
+            {
+              "Type": "config",
+              "Ref": "c6685ae0-a651-42ab-a572-23cca2564df2",
+              "Serial": null,
+              "Pin": null,
+              "Operand": "!=",
+              "Value": "0",
+              "Logic": "and",
+              "Active": true
+            }
+          ],
+          "Modifiers": {
+            "Items": [
+              {
+                "Type": "Transformation",
+                "Expression": "if($=#, 0, $)",
+                "Active": true
+              }
+            ]
+          },
+          "ConfigRefs": [
+            {
+              "Active": true,
+              "Ref": "3d8bf04e-0d0a-4ae3-8f81-843fad40aff7",
+              "Placeholder": "#",
+              "TestValue": "1"
+            }
+          ]
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "a00bbdba-ecad-4464-a410-cb85c260447b",
+              "Value": "  (A:AUTOPILOT GLIDESLOPE ACTIVE, Bool) if{\n    (A:GPS DRIVES NAV1, Bool) if{ 7 } els{ 6 }\n  } els{\n    (A:AUTOPILOT ALTITUDE LOCK, Bool) if{ 1 } els{\n      (A:AUTOPILOT VERTICAL HOLD, Bool) if{ 2 } els{\n        (A:AUTOPILOT PITCH HOLD, Bool) if{ 3 } els{\n          (A:AUTOPILOT FLIGHT LEVEL CHANGE, Bool) if{ 4 } els{ 0 }\n        }\n      }\n    }\n  }\n",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 68,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "7ef181bc-7dbe-41db-b66e-040476ea33f7",
+          "Active": true,
+          "Name": "AP Vertical Mode Enumeration",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          },
+          "Preconditions": [
+            {
+              "Type": "config",
+              "Ref": "c6685ae0-a651-42ab-a572-23cca2564df2",
+              "Serial": null,
+              "Pin": null,
+              "Operand": "!=",
+              "Value": "0",
+              "Logic": "and",
+              "Active": true
+            }
+          ]
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "7412995d-21d9-419e-b80d-2e6c56afdb06",
+              "Value": "(A:AUTOPILOT VERTICAL HOLD, Bool) \n(A:AUTOPILOT FLIGHT LEVEL CHANGE, Bool) or\n(A:AUTOPILOT PITCH HOLD, Bool) or\n(A:AUTOPILOT ALTITUDE LOCK, Bool) ! and\nif{ 1 + }\n(A:AUTOPILOT GLIDESLOPE ARM, Bool)\n(A:GPS DRIVES NAV1, Bool) ! and\nif{ 4 + }\n(A:AUTOPILOT GLIDESLOPE ARM, Bool)\n(A:GPS DRIVES NAV1, Bool) and\nif{ 8 + }",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 65,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "b60da2f7-f543-46f5-9f72-bb925d865772",
+          "Active": true,
+          "Name": "AP Vertical Armed Modes Enumeration",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          },
+          "Preconditions": [
+            {
+              "Type": "config",
+              "Ref": "c6685ae0-a651-42ab-a572-23cca2564df2",
+              "Serial": null,
+              "Pin": null,
+              "Operand": "!=",
+              "Value": "0",
+              "Logic": "and",
+              "Active": true
+            }
+          ]
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "bc545a04-646d-41ce-a510-2c798f7dfe1d",
+              "Value": "(A:AUTOPILOT VERTICAL HOLD VAR,Feet/minute)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 69,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "50205ae6-44ea-4d98-99ca-b3164dc31b72",
+          "Active": true,
+          "Name": "AP Target VS",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          },
+          "Preconditions": [
+            {
+              "Type": "config",
+              "Ref": "c6685ae0-a651-42ab-a572-23cca2564df2",
+              "Serial": null,
+              "Pin": null,
+              "Operand": "!=",
+              "Value": "0",
+              "Logic": "and",
+              "Active": true
+            }
+          ]
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "c6348d07-b8b3-4e31-a28d-8615cf8e837e",
+              "Value": "(A:AUTOPILOT AIRSPEED HOLD VAR,Knots)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 67,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "808ddb10-ab76-40dc-8e0b-d51831ef148d",
+          "Active": true,
+          "Name": "AP Target IAS for FLC",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          },
+          "Preconditions": [
+            {
+              "Type": "config",
+              "Ref": "c6685ae0-a651-42ab-a572-23cca2564df2",
+              "Serial": null,
+              "Pin": null,
+              "Operand": "!=",
+              "Value": "0",
+              "Logic": "and",
+              "Active": true
+            }
+          ]
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "01313b08-3560-48b5-9992-44eb1b4b87ae",
+              "Value": "(A:AUTOPILOT YAW DAMPER,Bool)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 70,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "3da89490-333b-49e1-ba07-55f29bba7cea",
+          "Active": true,
+          "Name": "Yaw Damper",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          },
+          "Preconditions": [
+            {
+              "Type": "config",
+              "Ref": "c6685ae0-a651-42ab-a572-23cca2564df2",
+              "Serial": null,
+              "Pin": null,
+              "Operand": "!=",
+              "Value": "0",
+              "Logic": "and",
+              "Active": true
+            }
+          ]
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "0",
+              "Value": "(L:last_lock) (A:AUTOPILOT ALTITUDE LOCK, bool) != if{ (A:AUTOPILOT ALTITUDE LOCK, bool) d (>L:last_lock) if{ (A:AUTOPILOT ALTITUDE LOCK VAR,feet) (A:INDICATED ALTITUDE, feet) - abs (A:VERTICAL SPEED, feet/minute) 0.20 * abs < if{ (A:AUTOPILOT ALTITUDE LOCK VAR, feet) } els{ (A:INDICATED ALTITUDE, feet) } } d (>L:cap_alt) } (L:cap_alt)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 62,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "54759ec1-0684-48c2-b29c-81b0f9ecb2ef",
+          "Active": true,
+          "Name": "Alt Hold Captured Alt",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          },
+          "Preconditions": [
+            {
+              "Type": "config",
+              "Ref": "c6685ae0-a651-42ab-a572-23cca2564df2",
+              "Serial": null,
+              "Pin": null,
+              "Operand": "!=",
+              "Value": "0",
+              "Logic": "and",
+              "Active": true
+            }
+          ],
+          "Modifiers": {
+            "Items": [
+              {
+                "Type": "Transformation",
+                "Expression": "Round($ / 10, 0)*10",
+                "Active": true
+              }
+            ]
+          }
+        },
+        {
+          "encoder": {
+            "onLeft": {
+              "Type": "MSFS2020CustomInputAction",
+              "Command": "(>K:KOHLSMAN_DEC)",
+              "PresetId": "d3828258-b00c-4dad-b59d-4fb0d4f18a2a"
+            },
+            "onLeftFast": null,
+            "onRight": {
+              "Type": "MSFS2020CustomInputAction",
+              "Command": "(>K:KOHLSMAN_INC)",
+              "PresetId": "63a0157d-4060-4ee1-a28b-5c7964898b88"
+            },
+            "onRightFast": null
+          },
+          "Device": {
+            "Type": "Encoder",
+            "Name": "encKohls"
+          },
+          "DeviceType": "Encoder",
+          "DeviceName": "encKohls",
+          "GUID": "fd2ac9f7-35c2-49b9-8240-e9d2c4db7b22",
+          "Active": true,
+          "Name": "Kohlsman Knob",
+          "Type": "InputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          }
+        },
+        {
+          "encoder": {
+            "onLeft": {
+              "Type": "MSFS2020CustomInputAction",
+              "Command": "(>K:HEADING_BUG_DEC)",
+              "PresetId": "cab52499-c789-4249-bc21-31f920d4e604"
+            },
+            "onLeftFast": null,
+            "onRight": {
+              "Type": "MSFS2020CustomInputAction",
+              "Command": "(>K:HEADING_BUG_INC)",
+              "PresetId": "debca2cf-3a15-40f0-b839-3e1e153cd0f4"
+            },
+            "onRightFast": null
+          },
+          "Device": {
+            "Type": "Encoder",
+            "Name": "encHeading"
+          },
+          "DeviceType": "Encoder",
+          "DeviceName": "encHeading",
+          "GUID": "5de8fde3-5560-41ab-9736-80acf545ed7e",
+          "Active": true,
+          "Name": "Heading Knob",
+          "Type": "InputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          }
+        },
+        {
+          "encoder": {
+            "onLeft": {
+              "Type": "MSFS2020CustomInputAction",
+              "Command": " (A:AUTOPILOT ALTITUDE LOCK VAR, feet) 100 - (>K:AP_ALT_VAR_SET_ENGLISH) (>H:AP_KNOB_Up)",
+              "PresetId": "d03873bb-2f72-4d88-ba00-d338c5627c89"
+            },
+            "onLeftFast": null,
+            "onRight": {
+              "Type": "MSFS2020CustomInputAction",
+              "Command": " (A:AUTOPILOT ALTITUDE LOCK VAR, feet) 100 + (>K:AP_ALT_VAR_SET_ENGLISH) (>H:AP_KNOB_Up)",
+              "PresetId": "3f7f4649-3ab8-47a7-9e4f-46ebce300400"
+            },
+            "onRightFast": null
+          },
+          "Device": {
+            "Type": "Encoder",
+            "Name": "encTargetAlt"
+          },
+          "DeviceType": "Encoder",
+          "DeviceName": "encTargetAlt",
+          "GUID": "9a584df6-4b05-42a4-93ed-b6fe20c04336",
+          "Active": true,
+          "Name": "Target Altitude Knob",
+          "Type": "InputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          }
+        },
+        {
+          "encoder": {
+            "onLeft": {
+              "Type": "MSFS2020CustomInputAction",
+              "Command": "(>K:HEADING_BUG_DEC)",
+              "PresetId": "4bd8d51a-8bce-43e0-8de3-8510ef4af071"
+            },
+            "onLeftFast": null,
+            "onRight": {
+              "Type": "MSFS2020CustomInputAction",
+              "Command": "(>K:HEADING_BUG_INC)",
+              "PresetId": "7fece887-9baa-4c89-b29a-2e8f9b14684d"
+            },
+            "onRightFast": null
+          },
+          "Device": {
+            "Type": "Encoder",
+            "Name": "encHeading"
+          },
+          "DeviceType": "Encoder",
+          "DeviceName": "encHeading",
+          "GUID": "8d95488d-7c7a-4851-8bde-fc1161eaf0be",
+          "Active": true,
+          "Name": "Heading Knob",
+          "Type": "InputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          }
+        },
+        {
+          "encoder": {
+            "onLeft": {
+              "Type": "MSFS2020CustomInputAction",
+              "Command": "(>K:VOR1_OBI_DEC)",
+              "PresetId": "4bd8d51a-8bce-43e0-8de3-8510ef4af071"
+            },
+            "onLeftFast": null,
+            "onRight": {
+              "Type": "MSFS2020CustomInputAction",
+              "Command": "(>K:VOR1_OBI_INC)",
+              "PresetId": "7fece887-9baa-4c89-b29a-2e8f9b14684d"
+            },
+            "onRightFast": null
+          },
+          "Device": {
+            "Type": "Encoder",
+            "Name": "encCourse"
+          },
+          "DeviceType": "Encoder",
+          "DeviceName": "encCourse",
+          "GUID": "84a04d52-9d17-4a47-b7ae-16c99c5f6ea9",
+          "Active": true,
+          "Name": "Course Knob",
+          "Type": "InputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          }
+        },
+        {
+          "button": {
+            "onPress": {
+              "Type": "MSFS2020CustomInputAction",
+              "Command": "(A:INDICATED ALTITUDE, feet) 100 / near 100 * (>K:AP_ALT_VAR_SET_ENGLISH)",
+              "PresetId": "-"
+            },
+            "onRelease": null,
+            "onLongRelease": null,
+            "onHold": null,
+            "LongReleaseDelay": 350,
+            "HoldDelay": 350,
+            "RepeatDelay": 0
+          },
+          "Device": {
+            "Type": "Button",
+            "Name": "btnPfdEncoder"
+          },
+          "DeviceType": "Button",
+          "DeviceName": "btnPfdEncoder",
+          "GUID": "274eca54-09c6-467e-a86a-1301d2cf498e",
+          "Active": true,
+          "Name": "ResetTargetAlt",
+          "Type": "InputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          }
+        },
+        {
+          "button": {
+            "onPress": {
+              "Type": "MSFS2020CustomInputAction",
+              "Command": "(A:PLANE HEADING DEGREES MAGNETIC, degrees) (>K:HEADING_BUG_SET)",
+              "PresetId": "-"
+            },
+            "onRelease": null,
+            "onLongRelease": null,
+            "onHold": null,
+            "LongReleaseDelay": 350,
+            "HoldDelay": 350,
+            "RepeatDelay": 0
+          },
+          "Device": {
+            "Type": "Button",
+            "Name": "btnHsiEncoder"
+          },
+          "DeviceType": "Button",
+          "DeviceName": "btnHsiEncoder",
+          "GUID": "c20acc5f-0026-4140-b73e-092b9d1a2aa5",
+          "Active": true,
+          "Name": "Reset Heading Bug",
+          "Type": "InputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32",
+            "Serial": "SN-98A316E591C4"
+          }
+        }
+      ]
+    }
+  ],
+  "Sim": "msfs",
+  "Aircraft": [],
+  "Features": {
+    "FSUIPC": false,
+    "ProSim": false
+  },
+  "_version": "0.9"
+}

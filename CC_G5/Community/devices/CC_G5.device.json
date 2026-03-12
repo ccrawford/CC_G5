@@ -274,8 +274,8 @@
       },
       {
         "id": 76,
-        "Label": "GPS Course to Steer",
-        "description": "GPS navigation course to steer in degrees"
+        "Label": "Radio Nav Course to Steer",
+        "description": "Nav navigation course to steer in degrees (A:NAV OBS:1,Degrees)"
       },
       {
         "id": 77,

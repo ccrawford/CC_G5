@@ -15,7 +15,7 @@
     {
       "id": 0,
       "Label": "AP Heading Bug",
-      "description": "Autopilot heading bug angle in degrees"
+      "description": "Autopilot heading bug angle in degrees (A:AUTOPILOT HEADING LOCK DIR,Degrees)"
     },
     {
       "id": 1,

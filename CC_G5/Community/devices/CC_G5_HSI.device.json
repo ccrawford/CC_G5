@@ -128,13 +128,23 @@
       "description": "Navigation CDI source label index"
     },
     {
+      "id": 48,
+      "Label": "Bearing1 Data Source",
+      "description": "HSI Bearing Pointer 1 source: 0=Off, 1=NAV1, 2=NAV2, 3=GPS, 4=ADF"
+    },
+    {
+      "id": 49,
+      "Label": "Bearing2 Data Source",
+      "description": "HSI Bearing Pointer 2 source: 0=Off, 1=NAV1, 2=NAV2, 3=GPS, 4=ADF"
+    },
+    {
       "id": 39,
       "Label": "Nav1 Bearing Angle",
       "description": "Nav1 station bearing in degrees"
     },
     {
       "id": 40,
-      "Label": "Nav1 Bearing Source",
+      "Label": "Nav1 Bearing Stations Type",
       "description": "Nav1 station type (0=off, 1=LOC/ILS, 2=VOR, 3=DME, 7=no station)"
     },
     {
@@ -144,7 +154,7 @@
     },
     {
       "id": 42,
-      "Label": "Nav2 Bearing Source",
+      "Label": "Nav2 Bearing Station Type",
       "description": "Nav2 station type (0=off, 1=LOC/ILS, 2=VOR, 3=DME, 4=ADF, 7=no station)"
     },
     {
@@ -171,16 +181,6 @@
       "id": 47,
       "Label": "ETE to Next GPS Waypoint",
       "description": "Estimated time en route to next GPS waypoint in seconds"
-    },
-    {
-      "id": 48,
-      "Label": "Bearing1 Source",
-      "description": "HSI Bearing Pointer 1 source: 0=Off, 1=GPS, 2=Nav1, 3=Nav2, 4=ADF"
-    },
-    {
-      "id": 49,
-      "Label": "Bearing2 Source",
-      "description": "HSI Bearing Pointer 2 source: 0=Off, 1=GPS, 2=Nav1, 3=Nav2, 4=ADF"
     },
     {
       "id": 84,
