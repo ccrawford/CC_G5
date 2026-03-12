@@ -841,8 +841,10 @@ void CC_G5_PFD::drawSpeedTape()
     // Short cirucuiting here doesn't seem to help much and is complex.
     float drawSpeed = g5State.airspeed;
 
-    if (g5State.airspeed < SPEED_ALIVE_SPEED) drawSpeed = 19.99; // The g5State.airspeed isn't displayed at low speed.
-    else drawSpeed = g5State.airspeed;
+    if (g5State.airspeed < SPEED_ALIVE_SPEED)
+        drawSpeed = 19.99; // The g5State.airspeed isn't displayed at low speed.
+    else
+        drawSpeed = g5State.airspeed;
 
     int intDigits[7];
 
@@ -975,7 +977,7 @@ void CC_G5_PFD::drawSpeedTape()
 
         int tapeSpacing = digitHeight * (i) + ((intDigits[2] * 10 + intDigits[3]) * (digitHeight)) / 100;
 
-        if (curVal <= 20) continue;   // The tape starts at 20, and the 20 val does not show.
+        if (curVal <= 20) continue; // The tape starts at 20, and the 20 val does not show.
 
         attitude.drawNumber(curVal, xRight, yTop + tapeSpacing);
         attitude.drawFastHLine(xRight + 19, yTop + tapeSpacing, 16);             // major tick
@@ -983,7 +985,6 @@ void CC_G5_PFD::drawSpeedTape()
         attitude.drawFastHLine(xRight + 24, yTop + tapeSpacing + minorStep, 11); // minor tick (5kt)
         attitude.drawFastHLine(xRight + 24, yTop + tapeSpacing + minorStep, 11); // minor tick (5kt)
     }
-
 
     // Add the odometer fading
     // Let's try to alpha blend the edges.
@@ -1183,7 +1184,7 @@ void CC_G5_PFD::drawAltTape()
             // At X80 (rollProgress=0): shift = digitHeight, so intDigits[3] sits at
             // center (same as static). At X99 (rollProgress≈20): shift ≈ 0, so
             // nextHundred has scrolled down to center. No jump at the X80 boundary.
-            yOffset = yOffset - (int)((20.0f - rollProgress) * (float)digitHeight / 20.0f);
+            yOffset         = yOffset - (int)((20.0f - rollProgress) * (float)digitHeight / 20.0f);
             int nextHundred = (intDigits[3] + 1) % 10; // wrap 9→0 at e.g. 980→1000
             altTens.drawNumber(nextHundred, xOffset, yOffset);
             if (g5State.altitude > 100) altTens.drawNumber(intDigits[3], xOffset, yOffset + digitHeight);
@@ -1262,10 +1263,10 @@ void CC_G5_PFD::drawAltTape()
     // 131 pixels is 1000fpm so 1fpm is 0.131 pixel
     int barHeight = abs((int)(g5State.verticalSpeed * 0.131f));
     if (g5State.verticalSpeed > 0) yTop = ATTITUDE_Y_CENTER - barHeight;
-    attitude.fillRect(ATTITUDE_WIDTH-5, yTop, 5, barHeight, TFT_MAGENTA);              // push to attitude to avoid a refill of vsScale.
-    vsScale.pushSprite(ATTITUDE_WIDTH - vsScale.width(), -30, TFT_BLACK); // Scale drawn over the vs bar
+    attitude.fillRect(ATTITUDE_WIDTH - 5, yTop, 5, barHeight, TFT_MAGENTA); // push to attitude to avoid a refill of vsScale.
+    vsScale.pushSprite(ATTITUDE_WIDTH - vsScale.width(), -30, TFT_BLACK);   // Scale drawn over the vs bar
     // Draw the pointer
- 
+
     vsPointer.pushSprite(ATTITUDE_WIDTH - VSPOINTER_IMG_WIDTH, ATTITUDE_Y_CENTER - VSPOINTER_IMG_HEIGHT / 2 - (int)(g5State.verticalSpeed * 0.131f), LGFX::color565(0x20, 0x20, 0x20));
 
     // Let's try to alpha blend the edges of the units digit.
@@ -1560,52 +1561,51 @@ void CC_G5_PFD::drawBall()
     uint8_t bgR = ((0x9A60 >> 11) & 0x1F) << 3; // ~0x98
     uint8_t bgG = ((0x9A60 >> 5) & 0x3F) << 2;  // ~0x4C
     uint8_t bgB = (0x9A60 & 0x1F) << 3;         // ~0x00
-    
-    int xStart = 140, xEnd = 340, y = 328, taper = 30;   // Relative to the 340 px tall attitude sprite! Sub 20px for AP bar.
+
+    int xStart = 140, xEnd = 340, y = 328, taper = 30; // Relative to the 340 px tall attitude sprite! Sub 20px for AP bar.
     for (int x = xStart; x <= xEnd; x++) {
         int alpha = 255;
         if (x < xStart + taper)
-        alpha = 255 * (x - xStart) / taper;
+            alpha = 255 * (x - xStart) / taper;
         else if (x > xEnd - taper)
-        alpha = 255 * (xEnd - x) / taper;
-        
+            alpha = 255 * (xEnd - x) / taper;
+
         uint8_t r = bgR - (bgR * alpha >> 8);
         uint8_t g = bgG - (bgG * alpha >> 8);
         uint8_t b = bgB - (bgB * alpha >> 8);
-        
+
         attitude.drawPixel(x, y, attitude.color332(r, g, b));
     }
 
     // draw turn rate indicator bar
-    int turnRateWidth = (int)(g5State.turnRate * 21.3);   // 3 degrees is std rate. Indicators are 128px apart, but thats 6 deg, so 21.3 px per degree
-    attitude.fillRect(min(turnRateWidth + ATTITUDE_X_CENTER, ATTITUDE_X_CENTER), y+1, abs(turnRateWidth), 9, TFT_MAGENTA);
+    int turnRateWidth = (int)(g5State.turnRate * 21.3); // 3 degrees is std rate. Indicators are 128px apart, but thats 6 deg, so 21.3 px per degree
+    attitude.fillRect(min(turnRateWidth + ATTITUDE_X_CENTER, ATTITUDE_X_CENTER), y + 1, abs(turnRateWidth), 9, TFT_MAGENTA);
 
     // draw vertical turn bars on top of the turn indicator.
-    attitude.drawFastVLine(240, y, ATTITUDE_HEIGHT, TFT_BLACK );
-    attitude.drawFastVLine(241, y, ATTITUDE_HEIGHT, DARK_GND_COLOR );
-    attitude.drawFastVLine(239, y, ATTITUDE_HEIGHT, DARK_GND_COLOR );
+    attitude.drawFastVLine(240, y, ATTITUDE_HEIGHT, TFT_BLACK);
+    attitude.drawFastVLine(241, y, ATTITUDE_HEIGHT, DARK_GND_COLOR);
+    attitude.drawFastVLine(239, y, ATTITUDE_HEIGHT, DARK_GND_COLOR);
 
-    attitude.drawFastVLine(303, y+1, ATTITUDE_HEIGHT, TFT_BLACK );
-    attitude.drawFastVLine(304, y+1, ATTITUDE_HEIGHT, DATA_BOX_OUTLINE_COLOR );
-    attitude.drawFastVLine(305, y+1, ATTITUDE_HEIGHT, TFT_BLACK );
+    attitude.drawFastVLine(303, y + 1, ATTITUDE_HEIGHT, TFT_BLACK);
+    attitude.drawFastVLine(304, y + 1, ATTITUDE_HEIGHT, DATA_BOX_OUTLINE_COLOR);
+    attitude.drawFastVLine(305, y + 1, ATTITUDE_HEIGHT, TFT_BLACK);
 
-    attitude.drawFastVLine(175, y+1, ATTITUDE_HEIGHT, TFT_BLACK );
-    attitude.drawFastVLine(176, y+1, ATTITUDE_HEIGHT, DATA_BOX_OUTLINE_COLOR );
-    attitude.drawFastVLine(177, y+1, ATTITUDE_HEIGHT, TFT_BLACK );
+    attitude.drawFastVLine(175, y + 1, ATTITUDE_HEIGHT, TFT_BLACK);
+    attitude.drawFastVLine(176, y + 1, ATTITUDE_HEIGHT, DATA_BOX_OUTLINE_COLOR);
+    attitude.drawFastVLine(177, y + 1, ATTITUDE_HEIGHT, TFT_BLACK);
 
-    attitude.fillRect(220, 289, 5,35,TFT_WHITE);
-    attitude.drawRect(220, 289, 5,35,TFT_BLACK);
-    
-    attitude.fillRect(257, 289, 5,35,TFT_WHITE);
-    attitude.drawRect(257, 289,5,35, TFT_BLACK);
+    attitude.fillRect(220, 289, 5, 35, TFT_WHITE);
+    attitude.drawRect(220, 289, 5, 35, TFT_BLACK);
 
+    attitude.fillRect(257, 289, 5, 35, TFT_WHITE);
+    attitude.drawRect(257, 289, 5, 35, TFT_BLACK);
 
     // Draw the ball  The g5State.ballPos goes from -1.0 (far right) to 1.0 (far left)
-    int ballXOffset = (int)(g5State.ballPos * BALL_IMG_WIDTH * 1.8f) + 1;                     // This 1.8 factor can vary by plane. The comanche is backwards!
+    int ballXOffset = (int)(g5State.ballPos * BALL_IMG_WIDTH * 1.8f) + 1; // This 1.8 factor can vary by plane. The comanche is backwards!
     attitude.pushImage(ATTITUDE_X_CENTER - ballSprite.width() / 2 + ballXOffset, 293, BALL_IMG_WIDTH, BALL_IMG_HEIGHT, BALL_IMG_DATA, 0xC092);
     // ballSprite.pushSprite(&attitude, ATTITUDE_X_CENTER - ballSprite.width() / 2 + ballXOffset, 290, 0xC2); // The transparent color is an odd one here. 0xC2 works
 
-    if (lastMFUpdate < (millis() - 3000)) messageIndicator.pushSprite(&attitude, 125, 294);   // Coords from inkscape
+    if (lastMFUpdate < (millis() - 3000)) messageIndicator.pushSprite(&attitude, 125, 294); // Coords from inkscape
 
     return;
 }
@@ -1689,7 +1689,7 @@ void CC_G5_PFD::drawHeadingTape()
     headingTape.drawRect(CENTER_COL_CENTER - curBoxWidth / 2 + offcenterX, boxTop, curBoxWidth, curBoxHeight, DATA_BOX_OUTLINE_COLOR);
     headingTape.fillRect(CENTER_COL_CENTER - curBoxWidth / 2 + offcenterX + 1, boxTop + 1, curBoxWidth - 2, curBoxHeight - 2, TFT_BLACK);
     sprintf(buf, "%03d\xB0", (int)roundf(g5State.headingAngle));
-    headingTape.drawString(buf, CENTER_COL_CENTER+offcenterX, curBoxHeight / 2 + 1);
+    headingTape.drawString(buf, CENTER_COL_CENTER + offcenterX, curBoxHeight / 2 + 1);
 
     // Draw pointer triangle
     const int tx2 = CENTER_COL_CENTER;
@@ -1729,30 +1729,29 @@ void CC_G5_PFD::drawGlideSlope()
 
     // Change of direction. Use HSI GSI NEEDLE:1 simvar. -127 to 127.
 
-    const float scaleMax    = 127.0;
-    const float scaleMin    = -127.0;
-    const float scaleOffset = 20.0; // Distance the scale starts from top of sprite.
-    const float scaleMultiplier = 0.565f; // (GSDEVIATIONPFD_IMG_HEIGHT - scaleOffset -1) / (scaleMax - scaleMin));  144/255 = 
- 
+    const float scaleMax        = 127.0;
+    const float scaleMin        = -127.0;
+    const float scaleOffset     = 20.0;   // Distance the scale starts from top of sprite.
+    const float scaleMultiplier = 0.565f; // (GSDEVIATIONPFD_IMG_HEIGHT - scaleOffset -1) / (scaleMax - scaleMin));  144/255 =
 
     // Refill the sprite to overwrite old diamond.
     glideDeviationScale.fillSprite(TFT_BLACK);
     glideDeviationScale.pushImage(0, 0, GSDEVIATIONPFD_IMG_WIDTH, GSDEVIATIONPFD_IMG_HEIGHT, GSDEVIATIONPFD_IMG_DATA);
-    
-    
+
     // Add scaleMax to make the scale 0 based (0-255)
     int markerCenterPosition = 2 + (int)(scaleOffset + (((g5State.gsiNeedle + scaleMax) * scaleMultiplier) - (deviationDiamond.height() / 2.0)));
-    
+
     if (g5State.navSource == NAVSOURCE_GPS) {
         glideDeviationScale.setTextColor(TFT_MAGENTA);
         glideDeviationScale.drawString("G", glideDeviationScale.width() / 2, 11);
-        glideDeviationScale.setClipRect(0,scaleOffset,GSDEVIATIONPFD_IMG_WIDTH, GSDEVIATIONPFD_IMG_HEIGHT-scaleOffset);
+        glideDeviationScale.setClipRect(0, scaleOffset, GSDEVIATIONPFD_IMG_WIDTH, GSDEVIATIONPFD_IMG_HEIGHT - scaleOffset);
         glideDeviationScale.drawBitmap(1, markerCenterPosition, DIAMONDBITMAP_IMG_DATA, DIAMONDBITMAP_IMG_WIDTH, DIAMONDBITMAP_IMG_HEIGHT, TFT_MAGENTA);
         glideDeviationScale.clearClipRect();
     } else {
         glideDeviationScale.setTextColor(TFT_GREEN);
-        glideDeviationScale.drawString("L", glideDeviationScale.width() / 2, 11);
-        glideDeviationScale.setClipRect(0,scaleOffset,GSDEVIATIONPFD_IMG_WIDTH, GSDEVIATIONPFD_IMG_HEIGHT-scaleOffset);
+        // Honestly, i'm not sure what the letter should be!
+        glideDeviationScale.drawString("G", glideDeviationScale.width() / 2, 11);
+        glideDeviationScale.setClipRect(0, scaleOffset, GSDEVIATIONPFD_IMG_WIDTH, GSDEVIATIONPFD_IMG_HEIGHT - scaleOffset);
         glideDeviationScale.drawBitmap(1, markerCenterPosition, DIAMONDBITMAP_IMG_DATA, DIAMONDBITMAP_IMG_WIDTH, DIAMONDBITMAP_IMG_HEIGHT, TFT_GREEN);
         glideDeviationScale.clearClipRect();
     }
@@ -1760,8 +1759,8 @@ void CC_G5_PFD::drawGlideSlope()
     // glideDeviationScale.effect(1,21,20,GSDEVIATIONPFD_IMG_HEIGHT-22, lgfx::effect_fill_alpha(lgfx::argb8888_t{0x80000000}));
     const int xpos = SPEED_COL_WIDTH + CENTER_COL_WIDTH - glideDeviationScale.width() - 1;
     const int ypos = ATTITUDE_Y_CENTER + 2 - scaleOffset - (glideDeviationScale.height() - scaleOffset) / 2;
-    attitude.effect(xpos + 1, ypos + 21, 20, GSDEVIATIONPFD_IMG_HEIGHT - 20 - 2, lgfx::effect_fill_alpha(lgfx::argb8888_t{0x80000000}) );
-    glideDeviationScale.pushSprite(&attitude, xpos, ypos, TFT_BLACK); 
+    attitude.effect(xpos + 1, ypos + 21, 20, GSDEVIATIONPFD_IMG_HEIGHT - 20 - 2, lgfx::effect_fill_alpha(lgfx::argb8888_t{0x80000000}));
+    glideDeviationScale.pushSprite(&attitude, xpos, ypos, TFT_BLACK);
 }
 
 void CC_G5_PFD::drawCDIBar()
@@ -1779,8 +1778,8 @@ void CC_G5_PFD::drawCDIBar()
     const float scaleMax    = 127.0;
     const float scaleMin    = -127.0;
     const float scaleOffset = 0.0; // Distance the scale starts from middle of sprite.
-    const int y_pos = 265;
-    const int x_pos = ATTITUDE_X_CENTER - (HORIZONTALDEVIATIONSCALE_IMG_WIDTH / 2);
+    const int   y_pos       = 265;
+    const int   x_pos       = ATTITUDE_X_CENTER - (HORIZONTALDEVIATIONSCALE_IMG_WIDTH / 2);
 
     // Refill the sprite to overwrite old diamond.
 
@@ -1792,36 +1791,44 @@ void CC_G5_PFD::drawCDIBar()
     horizontalDeviationScale.pushImage(0, 0, HORIZONTALDEVIATIONSCALE_IMG_WIDTH, HORIZONTALDEVIATIONSCALE_IMG_HEIGHT, HORIZONTALDEVIATIONSCALE_IMG_DATA);
     int markerCenterPosition = (int)(scaleOffset + ((g5State.cdiOffset + scaleMax) * (HORIZONTALDEVIATIONSCALE_IMG_WIDTH / (scaleMax - scaleMin))) - (BANKANGLEPOINTER_IMG_WIDTH / 2));
 
-
-    attitude.effect(x_pos + 1, y_pos + 1, HORIZONTALDEVIATIONSCALE_IMG_WIDTH -2, HORIZONTALDEVIATIONSCALE_IMG_HEIGHT-2, lgfx::effect_fill_alpha(lgfx::argb8888_t{0x80000000}) );
-
+    attitude.effect(x_pos + 1, y_pos + 1, HORIZONTALDEVIATIONSCALE_IMG_WIDTH - 2, HORIZONTALDEVIATIONSCALE_IMG_HEIGHT - 2, lgfx::effect_fill_alpha(lgfx::argb8888_t{0x80000000}));
 
     if (g5State.navSource == NAVSOURCE_GPS) {
         // always the magenta triangle
-        horizontalDeviationScale.drawBitmap(markerCenterPosition- (BANKANGLEPOINTER_IMG_WIDTH / 2), 2, BANKANGLEPOINTER_IMG_DATA, BANKANGLEPOINTER_IMG_WIDTH, BANKANGLEPOINTER_IMG_HEIGHT, TFT_MAGENTA);
-        horizontalDeviationScale.pushSprite(&attitude, x_pos, y_pos, TFT_BLACK);  
+        horizontalDeviationScale.drawBitmap(markerCenterPosition, 2, BANKANGLEPOINTER_IMG_DATA, BANKANGLEPOINTER_IMG_WIDTH, BANKANGLEPOINTER_IMG_HEIGHT, TFT_MAGENTA);
     } else {
         // ILS or VOR or LOC is a green diamond
         if (g5State.gpsApproachType == 4 || g5State.gpsApproachType == 2 || g5State.gpsApproachType == 5) {
 
             // diamond
-            horizontalDeviationScale.drawBitmap(markerCenterPosition- (BANKANGLEPOINTER_IMG_WIDTH / 2), 2, DIAMONDBITMAP_IMG_DATA, DIAMONDBITMAP_IMG_WIDTH, DIAMONDBITMAP_IMG_HEIGHT, TFT_GREEN);
-            horizontalDeviationScale.pushSprite(&attitude, x_pos, y_pos, TFT_BLACK);
+            horizontalDeviationScale.drawBitmap(markerCenterPosition, 2, DIAMONDBITMAP_IMG_DATA, DIAMONDBITMAP_IMG_WIDTH, DIAMONDBITMAP_IMG_HEIGHT, TFT_GREEN);
         } else {
+            if (g5State.cdiToFrom == 0) {
+                // No flag.
+            }
             // Triangle with to/from        FIXXX This looks all kinds of messed up.
             if (g5State.cdiToFrom == 1) {
+                int triWidthHalf = 8;
+                int x2 = markerCenterPosition + triWidthHalf, x1 = x2 - triWidthHalf, x3 = x2 + triWidthHalf;
+                int y1 = HORIZONTALDEVIATIONSCALE_IMG_HEIGHT - 4, y2 = 2, y3 = y1;
+                horizontalDeviationScale.fillTriangle(x1, y1, x2, y2, x3, y3, TFT_GREEN);
                 // To
-                horizontalDeviationScale.drawBitmap(markerCenterPosition- (BANKANGLEPOINTER_IMG_WIDTH / 2), 2, BANKANGLEPOINTER_IMG_DATA, BANKANGLEPOINTER_IMG_WIDTH, BANKANGLEPOINTER_IMG_HEIGHT, TFT_GREEN);
-                horizontalDeviationScale.pushSprite(&attitude, x_pos, y_pos, TFT_BLACK);
-            } else {
+                //                horizontalDeviationScale.drawBitmap(markerCenterPosition, 2, BANKANGLEPOINTER_IMG_DATA, BANKANGLEPOINTER_IMG_WIDTH, BANKANGLEPOINTER_IMG_HEIGHT, TFT_GREEN);
+            } else if (g5State.cdiToFrom == 2) {
                 // From
-                horizontalDeviationScale.drawBitmap(HORIZONTALDEVIATIONSCALE_IMG_WIDTH - markerCenterPosition, 2, BANKANGLEPOINTER_IMG_DATA, BANKANGLEPOINTER_IMG_WIDTH, BANKANGLEPOINTER_IMG_HEIGHT, TFT_GREEN);
-                attitude.setPivot(x_pos, y_pos - HORIZONMARKER_IMG_HEIGHT / 2);
-                horizontalDeviationScale.setPivot(HORIZONMARKER_IMG_WIDTH / 2, HORIZONMARKER_IMG_HEIGHT / 2);
-                horizontalDeviationScale.pushRotated(180, TFT_BLACK);
+                int triWidthHalf = 8;
+                int x2 = markerCenterPosition + triWidthHalf, x1 = x2 - triWidthHalf, x3 = x2 + triWidthHalf;
+                int y1 = 2, y3 = y1, y2 = HORIZONTALDEVIATIONSCALE_IMG_HEIGHT - 4;
+                horizontalDeviationScale.fillTriangle(x1, y1, x2, y2, x3, y3, TFT_GREEN);
+                // horizontalDeviationScale.pushImageRotateZoom((float)markerCenterPosition, HORIZONTALDEVIATIONSCALE_IMG_HEIGHT-2, BANKANGLEPOINTER_IMG_WIDTH/2, BANKANGLEPOINTER_IMG_HEIGHT/2, 180.0f, 1.0f, 1.0f, BANKANGLEPOINTER_IMG_WIDTH, BANKANGLEPOINTER_IMG_HEIGHT, BANKANGLESCALE_IMG_DATA);
+                //  horizontalDeviationScale.drawBitmap(HORIZONTALDEVIATIONSCALE_IMG_WIDTH - markerCenterPosition, 2, BANKANGLEPOINTER_IMG_DATA, BANKANGLEPOINTER_IMG_WIDTH, BANKANGLEPOINTER_IMG_HEIGHT, TFT_GREEN);
+                //  attitude.setPivot(ATTITUDE_X_CENTER, y_pos + HORIZONMARKER_IMG_HEIGHT / 2);
+                //  horizontalDeviationScale.setPivot(HORIZONMARKER_IMG_WIDTH / 2, HORIZONMARKER_IMG_HEIGHT / 2);
+                //  horizontalDeviationScale.pushRotated(180, TFT_BLACK);
             }
         }
     }
+    horizontalDeviationScale.pushSprite(&attitude, x_pos, y_pos, TFT_BLACK);
 }
 
 void CC_G5_PFD::drawAp()

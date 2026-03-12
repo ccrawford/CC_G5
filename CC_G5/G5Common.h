@@ -133,7 +133,7 @@ struct G5State {
     int   isStdPressure       = 0;  // 1: Is std pressure set.
 
     // Navigation source and mode
-    int  navSource          = 1; // 1=GPS, 0=NAV
+    int  navSource          = 0; // 1=GPS, 0=NAV
     int  gpsApproachType    = 0; // Approach type enum
     int  navCDILabelIndex   = 0; // GPS:0, LOC1:1, VOR1:2, etc.
     int  cdiScaleLabel      = 0;
@@ -142,10 +142,10 @@ struct G5State {
     // CDI (Course Deviation Indicator)
     int   cdiDirection   = 0; // HSI needle direction
     int   rawCdiDirection = 0;
-    float rawCdiOffset   = 12.0f;
+    float rawCdiOffset   = 0.0f;
     float cdiOffset      = 0.0f;
     int   cdiNeedleValid = 1;
-    int   cdiToFrom      = 0; // 0=off, 1=to, 2=from
+    int   cdiToFrom      = 1; // 0=off, 1=to, 2=from
 
     // Glide slope
     float rawGsiNeedle   = 0.0f;

@@ -908,7 +908,10 @@ void CC_G5_HSI::drawOrangeCenterTick()
 void CC_G5_HSI::drawBearingPointer1()
 {
     // draw the Bearing Pointer if it's on
-    if (g5Settings.bearingPointer1Source == 0) return;
+    if (g5Settings.bearingPointer1Source == 0) {
+        compass.fillRect(0, COMPASS_HEIGHT - dtkBox.height() - bearingPointerBox1.height() + 2, bearingPointerBox1.width(), bearingPointerBox1.height()-2, TFT_BLACK);
+        return;
+    }
 
     // draw the Bearing Pointer label
     // Skip this if there's a menu up. I just can't deal with it.
@@ -1049,17 +1052,18 @@ void CC_G5_HSI::drawGlideSlope()
     glideDeviationScale.pushImage(0, 0, GSDEVIATION_IMG_WIDTH, GSDEVIATION_IMG_HEIGHT, GSDEVIATION_IMG_DATA);
 
     int markerCenterPosition = centerY + (int)(g5State.gsiNeedle * scaleFactor) - (deviationDiamond.height() / 2.0);
-
+    glideDeviationScale.setClipRect(0, 21, GSDEVIATION_IMG_WIDTH, GSDEVIATION_IMG_HEIGHT - 22);
     if (g5State.navSource == NAVSOURCE_GPS) {
         glideDeviationScale.setTextColor(TFT_MAGENTA);
         glideDeviationScale.drawString("G", glideDeviationScale.width() / 2, 13);
-        glideDeviationScale.drawBitmap(1, markerCenterPosition, DIAMONDBITMAP_IMG_DATA, DIAMONDBITMAP_IMG_WIDTH, DIAMONDBITMAP_IMG_HEIGHT, TFT_MAGENTA);
+        glideDeviationScale.drawBitmap(2, markerCenterPosition, DIAMONDBITMAP_IMG_DATA, DIAMONDBITMAP_IMG_WIDTH, DIAMONDBITMAP_IMG_HEIGHT, TFT_MAGENTA);
 
     } else {
         glideDeviationScale.setTextColor(TFT_GREEN);
         glideDeviationScale.drawString("L", glideDeviationScale.width() / 2, 13);
-        glideDeviationScale.drawBitmap(1, markerCenterPosition, DIAMONDBITMAP_IMG_DATA, DIAMONDBITMAP_IMG_WIDTH, DIAMONDBITMAP_IMG_HEIGHT, TFT_GREEN);
+        glideDeviationScale.drawBitmap(2, markerCenterPosition, DIAMONDBITMAP_IMG_DATA, DIAMONDBITMAP_IMG_WIDTH, DIAMONDBITMAP_IMG_HEIGHT, TFT_GREEN);
     }
+    glideDeviationScale.clearClipRect();
 
     glideDeviationScale.pushSprite(&lcd, lcd.width() - glideDeviationScale.width() - 24, Y_OFFSET + 7 + COMPASS_CENTER_Y - glideDeviationScale.height() / 2);
 }
