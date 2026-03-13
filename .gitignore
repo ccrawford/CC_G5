@@ -10,3 +10,4 @@ _dist
 .claude
 CLAUDE.md
 COMMIT_HISTORY_DETAILED.txt
+web-installer/firmware-merged.bin

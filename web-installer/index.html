@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CC_G5 Firmware Installer</title>
+  <script
+    type="module"
+    src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"
+  ></script>
+  <style>
+    :root {
+      --bg: #1a1a2e;
+      --surface: #16213e;
+      --accent: #0f3460;
+      --highlight: #e94560;
+      --text: #eaeaea;
+      --text-muted: #8a8a9a;
+      --radius: 12px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--accent);
+      border-radius: var(--radius);
+      max-width: 520px;
+      width: 100%;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    }
+
+    .logo {
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 2rem;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+      text-align: left;
+    }
+
+    .info-item {
+      background: var(--accent);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+    }
+
+    .info-item .label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 0.2rem;
+    }
+
+    .info-item .value {
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .install-wrapper {
+      margin-bottom: 1.5rem;
+    }
+
+    /* Style the esp-web-tools button to fit our theme */
+    esp-web-install-button {
+      --esp-tools-button-color: var(--highlight);
+      --esp-tools-button-text-color: white;
+    }
+
+    .requirements {
+      background: rgba(15, 52, 96, 0.4);
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
+
+    .requirements h3 {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin-bottom: 0.6rem;
+    }
+
+    .requirements ul {
+      list-style: none;
+      font-size: 0.88rem;
+    }
+
+    .requirements ul li::before {
+      content: "✓ ";
+      color: #4caf50;
+    }
+
+    .requirements ul li {
+      margin-bottom: 0.3rem;
+    }
+
+    .browser-note {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .browser-note a {
+      color: var(--highlight);
+    }
+
+    footer {
+      margin-top: 2rem;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    footer a {
+      color: var(--text-muted);
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">✈️</div>
+    <h1>CC_G5 Firmware Installer</h1>
+    <p class="subtitle">MobiFlight Glass Cockpit G5 Display for Flight Simulation</p>
+
+    <div class="info-grid">
+      <div class="info-item">
+        <div class="label">Hardware</div>
+        <div class="value">ESP32-S3-DevKitC-1</div>
+      </div>
+      <div class="info-item">
+        <div class="label">Flash Mode</div>
+        <div class="value">QIO · 80 MHz · 8 MB</div>
+      </div>
+      <div class="info-item">
+        <div class="label">Framework</div>
+        <div class="value">MobiFlight + Arduino</div>
+      </div>
+      <div class="info-item">
+        <div class="label">Display</div>
+        <div class="value">4-inch LCD (LovyanGFX)</div>
+      </div>
+    </div>
+
+    <div class="requirements">
+      <h3>Before You Flash</h3>
+      <ul>
+        <li>Connect the ESP32-S3 via USB</li>
+        <li>Use Chrome or Edge (Web Serial required)</li>
+        <li>Hold BOOT button if prompted by the installer</li>
+        <li>Configure device in MobiFlight Connector after flashing</li>
+      </ul>
+    </div>
+
+    <div class="install-wrapper">
+      <esp-web-install-button manifest="manifest.json">
+        <button slot="activate">
+          ⚡ Install CC_G5 Firmware
+        </button>
+      </esp-web-install-button>
+    </div>
+
+    <p class="browser-note">
+      Requires Chrome or Edge with Web Serial API support.<br/>
+      <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API#browser_compatibility" target="_blank" rel="noopener">
+        Check browser compatibility
+      </a>
+    </p>
+
+    <footer>
+      <a href="https://github.com/ccrawford/CC_G5" target="_blank" rel="noopener">
+        View source on GitHub
+      </a>
+      &nbsp;·&nbsp;
+      <a href="https://www.mobiflight.com" target="_blank" rel="noopener">
+        MobiFlight
+      </a>
+    </footer>
+  </div>
+</body>
+</html>

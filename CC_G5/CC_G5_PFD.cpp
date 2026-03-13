@@ -38,7 +38,6 @@
 #include "Sprites\speedPointer.h"
 #include "Sprites\stdBankIndicator.h"
 
-// #include "Sprites\gsBox.h"
 #include "Sprites\distBox.h"
 #include "Sprites\headingBox.h"
 
@@ -46,22 +45,19 @@
 #include "Sprites\fdTrianglesNoAP.h"
 // #include "Images\PrimaSans16.h"
 
-LGFX_Sprite attitude(&lcd);
-LGFX_Sprite speedUnit(&attitude);
-LGFX_Sprite speedTens(&attitude);
-LGFX_Sprite altUnit(&attitude);
-LGFX_Sprite altTens(&attitude);
-// LGFX_Sprite horizonMarker(&attitude);
-LGFX_Sprite stdBankIndicator(&attitude);
+LGFX_Sprite attitude(&lcd);         // Main sprite for display. Mandatory!
+LGFX_Sprite speedUnit(&attitude);   // Speed Tape 1's digit. Useful, not mandatory.
+LGFX_Sprite speedTens(&attitude);   // Speed tape 10's and 100's digit. Useful, not mandatory.
+LGFX_Sprite altUnit(&attitude);     // Altitude tape 1's and 10's digits. Useful, not mandatory.
+LGFX_Sprite altTens(&attitude);     // Altitude tape 100s, 1000s, 10,000 digit. Bad name, not mandatory
+LGFX_Sprite stdBankIndicator(&attitude);    // Small green triangle. Useful as it it's push/rotate. and small
 
-LGFX_Sprite altScaleNumber(&attitude);
-LGFX_Sprite altBug(&attitude);
-LGFX_Sprite altBugBitmap(&attitude);
-LGFX_Sprite vsScale(&attitude);
+LGFX_Sprite pitchLadderNumber(&attitude);   // Numbering on pitch ladder. Really needs a different font, but whatev.
+LGFX_Sprite altBug(&attitude);              // Vertical Cyan altitude bug.
+LGFX_Sprite vsScale(&attitude);         
 LGFX_Sprite vsPointer(&attitude);
 LGFX_Sprite baScale(&attitude);
-LGFX_Sprite ballSprite(&attitude);
-LGFX_Sprite messageIndicator(&attitude);
+LGFX_Sprite messageIndicator(&attitude);   // Square with exclamation point. Static so keep.
 
 LGFX_Sprite headingTape(&attitude);
 LGFX_Sprite hScale(&headingTape);
@@ -74,7 +70,6 @@ LGFX_Sprite kohlsBox(&attitude);
 LGFX_Sprite targetAltBox(&attitude);
 
 LGFX_Sprite apBox(&lcd);
-LGFX_Sprite gsBox(&attitude);
 
 uint8_t *attBuffer;
 
@@ -268,19 +263,10 @@ void CC_G5_PFD::setupSprites()
     speedPointer.loadFont(PrimaSans12);
     speedPointer.setTextDatum(CC_DATUM);
 
-    // horizonMarker.setColorDepth(8);
-    // horizonMarker.createSprite(HORIZONMARKER_IMG_WIDTH, HORIZONMARKER_IMG_HEIGHT);
-    // horizonMarker.pushImage(0, 0, HORIZONMARKER_IMG_WIDTH, HORIZONMARKER_IMG_HEIGHT, HORIZONMARKER_IMG_DATA);
-
     stdBankIndicator.setColorDepth(8);
     stdBankIndicator.createSprite(STDBANKINDICATOR_IMG_WIDTH, STDBANKINDICATOR_IMG_HEIGHT);
     stdBankIndicator.pushImage(0, 0, STDBANKINDICATOR_IMG_WIDTH, STDBANKINDICATOR_IMG_HEIGHT, STDBANKINDICATOR_IMG_DATA);
     stdBankIndicator.setPivot(STDBANKINDICATOR_IMG_WIDTH / 2, 123); // From reference image. Technically should be the radius of arc plus height of indicator.
-
-    // GS Is Ground speed, NOT glide slope.
-    // We will draw GS and OAT in this box.
-    gsBox.setColorDepth(8);
-    gsBox.createSprite(SPEED_COL_WIDTH, 44);
 
     kohlsBox.setColorDepth(8);
     kohlsBox.createSprite(ALTITUDE_COL_WIDTH, DATA_BOX_HEIGHT_MED);
@@ -297,14 +283,8 @@ void CC_G5_PFD::setupSprites()
 
     altBug.setColorDepth(8);
     altBug.createSprite(HEADINGBUG_IMG_WIDTH, HEADINGBUG_IMG_HEIGHT);
-    // altBug.pushImage(0,0,HEADINGBUG_IMG_WIDTH, HEADINGBUG_IMG_HEIGHT, HEADINGBOX_IMG_DATA);
     altBug.setBuffer(const_cast<std::uint16_t *>(HEADINGBUG_IMG_DATA), HEADINGBUG_IMG_WIDTH, HEADINGBUG_IMG_HEIGHT, 16);
     altBug.setPivot(HEADINGBOX_IMG_WIDTH / 2, HEADINGBUG_IMG_HEIGHT / 2); // THIS IS WRONG CONSTANT! but i don't feel like redoing the functions that depend on the error.
-
-    // altBugBitmap.setColorDepth(1);
-    // altBugBitmap.createSprite(HEADINGBUG_1BIT_IMG_WIDTH, HEADINGBUG_1BIT_IMG_HEIGHT);
-    // altBugBitmap.setBuffer(const_cast<std::uint8_t *>(HEADINGBUG_1BIT_IMG_DATA), HEADINGBUG_1BIT_IMG_WIDTH, HEADINGBUG_1BIT_IMG_HEIGHT);
-    // altBugBitmap.setPivot(HEADINGBUG_1BIT_IMG_WIDTH / 2, HEADINGBUG_1BIT_IMG_HEIGHT / 2);
 
     targetAltBox.setColorDepth(8);
     targetAltBox.createSprite(ALTITUDE_COL_WIDTH, DATA_BOX_HEIGHT_MED);
@@ -317,12 +297,12 @@ void CC_G5_PFD::setupSprites()
     targetAltBox.drawRect(0, 0, targetAltBox.width(), targetAltBox.height(), DATA_BOX_OUTLINE_COLOR);
     targetAltBox.drawRect(1, 1, targetAltBox.width() - 2, targetAltBox.height() - 2, DATA_BOX_OUTLINE_COLOR);
 
-    altScaleNumber.setColorDepth(8);
-    altScaleNumber.createSprite(23, 23);
-    altScaleNumber.setPivot(8, 7);
-    altScaleNumber.setTextColor(TFT_WHITE, TFT_BLACK);
-    altScaleNumber.setTextDatum(MC_DATUM);
-    altScaleNumber.loadFont(PrimaSans16);
+    pitchLadderNumber.setColorDepth(8);
+    pitchLadderNumber.createSprite(23, 23);
+    pitchLadderNumber.setPivot(8, 7);
+    pitchLadderNumber.setTextColor(TFT_WHITE, TFT_BLACK);
+    pitchLadderNumber.setTextDatum(MC_DATUM);
+    pitchLadderNumber.loadFont(PrimaSans16);
 
     vsScale.setColorDepth(8);
     vsScale.createSprite(VSSCALE_IMG_WIDTH, VSSCALE_IMG_HEIGHT);
@@ -336,10 +316,6 @@ void CC_G5_PFD::setupSprites()
     baScale.createSprite(BANKANGLESCALE_IMG_WIDTH, BANKANGLESCALE_IMG_HEIGHT);
     baScale.setBuffer(const_cast<std::uint8_t *>(BANKANGLESCALE_IMG_DATA), BANKANGLESCALE_IMG_WIDTH, BANKANGLESCALE_IMG_HEIGHT);
     baScale.setPivot(BANKANGLESCALE_IMG_WIDTH / 2, 127); // From image.
-
-    ballSprite.setColorDepth(8);
-    ballSprite.createSprite(BALL_IMG_WIDTH, BALL_IMG_HEIGHT);
-    ballSprite.setBuffer(const_cast<std::uint16_t *>(BALL_IMG_DATA), BALL_IMG_WIDTH, BALL_IMG_HEIGHT, 16);
 
     headingTape.setColorDepth(8);
     headingTape.createSprite(CENTER_COL_WIDTH, 40);
@@ -690,12 +666,12 @@ void CC_G5_PFD::drawAttitude()
             int16_t textX2 = CENTER_X + text2x_unrot * cosBank - texty_unrot * sinBank;
             int16_t textY2 = CENTER_Y + text2x_unrot * sinBank + texty_unrot * cosBank;
 
-            altScaleNumber.fillSprite(TFT_BLACK);
-            altScaleNumber.drawString(pitchText, 9, 9);
+            pitchLadderNumber.fillSprite(TFT_BLACK);
+            pitchLadderNumber.drawString(pitchText, 9, 9);
             attitude.setPivot(textX1, textY1);
-            altScaleNumber.pushRotated(inverted ? g5State.bankAngle + 180.0 : g5State.bankAngle, TFT_BLACK);
+            pitchLadderNumber.pushRotated(inverted ? g5State.bankAngle + 180.0 : g5State.bankAngle, TFT_BLACK);
             attitude.setPivot(textX2, textY2);
-            altScaleNumber.pushRotated(inverted ? g5State.bankAngle + 180.0 : g5State.bankAngle, TFT_BLACK);
+            pitchLadderNumber.pushRotated(inverted ? g5State.bankAngle + 180.0 : g5State.bankAngle, TFT_BLACK);
         }
     };
 
@@ -823,8 +799,7 @@ void CC_G5_PFD::drawAttitude()
 
     // 4. Draw topmost static elements
     attitude.pushImage((ATTITUDE_WIDTH - HORIZONMARKER_IMG_WIDTH) / 2, ATTITUDE_Y_CENTER - 4, HORIZONMARKER_IMG_WIDTH, HORIZONMARKER_IMG_HEIGHT, HORIZONMARKER_IMG_DATA, 0x0421);
-    // horizonMarker.pushSprite((ATTITUDE_WIDTH - HORIZONMARKER_IMG_WIDTH) / 2, , LGFX::color332(0x20, 0x20, 0x20));
-
+    
     // 5. Draw bounding line at top
     // attitude.drawFastHLine(0,0, ATTITUDE_WIDTH, DATA_BOX_OUTLINE_COLOR);
 }
@@ -1030,7 +1005,7 @@ void CC_G5_PFD::drawSpeedTape()
     attitude.fillRect(0, 0, SPEED_COL_WIDTH, tas_height, TFT_BLACK);
     attitude.drawRect(0, 0, SPEED_COL_WIDTH, tas_height, DATA_BOX_OUTLINE_COLOR);
     attitude.drawRect(1, 1, SPEED_COL_WIDTH - 2, tas_height - 2, DATA_BOX_OUTLINE_COLOR);
-    attitude.loadFont(PrimaSans12);
+    attitude.loadFont(PrimaSans10);
     attitude.setTextColor(TFT_WHITE);
     attitude.setTextDatum(CL_DATUM);
     attitude.drawString("TAS", 5, tas_height / 2 + 1);
@@ -1504,56 +1479,77 @@ void CC_G5_PFD::drawAltTarget()
     targetAltBox.pushSprite(&attitude, ATTITUDE_WIDTH - ALTITUDE_COL_WIDTH, 0);
 }
 
+// THIS DRAWS Ground Speed and OAT!!
 void CC_G5_PFD::drawGroundSpeed()
 {
     // Magenta in box in lower left.
 
     static int lastGs = 399;
 
-    if (g5State.groundSpeed > 500) return;
-
+    if (g5State.groundSpeed > 500 || g5State.groundSpeed < 10) return;
+    // CHECK: Do we need to erase the box?
     //    if (lastGs == g5State.groundSpeed) return;
+
 
     lastGs = g5State.groundSpeed;
 
-    const int separator_bar = 23;
+    const int boxWidth=SPEED_COL_WIDTH;
+    const int boxHeight=GS_BOX_HEIGHT;
+    const int topX = 0;
+    const int topY = ATTITUDE_HEIGHT- GS_BOX_HEIGHT - OAT_BOX_HEIGHT + 2;  // GS is above OAT and OAT is on bottom of screen and they share a border
 
     char buf[8];
 
-    gsBox.setTextSize(1.0);
-
-    gsBox.fillSprite(TFT_BLACK);
-    gsBox.drawRect(0, 0, SPEED_COL_WIDTH, gsBox.height(), DATA_BOX_OUTLINE_COLOR);
-    gsBox.drawRect(1, 1, SPEED_COL_WIDTH - 2, gsBox.height() - 2, DATA_BOX_OUTLINE_COLOR);
-
-    // Separator line
-    gsBox.setColor(DATA_BOX_OUTLINE_COLOR);
-    gsBox.drawFastHLine(2, separator_bar, SPEED_COL_WIDTH - 4);
-    gsBox.drawFastHLine(2, separator_bar + 1, SPEED_COL_WIDTH - 4);
-
-    gsBox.setTextDatum(BL_DATUM);
-    gsBox.setTextColor(TFT_WHITE);
-    gsBox.loadFont(PrimaSans12);
-    gsBox.drawString("GS", 4, separator_bar);
-    gsBox.drawString("OAT", 4, gsBox.height());
-    gsBox.setTextDatum(BR_DATUM);
-    sprintf(buf, "%d\xB0", g5State.oat);
-    gsBox.drawString(buf, 90, gsBox.height());
-
-    gsBox.loadFont(PrimaSans16);
-    gsBox.setTextColor(TFT_MAGENTA);
+    // Update: Just draw directly on attitude.
+    attitude.drawRect(topX, topY, boxWidth, boxHeight, DATA_BOX_OUTLINE_COLOR);
+    attitude.drawRect(topX+1, topY+1, boxWidth-2, boxHeight-2, DATA_BOX_OUTLINE_COLOR);
+    attitude.fillRect(topX+2, topY+2, boxWidth-4, boxHeight-4, TFT_BLACK);
+    
+    attitude.setTextSize(1.0);
+    attitude.setTextDatum(BL_DATUM);
+    attitude.setTextColor(TFT_WHITE);
+    attitude.loadFont(PrimaSans10);
+    attitude.drawString("GS", topX+4, topY + boxHeight - 1);
+    attitude.setTextDatum(BR_DATUM);
+    attitude.setTextColor(TFT_MAGENTA);
+    attitude.loadFont(PrimaSans16);
     sprintf(buf, "%d", g5State.groundSpeed);
-    gsBox.drawString(buf, 80, separator_bar + 3);
-
-    gsBox.setTextDatum(BL_DATUM);
-    gsBox.setTextSize(0.5);
-    gsBox.drawString("k", 82, 15);
-    gsBox.drawString("t", 82, 23);
-
-    gsBox.pushSprite(0, ATTITUDE_HEIGHT - gsBox.height());
-
+    attitude.drawString(buf, topX+80, topY + boxHeight + 2 );
+    attitude.setTextDatum(BL_DATUM);
+    attitude.setTextSize(0.5);
+    attitude.drawString("k", 82, topY + 14);
+    attitude.drawString("t", 82, topY + 23);
+    attitude.setTextSize(1.0);
+    
     return;
 }
+
+void CC_G5_PFD::drawOAT()
+{
+    const int boxWidth=SPEED_COL_WIDTH;
+    const int boxHeight=OAT_BOX_HEIGHT;
+    const int topX = 0;
+    const int topY = ATTITUDE_HEIGHT- OAT_BOX_HEIGHT;  // GS is above OAT and OAT is on bottom of screen
+
+    char buf[8];
+
+    // Update: Just draw directly on attitude.
+    attitude.drawRect(topX, topY, boxWidth, boxHeight, DATA_BOX_OUTLINE_COLOR);
+    attitude.drawRect(topX+1, topY+1, boxWidth-2, boxHeight-2, DATA_BOX_OUTLINE_COLOR);
+    attitude.fillRect(topX+2, topY+2, boxWidth-4, boxHeight-4, TFT_BLACK);
+    
+    attitude.setTextSize(1.0);
+    attitude.setTextDatum(BL_DATUM);
+    attitude.setTextColor(TFT_WHITE);
+    attitude.loadFont(PrimaSans10);
+    attitude.drawString("OAT", topX+4, topY + boxHeight - 1);
+    attitude.setTextDatum(BR_DATUM);
+    sprintf(buf, "%d\xB0", g5State.oat);
+    attitude.drawString(buf, topX+80, topY + boxHeight - 1);
+    attitude.setTextSize(1.0);
+ 
+}
+
 
 void CC_G5_PFD::drawBall()
 {
@@ -1602,10 +1598,8 @@ void CC_G5_PFD::drawBall()
 
     // Draw the ball  The g5State.ballPos goes from -1.0 (far right) to 1.0 (far left)
     int ballXOffset = (int)(g5State.ballPos * BALL_IMG_WIDTH * 1.8f) + 1; // This 1.8 factor can vary by plane. The comanche is backwards!
-    attitude.pushImage(ATTITUDE_X_CENTER - ballSprite.width() / 2 + ballXOffset, 293, BALL_IMG_WIDTH, BALL_IMG_HEIGHT, BALL_IMG_DATA, 0xC092);
-    // ballSprite.pushSprite(&attitude, ATTITUDE_X_CENTER - ballSprite.width() / 2 + ballXOffset, 290, 0xC2); // The transparent color is an odd one here. 0xC2 works
-
-    if (lastMFUpdate < (millis() - 3000)) messageIndicator.pushSprite(&attitude, 125, 294); // Coords from inkscape
+    attitude.pushImage(ATTITUDE_X_CENTER - BALL_IMG_WIDTH / 2 + ballXOffset, 293, BALL_IMG_WIDTH, BALL_IMG_HEIGHT, BALL_IMG_DATA, 0xC092);
+    
 
     return;
 }
@@ -2056,9 +2050,9 @@ void CC_G5_PFD::drawAp()
 void CC_G5_PFD::drawMessageIndicator()
 {
     // Only message we're going to indicate is that we've lost connection to MobiFlight.
-    if (lastMFUpdate > (millis() - 3000)) return;
+    if (lastMFUpdate < (millis() - 3000)) 
+        messageIndicator.pushSprite(&attitude, 125, 294); // Coords from inkscape
 
-    messageIndicator.pushSprite(60, 10);
 }
 
 void CC_G5_PFD::drawFlightDirector()
@@ -2119,27 +2113,28 @@ void CC_G5_PFD::update()
     drawHorizonMarker();
     drawGlideSlope();
     drawCDIBar();
-
+    
     drawFlightDirector();
     drawSpeedPointers();
     drawSpeedTrend();
-
+    
     unsigned long drawTime  = millis() - startDraw;
     unsigned long pushStart = millis();
-
+    
     // drawDensityAlt();
-
+    
     processMenu();
     brightnessMenu.draw(&attitude); // Draws on attitude sprite!
-
+    
     drawShutdown(&attitude);
     drawGroundSpeed(); // Draws GS and OAT
+    drawOAT();
     drawKohlsman();
     drawBall();
 
     attitude.pushSprite(X_OFFSET, Y_OFFSET + AP_BAR_HEIGHT, TFT_MAIN_TRANSPARENT);
 
-    //    drawMessageIndicator();
+    drawMessageIndicator();
     drawAp();
 
     g5State.forceRedraw = false;

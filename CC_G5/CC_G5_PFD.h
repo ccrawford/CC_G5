@@ -34,6 +34,9 @@
 #define ATTITUDE_WIDTH      480
 #define ATTITUDE_COLOR_BITS 8
 
+#define GS_BOX_HEIGHT 23
+#define OAT_BOX_HEIGHT 19
+
 #define SPEED_COL_WIDTH    100
 #define ALTITUDE_COL_WIDTH 130
 
@@ -401,6 +404,7 @@ private:
     void          drawDensityAlt();
     void          drawHorizonMarker();
     void          drawGroundSpeed();
+    void          drawOAT();
     void          drawKohlsman();
     void          drawAltTarget();
     void          drawBall();

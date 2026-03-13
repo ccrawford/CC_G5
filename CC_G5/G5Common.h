@@ -8,6 +8,7 @@
 #include "MFEEPROM.h"
 #include "MFCustomDeviceTypes.h"
 #include "commandmessenger.h"
+#include "Fonts/PrimaSans10.h"
 #include "Fonts/PrimaSans12.h"
 #include "Fonts/PrimaSans16.h"
 #include "Fonts/PrimaSans18.h"
