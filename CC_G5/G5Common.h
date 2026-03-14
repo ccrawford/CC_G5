@@ -15,6 +15,8 @@
 #include "Fonts/PrimaSans20.h"
 #include "Fonts/PrimaSans24.h"
 
+#include "Effect_gradient_alpha.hpp"
+
 #include "Sprites\battery.h"
 // #include "Images\PrimaSans32.h" // ORIGINAL
 // #include "Images\PrimaSansMid32.h" // Medium weight
@@ -155,9 +157,9 @@ struct G5State {
     int   gsiNeedleValid = 1;
 
     // Desired track / Course to steer (shared between HSI and PFD)
-    float desiredTrack      = 130.0f; // GPS course to steer / DTK (used by both HSI and PFD)
+    float desiredTrack      = 230.0f; // GPS course to steer / DTK (used by both HSI and PFD)
     int   desiredTrackValid = 1;
-    float navCourse         = 0.0f; // NAV OBS course
+    float navCourse         = 250.0f; // NAV OBS course
 
     // OBS mode
     int   obsModeOn = 0;

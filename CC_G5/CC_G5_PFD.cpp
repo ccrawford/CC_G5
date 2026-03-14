@@ -312,7 +312,7 @@ void CC_G5_PFD::setupSprites()
     baScale.setBuffer(const_cast<std::uint8_t *>(BANKANGLESCALE_IMG_DATA), BANKANGLESCALE_IMG_WIDTH, BANKANGLESCALE_IMG_HEIGHT);
     baScale.setPivot(BANKANGLESCALE_IMG_WIDTH / 2, 127); // From image.
 
-    headingTape.setColorDepth(8);
+    headingTape.setColorDepth(16);
     headingTape.createSprite(CENTER_COL_WIDTH, HEADING_TAPE_HEIGHT);
     headingTape.fillSprite(DARK_SKY_COLOR);
     headingTape.setTextDatum(CC_DATUM);
@@ -608,6 +608,21 @@ void CC_G5_PFD::drawAttitude()
         if (inverted) {
             // When inverted, ground is ABOVE the horizon line
             if (horizonPixel > 0) {
+                attitude.drawFastVLine(x, 0, min((int16_t)ATTITUDE_HEIGHT, horizonPixel), GND_COLOR);
+                // Sky already drawn.
+            }
+        } else {
+            // When upright, ground is BELOW the horizon line
+            if (horizonPixel < attitude.height()) {
+                attitude.drawFastVLine(x, max((int16_t)0, horizonPixel), ATTITUDE_HEIGHT - max((int16_t)0, horizonPixel), GND_COLOR);
+            }
+        }
+
+        /*    Old way
+        // Drawing the dimmed sides costs an fps, but i think it's worth it.
+        if (inverted) {
+            // When inverted, ground is ABOVE the horizon line
+            if (horizonPixel > 0) {
                 attitude.drawFastVLine(x, 0, min((int16_t)ATTITUDE_HEIGHT, horizonPixel), (x < SPEED_COL_WIDTH || x > ATTITUDE_WIDTH - ALTITUDE_COL_WIDTH) ? DARK_GND_COLOR : GND_COLOR);
                 if (x < SPEED_COL_WIDTH || x > (ATTITUDE_WIDTH - ALTITUDE_COL_WIDTH)) attitude.drawFastVLine(x, max((int16_t)0, horizonPixel), ATTITUDE_HEIGHT - max((int16_t)0, horizonPixel), (x < SPEED_COL_WIDTH || x > ATTITUDE_WIDTH - ALTITUDE_COL_WIDTH) ? DARK_SKY_COLOR : SKY_COLOR);
                 // attitude.drawFastVLine(x, 0, min((int16_t)attitude.height(), horizonPixel), GND_COLOR);
@@ -619,7 +634,16 @@ void CC_G5_PFD::drawAttitude()
                 if (x < SPEED_COL_WIDTH || x > (ATTITUDE_WIDTH - ALTITUDE_COL_WIDTH)) attitude.drawFastVLine(x, min((int16_t)0, horizonPixel), horizonPixel, DARK_SKY_COLOR);
             }
         }
+            */
     }
+
+    // Alpha darken the sides and top.
+    // Left side
+    attitude.effect(0, 0, SPEED_COL_WIDTH, ATTITUDE_HEIGHT, lgfx::effect_fill_alpha(lgfx::argb8888_t(0x40000000)));
+    // Right side
+    attitude.effect(ATTITUDE_WIDTH - ALTITUDE_COL_WIDTH, 0, ALTITUDE_COL_WIDTH, ATTITUDE_HEIGHT, lgfx::effect_fill_alpha(lgfx::argb8888_t(0x40000000)));
+    // Top heading tape
+    attitude.effect(SPEED_COL_WIDTH + 8, 0, CENTER_COL_WIDTH - 16, HEADING_TAPE_HEIGHT, lgfx::effect_fill_alpha(lgfx::argb8888_t(0x40000000)));
 
     // --- 2. Draw Pitch Ladder ---
     float cosBank = cos(bankRad);
@@ -1103,8 +1127,10 @@ void CC_G5_PFD::drawAltTape()
     int xOffset = 2;
 
     // There is a fine dark line running down the screen. It should have an alpha blend fade.
-    // TODO add the alpha blend here.
+    // Not enough color depth to do an alpha blend fade.
     attitude.drawFastVLine(448, 0, ATTITUDE_HEIGHT, TFT_BLACK);
+    // attitude.effect(448, 0, 1, ATTITUDE_X_CENTER, effect_alpha_gradient_v(lgfx::argb8888_t{0x00,0,0,0}, lgfx::argb8888_t{0xFF,0,0,0}, GradientCurve::Linear));
+    // attitude.effect(448, ATTITUDE_X_CENTER, 1, ATTITUDE_HEIGHT, effect_alpha_gradient_v(lgfx::argb8888_t{0xFF,0,0,0}, lgfx::argb8888_t{0x00,0,0,0}, GradientCurve::Linear));
 
     // For the tape show every 100 feet. 200 feet greater and 200 feet less than current.
     altUnit.fillSprite(TFT_BLACK);
@@ -1303,8 +1329,8 @@ void CC_G5_PFD::drawKohlsman()
     // if (g5State.kohlsman == lastVal || g5State.forceRedraw) return;
     // lastVal = g5State.kohlsman;
     kohlsBox.fillSprite(TFT_BLACK);
-    kohlsBox.drawRect(0, 0, kohlsBox.width(), kohlsBox.height(), TFT_CYAN);
-    kohlsBox.drawRect(1, 1, kohlsBox.width() - 2, kohlsBox.height(), TFT_CYAN);
+    kohlsBox.drawRect(0, 0, kohlsBox.width(), kohlsBox.height(), DATA_BOX_OUTLINE_COLOR);
+    kohlsBox.drawRect(1, 1, kohlsBox.width() - 2, kohlsBox.height() - 2, TFT_CYAN);
     kohlsBox.setTextDatum(CC_DATUM);
     kohlsBox.setTextColor(TFT_CYAN);
 
@@ -1634,7 +1660,8 @@ void CC_G5_PFD::drawHeadingTape()
     int scaleOffset = (int)(fmod(g5State.headingAngle, 5.0f) * PX_PER_DEGREE - 11);
     // int xOffset     = (int)g5State.headingAngle % 10 * 7 + 17;
     int xOffset = (int)(fmod(g5State.headingAngle, 10.0f) * PX_PER_DEGREE) + 17;
-    headingTape.fillSprite(DARK_SKY_COLOR);
+
+    headingTape.fillSprite(TFT_TRANSPARENT_LIGHTBLACK);
 
     // Draw the tape scale
     hScale.pushSprite(0 - scaleOffset, 40 - HSCALE_IMG_HEIGHT, TFT_BLACK);
@@ -1642,7 +1669,9 @@ void CC_G5_PFD::drawHeadingTape()
 
     headingTape.loadFont(PrimaSans12);
 
-    const int numY = 14;
+    const int numY = 16;
+
+    xOffset += -3;
 
     char buf[5];
     sprintf(buf, "%03d", incrementHeading(baseHeading, -20));
@@ -1660,15 +1689,15 @@ void CC_G5_PFD::drawHeadingTape()
 
     // Draw Nav Course to Steer... but only  if in gps mode. Otherwise draw the CRS.
     // FIX: This should be written to the LCD, not the headingTape.
-    if (g5State.navSource == NAVSOURCE_GPS)
-        headingTape.fillRect(headingToX(g5State.desiredTrack, g5State.headingAngle) - 2, 30, 4, 10, TFT_GREEN);
-    else
-        headingTape.fillRect(headingToX(g5State.navCourse, g5State.headingAngle) - 2, 30, 4, 10, TFT_GREEN);
+    // if (g5State.navSource == NAVSOURCE_GPS)
+    //     headingTape.fillRect(headingToX(g5State.desiredTrack, g5State.headingAngle) - 2, 30, 4, 10, TFT_GREEN);
+    // else
+    //     headingTape.fillRect(headingToX(g5State.navCourse, g5State.headingAngle) - 2, 30, 4, 10, TFT_GREEN);
 
     // Serial.printf("ncs %d, x: %d\n",g5State.desiredTrack, headingToX(g5State.desiredTrack, g5State.headingAngle));
 
     // Draw the Ground Course triangle
-    headingTape.drawBitmap(headingToX(g5State.groundTrack, g5State.headingAngle) - 6, 32, POINTER_IMG_DATA, POINTER_IMG_WIDTH, POINTER_IMG_HEIGHT, TFT_MAGENTA);
+    headingTape.pushImage(headingToX(g5State.groundTrack, g5State.headingAngle) - 6, headingTape.height() - POINTER_IMG_HEIGHT, POINTER_IMG_WIDTH, POINTER_IMG_HEIGHT, POINTER_IMG_DATA, TFT_TRANSPARENT_LIGHTBLACK);
 
     // Draw the heading box and current heading
     const int boxTop       = 2;
@@ -1695,15 +1724,36 @@ void CC_G5_PFD::drawHeadingTape()
 
     // Draw the Heading Bug over everytyhing.
     int headingBugOffset = headingToX((float)g5State.headingBugAngle, g5State.headingAngle) - HEADINGBUGPFD_IMG_WIDTH / 2;
-    if (headingBugOffset < 0 - HEADINGBUG_IMG_WIDTH / 2) headingBugOffset = 0 - HEADINGBUG_IMG_WIDTH / 2;
-    if (headingBugOffset > headingTape.width() - HEADINGBUG_IMG_WIDTH / 2) headingBugOffset = headingTape.width() - HEADINGBUG_IMG_WIDTH / 2;
+    // if (headingBugOffset < 0 - HEADINGBUG_IMG_WIDTH / 2) headingBugOffset = 0 - HEADINGBUG_IMG_WIDTH / 2;
+    headingBugOffset = max(0 - HEADINGBUGPFD_IMG_WIDTH / 2, headingBugOffset);
+    headingBugOffset = min(CENTER_COL_WIDTH - HEADINGBUGPFD_IMG_WIDTH / 2, headingBugOffset);
+    // if (headingBugOffset > headingTape.width() - HEADINGBUG_IMG_WIDTH / 2) headingBugOffset = headingTape.width() - HEADINGBUG_IMG_WIDTH / 2;
     // altBug.pushRotateZoom(&headingTape, headingBugOffset + 51, headingTape.height() - HEADINGBUG_IMG_HEIGHT + 10, 0, 0.7, 0.7, TFT_WHITE);
     headingTape.pushImage(headingBugOffset, headingTape.height() - HEADINGBUGPFD_IMG_HEIGHT, HEADINGBUGPFD_IMG_WIDTH, HEADINGBUGPFD_IMG_HEIGHT, HEADINGBUGPFD_IMG_DATA, TFT_TRANSPARENT_LIGHTBLACK);
 
     // Top row is a border row
     headingTape.drawFastHLine(0, 0, headingTape.width(), DATA_BOX_OUTLINE_COLOR);
     headingTape.drawFastHLine(0, 1, headingTape.width(), DATA_BOX_OUTLINE_COLOR);
-    headingTape.pushSprite(&attitude, SPEED_COL_WIDTH, 0);
+    headingTape.pushSprite(&attitude, SPEED_COL_WIDTH, 0, TFT_TRANSPARENT_LIGHTBLACK);
+
+    // Fade the edges.
+    //    attitude.effect(SPEED_COL_WIDTH, 0, 10, HEADING_TAPE_HEIGHT, effect_alpha_gradient_h(lgfx::argb8888_t{0xF0,0,0,0}, GradientCurve::Linear));
+    // Try an alpha blend on the tape edges
+    attitude.effect(SPEED_COL_WIDTH, 2, 8, HEADING_TAPE_HEIGHT - 2, effect_alpha_gradient_h(lgfx::argb8888_t{0xB0, 0, 0, 0}, lgfx::argb8888_t{0x40, 0, 0, 0}, GradientCurve::Linear));
+    attitude.effect(SPEED_COL_WIDTH + CENTER_COL_WIDTH - 8, 2, 8, HEADING_TAPE_HEIGHT - 2, effect_alpha_gradient_h(lgfx::argb8888_t{0x40, 0, 0, 0}, lgfx::argb8888_t{0xB0, 0, 0, 0}, GradientCurve::Linear));
+}
+
+void CC_G5_PFD::drawNavCourse()
+{
+    const bool isGps = g5State.navSource == NAVSOURCE_GPS;
+    const int w = 4;
+    const int h = 14;
+    const int x = SPEED_COL_WIDTH + headingToX(isGps ? g5State.desiredTrack : g5State.navCourse, g5State.headingAngle) - w/2;
+    const int y = 30;
+
+    // Moved here so it can span attitude and speed tape
+    attitude.fillRect(x+1, y+1, w-2, h-2, isGps? TFT_MAGENTA:TFT_GREEN);    
+    attitude.drawRect(x, y, w, h, TFT_BLACK);
 }
 
 void CC_G5_PFD::drawGlideSlope()
@@ -1749,7 +1799,7 @@ void CC_G5_PFD::drawGlideSlope()
     // glideDeviationScale.effect(1,21,20,GSDEVIATIONPFD_IMG_HEIGHT-22, lgfx::effect_fill_alpha(lgfx::argb8888_t{0x80000000}));
     const int xpos = SPEED_COL_WIDTH + CENTER_COL_WIDTH - glideDeviationScale.width() - 1;
     const int ypos = ATTITUDE_Y_CENTER + 2 - scaleOffset - (glideDeviationScale.height() - scaleOffset) / 2;
-    attitude.effect(xpos + 1, ypos + 21, 20, GSDEVIATIONPFD_IMG_HEIGHT - 20 - 2, lgfx::effect_fill_alpha(lgfx::argb8888_t{0x80000000}));
+    attitude.effect(xpos + 1, ypos + 21, 20, GSDEVIATIONPFD_IMG_HEIGHT - 20 - 2, lgfx::effect_fill_alpha(lgfx::argb8888_t{0x40000000}));
     glideDeviationScale.pushSprite(&attitude, xpos, ypos, TFT_BLACK);
 }
 
@@ -1781,7 +1831,7 @@ void CC_G5_PFD::drawCDIBar()
     horizontalDeviationScale.pushImage(0, 0, HORIZONTALDEVIATIONSCALE_IMG_WIDTH, HORIZONTALDEVIATIONSCALE_IMG_HEIGHT, HORIZONTALDEVIATIONSCALE_IMG_DATA);
     int markerCenterPosition = (int)(scaleOffset + ((g5State.cdiOffset + scaleMax) * (HORIZONTALDEVIATIONSCALE_IMG_WIDTH / (scaleMax - scaleMin))) - (BANKANGLEPOINTER_IMG_WIDTH / 2));
 
-    attitude.effect(x_pos + 1, y_pos + 1, HORIZONTALDEVIATIONSCALE_IMG_WIDTH - 2, HORIZONTALDEVIATIONSCALE_IMG_HEIGHT - 2, lgfx::effect_fill_alpha(lgfx::argb8888_t{0x80000000}));
+    attitude.effect(x_pos + 1, y_pos + 1, HORIZONTALDEVIATIONSCALE_IMG_WIDTH - 2, HORIZONTALDEVIATIONSCALE_IMG_HEIGHT - 2, lgfx::effect_fill_alpha(lgfx::argb8888_t{0x40000000}));
 
     if (g5State.navSource == NAVSOURCE_GPS) {
         // always the magenta triangle
@@ -2131,6 +2181,7 @@ void CC_G5_PFD::update()
     drawSpeedTape();
     drawAltTape();
     drawHeadingTape();
+    drawNavCourse();
     drawAltTarget();
     drawHorizonMarker();
     drawGlideSlope();

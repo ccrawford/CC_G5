@@ -414,6 +414,7 @@ private:
     void          drawAltTarget();
     void          drawBall();
     void          drawHeadingTape();
+    void          drawNavCourse();
     void          drawHeadingBugUpdateNotice();
     void          blinkAP();
     unsigned long apBlinkEnd = 0;
