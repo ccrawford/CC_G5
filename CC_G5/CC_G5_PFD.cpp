@@ -45,33 +45,32 @@
 #include "Sprites\fdTrianglesNoAP.h"
 // #include "Images\PrimaSans16.h"
 
-LGFX_Sprite attitude(&lcd);         // Main sprite for display. Mandatory!
-LGFX_Sprite speedUnit(&attitude);   // Speed Tape 1's digit. Useful, not mandatory.
-LGFX_Sprite speedTens(&attitude);   // Speed tape 10's and 100's digit. Useful, not mandatory.
-LGFX_Sprite altUnit(&attitude);     // Altitude tape 1's and 10's digits. Useful, not mandatory.
-LGFX_Sprite altTens(&attitude);     // Altitude tape 100s, 1000s, 10,000 digit. Bad name, not mandatory
-LGFX_Sprite stdBankIndicator(&attitude);    // Small green triangle. Useful as it it's push/rotate. and small
+LGFX_Sprite attitude(&lcd);              // Main sprite for display. Mandatory!
+LGFX_Sprite speedUnit(&attitude);        // Speed Tape 1's digit. Useful, not mandatory.
+LGFX_Sprite speedTens(&attitude);        // Speed tape 10's and 100's digit. Useful, not mandatory.
+LGFX_Sprite altUnit(&attitude);          // Altitude tape 1's and 10's digits. Useful, not mandatory.
+LGFX_Sprite altTens(&attitude);          // Altitude tape 100s, 1000s, 10,000 digit. Bad name, not mandatory
+LGFX_Sprite stdBankIndicator(&attitude); // Small green triangle. Useful as it it's push/rotate. and small
 
-LGFX_Sprite pitchLadderNumber(&attitude);   // Numbering on pitch ladder. Really needs a different font, but whatev.
-LGFX_Sprite altBug(&attitude);              // Vertical Cyan altitude bug.
-LGFX_Sprite vsScale(&attitude);         
-LGFX_Sprite vsPointer(&attitude);
-LGFX_Sprite baScale(&attitude);
-LGFX_Sprite messageIndicator(&attitude);   // Square with exclamation point. Static so keep.
+LGFX_Sprite pitchLadderNumber(&attitude); // Numbering on pitch ladder. Really needs a different font, but whatev.
+LGFX_Sprite altBug(&attitude);            // Vertical Cyan altitude bug.
+LGFX_Sprite vsPointer(&attitude);         // Could replace with FillTriangle
+LGFX_Sprite baScale(&attitude);           // Large sprite with arc. Could replace with push image zoom rotate?
+LGFX_Sprite messageIndicator(&attitude);  // Square with exclamation point. Static and small so useful to keep.
 
-LGFX_Sprite headingTape(&attitude);
-LGFX_Sprite hScale(&headingTape);
-LGFX_Sprite horizontalDeviationScale(&attitude);
+LGFX_Sprite headingTape(&attitude);              // Could draw directly on attitude. Major rework though.
+LGFX_Sprite hScale(&headingTape);                // Convenient rather than drawing all those tic marks. Could replace with image push
+LGFX_Sprite horizontalDeviationScale(&attitude); // The deviation scale near bottom of attitude. Should be eliminated.
 
-LGFX_Sprite fdTriangle(&attitude);
-LGFX_Sprite speedPointer(&attitude);
+LGFX_Sprite fdTriangle(&attitude);   // Flight director magenta triangles. Needs push rotate
+LGFX_Sprite speedPointer(&attitude); // The vSpeed pointer sprite. Should be eliminated as it's reloaded multiple times.
 
-LGFX_Sprite kohlsBox(&attitude);
-LGFX_Sprite targetAltBox(&attitude);
+LGFX_Sprite kohlsBox(&attitude);     // Useful rather than rebuilding every frame.
+LGFX_Sprite targetAltBox(&attitude); // Useful as it doesn't change often.
 
-LGFX_Sprite apBox(&lcd);
+LGFX_Sprite apBox(&lcd); // Not part of attitude draw space. Required.
 
-uint8_t *attBuffer;
+uint8_t *attBuffer; // Buffer for the attitude sprite. This way we can check memory allocation
 
 extern CC_G5_Settings g5Settings;
 
@@ -304,10 +303,6 @@ void CC_G5_PFD::setupSprites()
     pitchLadderNumber.setTextDatum(MC_DATUM);
     pitchLadderNumber.loadFont(PrimaSans16);
 
-    vsScale.setColorDepth(8);
-    vsScale.createSprite(VSSCALE_IMG_WIDTH, VSSCALE_IMG_HEIGHT);
-    vsScale.setBuffer(const_cast<std::uint16_t *>(VSSCALE_IMG_DATA), VSSCALE_IMG_WIDTH, VSSCALE_IMG_HEIGHT, 16);
-
     vsPointer.setColorDepth(8);
     vsPointer.createSprite(VSPOINTER_IMG_WIDTH, VSPOINTER_IMG_HEIGHT);
     vsPointer.setBuffer(const_cast<std::uint16_t *>(VSPOINTER_IMG_DATA), VSPOINTER_IMG_WIDTH, VSPOINTER_IMG_HEIGHT, 16);
@@ -318,7 +313,7 @@ void CC_G5_PFD::setupSprites()
     baScale.setPivot(BANKANGLESCALE_IMG_WIDTH / 2, 127); // From image.
 
     headingTape.setColorDepth(8);
-    headingTape.createSprite(CENTER_COL_WIDTH, 40);
+    headingTape.createSprite(CENTER_COL_WIDTH, HEADING_TAPE_HEIGHT);
     headingTape.fillSprite(DARK_SKY_COLOR);
     headingTape.setTextDatum(CC_DATUM);
     headingTape.loadFont(PrimaSans18);
@@ -799,7 +794,7 @@ void CC_G5_PFD::drawAttitude()
 
     // 4. Draw topmost static elements
     attitude.pushImage((ATTITUDE_WIDTH - HORIZONMARKER_IMG_WIDTH) / 2, ATTITUDE_Y_CENTER - 4, HORIZONMARKER_IMG_WIDTH, HORIZONMARKER_IMG_HEIGHT, HORIZONMARKER_IMG_DATA, 0x0421);
-    
+
     // 5. Draw bounding line at top
     // attitude.drawFastHLine(0,0, ATTITUDE_WIDTH, DATA_BOX_OUTLINE_COLOR);
 }
@@ -1107,6 +1102,10 @@ void CC_G5_PFD::drawAltTape()
     int yOffset = altUnit.height() / 2;
     int xOffset = 2;
 
+    // There is a fine dark line running down the screen. It should have an alpha blend fade.
+    // TODO add the alpha blend here.
+    attitude.drawFastVLine(448, 0, ATTITUDE_HEIGHT, TFT_BLACK);
+
     // For the tape show every 100 feet. 200 feet greater and 200 feet less than current.
     altUnit.fillSprite(TFT_BLACK);
 
@@ -1239,7 +1238,8 @@ void CC_G5_PFD::drawAltTape()
     int barHeight = abs((int)(g5State.verticalSpeed * 0.131f));
     if (g5State.verticalSpeed > 0) yTop = ATTITUDE_Y_CENTER - barHeight;
     attitude.fillRect(ATTITUDE_WIDTH - 5, yTop, 5, barHeight, TFT_MAGENTA); // push to attitude to avoid a refill of vsScale.
-    vsScale.pushSprite(ATTITUDE_WIDTH - vsScale.width(), -30, TFT_BLACK);   // Scale drawn over the vs bar
+    attitude.pushImage(ATTITUDE_WIDTH - VSSCALE_IMG_WIDTH, 0, VSSCALE_IMG_WIDTH, VSSCALE_IMG_HEIGHT, VSSCALE_IMG_DATA, TFT_BLACK);
+
     // Draw the pointer
 
     vsPointer.pushSprite(ATTITUDE_WIDTH - VSPOINTER_IMG_WIDTH, ATTITUDE_Y_CENTER - VSPOINTER_IMG_HEIGHT / 2 - (int)(g5State.verticalSpeed * 0.131f), LGFX::color565(0x20, 0x20, 0x20));
@@ -1490,66 +1490,63 @@ void CC_G5_PFD::drawGroundSpeed()
     // CHECK: Do we need to erase the box?
     //    if (lastGs == g5State.groundSpeed) return;
 
-
     lastGs = g5State.groundSpeed;
 
-    const int boxWidth=SPEED_COL_WIDTH;
-    const int boxHeight=GS_BOX_HEIGHT;
-    const int topX = 0;
-    const int topY = ATTITUDE_HEIGHT- GS_BOX_HEIGHT - OAT_BOX_HEIGHT + 2;  // GS is above OAT and OAT is on bottom of screen and they share a border
+    const int boxWidth  = SPEED_COL_WIDTH;
+    const int boxHeight = GS_BOX_HEIGHT;
+    const int topX      = 0;
+    const int topY      = ATTITUDE_HEIGHT - GS_BOX_HEIGHT - OAT_BOX_HEIGHT + 2; // GS is above OAT and OAT is on bottom of screen and they share a border
 
     char buf[8];
 
     // Update: Just draw directly on attitude.
     attitude.drawRect(topX, topY, boxWidth, boxHeight, DATA_BOX_OUTLINE_COLOR);
-    attitude.drawRect(topX+1, topY+1, boxWidth-2, boxHeight-2, DATA_BOX_OUTLINE_COLOR);
-    attitude.fillRect(topX+2, topY+2, boxWidth-4, boxHeight-4, TFT_BLACK);
-    
+    attitude.drawRect(topX + 1, topY + 1, boxWidth - 2, boxHeight - 2, DATA_BOX_OUTLINE_COLOR);
+    attitude.fillRect(topX + 2, topY + 2, boxWidth - 4, boxHeight - 4, TFT_BLACK);
+
     attitude.setTextSize(1.0);
     attitude.setTextDatum(BL_DATUM);
     attitude.setTextColor(TFT_WHITE);
     attitude.loadFont(PrimaSans10);
-    attitude.drawString("GS", topX+4, topY + boxHeight - 1);
+    attitude.drawString("GS", topX + 4, topY + boxHeight - 1);
     attitude.setTextDatum(BR_DATUM);
     attitude.setTextColor(TFT_MAGENTA);
     attitude.loadFont(PrimaSans16);
     sprintf(buf, "%d", g5State.groundSpeed);
-    attitude.drawString(buf, topX+80, topY + boxHeight + 2 );
+    attitude.drawString(buf, topX + 80, topY + boxHeight + 2);
     attitude.setTextDatum(BL_DATUM);
     attitude.setTextSize(0.5);
     attitude.drawString("k", 82, topY + 14);
     attitude.drawString("t", 82, topY + 23);
     attitude.setTextSize(1.0);
-    
+
     return;
 }
 
 void CC_G5_PFD::drawOAT()
 {
-    const int boxWidth=SPEED_COL_WIDTH;
-    const int boxHeight=OAT_BOX_HEIGHT;
-    const int topX = 0;
-    const int topY = ATTITUDE_HEIGHT- OAT_BOX_HEIGHT;  // GS is above OAT and OAT is on bottom of screen
+    const int boxWidth  = SPEED_COL_WIDTH;
+    const int boxHeight = OAT_BOX_HEIGHT;
+    const int topX      = 0;
+    const int topY      = ATTITUDE_HEIGHT - OAT_BOX_HEIGHT; // GS is above OAT and OAT is on bottom of screen
 
     char buf[8];
 
     // Update: Just draw directly on attitude.
     attitude.drawRect(topX, topY, boxWidth, boxHeight, DATA_BOX_OUTLINE_COLOR);
-    attitude.drawRect(topX+1, topY+1, boxWidth-2, boxHeight-2, DATA_BOX_OUTLINE_COLOR);
-    attitude.fillRect(topX+2, topY+2, boxWidth-4, boxHeight-4, TFT_BLACK);
-    
+    attitude.drawRect(topX + 1, topY + 1, boxWidth - 2, boxHeight - 2, DATA_BOX_OUTLINE_COLOR);
+    attitude.fillRect(topX + 2, topY + 2, boxWidth - 4, boxHeight - 4, TFT_BLACK);
+
     attitude.setTextSize(1.0);
     attitude.setTextDatum(BL_DATUM);
     attitude.setTextColor(TFT_WHITE);
     attitude.loadFont(PrimaSans10);
-    attitude.drawString("OAT", topX+4, topY + boxHeight - 1);
+    attitude.drawString("OAT", topX + 4, topY + boxHeight - 1);
     attitude.setTextDatum(BR_DATUM);
     sprintf(buf, "%d\xB0", g5State.oat);
-    attitude.drawString(buf, topX+80, topY + boxHeight - 1);
+    attitude.drawString(buf, topX + 80, topY + boxHeight - 1);
     attitude.setTextSize(1.0);
- 
 }
-
 
 void CC_G5_PFD::drawBall()
 {
@@ -1599,7 +1596,6 @@ void CC_G5_PFD::drawBall()
     // Draw the ball  The g5State.ballPos goes from -1.0 (far right) to 1.0 (far left)
     int ballXOffset = (int)(g5State.ballPos * BALL_IMG_WIDTH * 1.8f) + 1; // This 1.8 factor can vary by plane. The comanche is backwards!
     attitude.pushImage(ATTITUDE_X_CENTER - BALL_IMG_WIDTH / 2 + ballXOffset, 293, BALL_IMG_WIDTH, BALL_IMG_HEIGHT, BALL_IMG_DATA, 0xC092);
-    
 
     return;
 }
@@ -2050,9 +2046,8 @@ void CC_G5_PFD::drawAp()
 void CC_G5_PFD::drawMessageIndicator()
 {
     // Only message we're going to indicate is that we've lost connection to MobiFlight.
-    if (lastMFUpdate < (millis() - 3000)) 
+    if (lastMFUpdate < (millis() - 3000))
         messageIndicator.pushSprite(&attitude, 125, 294); // Coords from inkscape
-
 }
 
 void CC_G5_PFD::drawFlightDirector()
@@ -2070,10 +2065,37 @@ void CC_G5_PFD::drawFlightDirector()
     return;
 }
 
+void CC_G5_PFD::drawHeadingBugUpdateNotice()
+{
+    if (millis() > lastHeadingBugTimer + 2000) return;
+
+    const int xPos = SPEED_COL_WIDTH + 5;
+    const int yPos = 8 + HEADING_TAPE_HEIGHT;
+    const int w    = 120;
+    const int h    = DATA_BOX_HEIGHT_MED;
+
+    attitude.drawRect(xPos, yPos, w, h, DATA_BOX_OUTLINE_COLOR);
+    attitude.fillRect(xPos + 1, yPos + 1, w - 2, h - 2, TFT_BLACK);
+    attitude.loadFont(PrimaSans12);
+    attitude.setTextColor(TFT_WHITE);
+    attitude.setTextDatum(BL_DATUM);
+    attitude.drawString("HDG", xPos + 4, yPos + h - 3);
+
+    attitude.setTextDatum(BR_DATUM);
+    attitude.loadFont(PrimaSans20);
+    attitude.setTextColor(TFT_CYAN);
+    char buf[8];
+    sprintf(buf, "%03d\xB0", g5State.headingBugAngle);
+    attitude.drawString(buf, xPos + w - 5, yPos + h);
+}
+
 void CC_G5_PFD::updateInputValues()
 {
     // This gives the cool, smooth value transitions rather than fake looking ones.
-
+    if (g5State.headingBugAngle != g5State.lastHeadingBugAngle) {
+        g5State.lastHeadingBugAngle = g5State.headingBugAngle;
+        lastHeadingBugTimer         = millis();
+    }
     g5State.headingAngle = smoothDirection(g5State.rawHeadingAngle, g5State.headingAngle, 0.15f, 0.02f);
     g5State.altitude     = smoothInput(g5State.rawAltitude, g5State.altitude, 0.1f, 0.02f);
     g5State.airspeed     = smoothInput(g5State.rawAirspeed, g5State.airspeed, 0.1f, 0.005f);
@@ -2113,28 +2135,29 @@ void CC_G5_PFD::update()
     drawHorizonMarker();
     drawGlideSlope();
     drawCDIBar();
-    
+
     drawFlightDirector();
     drawSpeedPointers();
     drawSpeedTrend();
-    
+
     unsigned long drawTime  = millis() - startDraw;
     unsigned long pushStart = millis();
-    
+
     // drawDensityAlt();
-    
+
     processMenu();
     brightnessMenu.draw(&attitude); // Draws on attitude sprite!
-    
+
     drawShutdown(&attitude);
     drawGroundSpeed(); // Draws GS and OAT
     drawOAT();
     drawKohlsman();
     drawBall();
+    drawMessageIndicator();
+    drawHeadingBugUpdateNotice();
 
     attitude.pushSprite(X_OFFSET, Y_OFFSET + AP_BAR_HEIGHT, TFT_MAIN_TRANSPARENT);
 
-    drawMessageIndicator();
     drawAp();
 
     g5State.forceRedraw = false;

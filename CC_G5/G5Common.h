@@ -103,7 +103,8 @@ struct G5State {
     // Heading and orientation
     float rawHeadingAngle = 240.0f;
     float headingAngle    = 0.0f;
-    int   headingBugAngle = 210.0f;
+    int   headingBugAngle = 210;
+    int   lastHeadingBugAngle = 0;  // Used to see if the bug changed in the PFD.
     float groundTrack     = 247.0f;
 
     // Attitude (PFD) 
@@ -404,12 +405,12 @@ public:
         // Title
         targetSprite->setTextColor(TFT_WHITE);
         targetSprite->setTextDatum(lgfx::v1::textdatum::textdatum_t::top_center);
-        targetSprite->setTextSize(0.7);
+        targetSprite->loadFont(PrimaSans16);
         targetSprite->drawString("Backlight", centerX + popupWidth / 2, centerY + 10);
 
         // Percentage
         targetSprite->setTextColor(TFT_CYAN);
-        targetSprite->setTextSize(1.2);
+        targetSprite->loadFont(PrimaSans20);
         targetSprite->setTextDatum(lgfx::v1::textdatum::textdatum_t::middle_center);
         String valueStr = String(g5State.lcdBrightness) + "%";
         targetSprite->drawString(valueStr, centerX + popupWidth / 2, centerY + popupHeight / 2 + 5);
@@ -672,7 +673,7 @@ public:
             // Draw item title
             targetSprite->setTextColor(0xFFFF, 0x0000); // White on black
             targetSprite->setTextDatum(lgfx::v1::textdatum::textdatum_t::top_center);
-            targetSprite->setTextSize(0.6);
+            targetSprite->loadFont(PrimaSans16);
             targetSprite->drawString(menuItems[i]->getTitle().c_str(), curX + itemWidth / 2, yPos + 15);
 
             // Draw item icon if it has one
@@ -690,7 +691,7 @@ public:
             if (displayValue.length() > 0) {
                 targetSprite->setTextColor(menuItems[i]->getDisplayValueColor(), 0x0000);
                 targetSprite->setTextDatum(lgfx::v1::textdatum::textdatum_t::bottom_center);
-                targetSprite->setTextSize(0.8);
+                targetSprite->loadFont(PrimaSans20);
                 targetSprite->drawString(displayValue.c_str(), curX + itemWidth / 2, yPos + itemHeight - 3);
             }
 
@@ -748,12 +749,12 @@ public:
         // Draw title
         targetSprite->setTextColor(0xFFFF);
         targetSprite->setTextDatum(lgfx::v1::textdatum::textdatum_t::top_center);
-        targetSprite->setTextSize(0.7);
+        targetSprite->loadFont(PrimaSans16);
         targetSprite->drawString(adjustingItem->getTitle(), centerX + popupWidth / 2, centerY + 10);
-
+        
         // Draw current value with color
         targetSprite->setTextColor(adjustingItem->getDisplayValueColor());
-        targetSprite->setTextSize(1.0);
+        targetSprite->loadFont(PrimaSans20);
         targetSprite->setTextDatum(lgfx::v1::textdatum::textdatum_t::middle_center);
         String valueStr = adjustingItem->getDisplayValue();
         targetSprite->drawString(valueStr, centerX + popupWidth / 2, centerY + popupHeight / 2 + 15);
@@ -785,7 +786,7 @@ public:
         // Draw title
         targetSprite->setTextColor(TFT_WHITE);
         targetSprite->setTextDatum(lgfx::v1::textdatum::textdatum_t::top_center);
-        targetSprite->setTextSize(0.7);
+        targetSprite->loadFont(PrimaSans16);
         targetSprite->drawString(adjustingItem->getTitle(), centerX + popupWidth / 2, centerY + 10);
 
         // Calculate scroll offset to keep selection visible
@@ -815,7 +816,7 @@ public:
             // Draw label
             targetSprite->setTextColor(textColor, bgColor);
             targetSprite->setTextDatum(lgfx::v1::textdatum::textdatum_t::middle_center);
-            targetSprite->setTextSize(0.9);
+            targetSprite->loadFont(PrimaSans20);
             targetSprite->drawString(selectionOptions[i].label, btnX + btnWidth / 2, yPos + itemHeight / 2);
 
             yPos += itemHeight + spacing;

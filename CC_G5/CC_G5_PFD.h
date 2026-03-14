@@ -30,6 +30,8 @@
 // #define TOP_BAR_HEIGHT    40 // This is part of the attitude sprite space.
 #define BOTTOM_BAR_HEIGHT 40
 
+#define HEADING_TAPE_HEIGHT 40
+
 #define ATTITUDE_HEIGHT   340  // SCREEN_HEIGHT - AP_BAR_HEIGHT - TOP_BAR_HEIGHT
 #define ATTITUDE_WIDTH      480
 #define ATTITUDE_COLOR_BITS 8
@@ -343,7 +345,8 @@ class CC_G5_PFD : public CC_G5_Base
                     // Back item
                     targetSprite->setTextColor(selected ? TFT_CYAN : TFT_WHITE, TFT_BLACK);
                     targetSprite->setTextDatum(lgfx::v1::textdatum::textdatum_t::middle_left);
-                    targetSprite->setTextSize(0.8);
+                    targetSprite->setTextSize(1.0);
+                    targetSprite->loadFont(PrimaSans16);
                     targetSprite->drawString("< Back", listX + 10, yPos + itemHeight / 2);
                 } else {
                     // Setting item
@@ -352,10 +355,12 @@ class CC_G5_PFD : public CC_G5_Base
                     // Draw name
                     targetSprite->setTextColor(selected ? TFT_CYAN : TFT_WHITE, TFT_BLACK);
                     targetSprite->setTextDatum(lgfx::v1::textdatum::textdatum_t::middle_left);
-                    targetSprite->setTextSize(0.8);
+                    targetSprite->setTextSize(1.0);
+                    targetSprite->loadFont(PrimaSans16);
                     targetSprite->drawString(setting.name, listX + 10, yPos + itemHeight / 2);
-
+                    
                     // Draw value
+                    targetSprite->loadFont(PrimaSans20);
                     char valStr[16];
                     sprintf(valStr, "%d", *setting.valuePtr);
                     targetSprite->setTextColor(selected ? TFT_YELLOW : 0x7BEF, TFT_BLACK);
@@ -409,6 +414,7 @@ private:
     void          drawAltTarget();
     void          drawBall();
     void          drawHeadingTape();
+    void          drawHeadingBugUpdateNotice();
     void          blinkAP();
     unsigned long apBlinkEnd = 0;
 
@@ -428,6 +434,7 @@ private:
     void read_rp2040_data();
 
     unsigned long lastMFUpdate = 0;
+    unsigned long lastHeadingBugTimer = 0;
 
 public:
     // Sprite management for menu system
