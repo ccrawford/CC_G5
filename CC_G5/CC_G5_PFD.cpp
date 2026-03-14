@@ -17,6 +17,7 @@
 #include "Sprites\headingBugSmall.h"
 #include "Sprites\headingBugVertical.h"
 #include "Sprites\headingBugPFD.h"
+#include "Sprites\vSpeedBug.h"
 #include "Sprites\deviationScale.h"
 #include "Sprites\gsDeviationPFD.h"
 #include "Sprites\deviationDiamond.h"
@@ -29,6 +30,7 @@
 #include "Sprites\horizonMarker.h"
 #include "Sprites\vsScale.h"
 #include "Sprites\vsPointer.h"
+#include "Sprites\vsPointerBig.h"
 #include "Sprites\bankAngleScale.h"
 #include "Sprites\bankAnglePointer.h"
 #include "Sprites\ball.h"
@@ -303,9 +305,9 @@ void CC_G5_PFD::setupSprites()
     pitchLadderNumber.setTextDatum(MC_DATUM);
     pitchLadderNumber.loadFont(PrimaSans16);
 
-    vsPointer.setColorDepth(8);
-    vsPointer.createSprite(VSPOINTER_IMG_WIDTH, VSPOINTER_IMG_HEIGHT);
-    vsPointer.setBuffer(const_cast<std::uint16_t *>(VSPOINTER_IMG_DATA), VSPOINTER_IMG_WIDTH, VSPOINTER_IMG_HEIGHT, 16);
+    // vsPointer.setColorDepth(8);
+    // vsPointer.createSprite(VSPOINTER_IMG_WIDTH, VSPOINTER_IMG_HEIGHT);
+    // vsPointer.setBuffer(const_cast<std::uint16_t *>(VSPOINTER_IMG_DATA), VSPOINTER_IMG_WIDTH, VSPOINTER_IMG_HEIGHT, 16);
 
     baScale.setColorDepth(1);
     baScale.createSprite(BANKANGLESCALE_IMG_WIDTH, BANKANGLESCALE_IMG_HEIGHT);
@@ -997,27 +999,34 @@ void CC_G5_PFD::drawSpeedTape()
                          lgfx::effect_fill_alpha(lgfx::argb8888_t{argb}));
     }
 
+    const int x = 57; // how far from the left edge is the border between units and tens. Dumb ref point!
+
     // Outline the boxes
     speedUnit.drawRect(0, 0, speedUnit.width(), speedUnit.height(), DATA_BOX_OUTLINE_COLOR);
     speedTens.drawRect(0, 0, speedTens.width(), speedTens.height(), DATA_BOX_OUTLINE_COLOR);
     speedTens.drawLine(speedTens.width() - 1, 0, speedTens.width() - 1, speedTens.height(), TFT_BLACK);
 
     // Draw the pointer triangle.
-    const int tx1 = SPEED_COL_WIDTH - 40 + speedUnit.width() - 1;
-    const int tx2 = tx1 + 11;
-    const int tx3 = SPEED_COL_WIDTH - 40 + speedUnit.width() - 1;
+    const int tx1 = x + speedUnit.width() - 1;
+    const int tx2 = tx1 + 10;
+    const int tx3 = x + speedUnit.width() - 1;
     const int ty1 = ATTITUDE_Y_CENTER - 10;
     const int ty2 = ATTITUDE_Y_CENTER;
     const int ty3 = ATTITUDE_Y_CENTER + 10;
 
     // Push the boxes last.
-    speedUnit.pushSprite(SPEED_COL_WIDTH - 40, ATTITUDE_Y_CENTER - speedUnit.height() / 2);
-    speedTens.pushSprite(SPEED_COL_WIDTH - 40 - speedTens.width() + 1, ATTITUDE_Y_CENTER - speedTens.height() / 2);
+    speedUnit.pushSprite(x, ATTITUDE_Y_CENTER - speedUnit.height() / 2);
+    speedTens.pushSprite(x - speedTens.width() + 1, ATTITUDE_Y_CENTER - speedTens.height() / 2);
 
     attitude.fillTriangle(tx1, ty1, tx2, ty2, tx3, ty3, TFT_BLACK);
     attitude.drawLine(tx1, ty1 - 1, tx2 + 1, ty2 - 1, DATA_BOX_OUTLINE_COLOR);
     attitude.drawLine(tx2 + 1, ty2 + 1, tx3, ty3 + 1, DATA_BOX_OUTLINE_COLOR);
     attitude.drawLine(tx1, ty1, tx2, ty2, TFT_BLACK);
+
+
+    // if in IAS mode, push the speed bug.
+    if(g5State.apVMode == 4)
+    attitude.pushImage(SPEED_COL_WIDTH - VSPEEDBUG_IMG_WIDTH, speedToY(g5State.apTargetSpeed, drawSpeed) - VSPEEDBUG_IMG_HEIGHT/2, VSPEEDBUG_IMG_WIDTH, VSPEEDBUG_IMG_HEIGHT, VSPEEDBUG_IMG_DATA, TFT_TRANSPARENT_LIGHTBLACK);
 
     // Draw the true airspeed box
     const int tas_height = 24;
@@ -1259,16 +1268,25 @@ void CC_G5_PFD::drawAltTape()
     attitude.drawNumber(g5State.targetAltitude, xRight, altToY(g5State.targetAltitude, (int)g5State.altitude));
 
     // Draw the vertical speed scale
-    yTop = ATTITUDE_Y_CENTER;
     // 131 pixels is 1000fpm so 1fpm is 0.131 pixel
-    int barHeight = abs((int)(g5State.verticalSpeed * 0.131f));
+    const float ftperpx = 0.131f;
+    int barHeight = abs((int)(g5State.verticalSpeed * ftperpx));
+    yTop = ATTITUDE_Y_CENTER;
     if (g5State.verticalSpeed > 0) yTop = ATTITUDE_Y_CENTER - barHeight;
+
     attitude.fillRect(ATTITUDE_WIDTH - 5, yTop, 5, barHeight, TFT_MAGENTA); // push to attitude to avoid a refill of vsScale.
-    attitude.pushImage(ATTITUDE_WIDTH - VSSCALE_IMG_WIDTH, 0, VSSCALE_IMG_WIDTH, VSSCALE_IMG_HEIGHT, VSSCALE_IMG_DATA, TFT_BLACK);
+    attitude.pushImage(ATTITUDE_WIDTH - VSSCALE_IMG_WIDTH, ATTITUDE_Y_CENTER - VSSCALE_IMG_HEIGHT/2, VSSCALE_IMG_WIDTH, VSSCALE_IMG_HEIGHT, VSSCALE_IMG_DATA, TFT_TRANSPARENT_LIGHTBLACK);
 
-    // Draw the pointer
-
-    vsPointer.pushSprite(ATTITUDE_WIDTH - VSPOINTER_IMG_WIDTH, ATTITUDE_Y_CENTER - VSPOINTER_IMG_HEIGHT / 2 - (int)(g5State.verticalSpeed * 0.131f), LGFX::color565(0x20, 0x20, 0x20));
+    
+    
+    // Draw the VS Target bug here
+    
+    // Only draw speed bug if ap in vs mode.
+    if(g5State.apVMode==2)
+      attitude.pushImage(ATTITUDE_WIDTH - VSPEEDBUG_IMG_WIDTH, ATTITUDE_Y_CENTER - VSPEEDBUG_IMG_HEIGHT/2 - (int)(g5State.apTargetVS * ftperpx), VSPEEDBUG_IMG_WIDTH, VSPEEDBUG_IMG_HEIGHT, VSPEEDBUG_IMG_DATA, TFT_TRANSPARENT_LIGHTBLACK);
+    
+    // Draw the VS pointer
+    attitude.pushImage(ATTITUDE_WIDTH - VSPOINTERBIG_IMG_WIDTH - 1, ATTITUDE_Y_CENTER - VSPOINTERBIG_IMG_HEIGHT / 2 - (int)(g5State.verticalSpeed * ftperpx), VSPOINTERBIG_IMG_WIDTH, VSPOINTERBIG_IMG_HEIGHT, VSPOINTERBIG_IMG_DATA, TFT_TRANSPARENT_LIGHTBLACK); 
 
     // Let's try to alpha blend the edges of the units digit.
     const int FADE_ROWS = 12;
@@ -2157,7 +2175,7 @@ void CC_G5_PFD::updateInputValues()
     g5State.cdiOffset     = smoothInput(g5State.rawCdiOffset, g5State.cdiOffset, 0.15f, 0.2f);
     g5State.bankAngle     = smoothAngle(g5State.rawBankAngle, g5State.bankAngle, 0.3f, 0.05f);
     g5State.pitchAngle    = smoothInput(g5State.rawPitchAngle, g5State.pitchAngle, 0.3f, 0.05f);
-    g5State.verticalSpeed = smoothInput(g5State.rawVerticalSpeed, g5State.verticalSpeed, 0.03, 1);
+    g5State.verticalSpeed = smoothInput(g5State.rawVerticalSpeed, g5State.verticalSpeed, 0.1f, 1);
 }
 
 void CC_G5_PFD::update()

@@ -125,7 +125,7 @@
     {
       "id": 68,
       "Label": "AP Vertical Mode",
-      "description": "Autopilot active vertical mode"
+      "description": "Autopilot active vertical mode. 0-off, 1-ALT, 2-VS, 3-PIT, 4-IAS, 5-ALTS, 6-GS, 7-GP"
     },
     {
       "id": 69,

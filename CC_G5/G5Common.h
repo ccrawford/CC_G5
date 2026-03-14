@@ -128,7 +128,7 @@ struct G5State {
     // Altitude
     float rawAltitude      = 5000.0f;
     float altitude         = 100.0f;
-    int   rawVerticalSpeed = 0;
+    int   rawVerticalSpeed = 500;
     int   verticalSpeed    = 0;
     int   targetAltitude   = 5000;
     int   densityAltitude  = 1200;
@@ -198,9 +198,9 @@ struct G5State {
     int apLArmedMode  = 0;
     int apVArmedMode  = 0;
     int apYawDamper   = 0;
-    int apTargetSpeed = 0;
+    int apTargetSpeed = 35;
     int apAltCaptured = 0;
-    int apTargetVS    = 0;
+    int apTargetVS    = 500;
 
     // Other
     int oat = 60; // Outside air temp
