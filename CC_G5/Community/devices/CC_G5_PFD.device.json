@@ -164,7 +164,7 @@
     },
     {
       "id": 76,
-      "Label": "GPS Course to Steer",
+      "Label": "GPS Course to Steer (Desired Track)",
       "description": "GPS navigation course to steer in degrees"
     },
     {

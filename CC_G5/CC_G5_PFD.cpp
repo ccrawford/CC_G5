@@ -1770,6 +1770,10 @@ void CC_G5_PFD::drawNavCourse()
     const int y = 30;
 
     // Moved here so it can span attitude and speed tape
+
+    // Only draw if in the tape bounds.
+    if (x<SPEED_COL_WIDTH+1 || x> ATTITUDE_WIDTH-ALTITUDE_COL_WIDTH - 1) return;
+
     attitude.fillRect(x+1, y+1, w-2, h-2, isGps? TFT_MAGENTA:TFT_GREEN);    
     attitude.drawRect(x, y, w, h, TFT_BLACK);
 }

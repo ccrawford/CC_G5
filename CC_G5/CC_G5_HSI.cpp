@@ -392,10 +392,11 @@ void CC_G5_HSI::updateCommon()
     // }
 
     drawCompassOuterMarkers();
-    processMenu();
-    brightnessMenu.draw(&compass);
     drawPlaneIcon();
     drawOrangeCenterTick();
+    
+    processMenu();
+    brightnessMenu.draw(&compass);
 
     drawShutdown(&compass);
 
@@ -1052,15 +1053,16 @@ void CC_G5_HSI::drawGlideSlope()
     glideDeviationScale.pushImage(0, 0, GSDEVIATION_IMG_WIDTH, GSDEVIATION_IMG_HEIGHT, GSDEVIATION_IMG_DATA);
 
     int markerCenterPosition = centerY + (int)(g5State.gsiNeedle * scaleFactor) - (deviationDiamond.height() / 2.0);
-    glideDeviationScale.setClipRect(0, 21, GSDEVIATION_IMG_WIDTH, GSDEVIATION_IMG_HEIGHT - 22);
     if (g5State.navSource == NAVSOURCE_GPS) {
         glideDeviationScale.setTextColor(TFT_MAGENTA);
         glideDeviationScale.drawString("G", glideDeviationScale.width() / 2, 13);
+        glideDeviationScale.setClipRect(0, 23, GSDEVIATION_IMG_WIDTH, GSDEVIATION_IMG_HEIGHT - 22);
         glideDeviationScale.drawBitmap(2, markerCenterPosition, DIAMONDBITMAP_IMG_DATA, DIAMONDBITMAP_IMG_WIDTH, DIAMONDBITMAP_IMG_HEIGHT, TFT_MAGENTA);
-
+        
     } else {
         glideDeviationScale.setTextColor(TFT_GREEN);
         glideDeviationScale.drawString("L", glideDeviationScale.width() / 2, 13);
+        glideDeviationScale.setClipRect(0, 23, GSDEVIATION_IMG_WIDTH, GSDEVIATION_IMG_HEIGHT - 22);
         glideDeviationScale.drawBitmap(2, markerCenterPosition, DIAMONDBITMAP_IMG_DATA, DIAMONDBITMAP_IMG_WIDTH, DIAMONDBITMAP_IMG_HEIGHT, TFT_GREEN);
     }
     glideDeviationScale.clearClipRect();
