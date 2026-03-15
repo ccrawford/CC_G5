@@ -6,7 +6,6 @@
 .vscode/arduino.json
 src
 _build
-_dist
 .claude
 CLAUDE.md
 COMMIT_HISTORY_DETAILED.txt
