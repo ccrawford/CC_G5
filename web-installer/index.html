@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CC_G5 Firmware Installer</title>
-  <script
-    type="module"
-    src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"
-  ></script>
+  <script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"></script>
   <style>
     :root {
       --bg: #1a1a2e;
@@ -19,7 +17,11 @@
       --radius: 12px;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       background: var(--bg);
@@ -40,7 +42,7 @@
       width: 100%;
       padding: 2.5rem 2rem;
       text-align: center;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
     }
 
     .logo {
@@ -149,6 +151,7 @@
     }
   </style>
 </head>
+
 <body>
   <div class="card">
     <div class="logo">✈️</div>
@@ -175,13 +178,17 @@
     </div>
 
     <div class="requirements">
+      <h3>What you need</h3>
+      <ul>
+        <li>A Guition 4", 480x480 screen with embedded ESP32-S3 <a href="https://www.aliexpress.us/item/3256806436431838.html">One possibility</a></li>
+      </ul>
       <h3>Before You Flash</h3>
       <ul>
         <li>Connect the ESP32-S3 via USB</li>
         <li>Use Chrome or Edge (Web Serial required)</li>
         <li>Hold BOOT button if prompted by the installer</li>
-        <li>Hold BOOT button if prompted by the installer</li>
-        <li>Copy the CC_G5 folder in https://github.com/ccrawford/CC_G5/blob/main/_dist/CC_G5_0.0.1.zip to your MF Community Folder</li>
+        <li>Copy the CC_G5 folder<a href="https://github.com/ccrawford/CC_G5/blob/main/_dist/CC_G5_0.0.1.zip"> in this .zip</a> </a> to your MF
+          Community Folder</li>
         <li>Configure device in MobiFlight Connector after flashing</li>
         <li>NOTE: Your display will be blank until you add the custom PFD or HSI device in MobiFlight!</li>
       </ul>
@@ -196,8 +203,9 @@
     </div>
 
     <p class="browser-note">
-      Requires Chrome or Edge with Web Serial API support.<br/>
-      <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API#browser_compatibility" target="_blank" rel="noopener">
+      Requires Chrome or Edge with Web Serial API support.<br />
+      <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API#browser_compatibility" target="_blank"
+        rel="noopener">
         Check browser compatibility
       </a>
     </p>
@@ -213,4 +221,5 @@
     </footer>
   </div>
 </body>
+
 </html>
