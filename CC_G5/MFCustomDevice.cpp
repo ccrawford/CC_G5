@@ -210,39 +210,68 @@ void MFCustomDevice::set(int16_t messageID, char *setPoint)
 }
 
 // Called from OnGetConfig() in Config.cpp to append virtual encoder/button records
-// to the kGetConfig response. typeAddrEEPROM points to the device type string in
-// EEPROM (e.g. "CC_G5_HSI."). We read it to pick the right virtual config string,
-// then stream each character via cmdMessenger.sendArg so the Connector sees them
-// as part of the config alongside the user's custom device record.
-void appendVirtualDeviceConfig(uint16_t typeAddrEEPROM)
+// to the kGetConfig response. Scans the EEPROM config starting at configStart for
+// any '17.' custom device records, reads the type string from each, and streams the
+// matching virtual config. If no custom device record exists (user removed it),
+// nothing is appended.
+void appendVirtualDeviceConfig(uint16_t configStart)
 {
-    char typeStr[MEMLEN_STRING_BUFFER];
+    uint16_t       addr         = configStart;
+    uint16_t       eepromLength = MFeeprom.get_length();
 
-    // Read the '.' terminated type string from EEPROM
-    char     temp    = 0;
-    uint8_t  counter = 0;
-    uint16_t addr    = typeAddrEEPROM;
-    do {
-        temp = MFeeprom.read_byte(addr++);
-        typeStr[counter++] = temp;
-        if (counter >= MEMLEN_STRING_BUFFER) return;
-    } while (temp != '.' && temp != 0x00);
-    typeStr[counter - 1] = 0x00;
+    while (addr < eepromLength) {
+        // Read the command number
+        char     cmdBuf[4];
+        uint8_t  cmdLen = 0;
+        char     temp;
+        while (addr < eepromLength && cmdLen < sizeof(cmdBuf) - 1) {
+            temp = MFeeprom.read_byte(addr++);
+            if (temp == '.' || temp == 0x00) break;
+            cmdBuf[cmdLen++] = temp;
+        }
+        cmdBuf[cmdLen] = 0x00;
+        if (temp != '.') break; // malformed or end of config
 
-    // Select the virtual config string for this device type
-    const char *virtualCfg = nullptr;
-    if (strcmp(typeStr, "CC_G5_HSI") == 0)
-        virtualCfg = HSI_VirtualConfig;
-    else if (strcmp(typeStr, "CC_G5_PFD") == 0)
-        virtualCfg = PFD_VirtualConfig;
-    else
-        virtualCfg = Switchable_VirtualConfig;
+        int cmd = atoi(cmdBuf);
 
-    // Stream each character — Config.cpp has already sent the first arg with
-    // sendCmdArg, so all subsequent characters use sendArg (adds comma separator)
-    uint16_t i = 0;
-    char     c;
-    while ((c = pgm_read_byte_near(virtualCfg + i++)) != 0x00) {
-        cmdMessenger.sendArg(c);
+        if (cmd == 17) {
+            // This is a custom device record — read the type string
+            char    typeStr[MEMLEN_STRING_BUFFER];
+            uint8_t counter = 0;
+            do {
+                temp = MFeeprom.read_byte(addr++);
+                if (addr > eepromLength) return;
+                typeStr[counter++] = temp;
+                if (counter >= MEMLEN_STRING_BUFFER) return;
+            } while (temp != '.' && temp != 0x00);
+            typeStr[counter - 1] = 0x00;
+
+            // Select and stream the matching virtual config
+            const char *virtualCfg = nullptr;
+            if (strcmp(typeStr, "CC_G5_HSI") == 0)
+                virtualCfg = HSI_VirtualConfig;
+            else if (strcmp(typeStr, "CC_G5_PFD") == 0)
+                virtualCfg = PFD_VirtualConfig;
+            else if (strcmp(typeStr, "CC_G5") == 0)
+                virtualCfg = Switchable_VirtualConfig;
+
+            if (virtualCfg != nullptr) {
+                uint16_t i = 0;
+                char     c;
+                while ((c = pgm_read_byte_near(virtualCfg + i++)) != 0x00) {
+                    cmdMessenger.sendArg(c);
+                }
+            }
+
+            // Skip the rest of this record (pins.config:)
+            // We only support one custom device so we're done
+            return;
+        } else {
+            // Skip to the end of this record (terminate on ':')
+            do {
+                temp = MFeeprom.read_byte(addr++);
+                if (addr > eepromLength) return;
+            } while (temp != ':' && temp != 0x00);
+        }
     }
 }

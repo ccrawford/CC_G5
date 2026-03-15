@@ -8,6 +8,13 @@
 // firmware supplies per-type configs from the constants below.
 const char CustomDeviceConfig[] PROGMEM = {};
 
+// Pin numbers at or above this threshold are "virtual" — they exist only in
+// firmware flash (see the VirtualConfig arrays below) and must never be
+// written to EEPROM or passed to GPIO setup routines.  The MobiFlight
+// Connector cannot delete devices whose pins are not in the board's pin
+// list, so keeping them out of EEPROM is critical.
+#define VIRTUAL_PIN_MIN 100
+
 // Virtual encoder/button records appended to kGetConfig responses.
 // These devices have no physical pins — Encoder::Add() and MFButton::attach()
 // are short-circuited in the core to skip GPIO setup. They appear in the
