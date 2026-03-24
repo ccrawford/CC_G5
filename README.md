@@ -1,27 +1,57 @@
 # CC_G5 - Glass Cockpit Display for Flight Simulation
 
+##Overview
   A MobiFlight custom firmware device for ESP32 that implements a Garmin G5-style glass cockpit Primary Flight Display
   (PFD) and Horizontal Situation Indicator (HSI) for MSFS 2020 or 2024. This device provides a high-fidelity,
-  physical glass cockpit display using an ESP32-S3 microcontroller with a 4-inch LCD display. Based on real
-  world G5 manual, this is a completely stand alone device that only requires MobiFlight to interface with
-  MSFS. The display and logic is completely contained on the ESP32.
+  physical glass cockpit display using an ESP32-S3 microcontroller with a 4-inch LCD display. This is a completely stand alone device that only requires MobiFlight to interface with
+  MSFS. The display and logic is completely contained on the ESP32-S3, rather than as a pop-out window on a separate monitor.
 
-  This code supports both HSI and PFD in a single code base. Use MF to select display configuration. Ability
-  to switch between displays at run-time (like the real device) is not implemented.
+  This code supports both HSI and PFD in a single code base. Select the type of display as a custom MF device. 
 
-  UPDATE Nov 2025: You may now select the device from the menu. There is only one custom device type (CCs CC_G5). It will
+##Updates
+  ~~UPDATE Nov 2025: You may now select the device from the menu. There is only one custom device type (CCs CC_G5). It will
   remember which device type it is when selected from the menu, or use the MF Message "Device Type" to control it from 
   your MF config.
   NOTE: The message IDs have now changed to support the single device/dual mode setup. Your old .mcc files will not 
   work. There is a new Community file set in the Community folder and new sample MF .mcc files in the MF folder. 
   Use G5 ROOT CONFIG.mcc for a single device or G5 AIO.mcc for duals. The create_dual_g5_config.bat can be used to 
-  duplicate the G5 ROOT CONFIG.mcc for dual device. However you will need to update with the SN of your devices. 
+  duplicate the G5 ROOT CONFIG.mcc for dual device. However you will need to update with the SN of your devices. ~~~
+  
+   UPDATE FEB 2026: Want an Airbus ISIS display instead of a G5? Check out this repo: https://ccrawford.github.io/CC_ISIS/
+   
+   UPDATE FEB 2026: While the ability to switch from the device iteself was pretty cool, it required a really complex and fiddly MF setup. The feature is still there, but I recommend just using the Custom Device (PFD or HSI) that you want.
+
+   UPDATE FEB 2026: I have completely updated the display layout to more closely match the real-world G5.
+
+   UPDATE MAR 2026: There is now a web installer here: https://ccrawford.github.io/CC_G5/web-installer/
+
+   ## SETUP
+   Have one of the 480x480 w/ built in ESP32-S3s and want to try it out? This is the fast and easy way.
+   1. Obtain hardware (Guition 4" 480x480 screen w/ built-in ESP32-S3 from the usual places)
+   2. Flash using the installer  https://ccrawford.github.io/CC_G5/web-installer/
+   3. Copy the Community folder in this zip: https://github.com/ccrawford/CC_G5/blob/main/_dist/CC_G5_0.0.1.zip to your MF Community Directory
+   4. Use this MFProj as a starting point in MF: https://github.com/ccrawford/CC_G5/blob/main/MF/G5%20ROOT%20DUAL.mfproj
+   5. YOU MAY NEED TO FIX A MF Setting if your device doesn't show up in the list:
+
+   <em>NOTE:</em> If after installing the firmware your device is not recognized by MF (looks like this:)
+   <img width="446"  alt="image" src="https://github.com/user-attachments/assets/1476bdff-d4fe-4253-b5fb-8de6b8ee6c8b" />
+
+  Do this:
+  Find this file: %USERPROFILE%\AppData\Local\MobiFlight\MobiFlight Connector\Boards\arduino_mega.board.json
+  On line 14, change this line:
+    `"DtrEnable": true,`
+to 
+    `"DtrEnable": false,`
+
+That will fix it. HOWEVER, you have to update that line whenever MF updates itself. I have a issue raised with the MF maintainers. 
+
+## FEATURES
 
   Both displays get around 16fps. I initially thought this was unacceptably slow, but in reality it's fine.
   Smoothing of input values and sub-pixel rendering allows smooth, realistic movement of dials and tapes. 
 
   This project is pushing the bounds of the memory on the ESP32-S3. While the device has ample PSRAM, using it
-  is much slower than main memory and the fps drops quickly. Currently we are out of room for new sprites. 
+  is much slower than main memory and the fps drops quickly.  
 
   <img src="CC_G5/Photos/Turning to intercept Localizer.jpg" width="400" alt="CC_G5 intercepting localizer">
   <br>
@@ -43,8 +73,8 @@
   - **On Screen Message Indicator** Identifies if connection to MF is lost
   - **Encoder click knob adjusts baro by default or click to enter menu and adjust other parameters
   - **TO DO**
-    - Target AP VS bug on VS scale.
-    - Target AP speed for FLC on speed tape
+    - ~~Target AP VS bug on VS scale.~~
+    - ~~Target AP speed for FLC on speed tape~~
     - ~~Improve blinking of AP and Altitude on status change~~ Done.
     - ~~Add battery status and logic~~Done.
     - ~~Add startup/shutdown sequences~~Done.
@@ -60,7 +90,7 @@
     - GPS waypoint bearing
     - VOR1/VOR2 radials
     - ADF bearing
-    - Configurable via internal menu system
+    - Configurable via internal menu system or MF
   - **Navigation Source Display**: GPS/NAV1/NAV2 indicators with color coding
   - **Ground Speed & Track**: Current groundspeed and GPS track
   - **Distance to Waypoint**: Nautical miles to next GPS waypoint
@@ -68,7 +98,7 @@
   - **Approach Indicators**: ILS/LOC/GPS approach type display
   - **OBS Mode**: Manual course selection support
   - **TO DO**
-    - Add battery status/logic
+    - ~~Add battery status/logic~~ Done, but it's kind of irritating.
     - Add startup/shutdown sequences
 
   ### Menu System
@@ -83,8 +113,6 @@
     - Allows dynamic use of the rotary encoder without messy state management in MF
   
   ### Display Features
-  - **High-Performance Graphics**: LovyanGFX library, 480x480 display.
-  - **Accurate colors**: Magenta for GPS, Green for VOR/ILS
   - **Multi-Layer Sprites**: Complex overlays for no-flicker refresh
   - **Smooth Animations**: Low-pass filtering for heading and deviation displays
 
@@ -123,11 +151,20 @@
   ## Hardware Requirements
 
   ### Primary Components
-  - **ESP32-S3 DevKitC-1** with PSRAM (4MB or 8MB recommended)
+  - **I recommend an all-in-one module, not components** Get one that looks like this:
+    <p> <img width="220" height="220" alt="image" src="https://github.com/user-attachments/assets/c5930d74-8519-488a-9190-909c7a65c36a" /> 
+    <img width="220" height="220" alt="image" src="https://github.com/user-attachments/assets/3b4d46e8-d668-430b-9137-6fcafaa477be" /></p>
+
+    Common search terms: '4848s040'  or 'esp32 s3 4inch' or 'esp32 480x480'. They should be about $25-30 shipped to the US.
+    <p>This is all you need if you just want a simple display. If you want to add physical controls or individual components, read on.</p>
+
+    
+  - **ESP32-S3 DevKitC-1** with PSRAM (4MB or 8MB recommended) 
   - **4-inch LCD Display** (480x480 or compatible resolution)
     - Guition ESP32-S3 4827S043C (recommended--built in ESP32-S3 with clean wiring)
+    - Waveshare 4" 480x480 w/ it's ESP32-S3 LCD Driver works, but you'll need to recompile the source with that flat
     - Search AliExpress for "guition 480x480". Should be around $25 US.
-    - Alternative: Standard 4-inch SPI LCD with proper pin configuration
+    - Alternative: Standard 4-inch SPI LCD with proper pin configuration, but you'll need to fiddle with the source code
   - **RP2040 Microcontroller** (Raspberry Pi Pico or similar) - for rotary encoder interface
     - See this repository for more information https://github.com/ccrawford/CC_G5_Slave
     - This can be skipped if you are using the Guition screen and don't need the power button
