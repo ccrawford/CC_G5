@@ -49,7 +49,7 @@
         "File": "CC_G5 PFD.mfmc"
       },
       {
-        "Name": "CC_G5 Primary Flight Display",
+        "Name": "CC_G5 HSI / Directional Gyro",
         "Description": "CC_G5 flight instrument, set to HSI mode",
         "File": "CC_G5 HSI.mfmc"
       }
