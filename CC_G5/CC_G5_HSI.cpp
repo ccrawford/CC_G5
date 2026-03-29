@@ -39,7 +39,7 @@ LGFX_Sprite cdiPtr(&lcd);  // Large magenta or green arrow points current course
 LGFX_Sprite curHdg(&lcd);  // Current Heading in the box with triangle at top of compass
 LGFX_Sprite curDME(&lcd);
 LGFX_Sprite deviationScale(&compass); // The four circles
-LGFX_Sprite glideDeviationScale(&lcd);
+LGFX_Sprite glideDeviationScale(&compass);
 LGFX_Sprite deviationDiamond(&glideDeviationScale);
 LGFX_Sprite currentTrackPtr(&lcd);
 LGFX_Sprite cdiBar(&lcd);
@@ -395,6 +395,8 @@ void CC_G5_HSI::updateCommon()
     drawPlaneIcon();
     drawOrangeCenterTick();
     
+    drawGlideSlope();
+
     processMenu();
     brightnessMenu.draw(&compass);
 
@@ -405,7 +407,6 @@ void CC_G5_HSI::updateCommon()
 
     compass.pushSprite(&lcd, X_OFFSET + COMPASS_X_OFFSET, Y_OFFSET + COMPASS_Y_OFFSET, TFT_MAIN_TRANSPARENT);
 
-    drawGlideSlope();
 
     drawDistNextWaypoint();
     drawHeadingBugValue();
@@ -1024,7 +1025,7 @@ void CC_G5_HSI::drawGlideSlope()
     if (wasValid && !g5State.gsiNeedleValid) {
         // clear and push sprite.
         glideDeviationScale.fillSprite(TFT_BLACK);
-        glideDeviationScale.pushSprite(&lcd, lcd.width() - glideDeviationScale.width() - 24, Y_OFFSET + 7 + COMPASS_CENTER_Y - glideDeviationScale.height() / 2);
+        glideDeviationScale.pushSprite(&compass, COMPASS_WIDTH - glideDeviationScale.width() - 24, -11 + COMPASS_CENTER_Y - glideDeviationScale.height() / 2);
         wasValid = false;
     }
 
@@ -1067,7 +1068,7 @@ void CC_G5_HSI::drawGlideSlope()
     }
     glideDeviationScale.clearClipRect();
 
-    glideDeviationScale.pushSprite(&lcd, lcd.width() - glideDeviationScale.width() - 24, Y_OFFSET + 7 + COMPASS_CENTER_Y - glideDeviationScale.height() / 2);
+    glideDeviationScale.pushSprite(&compass, COMPASS_WIDTH - glideDeviationScale.width() - 24, -11 + COMPASS_CENTER_Y - glideDeviationScale.height() / 2);
 }
 
 void CC_G5_HSI::drawPlaneIcon()
