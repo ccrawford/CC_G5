@@ -188,11 +188,15 @@
       <ul>
         <li>Connect the ESP32-S3 via USB</li>
         <li>Use Chrome or Edge (Web Serial required)</li>
+        <p>Note: MobiFlight does not support flashing ESP32 devices from the Connector Software.</p>
+        <li>Click Install firmware button below. It's safe to use the erase function which will clear out any previous firmware and configuration</li>
+      <h3>After You Flash</h3>
         <li>Copy the CC_G5 folder<a href="https://github.com/ccrawford/CC_G5/blob/main/_dist/CC_G5_0.0.1.zip"> in this .zip</a> </a> to your MF
           Community Folder</li>
         <li>Add a CC_G5_PFD or CC_G5_HSI Custom device in MobiFlight Connector after flashing</li>
-        <li>(Extras->Settings->MobiFlightModules->CC_G5 ESP32->Add device->Custom Devices->CCs G5_HSI or _PFD)</li>
-        <li>NOTE: Your display will be blank until you add the custom PFD or HSI device in MobiFlight!</li>
+        <p>(Extras->Settings->MobiFlightModules->CC_G5 ESP32->Add device->Custom Devices->CCs G5_HSI or _PFD)</p></li>
+        <p>NOTE: Your display will be blank until you add the custom PFD or HSI device in MobiFlight!</p>
+        <li>Use <a href="https://github.com/ccrawford/CC_G5/blob/main/MF/G5%20ROOT%20DUAL.mfproj">This .mfproj file with MobiFlight</a> which includes both HSI and PFD configurations.</li>
       </ul>
     </div>
 
