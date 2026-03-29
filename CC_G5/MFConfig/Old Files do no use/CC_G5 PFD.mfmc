@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ModuleType>CC_G5 ESP32</ModuleType>
+  <ModuleName>CC_G5 PFD</ModuleName>
+  <PowerSavingTime>600</PowerSavingTime>
+  <CustomDevice Name="CCs CC_G5 PFD" CustomType="CC_G5_PFD" Pins="1" Config="">
+    <ConfiguredPins>
+      <string>1</string>
+    </ConfiguredPins>
+  </CustomDevice>
+  <Encoder Name="encKohls" PinLeft="2" PinRight="3" EncoderType="0" />
+  <Encoder Name="encTargetAlt" PinLeft="4" PinRight="5" EncoderType="0" />
+  <Encoder Name="encTrack" PinLeft="6" PinRight="7" EncoderType="0" />
+  <Button Name="btnPfdEncoder" Pin="8" />
+</Config>
