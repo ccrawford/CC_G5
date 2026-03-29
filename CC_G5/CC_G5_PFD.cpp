@@ -2218,9 +2218,7 @@ void CC_G5_PFD::update()
 
     // drawDensityAlt();
 
-    processMenu();
-    brightnessMenu.draw(&attitude); // Draws on attitude sprite!
-
+    
     drawShutdown(&attitude);
     drawGroundSpeed(); // Draws GS and OAT
     drawOAT();
@@ -2228,6 +2226,9 @@ void CC_G5_PFD::update()
     drawBall();
     drawMessageIndicator();
     drawHeadingBugUpdateNotice();
+
+    processMenu();
+    brightnessMenu.draw(&attitude); // Draws on attitude sprite!
 
     attitude.pushSprite(X_OFFSET, Y_OFFSET + AP_BAR_HEIGHT, TFT_MAIN_TRANSPARENT);
 

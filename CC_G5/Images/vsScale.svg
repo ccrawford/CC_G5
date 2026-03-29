@@ -36,7 +36,7 @@
      inkscape:window-y="-11"
      inkscape:window-maximized="1"
      inkscape:current-layer="layer1"
-     inkscape:export-bgcolor="#00000000">
+     inkscape:export-bgcolor="#080408ff">
     <inkscape:grid
        id="grid1"
        units="px"
@@ -99,7 +99,7 @@
        transform="matrix(0.64361754,0,0,0.64361754,1.0051404,8.2913547)"><tspan
          x="0.79374999"
          y="35.71875"
-         id="tspan5">5</tspan></text>
+         id="tspan1">5</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.96875px;line-height:1;font-family:'Prima Sans';-inkscape-font-specification:'Prima Sans';text-align:center;text-decoration-color:#000000;letter-spacing:2.11667px;word-spacing:0px;white-space:pre;inline-size:2.91042;display:inline;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.411087;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:1;stroke-opacity:1"
@@ -109,7 +109,7 @@
        transform="matrix(0.64361754,0,0,0.64361754,1.0051404,42.919411)"><tspan
          x="0.79374999"
          y="35.71875"
-         id="tspan6">5</tspan></text>
+         id="tspan2">5</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.96875px;line-height:1;font-family:'Prima Sans';-inkscape-font-specification:'Prima Sans';text-align:center;text-decoration-color:#000000;letter-spacing:-0.365453px;word-spacing:0px;white-space:pre;inline-size:12.7;display:inline;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.365453;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:1;stroke-opacity:1"
@@ -119,7 +119,7 @@
        transform="matrix(0.72398692,0,0,0.72398692,-3.2514304,18.352034)"><tspan
          x="0.26458332"
          y="89.693748"
-         id="tspan7">10</tspan></text>
+         id="tspan3">10</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.96875px;line-height:1;font-family:'Prima Sans';-inkscape-font-specification:'Prima Sans';text-align:center;text-decoration-color:#000000;letter-spacing:-0.365453px;word-spacing:0px;white-space:pre;inline-size:12.7;display:inline;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.365453;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:1;stroke-opacity:1"
@@ -129,7 +129,7 @@
        transform="matrix(0.72398692,0,0,0.72398692,-3.2514304,-50.648916)"><tspan
          x="0.26458332"
          y="89.693748"
-         id="tspan8">10</tspan></text>
+         id="tspan4">10</tspan></text>
     <path
        style="fill:none;stroke:#ffffff;stroke-width:0.264584;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:1;stroke-opacity:1"
        d="m 4.5370925,40.752536 0.7527518,10e-7"
