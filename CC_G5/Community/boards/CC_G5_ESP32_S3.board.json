@@ -41,7 +41,19 @@
       "Website": "https://github.com/ccrawford/CC_G5",
       "Docs": "https://github.com/ccrawford/CC_G5/blob/main/README.md",
       "Support": "https://github.com/ccrawford/CC_G5/issues"
-    }
+    },
+        "DeviceConfigs": [
+      {
+        "Name": "CC_G5 Primary Flight Display",
+        "Description": "CC_G5 flight instrument, set to PFD mode",
+        "File": "CC_G5 PFD.mfmc"
+      },
+      {
+        "Name": "CC_G5 Primary Flight Display",
+        "Description": "CC_G5 flight instrument, set to HSI mode",
+        "File": "CC_G5 HSI.mfmc"
+      }
+    ]
   },
   "ModuleLimits": {
     "MaxAnalogInputs": 18,
