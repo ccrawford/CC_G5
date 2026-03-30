@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ModuleType>CC_G5 ESP32</ModuleType>
+  <ModuleName>CC_G5 ESP32 PFD</ModuleName>
+  <PowerSavingTime>600</PowerSavingTime>
+  <CustomDevice Name="CCs CC_G5 PFD" CustomType="CC_G5_PFD" Pins="" Config="">
+    <ConfiguredPins>
+      <string />
+    </ConfiguredPins>
+  </CustomDevice>
+</Config>

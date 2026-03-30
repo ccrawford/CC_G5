@@ -43,7 +43,7 @@ bool powerStateSet(PowerState ps)
         lcd.setBrightness(brightnessGamma(g5State.lcdBrightness));
 
 //        Serial.printf("refresh screen 2\n");
-        lcd.fillScreen(TFT_BLACK);
+       // FIXXX?? lcd.fillScreen(TFT_BLACK);
         g5State.forceRedraw = true;
     }
 
@@ -495,6 +495,12 @@ void CC_G5_Base::setCommon(int16_t messageID, char *setPoint)
             g5Settings.powerControl = PowerControl::ALWAYS_ON;
             break;
         }
+    
+        case 15:
+            g5State.logoIndex = atoi(setPoint);
+            drawLogo();
+            break;
+    
         saveSettings();
         break;
     }

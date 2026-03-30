@@ -7,6 +7,9 @@
 #include <Preferences.h>
 #include "MFEEPROM.h"
 #include "MFCustomDeviceTypes.h"
+#include "Sprites/MFLogo.h"
+#include "Sprites/GarminLogo.h"
+#include "Sprites/CCLogo.h"
 #include "commandmessenger.h"
 #include "Fonts/PrimaSans10.h"
 #include "Fonts/PrimaSans12.h"
@@ -205,6 +208,8 @@ struct G5State {
     // Other
     int oat = 60; // Outside air temp
 
+    int logoIndex = 0;
+
     
 };
 
@@ -298,6 +303,8 @@ public:
         dataAvailable = true;
     }
 
+
+
     // Read data from RP2040 and return true if new data was available
     bool readEncoderData(int8_t &outDelta, int8_t &outEncButton, int8_t &outExtraButton);
 
@@ -369,6 +376,26 @@ public:
     bool restoreState();         // reads common g5State fields from NVS; returns false if no saved state
     void sendEncoder(String name, int count, bool increase);
     void sendButton(String name, int pushType = 0);
+     
+    void drawLogo(){
+        if (Y_OFFSET < 25) return;
+        lcd.fillRect(0,0,lcd.width(), Y_OFFSET-1, TFT_BLACK);
+        switch(g5State.logoIndex) {
+            case 0:
+                break;
+            case 1:
+                lcd.pushImage(lcd.width()/2 - MFLOGO_IMG_WIDTH/2, 5, MFLOGO_IMG_WIDTH, MFLOGO_IMG_HEIGHT, MFLOGO_IMG_DATA);
+                break;
+            case 2:
+                lcd.pushImage(lcd.width()/2 - CCLOGO_IMG_WIDTH/2, 5,CCLOGO_IMG_WIDTH, CCLOGO_IMG_HEIGHT, CCLOGO_IMG_DATA);
+                break;
+            case 3:
+                lcd.pushImage(lcd.width()/2 - GARMINLOGO_IMG_WIDTH/2, 5,GARMINLOGO_IMG_WIDTH, GARMINLOGO_IMG_HEIGHT, GARMINLOGO_IMG_DATA);
+                break;
+            default:
+                break;
+        }
+    }
 };
 
 // MENU SYSTEM

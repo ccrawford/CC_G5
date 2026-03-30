@@ -8,6 +8,8 @@
 
 #include "allocateMem.h"
 #include "commandmessenger.h"
+#include "Sprites\MFLogo.h"
+#include "Sprites\GarminLogo.h"
 #include "Sprites\cdiPointer.h"
 #include "Sprites\planeIcon_1bit.h"
 #include "Sprites\cdiBar.h"
@@ -201,13 +203,22 @@ void CC_G5_PFD::begin()
 #endif
 
     lcd.fillScreen(TFT_BLACK);
+
+    
     lcd.setTextColor(TFT_WHITE, TFT_BLACK);
     // lcd.setBrightness(255); // This doesn't work :-( I'm not sure if we can turn off the backlight or control brightness.
     lcd.loadFont(PrimaSans18);
-
+    
     setupSprites();
-
+    
     restoreState();
+
+    drawLogo();
+    
+    // MobiFlight in the Garmin font
+    // lcd.pushImage(lcd.width()/2 - MFLOGO_IMG_WIDTH/2, 5, MFLOGO_IMG_WIDTH, MFLOGO_IMG_HEIGHT, MFLOGO_IMG_DATA);
+    // lcd.pushImage(lcd.width()/2 - GARMINLOGO_IMG_WIDTH/2, 5,GARMINLOGO_IMG_WIDTH, GARMINLOGO_IMG_HEIGHT, GARMINLOGO_IMG_DATA);
+
 
     //   // Get info about memory usage
     //   size_t internal_heap = heap_caps_get_free_size(MALLOC_CAP_INTERNAL);

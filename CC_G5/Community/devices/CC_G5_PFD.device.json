@@ -216,6 +216,11 @@
       "id": 86,
       "Label": "True Airspeed",
       "description": "True airspeed in knots"
+    },    
+    {
+      "id": 15,
+      "Label": "Set Logo",
+      "description": "0-Off, 1-MobiFlight, 2-CCrawford, 3-Mystery"
     }
   ]
 }

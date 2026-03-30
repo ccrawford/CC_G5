@@ -76,6 +76,39 @@
         {
           "Source": {
             "SimConnectValue": {
+              "UUID": "-",
+              "Value": "1",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 15,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "444d8bda-28ec-41a9-8cf5-1ed7efd300ff",
+          "Active": true,
+          "Name": "Logo Select",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32 PFD",
+            "Serial": "SN-98A316E591C4"
+          }
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
               "Value": "",
               "VarType": 0
             },
@@ -146,9 +179,7 @@
                 "Active": true
               }
             ]
-          },
-          "RawValue": "-3.1062874794006348",
-          "Value": "-3.11"
+          }
         },
         {
           "Source": {
@@ -190,9 +221,7 @@
                 "Active": true
               }
             ]
-          },
-          "RawValue": "23.443948745727539",
-          "Value": "23.4"
+          }
         },
         {
           "Source": {
@@ -267,9 +296,7 @@
                 "Active": true
               }
             ]
-          },
-          "RawValue": "-3.7956128120422363",
-          "Value": "-3.8"
+          }
         },
         {
           "Source": {
@@ -311,9 +338,7 @@
                 "Active": true
               }
             ]
-          },
-          "RawValue": "0.9921875",
-          "Value": "0.99"
+          }
         },
         {
           "Source": {
@@ -388,9 +413,7 @@
                 "Active": true
               }
             ]
-          },
-          "RawValue": "90.961273193359375",
-          "Value": "90.96"
+          }
         },
         {
           "Source": {
@@ -432,9 +455,7 @@
                 "Active": true
               }
             ]
-          },
-          "RawValue": "93.08697509765625",
-          "Value": "93"
+          }
         },
         {
           "Source": {
@@ -476,9 +497,7 @@
                 "Active": true
               }
             ]
-          },
-          "RawValue": "97.303794860839844",
-          "Value": "97"
+          }
         },
         {
           "Source": {
@@ -519,9 +538,7 @@
                 "Active": true
               }
             ]
-          },
-          "RawValue": "0",
-          "Value": "41|52|55|62|73|68|99|111|129|163"
+          }
         },
         {
           "Source": {
@@ -563,9 +580,7 @@
                 "Active": true
               }
             ]
-          },
-          "RawValue": "7.0774474143981934",
-          "Value": "7"
+          }
         },
         {
           "Source": {
@@ -640,9 +655,7 @@
                 "Active": true
               }
             ]
-          },
-          "RawValue": "2448.7900390625",
-          "Value": "2449"
+          }
         },
         {
           "Source": {
@@ -684,9 +697,7 @@
                 "Active": true
               }
             ]
-          },
-          "RawValue": "2119.9130859375",
-          "Value": "2120"
+          }
         },
         {
           "Source": {
@@ -728,9 +739,7 @@
                 "Active": true
               }
             ]
-          },
-          "RawValue": "18.160066604614258",
-          "Value": "18"
+          }
         },
         {
           "Source": {
@@ -763,9 +772,7 @@
           "Controller": {
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
-          },
-          "RawValue": "0",
-          "Value": "0"
+          }
         },
         {
           "Source": {
@@ -807,9 +814,7 @@
                 "Active": true
               }
             ]
-          },
-          "RawValue": "29.921342849731445",
-          "Value": "29.92"
+          }
         },
         {
           "Source": {
@@ -889,9 +894,7 @@
                 "Active": true
               }
             ]
-          },
-          "RawValue": "151.4031982421875",
-          "Value": "151.4"
+          }
         },
         {
           "Source": {
@@ -938,9 +941,7 @@
                 "Active": true
               }
             ]
-          },
-          "RawValue": "264",
-          "Value": "264"
+          }
         },
         {
           "Source": {
@@ -973,9 +974,7 @@
           "Controller": {
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
-          },
-          "RawValue": "18",
-          "Value": "18"
+          }
         },
         {
           "Source": {
@@ -1017,9 +1016,7 @@
                 "Active": true
               }
             ]
-          },
-          "RawValue": "138.30923461914063",
-          "Value": "138.3"
+          }
         },
         {
           "Source": {
@@ -1085,9 +1082,7 @@
           "Controller": {
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
-          },
-          "RawValue": "0",
-          "Value": "0"
+          }
         },
         {
           "Source": {
@@ -1129,9 +1124,7 @@
                 "Active": true
               }
             ]
-          },
-          "RawValue": "0",
-          "Value": "0"
+          }
         },
         {
           "Source": {
@@ -1164,9 +1157,7 @@
           "Controller": {
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
-          },
-          "RawValue": "1",
-          "Value": "1"
+          }
         },
         {
           "Source": {
@@ -1199,9 +1190,7 @@
           "Controller": {
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
-          },
-          "RawValue": "0",
-          "Value": "0"
+          }
         },
         {
           "Source": {
@@ -1243,9 +1232,7 @@
                 "Active": true
               }
             ]
-          },
-          "RawValue": "0",
-          "Value": "0"
+          }
         },
         {
           "Source": {
@@ -1300,9 +1287,7 @@
           "Controller": {
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
-          },
-          "RawValue": "19",
-          "Value": "19"
+          }
         },
         {
           "Source": {
@@ -1554,9 +1539,7 @@
           "Controller": {
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
-          },
-          "RawValue": "1",
-          "Value": "1"
+          }
         },
         {
           "Source": {
@@ -1625,9 +1608,7 @@
           "Controller": {
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
-          },
-          "RawValue": "0",
-          "Value": "0"
+          }
         },
         {
           "Source": {
@@ -1660,9 +1641,7 @@
           "Controller": {
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
-          },
-          "RawValue": "0",
-          "Value": "0"
+          }
         },
         {
           "Source": {
@@ -1712,9 +1691,7 @@
               "Placeholder": "#",
               "TestValue": "1"
             }
-          ],
-          "RawValue": "0",
-          "Value": "0"
+          ]
         },
         {
           "Source": {
@@ -1764,9 +1741,7 @@
               "Placeholder": "#",
               "TestValue": "1"
             }
-          ],
-          "RawValue": "0",
-          "Value": "0"
+          ]
         },
         {
           "Source": {
@@ -1799,9 +1774,7 @@
           "Controller": {
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
-          },
-          "RawValue": "0",
-          "Value": "0"
+          }
         },
         {
           "Source": {
@@ -1851,9 +1824,7 @@
               "Placeholder": "#",
               "TestValue": "1"
             }
-          ],
-          "RawValue": "0",
-          "Value": "0"
+          ]
         },
         {
           "Source": {
@@ -1886,9 +1857,7 @@
           "Controller": {
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
-          },
-          "RawValue": "0",
-          "Value": "0"
+          }
         },
         {
           "Source": {
@@ -1921,9 +1890,7 @@
           "Controller": {
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
-          },
-          "RawValue": "0",
-          "Value": "0"
+          }
         },
         {
           "Source": {
@@ -1956,9 +1923,7 @@
           "Controller": {
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
-          },
-          "RawValue": "0",
-          "Value": "0"
+          }
         },
         {
           "Source": {
@@ -1991,9 +1956,7 @@
           "Controller": {
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
-          },
-          "RawValue": "0",
-          "Value": "0"
+          }
         },
         {
           "Source": {
@@ -2026,9 +1989,7 @@
           "Controller": {
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
-          },
-          "RawValue": "0",
-          "Value": "0"
+          }
         },
         {
           "Source": {
@@ -2070,9 +2031,7 @@
                 "Active": true
               }
             ]
-          },
-          "RawValue": "0",
-          "Value": "0"
+          }
         },
         {
           "Source": {
@@ -2140,9 +2099,7 @@
           "Controller": {
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
-          },
-          "RawValue": "1",
-          "Value": "1"
+          }
         },
         {
           "encoder": {

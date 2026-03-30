@@ -148,7 +148,7 @@ void CC_G5_HSI::begin()
     lcd.fillScreen(TFT_BACKGROUND_COLOR);
     lcd.setTextColor(TFT_WHITE, TFT_BLACK);
     lcd.loadFont(PrimaSans18);
-    lcd.setClipRect(X_OFFSET, Y_OFFSET, SCREEN_WIDTH, SCREEN_HEIGHT);
+    lcd.setClipRect(X_OFFSET, 0, SCREEN_WIDTH, SCREEN_HEIGHT + Y_OFFSET);
 
     // Setup menu structure
 
@@ -187,6 +187,7 @@ void CC_G5_HSI::begin()
     }
 
     updateCommon();
+    drawLogo();
 }
 
 void CC_G5_HSI::setupSprites()
@@ -604,7 +605,7 @@ void CC_G5_HSI::setNavSource()
 
     // Green if NAV, Magenta if GPS.
     // Fill the screen with black because we will redraw all the boxes.
-    lcd.fillScreen(TFT_BACKGROUND_COLOR);
+   // FIXXX necessary?? lcd.fillScreen(TFT_BACKGROUND_COLOR);
     g5State.forceRedraw = true;
 
     if (g5State.navSource == NAVSOURCE_GPS) {
