@@ -171,6 +171,11 @@ void CC_G5_PFD::begin()
 
     pfdMenu.initializeMenu();
 
+    // pinMode(35, INPUT_PULLUP);
+    // pinMode(36, INPUT_PULLUP);
+    // pinMode(37, INPUT_PULLUP);
+
+
     // Configure i2c pins
     pinMode(INT_PIN, INPUT_PULLUP);
 
