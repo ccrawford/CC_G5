@@ -99,8 +99,11 @@ void CC_G5_PFD::read_rp2040_data()
         return;
     }
 
-    // Read data from hardware interface
-    if (g5Hardware.readEncoderData(delta, enc_btn, ext_btn)) {
+    // Read data from hardware interface (I2C RP2040, or MF messages as fallback)
+    bool gotData = g5Hardware.readEncoderData(delta, enc_btn, ext_btn);
+    if (!gotData)
+        gotData = g5Hardware.readMFData(delta, enc_btn, ext_btn);
+    if (gotData) {
         // Serial.printf("Data back from RP2040. Enc delta: %d, enc_btn: %d, ext_btn: %d\n", delta, enc_btn, ext_btn);
 
         if (enc_btn == ButtonEventType::BUTTON_CLICKED) {
@@ -175,7 +178,6 @@ void CC_G5_PFD::begin()
     // pinMode(36, INPUT_PULLUP);
     // pinMode(37, INPUT_PULLUP);
 
-
     // Configure i2c pins
     pinMode(INT_PIN, INPUT_PULLUP);
 
@@ -209,21 +211,19 @@ void CC_G5_PFD::begin()
 
     lcd.fillScreen(TFT_BLACK);
 
-    
     lcd.setTextColor(TFT_WHITE, TFT_BLACK);
     // lcd.setBrightness(255); // This doesn't work :-( I'm not sure if we can turn off the backlight or control brightness.
     lcd.loadFont(PrimaSans18);
-    
+
     setupSprites();
-    
+
     restoreState();
 
     drawLogo();
-    
+
     // MobiFlight in the Garmin font
     // lcd.pushImage(lcd.width()/2 - MFLOGO_IMG_WIDTH/2, 5, MFLOGO_IMG_WIDTH, MFLOGO_IMG_HEIGHT, MFLOGO_IMG_DATA);
     // lcd.pushImage(lcd.width()/2 - GARMINLOGO_IMG_WIDTH/2, 5,GARMINLOGO_IMG_WIDTH, GARMINLOGO_IMG_HEIGHT, GARMINLOGO_IMG_DATA);
-
 
     //   // Get info about memory usage
     //   size_t internal_heap = heap_caps_get_free_size(MALLOC_CAP_INTERNAL);
@@ -1039,10 +1039,9 @@ void CC_G5_PFD::drawSpeedTape()
     attitude.drawLine(tx2 + 1, ty2 + 1, tx3, ty3 + 1, DATA_BOX_OUTLINE_COLOR);
     attitude.drawLine(tx1, ty1, tx2, ty2, TFT_BLACK);
 
-
     // if in IAS mode, push the speed bug.
-    if(g5State.apVMode == 4)
-    attitude.pushImage(SPEED_COL_WIDTH - VSPEEDBUG_IMG_WIDTH, speedToY(g5State.apTargetSpeed, drawSpeed) - VSPEEDBUG_IMG_HEIGHT/2, VSPEEDBUG_IMG_WIDTH, VSPEEDBUG_IMG_HEIGHT, VSPEEDBUG_IMG_DATA, TFT_TRANSPARENT_LIGHTBLACK);
+    if (g5State.apVMode == 4)
+        attitude.pushImage(SPEED_COL_WIDTH - VSPEEDBUG_IMG_WIDTH, speedToY(g5State.apTargetSpeed, drawSpeed) - VSPEEDBUG_IMG_HEIGHT / 2, VSPEEDBUG_IMG_WIDTH, VSPEEDBUG_IMG_HEIGHT, VSPEEDBUG_IMG_DATA, TFT_TRANSPARENT_LIGHTBLACK);
 
     // Draw the true airspeed box
     const int tas_height = 24;
@@ -1285,24 +1284,22 @@ void CC_G5_PFD::drawAltTape()
 
     // Draw the vertical speed scale
     // 131 pixels is 1000fpm so 1fpm is 0.131 pixel
-    const float ftperpx = 0.131f;
-    int barHeight = abs((int)(g5State.verticalSpeed * ftperpx));
-    yTop = ATTITUDE_Y_CENTER;
+    const float ftperpx   = 0.131f;
+    int         barHeight = abs((int)(g5State.verticalSpeed * ftperpx));
+    yTop                  = ATTITUDE_Y_CENTER;
     if (g5State.verticalSpeed > 0) yTop = ATTITUDE_Y_CENTER - barHeight;
 
     attitude.fillRect(ATTITUDE_WIDTH - 5, yTop, 5, barHeight, TFT_MAGENTA); // push to attitude to avoid a refill of vsScale.
-    attitude.pushImage(ATTITUDE_WIDTH - VSSCALE_IMG_WIDTH, ATTITUDE_Y_CENTER - VSSCALE_IMG_HEIGHT/2, VSSCALE_IMG_WIDTH, VSSCALE_IMG_HEIGHT, VSSCALE_IMG_DATA, TFT_TRANSPARENT_LIGHTBLACK);
+    attitude.pushImage(ATTITUDE_WIDTH - VSSCALE_IMG_WIDTH, ATTITUDE_Y_CENTER - VSSCALE_IMG_HEIGHT / 2, VSSCALE_IMG_WIDTH, VSSCALE_IMG_HEIGHT, VSSCALE_IMG_DATA, TFT_TRANSPARENT_LIGHTBLACK);
 
-    
-    
     // Draw the VS Target bug here
-    
+
     // Only draw speed bug if ap in vs mode.
-    if(g5State.apVMode==2)
-      attitude.pushImage(ATTITUDE_WIDTH - VSPEEDBUG_IMG_WIDTH, ATTITUDE_Y_CENTER - VSPEEDBUG_IMG_HEIGHT/2 - (int)(g5State.apTargetVS * ftperpx), VSPEEDBUG_IMG_WIDTH, VSPEEDBUG_IMG_HEIGHT, VSPEEDBUG_IMG_DATA, TFT_TRANSPARENT_LIGHTBLACK);
-    
+    if (g5State.apVMode == 2)
+        attitude.pushImage(ATTITUDE_WIDTH - VSPEEDBUG_IMG_WIDTH, ATTITUDE_Y_CENTER - VSPEEDBUG_IMG_HEIGHT / 2 - (int)(g5State.apTargetVS * ftperpx), VSPEEDBUG_IMG_WIDTH, VSPEEDBUG_IMG_HEIGHT, VSPEEDBUG_IMG_DATA, TFT_TRANSPARENT_LIGHTBLACK);
+
     // Draw the VS pointer
-    attitude.pushImage(ATTITUDE_WIDTH - VSPOINTERBIG_IMG_WIDTH - 1, ATTITUDE_Y_CENTER - VSPOINTERBIG_IMG_HEIGHT / 2 - (int)(g5State.verticalSpeed * ftperpx), VSPOINTERBIG_IMG_WIDTH, VSPOINTERBIG_IMG_HEIGHT, VSPOINTERBIG_IMG_DATA, TFT_TRANSPARENT_LIGHTBLACK); 
+    attitude.pushImage(ATTITUDE_WIDTH - VSPOINTERBIG_IMG_WIDTH - 1, ATTITUDE_Y_CENTER - VSPOINTERBIG_IMG_HEIGHT / 2 - (int)(g5State.verticalSpeed * ftperpx), VSPOINTERBIG_IMG_WIDTH, VSPOINTERBIG_IMG_HEIGHT, VSPOINTERBIG_IMG_DATA, TFT_TRANSPARENT_LIGHTBLACK);
 
     // Let's try to alpha blend the edges of the units digit.
     const int FADE_ROWS = 12;
@@ -1780,17 +1777,17 @@ void CC_G5_PFD::drawHeadingTape()
 void CC_G5_PFD::drawNavCourse()
 {
     const bool isGps = g5State.navSource == NAVSOURCE_GPS;
-    const int w = 4;
-    const int h = 14;
-    const int x = SPEED_COL_WIDTH + headingToX(isGps ? g5State.desiredTrack : g5State.navCourse, g5State.headingAngle) - w/2;
-    const int y = 30;
+    const int  w     = 4;
+    const int  h     = 14;
+    const int  x     = SPEED_COL_WIDTH + headingToX(isGps ? g5State.desiredTrack : g5State.navCourse, g5State.headingAngle) - w / 2;
+    const int  y     = 30;
 
     // Moved here so it can span attitude and speed tape
 
     // Only draw if in the tape bounds.
-    if (x<SPEED_COL_WIDTH+1 || x> ATTITUDE_WIDTH-ALTITUDE_COL_WIDTH - 1) return;
+    if (x < SPEED_COL_WIDTH + 1 || x > ATTITUDE_WIDTH - ALTITUDE_COL_WIDTH - 1) return;
 
-    attitude.fillRect(x+1, y+1, w-2, h-2, isGps? TFT_MAGENTA:TFT_GREEN);    
+    attitude.fillRect(x + 1, y + 1, w - 2, h - 2, isGps ? TFT_MAGENTA : TFT_GREEN);
     attitude.drawRect(x, y, w, h, TFT_BLACK);
 }
 
@@ -2234,7 +2231,6 @@ void CC_G5_PFD::update()
 
     // drawDensityAlt();
 
-    
     drawShutdown(&attitude);
     drawGroundSpeed(); // Draws GS and OAT
     drawOAT();

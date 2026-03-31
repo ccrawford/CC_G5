@@ -221,6 +221,21 @@
       "id": 15,
       "Label": "Set Logo",
       "description": "0-Off, 1-MobiFlight, 2-CCrawford, 3-Mystery"
+    },
+    {
+      "id": 16,
+      "Label": "Encoder Button Event",
+      "description": "Encoder button event (ButtonEventType: 0=idle, 1=clicked, 2=pressed, 3=long pressed, 4=released)"
+    },
+    {
+      "id": 17,
+      "Label": "Power Button Event",
+      "description": "Power button event (ButtonEventType: 0=idle, 1=clicked, 2=pressed, 3=long pressed, 4=released)"
+    },
+    {
+      "id": 18,
+      "Label": "Encoder Delta",
+      "description": "Encoder running total (monotonically increasing/decreasing). Device computes delta from previous value. Positive=clockwise, negative=counter-clockwise."
     }
   ]
 }

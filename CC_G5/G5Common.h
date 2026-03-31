@@ -33,28 +33,25 @@
 #include "4inchLCDConfig.h"
 #endif
 
-#define PIf                  3.14159f
+#define PIf 3.14159f
 
 #define SCREEN_WIDTH  480
 #define SCREEN_HEIGHT 360
 #define Y_OFFSET      60
 #define X_OFFSET      0
 
-
-
 #define CC_G5_SETTINGS_OFFSET 2048 // Well past MF config end (59 + 1496 = 1555)
 #define SETTINGS_VERSION      9
 #define STATE_VERSION         1 // For the save state when switching between pfd and hsi
 
-#define DATA_BOX_HEIGHT_TALL  46  // Common height for tall corner boxes: wind, dist, heading, etc.
-#define DATA_BOX_HEIGHT_MED   32  // Common height for medium corner boxes: dtk, heading,.
-#define DATA_BOX_HEIGHT_SHORT 18  // Common height for short corner boxes: battery, OAT,.
+#define DATA_BOX_HEIGHT_TALL  46 // Common height for tall corner boxes: wind, dist, heading, etc.
+#define DATA_BOX_HEIGHT_MED   32 // Common height for medium corner boxes: dtk, heading,.
+#define DATA_BOX_HEIGHT_SHORT 18 // Common height for short corner boxes: battery, OAT,.
 
-#define TFT_GRAY 0xb596    // #b5b2b5 
-#define DATA_BOX_OUTLINE_COLOR TFT_GRAY
-#define TFT_TRANSPARENT_LIGHTBLACK 8456U   // I use this when i need a transparent dark background for blending.
-                                        // Use 080408ff in inkscape
-
+#define TFT_GRAY                   0xb596 // #b5b2b5
+#define DATA_BOX_OUTLINE_COLOR     TFT_GRAY
+#define TFT_TRANSPARENT_LIGHTBLACK 8456U // I use this when i need a transparent dark background for blending.
+                                         // Use 080408ff in inkscape
 
 #define TFT_MAIN_TRANSPARENT TFT_PINK // Just pick a color not used in either display
 
@@ -64,33 +61,34 @@ enum class PowerState { INVALID,
                         SHUTTING_DOWN,
                         BATTERY_POWERED,
                         HARD_POWER_OFF };
-enum class PowerControl { MANUAL=0, DEVICE_MANAGED=1, ALWAYS_ON=2 };
+enum class PowerControl { MANUAL         = 0,
+                          DEVICE_MANAGED = 1,
+                          ALWAYS_ON      = 2 };
 
 struct CC_G5_Settings {
-    int      version               = SETTINGS_VERSION;
-    uint8_t  bearingPointer1Source = 2; // 0: Off, 1: GPS, 2: Nav1, 3: Nav2, 4: ADF
-    uint8_t  bearingPointer2Source = 3; // 0: Off, 1: GPS, 2: Nav1, 3: Nav2, 4: ADF
-    uint16_t Vr                    = 60;
-    uint16_t Vx                    = 75;
-    uint16_t Vy                    = 91;
-    uint16_t Va                    = 112;
-    uint16_t Vfe                   = 110;
-    uint16_t Vs0                   = 54;
-    uint16_t Vs1                   = 61;
-    uint16_t Vg                    = 80;
-    uint16_t Vno                   = 145;
-    uint16_t Vne                   = 182;
-    uint8_t  pitchScale            = 15;
-    uint8_t  speedScale            = 10;
-    uint8_t  baroUnit              = 0; // 0: inHg, 1: kPa, 3: mmHg
-    uint8_t  speedUnits            = 0; // 0:knot 1:mph 2:kph
-    uint8_t  distanceUnits         = 0; // 0: nm, 1: miles, 2:km
-    uint8_t  tempUnits             = 0; // 0: F, 1: 
-    uint8_t  deviceType            = CUSTOM_PFD_DEVICE;
-    uint8_t  lcdBrightness         = 100;
-    uint8_t  targetAltitude        = 0;
-    PowerControl  powerControl     = PowerControl::ALWAYS_ON;
-
+    int          version               = SETTINGS_VERSION;
+    uint8_t      bearingPointer1Source = 2; // 0: Off, 1: GPS, 2: Nav1, 3: Nav2, 4: ADF
+    uint8_t      bearingPointer2Source = 3; // 0: Off, 1: GPS, 2: Nav1, 3: Nav2, 4: ADF
+    uint16_t     Vr                    = 60;
+    uint16_t     Vx                    = 75;
+    uint16_t     Vy                    = 91;
+    uint16_t     Va                    = 112;
+    uint16_t     Vfe                   = 110;
+    uint16_t     Vs0                   = 54;
+    uint16_t     Vs1                   = 61;
+    uint16_t     Vg                    = 80;
+    uint16_t     Vno                   = 145;
+    uint16_t     Vne                   = 182;
+    uint8_t      pitchScale            = 15;
+    uint8_t      speedScale            = 10;
+    uint8_t      baroUnit              = 0; // 0: inHg, 1: kPa, 3: mmHg
+    uint8_t      speedUnits            = 0; // 0:knot 1:mph 2:kph
+    uint8_t      distanceUnits         = 0; // 0: nm, 1: miles, 2:km
+    uint8_t      tempUnits             = 0; // 0: F, 1:
+    uint8_t      deviceType            = CUSTOM_PFD_DEVICE;
+    uint8_t      lcdBrightness         = 100;
+    uint8_t      targetAltitude        = 0;
+    PowerControl powerControl          = PowerControl::ALWAYS_ON;
 };
 
 extern CC_G5_Settings g5Settings;
@@ -98,21 +96,21 @@ extern CC_G5_Settings g5Settings;
 // Shared flight state - accessible by both HSI and PFD
 struct G5State {
 
-    int           lcdBrightness   = 100; // We will go 0-100 here.
-    PowerState    powerState      = PowerState::SHUTTING_DOWN;
-    //PowerControl  powerControl    = PowerControl::DEVICE_MANAGED; // 0-Manual, 1-Device, 2-Always On
+    int        lcdBrightness = 100; // We will go 0-100 here.
+    PowerState powerState    = PowerState::SHUTTING_DOWN;
+    // PowerControl  powerControl    = PowerControl::DEVICE_MANAGED; // 0-Manual, 1-Device, 2-Always On
     bool          forceRedraw     = false;
     unsigned long shutdownStartMs = 0;
     unsigned long batteryStartMs  = 0;
 
     // Heading and orientation
-    float rawHeadingAngle = 240.0f;
-    float headingAngle    = 0.0f;
-    int   headingBugAngle = 210;
-    int   lastHeadingBugAngle = 0;  // Used to see if the bug changed in the PFD.
-    float groundTrack     = 247.0f;
+    float rawHeadingAngle     = 240.0f;
+    float headingAngle        = 0.0f;
+    int   headingBugAngle     = 210;
+    int   lastHeadingBugAngle = 0; // Used to see if the bug changed in the PFD.
+    float groundTrack         = 247.0f;
 
-    // Attitude (PFD) 
+    // Attitude (PFD)
     float rawBankAngle  = 0.0f;
     float bankAngle     = 0.0f;
     float rawPitchAngle = 0.0f;
@@ -126,7 +124,7 @@ struct G5State {
     float airspeed     = 30.0f;
     float trueAirspeed = 99.0f;
     int   groundSpeed  = 90;
-    float machSpeed     = 0.0f;
+    float machSpeed    = 0.0f;
 
     // Altitude
     float rawAltitude      = 5000.0f;
@@ -137,7 +135,7 @@ struct G5State {
     int   densityAltitude  = 1200;
     float kohlsman         = 30.12f;
     int   mbPressure       = 1013;
-    int   isStdPressure       = 0;  // 1: Is std pressure set.
+    int   isStdPressure    = 0; // 1: Is std pressure set.
 
     // Navigation source and mode
     int  navSource          = 0; // 1=GPS, 0=NAV
@@ -147,12 +145,12 @@ struct G5State {
     bool terminalModeActive = true;
 
     // CDI (Course Deviation Indicator)
-    int   cdiDirection   = 0; // HSI needle direction
+    int   cdiDirection    = 0; // HSI needle direction
     int   rawCdiDirection = 0;
-    float rawCdiOffset   = 0.0f;
-    float cdiOffset      = 0.0f;
-    int   cdiNeedleValid = 1;
-    int   cdiToFrom      = 1; // 0=off, 1=to, 2=from
+    float rawCdiOffset    = 0.0f;
+    float cdiOffset       = 0.0f;
+    int   cdiNeedleValid  = 1;
+    int   cdiToFrom       = 1; // 0=off, 1=to, 2=from
 
     // Glide slope
     float rawGsiNeedle   = 0.0f;
@@ -173,7 +171,7 @@ struct G5State {
     int   gpsEteWp         = 0;
 
     // Bearing pointers (HSI)
-    int   bearing1Source    = 0; 
+    int   bearing1Source    = 0;
     int   bearing2Source    = 0;
     float bearingAngleGPS   = 0.0f;
     float bearingAngleVLOC1 = 129.0f;
@@ -209,8 +207,6 @@ struct G5State {
     int oat = 60; // Outside air temp
 
     int logoIndex = 0;
-
-    
 };
 
 extern G5State g5State;
@@ -303,13 +299,39 @@ public:
         dataAvailable = true;
     }
 
-
-
     // Read data from RP2040 and return true if new data was available
     bool readEncoderData(int8_t &outDelta, int8_t &outEncButton, int8_t &outExtraButton);
 
-    // Check if data is ready to be read
-    bool hasData() const { return dataAvailable; }
+    // Read MobiFlight-sourced encoder data (fallback when no RP2040 attached)
+    bool readMFData(int8_t &outDelta, int8_t &outEncButton, int8_t &outExtraButton);
+
+    // Called by setCommon() when MF sends encoder/button messages.
+    // Message 18 is a running total — we compute the delta from the last known value.
+    void mfSetEncoderDelta(int newTotal) { mfDelta += (int8_t)(newTotal - mfLastTotal); mfLastTotal = newTotal; mfDataAvailable = true; }
+
+    // Button setters: on BUTTON_PRESSED, record press time only.
+    // On BUTTON_RELEASED, classify as CLICKED (<500ms) or LONG_PRESSED (>=500ms).
+    void mfSetEncoderButton(int8_t event)
+    {
+        if (event == BUTTON_PRESSED) {
+            mfEncPressTime = millis();
+        } else if (event == BUTTON_RELEASED) {
+            mfEncBtn       = (millis() - mfEncPressTime < 500) ? BUTTON_CLICKED : BUTTON_LONG_PRESSED;
+            mfDataAvailable = true;
+        }
+    }
+    void mfSetPowerButton(int8_t event)
+    {
+        if (event == BUTTON_PRESSED) {
+            mfExtPressTime = millis();
+        } else if (event == BUTTON_RELEASED) {
+            mfExtBtn       = (millis() - mfExtPressTime < 500) ? BUTTON_CLICKED : BUTTON_LONG_PRESSED;
+            mfDataAvailable = true;
+        }
+    }
+
+    // Check if data is ready to be read (from RP2040 or MF messages)
+    bool hasData() const { return dataAvailable || mfDataAvailable; }
 
     // Get accumulated encoder value (total rotation since power-on)
     int getEncoderValue() const { return encoderValue; }
@@ -322,10 +344,18 @@ public:
     void setLedState(bool state);
 
 private:
-    volatile bool dataAvailable = false;
-    int           encoderValue  = 0;
-    int           encoderButton = 0;
-    int           extraButton   = 0;
+    volatile bool dataAvailable   = false;
+    int           encoderValue    = 0;
+    int           encoderButton   = 0;
+    int           extraButton     = 0;
+
+    volatile bool  mfDataAvailable = false;
+    int8_t         mfDelta         = 0;
+    int8_t         mfEncBtn        = BUTTON_IDLE;
+    int8_t         mfExtBtn        = BUTTON_IDLE;
+    int            mfLastTotal     = 0;
+    unsigned long  mfEncPressTime  = 0;
+    unsigned long  mfExtPressTime  = 0;
 };
 
 // Global hardware interface instance
@@ -369,31 +399,33 @@ inline const char *getBearingSourceName(int source)
 // common g5State fields written during a device-type switch.
 // Subclasses override saveState() to call this base version first, then write
 // their own device-specific fields.
-class CC_G5_Base {
+class CC_G5_Base
+{
 public:
-    void setCommon(int16_t messageID, char *setPoint);
+    void         setCommon(int16_t messageID, char *setPoint);
     virtual void saveState();    // saves common g5State fields to NVS; subclasses override to add device-specific fields
-    bool restoreState();         // reads common g5State fields from NVS; returns false if no saved state
-    void sendEncoder(String name, int count, bool increase);
-    void sendButton(String name, int pushType = 0);
-     
-    void drawLogo(){
+    bool         restoreState(); // reads common g5State fields from NVS; returns false if no saved state
+    void         sendEncoder(String name, int count, bool increase);
+    void         sendButton(String name, int pushType = 0);
+
+    void drawLogo()
+    {
         if (Y_OFFSET < 25) return;
-        lcd.fillRect(0,0,lcd.width(), Y_OFFSET-1, TFT_BLACK);
-        switch(g5State.logoIndex) {
-            case 0:
-                break;
-            case 1:
-                lcd.pushImage(lcd.width()/2 - MFLOGO_IMG_WIDTH/2, 5, MFLOGO_IMG_WIDTH, MFLOGO_IMG_HEIGHT, MFLOGO_IMG_DATA);
-                break;
-            case 2:
-                lcd.pushImage(lcd.width()/2 - CCLOGO_IMG_WIDTH/2, 5,CCLOGO_IMG_WIDTH, CCLOGO_IMG_HEIGHT, CCLOGO_IMG_DATA);
-                break;
-            case 3:
-                lcd.pushImage(lcd.width()/2 - GARMINLOGO_IMG_WIDTH/2, 5,GARMINLOGO_IMG_WIDTH, GARMINLOGO_IMG_HEIGHT, GARMINLOGO_IMG_DATA);
-                break;
-            default:
-                break;
+        lcd.fillRect(0, 0, lcd.width(), Y_OFFSET - 1, TFT_BLACK);
+        switch (g5State.logoIndex) {
+        case 0:
+            break;
+        case 1:
+            lcd.pushImage(lcd.width() / 2 - MFLOGO_IMG_WIDTH / 2, 5, MFLOGO_IMG_WIDTH, MFLOGO_IMG_HEIGHT, MFLOGO_IMG_DATA);
+            break;
+        case 2:
+            lcd.pushImage(lcd.width() / 2 - CCLOGO_IMG_WIDTH / 2, 5, CCLOGO_IMG_WIDTH, CCLOGO_IMG_HEIGHT, CCLOGO_IMG_DATA);
+            break;
+        case 3:
+            lcd.pushImage(lcd.width() / 2 - GARMINLOGO_IMG_WIDTH / 2, 5, GARMINLOGO_IMG_WIDTH, GARMINLOGO_IMG_HEIGHT, GARMINLOGO_IMG_DATA);
+            break;
+        default:
+            break;
         }
     }
 };
@@ -780,7 +812,7 @@ public:
         targetSprite->setTextDatum(lgfx::v1::textdatum::textdatum_t::top_center);
         targetSprite->loadFont(PrimaSans16);
         targetSprite->drawString(adjustingItem->getTitle(), centerX + popupWidth / 2, centerY + 10);
-        
+
         // Draw current value with color
         targetSprite->setTextColor(adjustingItem->getDisplayValueColor());
         targetSprite->loadFont(PrimaSans20);

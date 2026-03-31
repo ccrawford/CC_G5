@@ -10,7 +10,6 @@ LGFX_Sprite headingBox(&lcd);
 
 BrightnessMenu brightnessMenu;
 
-
 // Set a new global power state. Returns false if it was already set, true if there was a change.
 
 bool powerStateSet(PowerState ps)
@@ -42,8 +41,8 @@ bool powerStateSet(PowerState ps)
         // turn the display back on
         lcd.setBrightness(brightnessGamma(g5State.lcdBrightness));
 
-//        Serial.printf("refresh screen 2\n");
-       // FIXXX?? lcd.fillScreen(TFT_BLACK);
+        //        Serial.printf("refresh screen 2\n");
+        // FIXXX?? lcd.fillScreen(TFT_BLACK);
         g5State.forceRedraw = true;
     }
 
@@ -87,6 +86,19 @@ bool G5_Hardware::readEncoderData(int8_t &outDelta, int8_t &outEncButton, int8_t
     }
 
     return false;
+}
+
+bool G5_Hardware::readMFData(int8_t &outDelta, int8_t &outEncButton, int8_t &outExtraButton)
+{
+    if (!mfDataAvailable) return false;
+    mfDataAvailable = false;
+    outDelta       = mfDelta;
+    outEncButton   = mfEncBtn;
+    outExtraButton = mfExtBtn;
+    mfDelta  = 0;
+    mfEncBtn = BUTTON_IDLE;
+    mfExtBtn = BUTTON_IDLE;
+    return (outDelta != 0 || outEncButton != BUTTON_IDLE || outExtraButton != BUTTON_IDLE);
 }
 
 void G5_Hardware::setLedState(bool state)
@@ -180,7 +192,7 @@ LGFX_Sprite batterySprite;
 void drawBattery(LGFX_Sprite *targetSprite, int x, int y)
 {
 
-    if (g5State.powerState != PowerState::BATTERY_POWERED ) return;
+    if (g5State.powerState != PowerState::BATTERY_POWERED) return;
     // const long int batLifeSec = 3 * 60 * 60;  // 3 hours
     const long int batLifeSec = 3 * 60 * 60; // 3 hours
     long int       secOnBat   = (int)(millis() - g5State.batteryStartMs) / 1000;
@@ -202,7 +214,6 @@ void drawBattery(LGFX_Sprite *targetSprite, int x, int y)
 
     batterySprite.drawRect(0, 0, batterySprite.width(), batterySprite.height(), TFT_LIGHTGRAY);
     batterySprite.drawRect(1, 1, batterySprite.width() - 2, batterySprite.height() - 2, TFT_LIGHTGRAY);
-
 
     char buf[7];
     sprintf(buf, "%d%%", batPct);
@@ -343,7 +354,7 @@ void CC_G5_Base::saveState()
     prefs.putFloat("gsiNdl", g5State.rawGsiNeedle);
     prefs.putInt("gsiVal", g5State.gsiNeedleValid);
     prefs.putInt("gndSpd", g5State.groundSpeed);
-    prefs.putFloat("gndTrk", g5State.groundTrack);  // float (was putInt in HSI — bug fixed)
+    prefs.putFloat("gndTrk", g5State.groundTrack); // float (was putInt in HSI — bug fixed)
     prefs.putFloat("hdgAng", g5State.rawHeadingAngle);
     prefs.putInt("navSrc", g5State.navSource);
     prefs.end();
@@ -461,10 +472,10 @@ void CC_G5_Base::setCommon(int16_t messageID, char *setPoint)
     case 11: { // Device type switch — value is the target device type (0=HSI, 1=PFD, 2=ISIS)
         uint8_t targetType = (uint8_t)atoi(setPoint);
         if (targetType != g5Settings.deviceType) {
-            saveState();                         // virtual: saves common + device-specific fields
+            saveState(); // virtual: saves common + device-specific fields
             g5Settings.deviceType = targetType;
             saveSettings();
-            lcd.fillScreen(TFT_BLACK);           // reduce flashing before restart
+            lcd.fillScreen(TFT_BLACK); // reduce flashing before restart
             ESP.restart();
         }
         break;
@@ -495,13 +506,22 @@ void CC_G5_Base::setCommon(int16_t messageID, char *setPoint)
             g5Settings.powerControl = PowerControl::ALWAYS_ON;
             break;
         }
-    
-        case 15:
-            g5State.logoIndex = atoi(setPoint);
-            drawLogo();
-            break;
-    
         saveSettings();
+        break;
+
+    case 15:
+        g5State.logoIndex = atoi(setPoint);
+        drawLogo();
+        break;
+
+    case 16: // Encoder button event (ButtonEventType: 1=click, 3=long press, etc.)
+        g5Hardware.mfSetEncoderButton((int8_t)atoi(setPoint));
+        break;
+    case 17: // Power button event (ButtonEventType: 1=click, 3=long press, etc.)
+        g5Hardware.mfSetPowerButton((int8_t)atoi(setPoint));
+        break;
+    case 18: // Encoder running total — device computes delta from previous value
+        g5Hardware.mfSetEncoderDelta(atoi(setPoint));
         break;
     }
 }

@@ -76,8 +76,8 @@
         {
           "Source": {
             "SimConnectValue": {
-              "UUID": "-",
-              "Value": "1",
+              "UUID": "0",
+              "Value": "2",
               "VarType": 2
             },
             "Type": "SimConnectSource"
@@ -104,6 +104,20 @@
           "Controller": {
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
+          },
+          "Modifiers": {
+            "Items": [
+              {
+                "Type": "Transformation",
+                "Expression": "2",
+                "Active": true
+              }
+            ]
+          },
+          "RawValue": "0",
+          "Value": "2",
+          "Status": {
+            "Source": "SIMCONNECT_NOT_AVAILABLE"
           }
         },
         {
@@ -179,6 +193,11 @@
                 "Active": true
               }
             ]
+          },
+          "RawValue": "0",
+          "Value": "0",
+          "Status": {
+            "Source": "SIMCONNECT_NOT_AVAILABLE"
           }
         },
         {
@@ -221,6 +240,11 @@
                 "Active": true
               }
             ]
+          },
+          "RawValue": "0",
+          "Value": "0",
+          "Status": {
+            "Source": "SIMCONNECT_NOT_AVAILABLE"
           }
         },
         {
@@ -296,6 +320,11 @@
                 "Active": true
               }
             ]
+          },
+          "RawValue": "0",
+          "Value": "0",
+          "Status": {
+            "Source": "SIMCONNECT_NOT_AVAILABLE"
           }
         },
         {
@@ -338,6 +367,11 @@
                 "Active": true
               }
             ]
+          },
+          "RawValue": "0",
+          "Value": "0",
+          "Status": {
+            "Source": "SIMCONNECT_NOT_AVAILABLE"
           }
         },
         {
@@ -413,6 +447,11 @@
                 "Active": true
               }
             ]
+          },
+          "RawValue": "0",
+          "Value": "0",
+          "Status": {
+            "Source": "SIMCONNECT_NOT_AVAILABLE"
           }
         },
         {
@@ -455,6 +494,11 @@
                 "Active": true
               }
             ]
+          },
+          "RawValue": "0",
+          "Value": "0",
+          "Status": {
+            "Source": "SIMCONNECT_NOT_AVAILABLE"
           }
         },
         {
@@ -497,6 +541,11 @@
                 "Active": true
               }
             ]
+          },
+          "RawValue": "0",
+          "Value": "0",
+          "Status": {
+            "Source": "SIMCONNECT_NOT_AVAILABLE"
           }
         },
         {
@@ -538,6 +587,11 @@
                 "Active": true
               }
             ]
+          },
+          "RawValue": "0",
+          "Value": "41|52|55|62|73|68|99|111|129|163",
+          "Status": {
+            "Source": "SIMCONNECT_NOT_AVAILABLE"
           }
         },
         {
@@ -580,6 +634,11 @@
                 "Active": true
               }
             ]
+          },
+          "RawValue": "0",
+          "Value": "0",
+          "Status": {
+            "Source": "SIMCONNECT_NOT_AVAILABLE"
           }
         },
         {
@@ -655,6 +714,11 @@
                 "Active": true
               }
             ]
+          },
+          "RawValue": "0",
+          "Value": "0",
+          "Status": {
+            "Source": "SIMCONNECT_NOT_AVAILABLE"
           }
         },
         {
@@ -697,6 +761,11 @@
                 "Active": true
               }
             ]
+          },
+          "RawValue": "0",
+          "Value": "0",
+          "Status": {
+            "Source": "SIMCONNECT_NOT_AVAILABLE"
           }
         },
         {
@@ -739,6 +808,11 @@
                 "Active": true
               }
             ]
+          },
+          "RawValue": "0",
+          "Value": "0",
+          "Status": {
+            "Source": "SIMCONNECT_NOT_AVAILABLE"
           }
         },
         {
@@ -772,6 +846,11 @@
           "Controller": {
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
+          },
+          "RawValue": "0",
+          "Value": "0",
+          "Status": {
+            "Source": "SIMCONNECT_NOT_AVAILABLE"
           }
         },
         {
@@ -814,6 +893,11 @@
                 "Active": true
               }
             ]
+          },
+          "RawValue": "0",
+          "Value": "0",
+          "Status": {
+            "Source": "SIMCONNECT_NOT_AVAILABLE"
           }
         },
         {
@@ -894,6 +978,11 @@
                 "Active": true
               }
             ]
+          },
+          "RawValue": "0",
+          "Value": "360",
+          "Status": {
+            "Source": "SIMCONNECT_NOT_AVAILABLE"
           }
         },
         {
@@ -941,6 +1030,11 @@
                 "Active": true
               }
             ]
+          },
+          "RawValue": "0",
+          "Value": "360",
+          "Status": {
+            "Source": "SIMCONNECT_NOT_AVAILABLE"
           }
         },
         {
@@ -974,6 +1068,11 @@
           "Controller": {
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
+          },
+          "RawValue": "0",
+          "Value": "0",
+          "Status": {
+            "Source": "SIMCONNECT_NOT_AVAILABLE"
           }
         },
         {
@@ -1016,6 +1115,11 @@
                 "Active": true
               }
             ]
+          },
+          "RawValue": "0",
+          "Value": "0",
+          "Status": {
+            "Source": "SIMCONNECT_NOT_AVAILABLE"
           }
         },
         {
@@ -1082,6 +1186,11 @@
           "Controller": {
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
+          },
+          "RawValue": "0",
+          "Value": "0",
+          "Status": {
+            "Source": "SIMCONNECT_NOT_AVAILABLE"
           }
         },
         {
@@ -1124,6 +1233,11 @@
                 "Active": true
               }
             ]
+          },
+          "RawValue": "0",
+          "Value": "0",
+          "Status": {
+            "Source": "SIMCONNECT_NOT_AVAILABLE"
           }
         },
         {
@@ -1157,6 +1271,11 @@
           "Controller": {
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
+          },
+          "RawValue": "0",
+          "Value": "0",
+          "Status": {
+            "Source": "SIMCONNECT_NOT_AVAILABLE"
           }
         },
         {
@@ -1190,6 +1309,11 @@
           "Controller": {
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
+          },
+          "RawValue": "0",
+          "Value": "0",
+          "Status": {
+            "Source": "SIMCONNECT_NOT_AVAILABLE"
           }
         },
         {
@@ -1232,6 +1356,11 @@
                 "Active": true
               }
             ]
+          },
+          "RawValue": "0",
+          "Value": "0",
+          "Status": {
+            "Source": "SIMCONNECT_NOT_AVAILABLE"
           }
         },
         {
@@ -1287,6 +1416,11 @@
           "Controller": {
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
+          },
+          "RawValue": "0",
+          "Value": "0",
+          "Status": {
+            "Source": "SIMCONNECT_NOT_AVAILABLE"
           }
         },
         {
@@ -1539,6 +1673,11 @@
           "Controller": {
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
+          },
+          "RawValue": "0",
+          "Value": "0",
+          "Status": {
+            "Source": "SIMCONNECT_NOT_AVAILABLE"
           }
         },
         {
@@ -1608,6 +1747,11 @@
           "Controller": {
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
+          },
+          "RawValue": "0",
+          "Value": "0",
+          "Status": {
+            "Source": "SIMCONNECT_NOT_AVAILABLE"
           }
         },
         {
@@ -1641,6 +1785,11 @@
           "Controller": {
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
+          },
+          "RawValue": "0",
+          "Value": "0",
+          "Status": {
+            "Source": "SIMCONNECT_NOT_AVAILABLE"
           }
         },
         {
@@ -1691,7 +1840,12 @@
               "Placeholder": "#",
               "TestValue": "1"
             }
-          ]
+          ],
+          "RawValue": "0",
+          "Value": "0",
+          "Status": {
+            "Source": "SIMCONNECT_NOT_AVAILABLE"
+          }
         },
         {
           "Source": {
@@ -1741,7 +1895,12 @@
               "Placeholder": "#",
               "TestValue": "1"
             }
-          ]
+          ],
+          "RawValue": "0",
+          "Value": "0",
+          "Status": {
+            "Source": "SIMCONNECT_NOT_AVAILABLE"
+          }
         },
         {
           "Source": {
@@ -1774,6 +1933,11 @@
           "Controller": {
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
+          },
+          "RawValue": "0",
+          "Value": "0",
+          "Status": {
+            "Source": "SIMCONNECT_NOT_AVAILABLE"
           }
         },
         {
@@ -1824,7 +1988,12 @@
               "Placeholder": "#",
               "TestValue": "1"
             }
-          ]
+          ],
+          "RawValue": "0",
+          "Value": "0",
+          "Status": {
+            "Source": "SIMCONNECT_NOT_AVAILABLE"
+          }
         },
         {
           "Source": {
@@ -1857,6 +2026,11 @@
           "Controller": {
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
+          },
+          "RawValue": "0",
+          "Value": "0",
+          "Status": {
+            "Source": "SIMCONNECT_NOT_AVAILABLE"
           }
         },
         {
@@ -1890,6 +2064,11 @@
           "Controller": {
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
+          },
+          "RawValue": "0",
+          "Value": "0",
+          "Status": {
+            "Source": "SIMCONNECT_NOT_AVAILABLE"
           }
         },
         {
@@ -1923,6 +2102,11 @@
           "Controller": {
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
+          },
+          "RawValue": "0",
+          "Value": "0",
+          "Status": {
+            "Source": "SIMCONNECT_NOT_AVAILABLE"
           }
         },
         {
@@ -1956,6 +2140,11 @@
           "Controller": {
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
+          },
+          "RawValue": "0",
+          "Value": "0",
+          "Status": {
+            "Source": "SIMCONNECT_NOT_AVAILABLE"
           }
         },
         {
@@ -1989,6 +2178,11 @@
           "Controller": {
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
+          },
+          "RawValue": "0",
+          "Value": "0",
+          "Status": {
+            "Source": "SIMCONNECT_NOT_AVAILABLE"
           }
         },
         {
@@ -2031,6 +2225,11 @@
                 "Active": true
               }
             ]
+          },
+          "RawValue": "0",
+          "Value": "0",
+          "Status": {
+            "Source": "SIMCONNECT_NOT_AVAILABLE"
           }
         },
         {
@@ -2099,6 +2298,11 @@
           "Controller": {
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
+          },
+          "RawValue": "0",
+          "Value": "0",
+          "Status": {
+            "Source": "SIMCONNECT_NOT_AVAILABLE"
           }
         },
         {
@@ -2189,7 +2393,9 @@
           "Controller": {
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
-          }
+          },
+          "RawValue": "RIGHT",
+          "Value": " "
         },
         {
           "encoder": {
@@ -2307,6 +2513,304 @@
           "Controller": {
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
+          }
+        },
+        {
+          "button": {
+            "onPress": {
+              "Type": "VariableInputAction",
+              "Variable": {
+                "TYPE": "number",
+                "Name": "encButtonState",
+                "Number": 2.0,
+                "Text": "2",
+                "Expression": "2"
+              }
+            },
+            "onRelease": {
+              "Type": "VariableInputAction",
+              "Variable": {
+                "TYPE": "number",
+                "Name": "encButtonState",
+                "Number": 4.0,
+                "Text": "4",
+                "Expression": "4"
+              }
+            },
+            "onLongRelease": null,
+            "onHold": null,
+            "LongReleaseDelay": 350,
+            "HoldDelay": 350,
+            "RepeatDelay": 0
+          },
+          "Device": {
+            "Type": "Button",
+            "Name": "encButton"
+          },
+          "DeviceType": "Button",
+          "DeviceName": "encButton",
+          "GUID": "ad43f6b5-2b1b-45c8-bdad-6d81d768c69b",
+          "Active": true,
+          "Name": "rp2040 Input EncButtonState",
+          "Type": "InputConfigItem",
+          "Controller": {
+            "Name": "MobiFlight RaspiPico",
+            "Serial": "SN-45533065788398DA"
+          },
+          "RawValue": "RELEASE",
+          "Value": " "
+        },
+        {
+          "Source": {
+            "MobiFlightVariable": {
+              "TYPE": "number",
+              "Name": "encButtonState",
+              "Number": 0.0,
+              "Text": "",
+              "Expression": "$"
+            },
+            "Type": "VariableSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 16,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "2ea83f4b-76e6-4ec1-bdf5-b883b2805367",
+          "Active": true,
+          "Name": "encButtonState to PFD",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32 PFD",
+            "Serial": "SN-98A316E591C4"
+          },
+          "RawValue": "4",
+          "Value": "4"
+        },
+        {
+          "encoder": {
+            "onLeft": {
+              "Type": "VariableInputAction",
+              "Variable": {
+                "TYPE": "number",
+                "Name": "encEncoderState",
+                "Number": -54.0,
+                "Text": "-54",
+                "Expression": "$-1"
+              }
+            },
+            "onLeftFast": {
+              "Type": "VariableInputAction",
+              "Variable": {
+                "TYPE": "number",
+                "Name": "encEncoderState",
+                "Number": -50.0,
+                "Text": "-50",
+                "Expression": "$-5"
+              }
+            },
+            "onRight": {
+              "Type": "VariableInputAction",
+              "Variable": {
+                "TYPE": "number",
+                "Name": "encEncoderState",
+                "Number": -85.0,
+                "Text": "-85",
+                "Expression": "$+1"
+              }
+            },
+            "onRightFast": {
+              "Type": "VariableInputAction",
+              "Variable": {
+                "TYPE": "number",
+                "Name": "encEncoderState",
+                "Number": -45.0,
+                "Text": "-45",
+                "Expression": "$+5"
+              }
+            }
+          },
+          "Device": {
+            "Type": "Encoder",
+            "Name": "Encoder"
+          },
+          "DeviceType": "Encoder",
+          "DeviceName": "Encoder",
+          "GUID": "54e17196-e61b-49f2-b74b-ee9a10435e92",
+          "Active": true,
+          "Name": "rp2040 Input Encoder State",
+          "Type": "InputConfigItem",
+          "Controller": {
+            "Name": "MobiFlight RaspiPico",
+            "Serial": "SN-45533065788398DA"
+          },
+          "RawValue": "LEFT",
+          "Value": " "
+        },
+        {
+          "Source": {
+            "MobiFlightVariable": {
+              "TYPE": "number",
+              "Name": "encEncoderState",
+              "Number": 0.0,
+              "Text": "",
+              "Expression": "$"
+            },
+            "Type": "VariableSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 18,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "463034d2-fa55-4516-8f72-daff4d06a3dd",
+          "Active": true,
+          "Name": "encEncoder State to PFD",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32 PFD",
+            "Serial": "SN-98A316E591C4"
+          },
+          "RawValue": "-54",
+          "Value": "-54"
+        },
+        {
+          "button": {
+            "onPress": {
+              "Type": "VariableInputAction",
+              "Variable": {
+                "TYPE": "number",
+                "Name": "encPowerBtnState",
+                "Number": 2.0,
+                "Text": "2",
+                "Expression": "2"
+              }
+            },
+            "onRelease": {
+              "Type": "VariableInputAction",
+              "Variable": {
+                "TYPE": "number",
+                "Name": "encPowerBtnState",
+                "Number": 4.0,
+                "Text": "4",
+                "Expression": "4"
+              }
+            },
+            "onLongRelease": null,
+            "onHold": null,
+            "LongReleaseDelay": 350,
+            "HoldDelay": 350,
+            "RepeatDelay": 0
+          },
+          "Device": {
+            "Type": "Button",
+            "Name": "powerBtn"
+          },
+          "DeviceType": "Button",
+          "DeviceName": "powerBtn",
+          "GUID": "9e877e2d-4b7c-49e2-89ad-24079d34540d",
+          "Active": true,
+          "Name": "rp2040 Input pwrButtonState",
+          "Type": "InputConfigItem",
+          "Controller": {
+            "Name": "MobiFlight RaspiPico",
+            "Serial": "SN-45533065788398DA"
+          },
+          "RawValue": "RELEASE",
+          "Value": " "
+        },
+        {
+          "Source": {
+            "MobiFlightVariable": {
+              "TYPE": "number",
+              "Name": "encPowerBtnState",
+              "Number": 0.0,
+              "Text": "",
+              "Expression": "$"
+            },
+            "Type": "VariableSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 17,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "32d5af63-8823-4e3c-9297-3d05b6dc51c9",
+          "Active": true,
+          "Name": "pwrButtonState to PFD",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32 PFD",
+            "Serial": "SN-98A316E591C4"
+          },
+          "RawValue": "4",
+          "Value": "4"
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "2ea07b00-6ae8-49dc-ac07-74ecfe0bebe6",
+              "Value": "(A:AVIONICS MASTER SWITCH,Bool)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "Output",
+            "Pin": "Output",
+            "Brightness": 255,
+            "PwmMode": false,
+            "Type": "Output"
+          },
+          "DeviceType": "Output",
+          "DeviceName": "Output",
+          "GUID": "a232331b-7c16-4ccc-824e-c725cc6057c6",
+          "Active": true,
+          "Name": "pwrButton Ring Light",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "MobiFlight RaspiPico",
+            "Serial": "SN-45533065788398DA"
+          },
+          "RawValue": "0",
+          "Value": "0",
+          "Status": {
+            "Source": "SIMCONNECT_NOT_AVAILABLE"
           }
         }
       ]

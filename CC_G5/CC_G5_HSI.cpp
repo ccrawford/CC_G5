@@ -81,8 +81,11 @@ void CC_G5_HSI::read_rp2040_data()
         return;
     }
 
-    // Read data from hardware interface
-    if (g5Hardware.readEncoderData(delta, enc_btn, ext_btn)) {
+    // Read data from hardware interface (I2C RP2040, or MF messages as fallback)
+    bool gotData = g5Hardware.readEncoderData(delta, enc_btn, ext_btn);
+    if (!gotData)
+        gotData = g5Hardware.readMFData(delta, enc_btn, ext_btn);
+    if (gotData) {
         if (enc_btn == ButtonEventType::BUTTON_CLICKED) {
             if (hsiMenu.menuActive) {
                 // Route input to menu when active
