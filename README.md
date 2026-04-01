@@ -11,11 +11,12 @@
 ##Updates
   ~~UPDATE Nov 2025: You may now select the device from the menu. There is only one custom device type (CCs CC_G5). It will
   remember which device type it is when selected from the menu, or use the MF Message "Device Type" to control it from 
-  your MF config.
-  NOTE: The message IDs have now changed to support the single device/dual mode setup. Your old .mcc files will not 
+  your MF config.~~
+  ~~NOTE: The message IDs have now changed to support the single device/dual mode setup. Your old .mcc files will not 
   work. There is a new Community file set in the Community folder and new sample MF .mcc files in the MF folder. 
   Use G5 ROOT CONFIG.mcc for a single device or G5 AIO.mcc for duals. The create_dual_g5_config.bat can be used to 
-  duplicate the G5 ROOT CONFIG.mcc for dual device. However you will need to update with the SN of your devices. ~~~
+  duplicate the G5 ROOT CONFIG.mcc for dual device. However you will need to update with the SN of your devices.~~
+  I've changed this yet again. In general you're a lot better off just setting up two devices and ignoring that feature.
   
    UPDATE FEB 2026: Want an Airbus ISIS display instead of a G5? Check out this repo: https://ccrawford.github.io/CC_ISIS/
    
