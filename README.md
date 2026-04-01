@@ -11,24 +11,31 @@
 ##Updates
   ~~UPDATE Nov 2025: You may now select the device from the menu. There is only one custom device type (CCs CC_G5). It will
   remember which device type it is when selected from the menu, or use the MF Message "Device Type" to control it from 
-  your MF config.
-  NOTE: The message IDs have now changed to support the single device/dual mode setup. Your old .mcc files will not 
+  your MF config.~~
+  ~~NOTE: The message IDs have now changed to support the single device/dual mode setup. Your old .mcc files will not 
   work. There is a new Community file set in the Community folder and new sample MF .mcc files in the MF folder. 
   Use G5 ROOT CONFIG.mcc for a single device or G5 AIO.mcc for duals. The create_dual_g5_config.bat can be used to 
-  duplicate the G5 ROOT CONFIG.mcc for dual device. However you will need to update with the SN of your devices. ~~~
+  duplicate the G5 ROOT CONFIG.mcc for dual device. However you will need to update with the SN of your devices.~~
+  I've changed this yet again. In general you're a lot better off just setting up two devices and ignoring that feature.
   
    UPDATE FEB 2026: Want an Airbus ISIS display instead of a G5? Check out this repo: https://ccrawford.github.io/CC_ISIS/
    
    UPDATE FEB 2026: While the ability to switch from the device iteself was pretty cool, it required a really complex and fiddly MF setup. The feature is still there, but I recommend just using the Custom Device (PFD or HSI) that you want.
 
-   UPDATE FEB 2026: I have completely updated the display layout to more closely match the real-world G5.
+   UPDATE FEB 2026: I have completely updated the display layout to more closely match the real-world G5. This makes the actual viewing area of the
+   display smaller and you should expect black bands top and botton. I've added an option to display a logo in that top band to more
+   closely match  the real thing.
 
    UPDATE MAR 2026: There is now a web installer here: https://ccrawford.github.io/CC_G5/web-installer/
+
+   UPDATE APR 2026: I have updated the .mfproj files in the MF directory https://github.com/ccrawford/CC_G5/tree/main/MF to now use a standard RP2040 as
+   an external control box (with 2 encoders and 2 led lit pushbuttons). This is a much simpler setup than the previous i2c rp2040 as the rp2040 is now
+   completely independent of the actual Guition screen. The old i2c mechanism saves you a USB connection and still works, but the wiring is a pain.
 
    ## SETUP
    Have one of the 480x480 w/ built in ESP32-S3s and want to try it out? This is the fast and easy way.
    1. Obtain hardware (Guition 4" 480x480 screen w/ built-in ESP32-S3 from the usual places)
-   2. Flash using the installer  https://ccrawford.github.io/CC_G5/web-installer/
+ 2. Flash using the installer  https://ccrawford.github.io/CC_G5/web-installer/ (Because MobiFlight cannot flash ESP32 devices!)
    3. Copy the Community folder in this zip: https://github.com/ccrawford/CC_G5/blob/main/_dist/CC_G5_0.0.1.zip to your MF Community Directory
    4. Use this MFProj as a starting point in MF: https://github.com/ccrawford/CC_G5/blob/main/MF/G5%20ROOT%20DUAL.mfproj
    5. YOU MAY NEED TO FIX A MF Setting if your device doesn't show up in the list:
@@ -167,6 +174,9 @@ That will fix it. HOWEVER, you have to update that line whenever MF updates itse
     - Alternative: Standard 4-inch SPI LCD with proper pin configuration, but you'll need to fiddle with the source code
   - **RP2040 Microcontroller** (Raspberry Pi Pico or similar) - for rotary encoder interface
     - See this repository for more information https://github.com/ccrawford/CC_G5_Slave
+    - UPDATE: rather than the custom code in the CC_G5_Slave repository, you can just use any standard MobiFlight device with the default firmware to
+    with 2 encoders and 2 LED lit push buttons. (LEDs optional!). The .mfproj files in https://github.com/ccrawford/CC_G5/tree/main/MF send button and 
+    encoder state messages to the G5 which will then operate menus and menu-selectable features. 
     - This can be skipped if you are using the Guition screen and don't need the power button
     - LED and power button are operational ~~but startup/shutown logic and battery are not implemented~~  
   - **Rotary Encoder** with push button. Whatever EC11 variant you have will work.
