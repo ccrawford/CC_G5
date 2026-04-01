@@ -80,6 +80,7 @@ extern CC_G5_Settings g5Settings;
 
 CC_G5_PFD::CC_G5_PFD()
 {
+    _initialised = false;
 }
 
 // Read data from RP2040
@@ -221,15 +222,13 @@ void CC_G5_PFD::begin()
 
     drawLogo();
 
-    // MobiFlight in the Garmin font
-    // lcd.pushImage(lcd.width()/2 - MFLOGO_IMG_WIDTH/2, 5, MFLOGO_IMG_WIDTH, MFLOGO_IMG_HEIGHT, MFLOGO_IMG_DATA);
-    // lcd.pushImage(lcd.width()/2 - GARMINLOGO_IMG_WIDTH/2, 5,GARMINLOGO_IMG_WIDTH, GARMINLOGO_IMG_HEIGHT, GARMINLOGO_IMG_DATA);
-
     //   // Get info about memory usage
     //   size_t internal_heap = heap_caps_get_free_size(MALLOC_CAP_INTERNAL);
     //   size_t psram_heap = heap_caps_get_free_size(MALLOC_CAP_SPIRAM);
     //   Serial.printf("Internal free heap: %d bytes\n", internal_heap);
     //   Serial.printf("PSRAM free heap: %d bytes\n", psram_heap);
+
+    _initialised = true;
 }
 
 void CC_G5_PFD::setupSprites()

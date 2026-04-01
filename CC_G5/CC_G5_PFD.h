@@ -22,28 +22,27 @@
 #define CY       240
 #define SCREEN_W 480
 
-#define ATTITUDE_X_CENTER 240       // Relative to top left of sprite
+#define ATTITUDE_X_CENTER 240 // Relative to top left of sprite
 #define ATTITUDE_Y_CENTER 170
 
-
-#define AP_BAR_HEIGHT     20  // Top black bar with green AP "scoreboard"
+#define AP_BAR_HEIGHT 20 // Top black bar with green AP "scoreboard"
 // #define TOP_BAR_HEIGHT    40 // This is part of the attitude sprite space.
 #define BOTTOM_BAR_HEIGHT 40
 
 #define HEADING_TAPE_HEIGHT 40
 
-#define ATTITUDE_HEIGHT   340  // SCREEN_HEIGHT - AP_BAR_HEIGHT - TOP_BAR_HEIGHT
+#define ATTITUDE_HEIGHT     340 // SCREEN_HEIGHT - AP_BAR_HEIGHT - TOP_BAR_HEIGHT
 #define ATTITUDE_WIDTH      480
 #define ATTITUDE_COLOR_BITS 8
 
-#define GS_BOX_HEIGHT 23
+#define GS_BOX_HEIGHT  23
 #define OAT_BOX_HEIGHT 19
 
 #define SPEED_COL_WIDTH    100
 #define ALTITUDE_COL_WIDTH 130
 
-#define CENTER_COL_WIDTH   250 // SCREEN_W - SPEED_COL_WIDTH - ALTITUDE_COL_WIDTH    // 250 screen width - speed col - altitude col
-#define CENTER_COL_CENTER  140 // Center of center col is 125, but offset 15 to left.
+#define CENTER_COL_WIDTH  250 // SCREEN_W - SPEED_COL_WIDTH - ALTITUDE_COL_WIDTH    // 250 screen width - speed col - altitude col
+#define CENTER_COL_CENTER 140 // Center of center col is 125, but offset 15 to left.
 
 #define TFT_BACKGROUND_COLOR TFT_BLACK
 
@@ -54,14 +53,13 @@
 
 // Speed tape vertical scale: pixels per 10kt band.
 // All speed tape geometry is derived from this one value.
-#define SPD_PX_PER_10KT  65
+#define SPD_PX_PER_10KT 65
 
 #define SPEED_ALIVE_SPEED 20
 
 #define TEXT_BOX_HEIGHT 40
 #define NAVSOURCE_GPS   1
 #define NAVSOURCE_NAV   0
-
 
 class CC_G5_PFD : public CC_G5_Base
 {
@@ -358,7 +356,7 @@ class CC_G5_PFD : public CC_G5_Base
                     targetSprite->setTextSize(1.0);
                     targetSprite->loadFont(PrimaSans16);
                     targetSprite->drawString(setting.name, listX + 10, yPos + itemHeight / 2);
-                    
+
                     // Draw value
                     targetSprite->loadFont(PrimaSans20);
                     char valStr[16];
@@ -379,7 +377,7 @@ public:
     void detach();
     void set(int16_t messageID, char *setPoint);
     void setPFD(int16_t messageID, char *setPoint);
-    void saveState() override;   // calls CC_G5_Base::saveState() then saves PFD-specific fields
+    void saveState() override; // calls CC_G5_Base::saveState() then saves PFD-specific fields
     bool restoreState();
     void update();
     // G5_Menu menu;
@@ -388,8 +386,7 @@ public:
     SpeedTrendCalculator speedTrend;
 
 private:
-    bool    _initialised;
-    uint8_t _pin1, _pin2, _pin3;
+    bool _initialised;
 
     int speedToY(float, float);
     int altToY(int, int);
@@ -434,7 +431,7 @@ private:
     void drawAdjustmentPopup(); // Draw popup during normal updates
     void read_rp2040_data();
 
-    unsigned long lastMFUpdate = 0;
+    unsigned long lastMFUpdate        = 0;
     unsigned long lastHeadingBugTimer = 0;
 
 public:
@@ -460,5 +457,4 @@ public:
     unsigned long alertStartTime = 0;
     bool          altAlertActive = false;
     uint16_t      alertColor     = TFT_CYAN;
-
 };

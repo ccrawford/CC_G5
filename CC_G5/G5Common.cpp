@@ -68,11 +68,10 @@ bool G5_Hardware::readEncoderData(int8_t &outDelta, int8_t &outEncButton, int8_t
         return false;
     }
 
-    dataAvailable = false;
-
     size_t retSize = Wire.requestFrom(RP2040_ADDR, 3); // Request 3 bytes
 
     if (Wire.available() >= 3) {
+        dataAvailable = false;
         outDelta       = (int8_t)Wire.read();
         outEncButton   = (int8_t)Wire.read();
         outExtraButton = (int8_t)Wire.read();

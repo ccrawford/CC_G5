@@ -585,20 +585,7 @@ void CC_G5_HSI::update()
     //     lcd.drawRect(X_OFFSET,Y_OFFSET,SCREEN_WIDTH,SCREEN_HEIGHT,TFT_RED);
 
     g5State.forceRedraw = false;
-    /*
-        if (millis() - testLastUpdate > 500) {
-            g5State.rawHeadingAngle -= 0.5f;
-            if (g5State.rawHeadingAngle < 0) g5State.rawHeadingAngle = 359;
 
-            g5State.headingBugAngle += 1;
-            if (g5State.headingBugAngle > 359) g5State.headingBugAngle = 0;
-            testLastUpdate = millis();
-        }
-
-        sprintf(buf, "HSI %4.1f f/s", 1000.0 / (now - lastFrameUpdate));
-        //   lcd.drawString(buf, 360, 0);
-        lastFrameUpdate = now;
-        */
 }
 
 void CC_G5_HSI::setNavSource()
