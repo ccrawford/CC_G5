@@ -35,7 +35,7 @@
    ## SETUP
    Have one of the 480x480 w/ built in ESP32-S3s and want to try it out? This is the fast and easy way.
    1. Obtain hardware (Guition 4" 480x480 screen w/ built-in ESP32-S3 from the usual places)
-   2. Flash using the installer  https://ccrawford.github.io/CC_G5/web-installer/
+ 2. Flash using the installer  https://ccrawford.github.io/CC_G5/web-installer/ (Because MobiFlight cannot flash ESP32 devices!)
    3. Copy the Community folder in this zip: https://github.com/ccrawford/CC_G5/blob/main/_dist/CC_G5_0.0.1.zip to your MF Community Directory
    4. Use this MFProj as a starting point in MF: https://github.com/ccrawford/CC_G5/blob/main/MF/G5%20ROOT%20DUAL.mfproj
    5. YOU MAY NEED TO FIX A MF Setting if your device doesn't show up in the list:
