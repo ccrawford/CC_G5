@@ -376,8 +376,8 @@ void CC_G5_HSI::updateCommon()
     drawHeadingBug();
     drawCompass();
 
-    drawDeviationScale();
     drawCDIScaleLabel();
+    drawDeviationScale();
     drawCDISource();
     drawNavCDILabel();
     drawCDIBar(); 
@@ -728,6 +728,7 @@ void CC_G5_HSI::drawCDIScaleLabel()
     if (g5State.navSource == NAVSOURCE_GPS) {
         compass.setTextColor(TFT_MAGENTA);
     } else {
+        // This is blocking the dots. 
         compass.fillRect(COMPASS_CENTER_X + 10, COMPASS_CENTER_Y - 63, 57, 20, TFT_BLACK);
         return;
 //        compass.setTextColor(TFT_GREEN);

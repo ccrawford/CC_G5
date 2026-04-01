@@ -128,8 +128,8 @@
               }
             ]
           },
-          "RawValue": "132.34098815917969",
-          "Value": "132.3"
+          "RawValue": "33.650543212890625",
+          "Value": "33.7"
         },
         {
           "Source": {
@@ -177,8 +177,8 @@
               }
             ]
           },
-          "RawValue": "264",
-          "Value": "264"
+          "RawValue": "0",
+          "Value": "360"
         },
         {
           "Source": {
@@ -221,8 +221,8 @@
               }
             ]
           },
-          "RawValue": "111.38023376464844",
-          "Value": "111"
+          "RawValue": "67.8912124633789",
+          "Value": "68"
         },
         {
           "Source": {
@@ -256,8 +256,8 @@
             "Name": "CC_G5 ESP32 HSI",
             "Serial": "SN-28372F8A1B18"
           },
-          "RawValue": "18",
-          "Value": "18"
+          "RawValue": "15",
+          "Value": "15"
         },
         {
           "Source": {
@@ -300,8 +300,8 @@
               }
             ]
           },
-          "RawValue": "120.54090118408203",
-          "Value": "120.5"
+          "RawValue": "26.085205078125",
+          "Value": "26.1"
         },
         {
           "Source": {
@@ -323,6 +323,41 @@
           "Name": "************  CDI ***************",
           "Type": "OutputConfigItem",
           "Controller": null
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "06ad11ba-d18f-4bc7-a2a1-33baa28fef90",
+              "Value": "(A:HSI CDI NEEDLE VALID, Bool)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 HSI",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 HSI",
+            "MessageType": 3,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 HSI",
+          "GUID": "201f7b9d-83ee-49c7-ad9c-aa938c5df0c2",
+          "Active": true,
+          "Name": "Horizontal CDI Needle Valid",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32 HSI",
+            "Serial": "SN-28372F8A1B18"
+          },
+          "RawValue": "1",
+          "Value": "1"
         },
         {
           "Source": {
@@ -356,8 +391,8 @@
             "Name": "CC_G5 ESP32 HSI",
             "Serial": "SN-28372F8A1B18"
           },
-          "RawValue": "1",
-          "Value": "1"
+          "RawValue": "0",
+          "Value": "0"
         },
         {
           "Source": {
@@ -391,8 +426,8 @@
             "Name": "CC_G5 ESP32 HSI",
             "Serial": "SN-28372F8A1B18"
           },
-          "RawValue": "0",
-          "Value": "0"
+          "RawValue": "1",
+          "Value": "1"
         },
         {
           "Source": {
@@ -454,8 +489,8 @@
               "TestValue": "1"
             }
           ],
-          "RawValue": "359.99533081054688",
-          "Value": "360"
+          "RawValue": "17.676118850708008",
+          "Value": "17.7"
         },
         {
           "Source": {
@@ -489,8 +524,8 @@
             "Name": "CC_G5 ESP32 HSI",
             "Serial": "SN-28372F8A1B18"
           },
-          "RawValue": "0",
-          "Value": "0"
+          "RawValue": "1",
+          "Value": "1"
         },
         {
           "Source": {
@@ -533,8 +568,8 @@
               }
             ]
           },
-          "RawValue": "0",
-          "Value": "0"
+          "RawValue": "64.886566162109375",
+          "Value": "64.9"
         },
         {
           "Source": {
@@ -569,8 +604,8 @@
               }
             ]
           },
-          "RawValue": "0",
-          "Value": "0"
+          "RawValue": "2",
+          "Value": "2"
         },
         {
           "Source": {
@@ -604,38 +639,14 @@
             "Name": "CC_G5 ESP32 HSI",
             "Serial": "SN-28372F8A1B18"
           },
-          "RawValue": "19",
-          "Value": "19"
+          "RawValue": "4",
+          "Value": "4"
         },
         {
           "Source": {
             "SimConnectValue": {
               "UUID": "0",
-              "Value": "(A:GPS CDI SCALING, meters)",
-              "VarType": 2
-            },
-            "Type": "SimConnectSource"
-          },
-          "TestValue": {
-            "type": 1,
-            "Float64": 1.0,
-            "String": null
-          },
-          "DeviceType": "-",
-          "DeviceName": null,
-          "GUID": "0d0cc74f-8574-4f41-8801-79aa2bbe4978",
-          "Active": true,
-          "Name": "--CDI Scale meters",
-          "Type": "OutputConfigItem",
-          "Controller": null,
-          "RawValue": "3704",
-          "Value": "3704"
-        },
-        {
-          "Source": {
-            "SimConnectValue": {
-              "UUID": "0",
-              "Value": "(A:GPS CDI SCALING, meters) 0 == if{ 19 } els{\n  (A:GPS CDI SCALING, meters) 3000 > if{ 4 } els{\n    (A:GPS IS APPROACH ACTIVE, Bool) ! if{ 1 } els{\n      (A:GPS APPROACH APPROACH TYPE, Enum) 10 == \n      (A:GPS APPROACH APPROACH TYPE, Enum) 1 == |\n      if{\n        (L:WTAP_GP_Service_Level, number) 8 == if{ 12 } els{\n        (L:WTAP_GP_Service_Level, number) 7 == if{ 11 } els{\n        (L:WTAP_GP_Service_Level, number) 5 == \n        (L:WTAP_GP_Service_Level, number) 6 == | if{ 9 } els{\n        (L:WTAP_GP_Service_Level, number) 3 == \n        (L:WTAP_GP_Service_Level, number) 4 == | if{ 7 } els{\n        6 }}}}\n      } els{ 14 }\n    }\n  }\n}",
+              "Value": "(A:GPS CDI SCALING, meters) 0 == (A:HSI CDI NEEDLE VALID, Bool) 0 == OR if{ 19 } \nels{\n  (A:GPS CDI SCALING, meters) 3000 > if{ 4 } \nels{\n    (A:GPS IS APPROACH ACTIVE, Bool) ! (A:GPS APPROACH MODE, Enum) 1 == OR if{ 1 } \nels{\n      (A:GPS APPROACH APPROACH TYPE, Enum) 10 == \n      (A:GPS APPROACH APPROACH TYPE, Enum) 1 == |\n      if{\n        (L:WTAP_GP_Service_Level, number) 8 == if{ 12 } els{\n        (L:WTAP_GP_Service_Level, number) 7 == if{ 11 } els{\n        (L:WTAP_GP_Service_Level, number) 5 == \n        (L:WTAP_GP_Service_Level, number) 6 == | if{ 9 } els{\n        (L:WTAP_GP_Service_Level, number) 3 == \n        (L:WTAP_GP_Service_Level, number) 4 == | if{ 7 } els{\n        6 }}}}\n      } els{ 14 }\n    }\n  }\n}\n",
               "VarType": 2
             },
             "Type": "SimConnectSource"
@@ -663,14 +674,14 @@
             "Name": "CC_G5 ESP32 HSI",
             "Serial": "SN-28372F8A1B18"
           },
-          "RawValue": "4",
-          "Value": "4"
+          "RawValue": "0",
+          "Value": "0"
         },
         {
           "Source": {
             "SimConnectValue": {
               "UUID": "0",
-              "Value": "(A:GPS CDI SCALING, meters) 0 == if{ 5 } els{\n  (A:GPS CDI SCALING, meters) 3000 > if{ 0 } els{\n    (A:GPS IS APPROACH ACTIVE, Bool) ! if{ 1 } els{\n      (A:GPS APPROACH APPROACH TYPE, Enum) 10 == \n      (A:GPS APPROACH APPROACH TYPE, Enum) 1 == |\n      if{\n        (L:WTAP_GP_Service_Level, number) 8 == if{ 12 } els{\n        (L:WTAP_GP_Service_Level, number) 7 == if{ 11 } els{\n        (L:WTAP_GP_Service_Level, number) 5 == \n        (L:WTAP_GP_Service_Level, number) 6 == | if{ 9 } els{\n        (L:WTAP_GP_Service_Level, number) 3 == \n        (L:WTAP_GP_Service_Level, number) 4 == | if{ 7 } els{\n        6 }}}}\n      } els{ 14 }\n    }\n  }\n}",
+              "Value": "(A:HSI CDI NEEDLE VALID, Bool) NOT",
               "VarType": 2
             },
             "Type": "SimConnectSource"
@@ -682,38 +693,13 @@
           },
           "DeviceType": "-",
           "DeviceName": null,
-          "GUID": "eeab3a86-cdb2-4f19-a2bb-a8f5c6043af8",
-          "Active": false,
-          "Name": "CDI Scale Label Enum 0:ENR, 1:TERM, 2:LNAV, 3:LNAV+V, 4:LP, 5:LPV 6:NONE",
-          "Type": "OutputConfigItem",
-          "Controller": {
-            "Name": "CC_G5 ESP32 HSI",
-            "Serial": "SN-28372F8A1B18"
-          }
-        },
-        {
-          "Source": {
-            "SimConnectValue": {
-              "UUID": "af42603c-d44e-44f5-ac91-5e9485664ecd",
-              "Value": "(A:GPS IS APPROACH ACTIVE,Bool)",
-              "VarType": 2
-            },
-            "Type": "SimConnectSource"
-          },
-          "TestValue": {
-            "type": 1,
-            "Float64": 1.0,
-            "String": null
-          },
-          "DeviceType": "-",
-          "DeviceName": null,
-          "GUID": "5821ae0a-0cd2-4824-ac45-c60e7abd7a17",
+          "GUID": "ac66975f-af8d-490c-8813-6d5b61466f2e",
           "Active": true,
-          "Name": "Is Approach Active (TERM)",
+          "Name": "Test or and not",
           "Type": "OutputConfigItem",
           "Controller": null,
-          "RawValue": "0",
-          "Value": "0"
+          "RawValue": "1",
+          "Value": "1"
         },
         {
           "Source": {
@@ -742,41 +728,6 @@
           "GUID": "507ef424-616d-40b7-85e7-904fdebf3ea6",
           "Active": true,
           "Name": "IsOBSMode",
-          "Type": "OutputConfigItem",
-          "Controller": {
-            "Name": "CC_G5 ESP32 HSI",
-            "Serial": "SN-28372F8A1B18"
-          },
-          "RawValue": "0",
-          "Value": "0"
-        },
-        {
-          "Source": {
-            "SimConnectValue": {
-              "UUID": "06ad11ba-d18f-4bc7-a2a1-33baa28fef90",
-              "Value": "(A:HSI CDI NEEDLE VALID, Bool)",
-              "VarType": 2
-            },
-            "Type": "SimConnectSource"
-          },
-          "TestValue": {
-            "type": 1,
-            "Float64": 1.0,
-            "String": null
-          },
-          "Device": {
-            "Name": "CCs CC_G5 HSI",
-            "CustomType": null,
-            "CustomName": "CCs CC_G5 HSI",
-            "MessageType": 3,
-            "Value": "$",
-            "Type": "CustomDevice"
-          },
-          "DeviceType": "CustomDevice",
-          "DeviceName": "CCs CC_G5 HSI",
-          "GUID": "201f7b9d-83ee-49c7-ad9c-aa938c5df0c2",
-          "Active": true,
-          "Name": "Horizontal CDI Needle Valid",
           "Type": "OutputConfigItem",
           "Controller": {
             "Name": "CC_G5 ESP32 HSI",
@@ -826,8 +777,8 @@
               }
             ]
           },
-          "RawValue": "359.99533081054688",
-          "Value": "360"
+          "RawValue": "17.676118850708008",
+          "Value": "17.7"
         },
         {
           "Source": {
@@ -870,8 +821,8 @@
               }
             ]
           },
-          "RawValue": "0",
-          "Value": "0"
+          "RawValue": "8718.6953125",
+          "Value": "1"
         },
         {
           "Source": {
@@ -959,8 +910,8 @@
             "Name": "CC_G5 ESP32 HSI",
             "Serial": "SN-28372F8A1B18"
           },
-          "RawValue": "0",
-          "Value": "0"
+          "RawValue": "1",
+          "Value": "1"
         },
         {
           "Source": {
@@ -1003,8 +954,8 @@
               }
             ]
           },
-          "RawValue": "0",
-          "Value": "0"
+          "RawValue": "119",
+          "Value": "119"
         },
         {
           "Source": {
@@ -1047,8 +998,8 @@
               }
             ]
           },
-          "RawValue": "18",
-          "Value": "18"
+          "RawValue": "15",
+          "Value": "15"
         },
         {
           "Source": {
@@ -1091,8 +1042,8 @@
               }
             ]
           },
-          "RawValue": "0",
-          "Value": "0"
+          "RawValue": "249",
+          "Value": "249"
         },
         {
           "Source": {
@@ -1135,8 +1086,8 @@
               }
             ]
           },
-          "RawValue": "0",
-          "Value": "0"
+          "RawValue": "4.7077188491821289",
+          "Value": "4.7"
         },
         {
           "Source": {
@@ -1240,8 +1191,8 @@
             "Name": "CC_G5 ESP32 HSI",
             "Serial": "SN-28372F8A1B18"
           },
-          "RawValue": "1",
-          "Value": "1"
+          "RawValue": "0",
+          "Value": "0"
         },
         {
           "Source": {
@@ -1332,8 +1283,8 @@
               }
             ]
           },
-          "RawValue": "231.26356506347656",
-          "Value": "231"
+          "RawValue": "51.276836395263672",
+          "Value": "51"
         },
         {
           "Source": {
@@ -1373,8 +1324,8 @@
               "TestValue": "1"
             }
           ],
-          "RawValue": "22.685314178466797",
-          "Value": "23"
+          "RawValue": "17.798776626586914",
+          "Value": "18"
         },
         {
           "Source": {
@@ -1578,8 +1529,8 @@
               }
             ]
           },
-          "RawValue": "0",
-          "Value": "0"
+          "RawValue": "197.13536071777344",
+          "Value": "197.1"
         },
         {
           "Source": {
@@ -1622,8 +1573,8 @@
               }
             ]
           },
-          "RawValue": "-111.82827758789063",
-          "Value": "-111.8"
+          "RawValue": "-163.8070068359375",
+          "Value": "-163.8"
         },
         {
           "Source": {
@@ -1666,8 +1617,8 @@
               }
             ]
           },
-          "RawValue": "-111.82827758789063",
-          "Value": "-111.8"
+          "RawValue": "-163.8070068359375",
+          "Value": "-163.8"
         },
         {
           "Source": {
@@ -1765,7 +1716,7 @@
           "DeviceName": null,
           "GUID": "bc93694b-48bf-44ee-b062-dcfaafb13c45",
           "Active": false,
-          "Name": "************  HARDWARE ***************",
+          "Name": "************ VIRTUAL messages from G5 HSI  ***************",
           "Type": "OutputConfigItem",
           "Controller": null
         },
@@ -1959,6 +1910,316 @@
             "Name": "CC_G5 ESP32 HSI",
             "Serial": "SN-28372F8A1B18"
           }
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "Value": "",
+              "VarType": 0
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "DeviceType": null,
+          "DeviceName": null,
+          "GUID": "708be38f-5d96-41fd-bf00-a62be003c4ee",
+          "Active": false,
+          "Name": "************  External Switch Box controls. Remove if no physical controls ***************",
+          "Type": "OutputConfigItem",
+          "Controller": null
+        },
+        {
+          "encoder": {
+            "onLeft": {
+              "Type": "VariableInputAction",
+              "Variable": {
+                "TYPE": "number",
+                "Name": "HSIEncValue",
+                "Number": -11.0,
+                "Text": "-11",
+                "Expression": "$-1"
+              }
+            },
+            "onLeftFast": {
+              "Type": "VariableInputAction",
+              "Variable": {
+                "TYPE": "number",
+                "Name": "HSIEncValue",
+                "Number": 0.0,
+                "Text": "",
+                "Expression": "$-5"
+              }
+            },
+            "onRight": {
+              "Type": "VariableInputAction",
+              "Variable": {
+                "TYPE": "number",
+                "Name": "HSIEncValue",
+                "Number": 0.0,
+                "Text": "",
+                "Expression": "$+1"
+              }
+            },
+            "onRightFast": {
+              "Type": "VariableInputAction",
+              "Variable": {
+                "TYPE": "number",
+                "Name": "HSIEncValue",
+                "Number": 0.0,
+                "Text": "",
+                "Expression": "$+5"
+              }
+            }
+          },
+          "Device": {
+            "Type": "Encoder",
+            "Name": "HSIEncoder"
+          },
+          "DeviceType": "Encoder",
+          "DeviceName": "HSIEncoder",
+          "GUID": "de0315f2-e3cc-4ccd-ab1c-187a38a04cbf",
+          "Active": true,
+          "Name": "HSI Encoder  In",
+          "Type": "InputConfigItem",
+          "Controller": {
+            "Name": "G5 Switch Box",
+            "Serial": "SN-455330657902FB6A"
+          }
+        },
+        {
+          "Source": {
+            "MobiFlightVariable": {
+              "TYPE": "number",
+              "Name": "HSIEncValue",
+              "Number": 0.0,
+              "Text": "",
+              "Expression": "$"
+            },
+            "Type": "VariableSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 HSI",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 HSI",
+            "MessageType": 18,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 HSI",
+          "GUID": "321c2f56-0b56-4f99-acd2-077675e14842",
+          "Active": true,
+          "Name": "HSI Encoder Out",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32 HSI",
+            "Serial": "SN-28372F8A1B18"
+          },
+          "RawValue": "0",
+          "Value": "0"
+        },
+        {
+          "button": {
+            "onPress": {
+              "Type": "VariableInputAction",
+              "Variable": {
+                "TYPE": "number",
+                "Name": "HSIEncButton",
+                "Number": 0.0,
+                "Text": "",
+                "Expression": "2"
+              }
+            },
+            "onRelease": {
+              "Type": "VariableInputAction",
+              "Variable": {
+                "TYPE": "number",
+                "Name": "HSIEncButton",
+                "Number": 4.0,
+                "Text": "4",
+                "Expression": "4"
+              }
+            },
+            "onLongRelease": null,
+            "onHold": null,
+            "LongReleaseDelay": 350,
+            "HoldDelay": 350,
+            "RepeatDelay": 0
+          },
+          "Device": {
+            "Type": "Button",
+            "Name": "HSI Enc Btn"
+          },
+          "DeviceType": "Button",
+          "DeviceName": "HSI Enc Btn",
+          "GUID": "2b912106-3fa4-4840-93e8-6b89f082e9ab",
+          "Active": true,
+          "Name": "HSI Enc Btn In",
+          "Type": "InputConfigItem",
+          "Controller": {
+            "Name": "G5 Switch Box",
+            "Serial": "SN-455330657902FB6A"
+          }
+        },
+        {
+          "Source": {
+            "MobiFlightVariable": {
+              "TYPE": "number",
+              "Name": "HSIEncButton",
+              "Number": 0.0,
+              "Text": "",
+              "Expression": "$"
+            },
+            "Type": "VariableSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 HSI",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 HSI",
+            "MessageType": 16,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 HSI",
+          "GUID": "4f0f99bd-4f8c-40e0-8167-0142d8121844",
+          "Active": true,
+          "Name": "HSI Enc Btn Out",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32 HSI",
+            "Serial": "SN-28372F8A1B18"
+          },
+          "RawValue": "4",
+          "Value": "4"
+        },
+        {
+          "button": {
+            "onPress": {
+              "Type": "VariableInputAction",
+              "Variable": {
+                "TYPE": "number",
+                "Name": "HSIPowerBtn",
+                "Number": 0.0,
+                "Text": "",
+                "Expression": "2"
+              }
+            },
+            "onRelease": {
+              "Type": "VariableInputAction",
+              "Variable": {
+                "TYPE": "number",
+                "Name": "HSIPowerBtn",
+                "Number": 4.0,
+                "Text": "4",
+                "Expression": "4"
+              }
+            },
+            "onLongRelease": null,
+            "onHold": null,
+            "LongReleaseDelay": 350,
+            "HoldDelay": 350,
+            "RepeatDelay": 0
+          },
+          "Device": {
+            "Type": "Button",
+            "Name": "HSI Power Brn"
+          },
+          "DeviceType": "Button",
+          "DeviceName": "HSI Power Brn",
+          "GUID": "241fbd82-8de9-4cbf-9781-08831e95468c",
+          "Active": true,
+          "Name": "HSI Power Btn In",
+          "Type": "InputConfigItem",
+          "Controller": {
+            "Name": "G5 Switch Box",
+            "Serial": "SN-455330657902FB6A"
+          }
+        },
+        {
+          "Source": {
+            "MobiFlightVariable": {
+              "TYPE": "number",
+              "Name": "HSIPowerBtn",
+              "Number": 0.0,
+              "Text": "",
+              "Expression": "$"
+            },
+            "Type": "VariableSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 HSI",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 HSI",
+            "MessageType": 17,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 HSI",
+          "GUID": "8921ccb5-77a0-476b-b5df-133fdbd98e20",
+          "Active": true,
+          "Name": "HSI Power Btn Out",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32 HSI",
+            "Serial": "SN-28372F8A1B18"
+          },
+          "RawValue": "4",
+          "Value": "4"
+        },
+        {
+          "Source": {
+            "SimConnectValue": {
+              "UUID": "91f78aaf-2873-4e63-9b7e-17548e4d42f9",
+              "Value": "(A:CIRCUIT AVIONICS ON,Bool)",
+              "VarType": 2
+            },
+            "Type": "SimConnectSource"
+          },
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "HSI Power LED",
+            "Pin": "HSI Power LED",
+            "Brightness": 255,
+            "PwmMode": false,
+            "Type": "Output"
+          },
+          "DeviceType": "Output",
+          "DeviceName": "HSI Power LED",
+          "GUID": "39ea4992-7598-4e79-801a-8a3693db36b2",
+          "Active": true,
+          "Name": "HSI Power LED",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "G5 Switch Box",
+            "Serial": "SN-455330657902FB6A"
+          },
+          "RawValue": "1",
+          "Value": "1"
         }
       ]
     }

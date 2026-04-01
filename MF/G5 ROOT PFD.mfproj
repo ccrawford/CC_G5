@@ -114,11 +114,8 @@
               }
             ]
           },
-          "RawValue": "0",
-          "Value": "2",
-          "Status": {
-            "Source": "SIMCONNECT_NOT_AVAILABLE"
-          }
+          "RawValue": "2",
+          "Value": "2"
         },
         {
           "Source": {
@@ -194,11 +191,8 @@
               }
             ]
           },
-          "RawValue": "0",
-          "Value": "0",
-          "Status": {
-            "Source": "SIMCONNECT_NOT_AVAILABLE"
-          }
+          "RawValue": "-9.1345682144165039",
+          "Value": "-9.13"
         },
         {
           "Source": {
@@ -241,11 +235,8 @@
               }
             ]
           },
-          "RawValue": "0",
-          "Value": "0",
-          "Status": {
-            "Source": "SIMCONNECT_NOT_AVAILABLE"
-          }
+          "RawValue": "-12.825743675231934",
+          "Value": "-12.8"
         },
         {
           "Source": {
@@ -321,11 +312,8 @@
               }
             ]
           },
-          "RawValue": "0",
-          "Value": "0",
-          "Status": {
-            "Source": "SIMCONNECT_NOT_AVAILABLE"
-          }
+          "RawValue": "2.0571358203887939",
+          "Value": "2.06"
         },
         {
           "Source": {
@@ -368,11 +356,8 @@
               }
             ]
           },
-          "RawValue": "0",
-          "Value": "0",
-          "Status": {
-            "Source": "SIMCONNECT_NOT_AVAILABLE"
-          }
+          "RawValue": "0.1875",
+          "Value": "0.19"
         },
         {
           "Source": {
@@ -448,11 +433,8 @@
               }
             ]
           },
-          "RawValue": "0",
-          "Value": "0",
-          "Status": {
-            "Source": "SIMCONNECT_NOT_AVAILABLE"
-          }
+          "RawValue": "86.717987060546875",
+          "Value": "86.72"
         },
         {
           "Source": {
@@ -495,11 +477,8 @@
               }
             ]
           },
-          "RawValue": "0",
-          "Value": "0",
-          "Status": {
-            "Source": "SIMCONNECT_NOT_AVAILABLE"
-          }
+          "RawValue": "67.8912124633789",
+          "Value": "68"
         },
         {
           "Source": {
@@ -542,11 +521,8 @@
               }
             ]
           },
-          "RawValue": "0",
-          "Value": "0",
-          "Status": {
-            "Source": "SIMCONNECT_NOT_AVAILABLE"
-          }
+          "RawValue": "90.1510009765625",
+          "Value": "90"
         },
         {
           "Source": {
@@ -589,10 +565,7 @@
             ]
           },
           "RawValue": "0",
-          "Value": "41|52|55|62|73|68|99|111|129|163",
-          "Status": {
-            "Source": "SIMCONNECT_NOT_AVAILABLE"
-          }
+          "Value": "41|52|55|62|73|68|99|111|129|163"
         },
         {
           "Source": {
@@ -635,11 +608,8 @@
               }
             ]
           },
-          "RawValue": "0",
-          "Value": "0",
-          "Status": {
-            "Source": "SIMCONNECT_NOT_AVAILABLE"
-          }
+          "RawValue": "2.1577086448669434",
+          "Value": "2"
         },
         {
           "Source": {
@@ -715,11 +685,8 @@
               }
             ]
           },
-          "RawValue": "0",
-          "Value": "0",
-          "Status": {
-            "Source": "SIMCONNECT_NOT_AVAILABLE"
-          }
+          "RawValue": "1393.1748046875",
+          "Value": "1393"
         },
         {
           "Source": {
@@ -762,11 +729,8 @@
               }
             ]
           },
-          "RawValue": "0",
-          "Value": "0",
-          "Status": {
-            "Source": "SIMCONNECT_NOT_AVAILABLE"
-          }
+          "RawValue": "-66.9698715209961",
+          "Value": "-67"
         },
         {
           "Source": {
@@ -809,11 +773,8 @@
               }
             ]
           },
-          "RawValue": "0",
-          "Value": "0",
-          "Status": {
-            "Source": "SIMCONNECT_NOT_AVAILABLE"
-          }
+          "RawValue": "-427.03921508789062",
+          "Value": "-427"
         },
         {
           "Source": {
@@ -847,11 +808,8 @@
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
           },
-          "RawValue": "0",
-          "Value": "0",
-          "Status": {
-            "Source": "SIMCONNECT_NOT_AVAILABLE"
-          }
+          "RawValue": "1800",
+          "Value": "1800"
         },
         {
           "Source": {
@@ -894,11 +852,8 @@
               }
             ]
           },
-          "RawValue": "0",
-          "Value": "0",
-          "Status": {
-            "Source": "SIMCONNECT_NOT_AVAILABLE"
-          }
+          "RawValue": "30.190359115600586",
+          "Value": "30.19"
         },
         {
           "Source": {
@@ -979,11 +934,8 @@
               }
             ]
           },
-          "RawValue": "0",
-          "Value": "360",
-          "Status": {
-            "Source": "SIMCONNECT_NOT_AVAILABLE"
-          }
+          "RawValue": "33.650543212890625",
+          "Value": "33.7"
         },
         {
           "Source": {
@@ -1032,10 +984,7 @@
             ]
           },
           "RawValue": "0",
-          "Value": "360",
-          "Status": {
-            "Source": "SIMCONNECT_NOT_AVAILABLE"
-          }
+          "Value": "360"
         },
         {
           "Source": {
@@ -1069,11 +1018,8 @@
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
           },
-          "RawValue": "0",
-          "Value": "0",
-          "Status": {
-            "Source": "SIMCONNECT_NOT_AVAILABLE"
-          }
+          "RawValue": "15",
+          "Value": "15"
         },
         {
           "Source": {
@@ -1116,11 +1062,8 @@
               }
             ]
           },
-          "RawValue": "0",
-          "Value": "0",
-          "Status": {
-            "Source": "SIMCONNECT_NOT_AVAILABLE"
-          }
+          "RawValue": "26.085205078125",
+          "Value": "26.1"
         },
         {
           "Source": {
@@ -1187,11 +1130,8 @@
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
           },
-          "RawValue": "0",
-          "Value": "0",
-          "Status": {
-            "Source": "SIMCONNECT_NOT_AVAILABLE"
-          }
+          "RawValue": "1",
+          "Value": "1"
         },
         {
           "Source": {
@@ -1234,11 +1174,8 @@
               }
             ]
           },
-          "RawValue": "0",
-          "Value": "0",
-          "Status": {
-            "Source": "SIMCONNECT_NOT_AVAILABLE"
-          }
+          "RawValue": "119",
+          "Value": "119"
         },
         {
           "Source": {
@@ -1273,10 +1210,7 @@
             "Serial": "SN-98A316E591C4"
           },
           "RawValue": "0",
-          "Value": "0",
-          "Status": {
-            "Source": "SIMCONNECT_NOT_AVAILABLE"
-          }
+          "Value": "0"
         },
         {
           "Source": {
@@ -1310,11 +1244,8 @@
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
           },
-          "RawValue": "0",
-          "Value": "0",
-          "Status": {
-            "Source": "SIMCONNECT_NOT_AVAILABLE"
-          }
+          "RawValue": "1",
+          "Value": "1"
         },
         {
           "Source": {
@@ -1357,33 +1288,8 @@
               }
             ]
           },
-          "RawValue": "0",
-          "Value": "0",
-          "Status": {
-            "Source": "SIMCONNECT_NOT_AVAILABLE"
-          }
-        },
-        {
-          "Source": {
-            "SimConnectValue": {
-              "UUID": "0",
-              "Value": "(A:GPS CDI SCALING, meters) 0 == if{ 5 } els{\n  (A:GPS CDI SCALING, meters) 3000 > if{ 0 } els{\n    (A:GPS IS APPROACH ACTIVE, Bool) ! if{ 1 } els{\n      (A:GPS APPROACH APPROACH TYPE, Enum) 10 == \n      (A:GPS APPROACH APPROACH TYPE, Enum) 1 == |\n      if{\n        (L:WTAP_GP_Service_Level, number) 8 == if{ 12 } els{\n        (L:WTAP_GP_Service_Level, number) 7 == if{ 11 } els{\n        (L:WTAP_GP_Service_Level, number) 5 == \n        (L:WTAP_GP_Service_Level, number) 6 == | if{ 9 } els{\n        (L:WTAP_GP_Service_Level, number) 3 == \n        (L:WTAP_GP_Service_Level, number) 4 == | if{ 7 } els{\n        6 }}}}\n      } els{ 14 }\n    }\n  }\n}",
-              "VarType": 2
-            },
-            "Type": "SimConnectSource"
-          },
-          "TestValue": {
-            "type": 1,
-            "Float64": 1.0,
-            "String": null
-          },
-          "DeviceType": "-",
-          "DeviceName": null,
-          "GUID": "eeab3a86-cdb2-4f19-a2bb-a8f5c6043af8",
-          "Active": false,
-          "Name": "CDI Scale Label Enum 0:ENR, 1:TERM, 2:LNAV, 3:LNAV+V, 4:LP, 5:LPV 6:NONE",
-          "Type": "OutputConfigItem",
-          "Controller": null
+          "RawValue": "64.886566162109375",
+          "Value": "64.9"
         },
         {
           "Source": {
@@ -1417,230 +1323,8 @@
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
           },
-          "RawValue": "0",
-          "Value": "0",
-          "Status": {
-            "Source": "SIMCONNECT_NOT_AVAILABLE"
-          }
-        },
-        {
-          "Source": {
-            "SimConnectValue": {
-              "UUID": "6078422a-1f03-4ed8-8999-7a8afb01b602",
-              "Value": "(A:GPS VERTICAL ANGLE,Degrees)",
-              "VarType": 2
-            },
-            "Type": "SimConnectSource"
-          },
-          "TestValue": {
-            "type": 1,
-            "Float64": 1.0,
-            "String": null
-          },
-          "DeviceType": "-",
-          "DeviceName": null,
-          "GUID": "c3f3b95c-f183-4377-9385-bd8860f250b4",
-          "Active": false,
-          "Name": "Is GPS Vertical Mode Active",
-          "Type": "OutputConfigItem",
-          "Controller": null,
-          "Modifiers": {
-            "Items": [
-              {
-                "Type": "Transformation",
-                "Expression": "if($!=0,1,0)",
-                "Active": true
-              }
-            ]
-          }
-        },
-        {
-          "Source": {
-            "SimConnectValue": {
-              "UUID": "af42603c-d44e-44f5-ac91-5e9485664ecd",
-              "Value": "(A:GPS IS APPROACH ACTIVE,Bool)",
-              "VarType": 2
-            },
-            "Type": "SimConnectSource"
-          },
-          "TestValue": {
-            "type": 1,
-            "Float64": 1.0,
-            "String": null
-          },
-          "DeviceType": "-",
-          "DeviceName": null,
-          "GUID": "5821ae0a-0cd2-4824-ac45-c60e7abd7a17",
-          "Active": false,
-          "Name": "Is Approach Active (TERM)",
-          "Type": "OutputConfigItem",
-          "Controller": null
-        },
-        {
-          "Source": {
-            "SimConnectValue": {
-              "UUID": "5696ac40-f566-457b-8d98-67e07331763b",
-              "Value": "(A:GPS APPROACH MODE,Enum)",
-              "VarType": 2
-            },
-            "Type": "SimConnectSource"
-          },
-          "TestValue": {
-            "type": 1,
-            "Float64": 1.0,
-            "String": null
-          },
-          "DeviceType": "-",
-          "DeviceName": null,
-          "GUID": "5236d3ef-ee0e-4baf-b72e-3670515ea7c0",
-          "Active": false,
-          "Name": "GPS Approach Mode",
-          "Type": "OutputConfigItem",
-          "Controller": null,
-          "Modifiers": {
-            "Items": [
-              {
-                "Type": "Comparison",
-                "Operand": "=",
-                "Value": "",
-                "IfValue": "1",
-                "ElseValue": "0",
-                "Active": true
-              }
-            ]
-          }
-        },
-        {
-          "Source": {
-            "SimConnectValue": {
-              "UUID": "0",
-              "Value": "(L:WTGarmin_Nav_ActiveNavSource:1)",
-              "VarType": 2
-            },
-            "Type": "SimConnectSource"
-          },
-          "TestValue": {
-            "type": 1,
-            "Float64": 1.0,
-            "String": null
-          },
-          "DeviceType": "-",
-          "DeviceName": null,
-          "GUID": "44e89dd0-499b-4ee4-b84b-a605ba137f93",
-          "Active": false,
-          "Name": "ActiveNavSource",
-          "Type": "OutputConfigItem",
-          "Controller": null
-        },
-        {
-          "Source": {
-            "SimConnectValue": {
-              "UUID": "9c1ccb5a-cbf8-4570-af72-15e66acc352e",
-              "Value": "(A:NAV HAS LOCALIZER:1,Bool)",
-              "VarType": 2
-            },
-            "Type": "SimConnectSource"
-          },
-          "TestValue": {
-            "type": 1,
-            "Float64": 1.0,
-            "String": null
-          },
-          "DeviceType": "-",
-          "DeviceName": null,
-          "GUID": "1354cb41-1db8-4d5a-b0e1-e4ca6fb20d14",
-          "Active": false,
-          "Name": "Nav Has Localizer",
-          "Type": "OutputConfigItem",
-          "Controller": null
-        },
-        {
-          "Source": {
-            "SimConnectValue": {
-              "UUID": "14a9706d-54e0-42ea-abaa-cea7d030610c",
-              "Value": "(A:NAV HAS NAV:1,Bool)",
-              "VarType": 2
-            },
-            "Type": "SimConnectSource"
-          },
-          "TestValue": {
-            "type": 1,
-            "Float64": 1.0,
-            "String": null
-          },
-          "DeviceType": "-",
-          "DeviceName": null,
-          "GUID": "4ef0c426-0384-4afe-a901-618112ebea7f",
-          "Active": false,
-          "Name": "Nav Has Nav",
-          "Type": "OutputConfigItem",
-          "Controller": null
-        },
-        {
-          "Source": {
-            "SimConnectValue": {
-              "UUID": "4b8fb048-1db7-44ad-8b5e-d1bdb95edccb",
-              "Value": "(A:NAV HAS DME:1,Bool)",
-              "VarType": 2
-            },
-            "Type": "SimConnectSource"
-          },
-          "TestValue": {
-            "type": 1,
-            "Float64": 1.0,
-            "String": null
-          },
-          "DeviceType": "-",
-          "DeviceName": null,
-          "GUID": "d98e0a0c-45bd-42cb-8ae1-2740d9494b8b",
-          "Active": false,
-          "Name": "Nav Has DME",
-          "Type": "OutputConfigItem",
-          "Controller": null
-        },
-        {
-          "Source": {
-            "SimConnectValue": {
-              "UUID": "06f5b13f-25b7-4784-88b9-ca18ba0cfeb5",
-              "Value": "(A:AUTOPILOT NAV SELECTED,Number)",
-              "VarType": 2
-            },
-            "Type": "SimConnectSource"
-          },
-          "TestValue": {
-            "type": 1,
-            "Float64": 1.0,
-            "String": null
-          },
-          "DeviceType": "-",
-          "DeviceName": null,
-          "GUID": "ddea52fc-7731-4320-a50c-da76c801fdf1",
-          "Active": false,
-          "Name": "Nav1 or Nav2 Selected",
-          "Type": "OutputConfigItem",
-          "Controller": null
-        },
-        {
-          "Source": {
-            "SimConnectValue": {
-              "UUID": "0",
-              "Value": "(A:NAV TOFROM:2, Number)",
-              "VarType": 2
-            },
-            "Type": "SimConnectSource"
-          },
-          "TestValue": {
-            "type": 1,
-            "Float64": 1.0,
-            "String": null
-          },
-          "DeviceType": "-",
-          "DeviceName": null,
-          "GUID": "3dbd2a58-7c7d-4cd4-9da9-06abe9a839f7",
-          "Active": false,
-          "Name": "Nav has To From",
-          "Type": "OutputConfigItem",
-          "Controller": null
+          "RawValue": "4",
+          "Value": "4"
         },
         {
           "Source": {
@@ -1674,11 +1358,8 @@
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
           },
-          "RawValue": "0",
-          "Value": "0",
-          "Status": {
-            "Source": "SIMCONNECT_NOT_AVAILABLE"
-          }
+          "RawValue": "1",
+          "Value": "1"
         },
         {
           "Source": {
@@ -1749,10 +1430,7 @@
             "Serial": "SN-98A316E591C4"
           },
           "RawValue": "0",
-          "Value": "0",
-          "Status": {
-            "Source": "SIMCONNECT_NOT_AVAILABLE"
-          }
+          "Value": "0"
         },
         {
           "Source": {
@@ -1786,11 +1464,8 @@
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
           },
-          "RawValue": "0",
-          "Value": "0",
-          "Status": {
-            "Source": "SIMCONNECT_NOT_AVAILABLE"
-          }
+          "RawValue": "1",
+          "Value": "1"
         },
         {
           "Source": {
@@ -1841,11 +1516,8 @@
               "TestValue": "1"
             }
           ],
-          "RawValue": "0",
-          "Value": "0",
-          "Status": {
-            "Source": "SIMCONNECT_NOT_AVAILABLE"
-          }
+          "RawValue": "2.3430116176605225",
+          "Value": "2.3"
         },
         {
           "Source": {
@@ -1896,11 +1568,8 @@
               "TestValue": "1"
             }
           ],
-          "RawValue": "0",
-          "Value": "0",
-          "Status": {
-            "Source": "SIMCONNECT_NOT_AVAILABLE"
-          }
+          "RawValue": "-10.018630027770996",
+          "Value": "-10"
         },
         {
           "Source": {
@@ -1934,11 +1603,8 @@
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
           },
-          "RawValue": "0",
-          "Value": "0",
-          "Status": {
-            "Source": "SIMCONNECT_NOT_AVAILABLE"
-          }
+          "RawValue": "5",
+          "Value": "5"
         },
         {
           "Source": {
@@ -1989,11 +1655,8 @@
               "TestValue": "1"
             }
           ],
-          "RawValue": "0",
-          "Value": "0",
-          "Status": {
-            "Source": "SIMCONNECT_NOT_AVAILABLE"
-          }
+          "RawValue": "5",
+          "Value": "0"
         },
         {
           "Source": {
@@ -2027,11 +1690,8 @@
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
           },
-          "RawValue": "0",
-          "Value": "0",
-          "Status": {
-            "Source": "SIMCONNECT_NOT_AVAILABLE"
-          }
+          "RawValue": "1",
+          "Value": "1"
         },
         {
           "Source": {
@@ -2065,11 +1725,8 @@
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
           },
-          "RawValue": "0",
-          "Value": "0",
-          "Status": {
-            "Source": "SIMCONNECT_NOT_AVAILABLE"
-          }
+          "RawValue": "4",
+          "Value": "4"
         },
         {
           "Source": {
@@ -2103,11 +1760,8 @@
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
           },
-          "RawValue": "0",
-          "Value": "0",
-          "Status": {
-            "Source": "SIMCONNECT_NOT_AVAILABLE"
-          }
+          "RawValue": "200",
+          "Value": "200"
         },
         {
           "Source": {
@@ -2142,10 +1796,7 @@
             "Serial": "SN-98A316E591C4"
           },
           "RawValue": "0",
-          "Value": "0",
-          "Status": {
-            "Source": "SIMCONNECT_NOT_AVAILABLE"
-          }
+          "Value": "0"
         },
         {
           "Source": {
@@ -2180,10 +1831,7 @@
             "Serial": "SN-98A316E591C4"
           },
           "RawValue": "0",
-          "Value": "0",
-          "Status": {
-            "Source": "SIMCONNECT_NOT_AVAILABLE"
-          }
+          "Value": "0"
         },
         {
           "Source": {
@@ -2226,11 +1874,8 @@
               }
             ]
           },
-          "RawValue": "0",
-          "Value": "0",
-          "Status": {
-            "Source": "SIMCONNECT_NOT_AVAILABLE"
-          }
+          "RawValue": "1800",
+          "Value": "1800"
         },
         {
           "Source": {
@@ -2249,7 +1894,7 @@
           "DeviceName": null,
           "GUID": "6873dd1d-6422-4b5a-89fb-07ff81db8ea6",
           "Active": false,
-          "Name": "--------- BUTTONS INPUTS ----------",
+          "Name": "--------- VIRTUAL messages from G5 PFD ----------",
           "Type": "OutputConfigItem",
           "Controller": {
             "Name": "",
@@ -2299,11 +1944,8 @@
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
           },
-          "RawValue": "0",
-          "Value": "0",
-          "Status": {
-            "Source": "SIMCONNECT_NOT_AVAILABLE"
-          }
+          "RawValue": "1",
+          "Value": "1"
         },
         {
           "encoder": {
@@ -2389,38 +2031,6 @@
           "GUID": "9a584df6-4b05-42a4-93ed-b6fe20c04336",
           "Active": true,
           "Name": "Target Altitude Knob",
-          "Type": "InputConfigItem",
-          "Controller": {
-            "Name": "CC_G5 ESP32 PFD",
-            "Serial": "SN-98A316E591C4"
-          },
-          "RawValue": "RIGHT",
-          "Value": " "
-        },
-        {
-          "encoder": {
-            "onLeft": {
-              "Type": "MSFS2020CustomInputAction",
-              "Command": "(>K:HEADING_BUG_DEC)",
-              "PresetId": "4bd8d51a-8bce-43e0-8de3-8510ef4af071"
-            },
-            "onLeftFast": null,
-            "onRight": {
-              "Type": "MSFS2020CustomInputAction",
-              "Command": "(>K:HEADING_BUG_INC)",
-              "PresetId": "7fece887-9baa-4c89-b29a-2e8f9b14684d"
-            },
-            "onRightFast": null
-          },
-          "Device": {
-            "Type": "Encoder",
-            "Name": "encHeading"
-          },
-          "DeviceType": "Encoder",
-          "DeviceName": "encHeading",
-          "GUID": "8d95488d-7c7a-4851-8bde-fc1161eaf0be",
-          "Active": true,
-          "Name": "Heading Knob",
           "Type": "InputConfigItem",
           "Controller": {
             "Name": "CC_G5 ESP32 PFD",
@@ -2516,86 +2126,40 @@
           }
         },
         {
-          "button": {
-            "onPress": {
-              "Type": "VariableInputAction",
-              "Variable": {
-                "TYPE": "number",
-                "Name": "encButtonState",
-                "Number": 2.0,
-                "Text": "2",
-                "Expression": "2"
-              }
-            },
-            "onRelease": {
-              "Type": "VariableInputAction",
-              "Variable": {
-                "TYPE": "number",
-                "Name": "encButtonState",
-                "Number": 4.0,
-                "Text": "4",
-                "Expression": "4"
-              }
-            },
-            "onLongRelease": null,
-            "onHold": null,
-            "LongReleaseDelay": 350,
-            "HoldDelay": 350,
-            "RepeatDelay": 0
-          },
-          "Device": {
-            "Type": "Button",
-            "Name": "encButton"
-          },
-          "DeviceType": "Button",
-          "DeviceName": "encButton",
-          "GUID": "ad43f6b5-2b1b-45c8-bdad-6d81d768c69b",
-          "Active": true,
-          "Name": "rp2040 Input EncButtonState",
-          "Type": "InputConfigItem",
-          "Controller": {
-            "Name": "MobiFlight RaspiPico",
-            "Serial": "SN-45533065788398DA"
-          },
-          "RawValue": "RELEASE",
-          "Value": " "
-        },
-        {
           "Source": {
-            "MobiFlightVariable": {
-              "TYPE": "number",
-              "Name": "encButtonState",
-              "Number": 0.0,
-              "Text": "",
-              "Expression": "$"
+            "SimConnectValue": {
+              "Value": "",
+              "VarType": 0
             },
-            "Type": "VariableSource"
+            "Type": "SimConnectSource"
           },
           "TestValue": {
             "type": 1,
             "Float64": 1.0,
             "String": null
           },
-          "Device": {
-            "Name": "CCs CC_G5 PFD",
-            "CustomType": null,
-            "CustomName": "CCs CC_G5 PFD",
-            "MessageType": 16,
-            "Value": "$",
-            "Type": "CustomDevice"
-          },
-          "DeviceType": "CustomDevice",
-          "DeviceName": "CCs CC_G5 PFD",
-          "GUID": "2ea83f4b-76e6-4ec1-bdf5-b883b2805367",
-          "Active": true,
-          "Name": "encButtonState to PFD",
+          "DeviceType": "",
+          "DeviceName": null,
+          "GUID": "f17b3fd0-38bb-41d1-aa50-7010d241d6f6",
+          "Active": false,
+          "Name": "************  External Switch Box controls. Remove if no physical controls ***************",
           "Type": "OutputConfigItem",
           "Controller": {
-            "Name": "CC_G5 ESP32 PFD",
-            "Serial": "SN-98A316E591C4"
+            "Name": "",
+            "Serial": "-"
           },
-          "RawValue": "4",
-          "Value": "4"
+          "Modifiers": {
+            "Items": [
+              {
+                "Type": "Comparison",
+                "Operand": "=",
+                "Value": "",
+                "IfValue": "1",
+                "ElseValue": "0",
+                "Active": true
+              }
+            ]
+          }
         },
         {
           "encoder": {
@@ -2603,9 +2167,9 @@
               "Type": "VariableInputAction",
               "Variable": {
                 "TYPE": "number",
-                "Name": "encEncoderState",
-                "Number": -54.0,
-                "Text": "-54",
+                "Name": "PFDEncoderState",
+                "Number": 0.0,
+                "Text": "",
                 "Expression": "$-1"
               }
             },
@@ -2613,9 +2177,9 @@
               "Type": "VariableInputAction",
               "Variable": {
                 "TYPE": "number",
-                "Name": "encEncoderState",
-                "Number": -50.0,
-                "Text": "-50",
+                "Name": "PFDEncoderState",
+                "Number": 0.0,
+                "Text": "",
                 "Expression": "$-5"
               }
             },
@@ -2623,9 +2187,9 @@
               "Type": "VariableInputAction",
               "Variable": {
                 "TYPE": "number",
-                "Name": "encEncoderState",
-                "Number": -85.0,
-                "Text": "-85",
+                "Name": "PFDEncoderState",
+                "Number": 0.0,
+                "Text": "",
                 "Expression": "$+1"
               }
             },
@@ -2633,35 +2197,33 @@
               "Type": "VariableInputAction",
               "Variable": {
                 "TYPE": "number",
-                "Name": "encEncoderState",
-                "Number": -45.0,
-                "Text": "-45",
+                "Name": "PFDEncoderState",
+                "Number": 0.0,
+                "Text": "",
                 "Expression": "$+5"
               }
             }
           },
           "Device": {
             "Type": "Encoder",
-            "Name": "Encoder"
+            "Name": "PFD Encdoer"
           },
           "DeviceType": "Encoder",
-          "DeviceName": "Encoder",
-          "GUID": "54e17196-e61b-49f2-b74b-ee9a10435e92",
+          "DeviceName": "PFD Encdoer",
+          "GUID": "ad43f6b5-2b1b-45c8-bdad-6d81d768c69b",
           "Active": true,
-          "Name": "rp2040 Input Encoder State",
+          "Name": "PFD Encoder In",
           "Type": "InputConfigItem",
           "Controller": {
-            "Name": "MobiFlight RaspiPico",
-            "Serial": "SN-45533065788398DA"
-          },
-          "RawValue": "LEFT",
-          "Value": " "
+            "Name": "G5 Switch Box",
+            "Serial": "SN-455330657902FB6A"
+          }
         },
         {
           "Source": {
             "MobiFlightVariable": {
               "TYPE": "number",
-              "Name": "encEncoderState",
+              "Name": "PFDEncoderState",
               "Number": 0.0,
               "Text": "",
               "Expression": "$"
@@ -2683,16 +2245,16 @@
           },
           "DeviceType": "CustomDevice",
           "DeviceName": "CCs CC_G5 PFD",
-          "GUID": "463034d2-fa55-4516-8f72-daff4d06a3dd",
+          "GUID": "2ea83f4b-76e6-4ec1-bdf5-b883b2805367",
           "Active": true,
-          "Name": "encEncoder State to PFD",
+          "Name": "PFD Encoder Out",
           "Type": "OutputConfigItem",
           "Controller": {
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
           },
-          "RawValue": "-54",
-          "Value": "-54"
+          "RawValue": "0",
+          "Value": "0"
         },
         {
           "button": {
@@ -2700,7 +2262,7 @@
               "Type": "VariableInputAction",
               "Variable": {
                 "TYPE": "number",
-                "Name": "encPowerBtnState",
+                "Name": "pfdEncoderBtn",
                 "Number": 2.0,
                 "Text": "2",
                 "Expression": "2"
@@ -2710,7 +2272,7 @@
               "Type": "VariableInputAction",
               "Variable": {
                 "TYPE": "number",
-                "Name": "encPowerBtnState",
+                "Name": "pfdEncoderBtn",
                 "Number": 4.0,
                 "Text": "4",
                 "Expression": "4"
@@ -2724,20 +2286,98 @@
           },
           "Device": {
             "Type": "Button",
-            "Name": "powerBtn"
+            "Name": "PFD Enc Btn"
           },
           "DeviceType": "Button",
-          "DeviceName": "powerBtn",
-          "GUID": "9e877e2d-4b7c-49e2-89ad-24079d34540d",
+          "DeviceName": "PFD Enc Btn",
+          "GUID": "721ff538-1cfa-4dd5-a271-aa899b30f726",
           "Active": true,
-          "Name": "rp2040 Input pwrButtonState",
+          "Name": "PFD Encoder Button In",
           "Type": "InputConfigItem",
           "Controller": {
-            "Name": "MobiFlight RaspiPico",
-            "Serial": "SN-45533065788398DA"
+            "Name": "G5 Switch Box",
+            "Serial": "SN-455330657902FB6A"
+          }
+        },
+        {
+          "Source": {
+            "MobiFlightVariable": {
+              "TYPE": "number",
+              "Name": "pfdEncoderBtn",
+              "Number": 0.0,
+              "Text": "",
+              "Expression": "$"
+            },
+            "Type": "VariableSource"
           },
-          "RawValue": "RELEASE",
-          "Value": " "
+          "TestValue": {
+            "type": 1,
+            "Float64": 1.0,
+            "String": null
+          },
+          "Device": {
+            "Name": "CCs CC_G5 PFD",
+            "CustomType": null,
+            "CustomName": "CCs CC_G5 PFD",
+            "MessageType": 16,
+            "Value": "$",
+            "Type": "CustomDevice"
+          },
+          "DeviceType": "CustomDevice",
+          "DeviceName": "CCs CC_G5 PFD",
+          "GUID": "b4521fac-a786-4a11-9f9c-404ae2d91a3d",
+          "Active": true,
+          "Name": "PFD Encoder Button Out",
+          "Type": "OutputConfigItem",
+          "Controller": {
+            "Name": "CC_G5 ESP32 PFD",
+            "Serial": "SN-98A316E591C4"
+          },
+          "RawValue": "4",
+          "Value": "4"
+        },
+        {
+          "button": {
+            "onPress": {
+              "Type": "VariableInputAction",
+              "Variable": {
+                "TYPE": "number",
+                "Name": "pfdPowerButton",
+                "Number": 0.0,
+                "Text": "",
+                "Expression": "2"
+              }
+            },
+            "onRelease": {
+              "Type": "VariableInputAction",
+              "Variable": {
+                "TYPE": "number",
+                "Name": "pfdPowerButton",
+                "Number": 4.0,
+                "Text": "4",
+                "Expression": "4"
+              }
+            },
+            "onLongRelease": null,
+            "onHold": null,
+            "LongReleaseDelay": 350,
+            "HoldDelay": 350,
+            "RepeatDelay": 0
+          },
+          "Device": {
+            "Type": "Button",
+            "Name": "PFD Power Btn"
+          },
+          "DeviceType": "Button",
+          "DeviceName": "PFD Power Btn",
+          "GUID": "9e877e2d-4b7c-49e2-89ad-24079d34540d",
+          "Active": true,
+          "Name": "PFD Power Button in",
+          "Type": "InputConfigItem",
+          "Controller": {
+            "Name": "G5 Switch Box",
+            "Serial": "SN-455330657902FB6A"
+          }
         },
         {
           "Source": {
@@ -2767,14 +2407,14 @@
           "DeviceName": "CCs CC_G5 PFD",
           "GUID": "32d5af63-8823-4e3c-9297-3d05b6dc51c9",
           "Active": true,
-          "Name": "pwrButtonState to PFD",
+          "Name": "PFD Power Button Out",
           "Type": "OutputConfigItem",
           "Controller": {
             "Name": "CC_G5 ESP32 PFD",
             "Serial": "SN-98A316E591C4"
           },
-          "RawValue": "4",
-          "Value": "4"
+          "RawValue": "0",
+          "Value": "0"
         },
         {
           "Source": {
@@ -2791,27 +2431,24 @@
             "String": null
           },
           "Device": {
-            "Name": "Output",
-            "Pin": "Output",
+            "Name": "PFD Power LED",
+            "Pin": "PFD Power LED",
             "Brightness": 255,
             "PwmMode": false,
             "Type": "Output"
           },
           "DeviceType": "Output",
-          "DeviceName": "Output",
+          "DeviceName": "PFD Power LED",
           "GUID": "a232331b-7c16-4ccc-824e-c725cc6057c6",
           "Active": true,
-          "Name": "pwrButton Ring Light",
+          "Name": "PFD Power Button Ring LED",
           "Type": "OutputConfigItem",
           "Controller": {
-            "Name": "MobiFlight RaspiPico",
-            "Serial": "SN-45533065788398DA"
+            "Name": "G5 Switch Box",
+            "Serial": "SN-455330657902FB6A"
           },
-          "RawValue": "0",
-          "Value": "0",
-          "Status": {
-            "Source": "SIMCONNECT_NOT_AVAILABLE"
-          }
+          "RawValue": "1",
+          "Value": "1"
         }
       ]
     }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ModuleType>MobiFlight RaspiPico</ModuleType>
+  <ModuleName>G5 Switch Box</ModuleName>
+  <PowerSavingTime>600</PowerSavingTime>
+  <Encoder Name="HSIEncoder" PinLeft="0" PinRight="1" EncoderType="1" />
+  <Button Name="HSI Enc Btn" Pin="2" />
+  <Encoder Name="PFD Encdoer" PinLeft="3" PinRight="4" EncoderType="0" />
+  <Button Name="PFD Enc Btn" Pin="5" />
+  <Button Name="HSI Power Brn" Pin="6" />
+  <Output Name="HSI Power LED" Pin="7" />
+  <Button Name="PFD Power Btn" Pin="8" />
+  <Output Name="PFD Power LED" Pin="9" />
+</Config>

@@ -2071,19 +2071,19 @@ void CC_G5_PFD::drawAp()
         strcpy(buf, "GS");
         break;
     case 5:
-        strcpy(buf, "ALTS  GS");
+        strcpy(buf, "AS  GS"); // Should be alts gs
         break;
     case 6:
-        strcpy(buf, "ALT  GS");
+        strcpy(buf, "A  GS"); // Should be alt gs
         break;
     case 8:
         strcpy(buf, "GP");
         break;
     case 9:
-        strcpy(buf, "ALTS  GP");
+        strcpy(buf, "AS  GP"); // Should be "alts gp" but not enought room and the gp is cut off.
         break;
     case 10:
-        strcpy(buf, "ALT  GP");
+        strcpy(buf, "A  GP"); // Should be alt gp
         break;
     default:
         sprintf(buf, "%d", g5State.apVArmedMode);
@@ -2109,7 +2109,7 @@ void CC_G5_PFD::drawAp()
             // Off
         } else {
             apBox.setTextColor(TFT_BLACK, TFT_YELLOW);
-            apBox.fillRoundRect(apX - 8, 1, 42, yBaseline - 2, 3, TFT_YELLOW);
+            apBox.fillRoundRect(apX - 8, 1, 42, apBox.height(), 2, TFT_YELLOW);
             apBox.drawString("AP", apX, yBaseline);
             apBox.setTextColor(TFT_GREEN);
         }
